@@ -1,0 +1,2818 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nikhil — Brand &amp; Visual Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous"></script>
+
+  <style>
+    /* ─── TOKENS ──────────────────────────────── */
+    :root {
+      --forest: #0A3323;
+      --olive:  #849A59;
+      --lime:   #DAD977;
+      --sage:   #A8AD9B;
+      --mint:   #B8D4B0;
+
+      --ease-out: cubic-bezier(.22,1,.36,1);
+      --ease-in-out: cubic-bezier(.65,0,.35,1);
+    }
+
+    /* ─── RESET ───────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      scrollbar-width: none;        /* Firefox */
+    }
+    html::-webkit-scrollbar { display: none; } /* Chrome / Edge / Safari */
+    body {
+      font-family: 'Sora', sans-serif;
+      background: #A8AD98;   /* sage — card sits on this */
+      color: var(--forest);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── CURSOR ──────────────────────────────── */
+    #cur-dot, #cur-ring {
+      position: fixed; border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    #cur-dot  { width:8px; height:8px; background:var(--forest); transition: background .3s; }
+    #cur-ring { width:32px; height:32px; border:1.5px solid rgba(10,51,35,.35);
+                transition: width .3s var(--ease-out), height .3s var(--ease-out), border-color .3s; }
+    body.hov #cur-dot  { background: var(--lime); }
+    body.hov #cur-ring { width:48px; height:48px; border-color: var(--forest); }
+
+    /* ─── NAV ─────────────────────────────────── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:300;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 1.3rem 2.8vw;
+      background: transparent;
+      overflow: hidden; /* clips the sliding bg rect */
+      transition: transform .45s var(--ease-out);
+    }
+    /* Footer is a full-bleed illustrated close — nav steps aside rather than floating over it */
+    nav.nav-hidden { transform: translateY(-110%); }
+    /* Rectangle that slides in from above on scroll */
+    nav::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(230, 241, 226, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transform: translateY(-105%);
+      transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+      z-index: -1;
+    }
+    nav.scrolled::before { transform: translateY(0); }
+    .nav-logo img { height: 52px; display:block; }
+    .nav-logo { justify-self: center; }
+    .nav-left, .nav-right {
+      display: flex; align-items: center;
+      gap: 2.2rem; list-style: none;
+    }
+    .nav-left  { justify-content: flex-start; }
+    .nav-right { justify-content: flex-end; }
+    .nav-left a, .nav-right a {
+      font-size: .7rem; font-weight:700; letter-spacing:.12em;
+      text-transform: uppercase; color: var(--forest);
+      position:relative;
+    }
+    .nav-left a::after, .nav-right a::after {
+      content:''; position:absolute; bottom:-2px; left:0;
+      width:0; height:1px; background:var(--forest);
+      transition: width .35s var(--ease-out);
+    }
+    .nav-left a:hover::after, .nav-right a:hover::after { width:100%; }
+    .nav-hire {
+      background: var(--forest); color: var(--mint) !important;
+      padding: .45rem 1.3rem; border-radius: 100px;
+      transition: background .3s, transform .25s var(--ease-out) !important;
+    }
+    .nav-hire::after { display:none !important; }
+    .nav-hire:hover { background: #0d4530 !important; transform: translateY(-2px) !important; }
+
+    /* ─── HERO ────────────────────────────────── */
+    /*
+      Aryan Tripathi structure: greeting → name → role → tagline → CTAs
+      Eat Hungry Tiger scale: the name IS the hero — huge, bold, commanding
+      Gourou color: mint (#E6F1E2) section — clean, warm, not white
+    */
+    /* Fixed overlay — positions text over the canvas card, scales with it */
+    #hero-content {
+      position: fixed;
+      top: 5.8rem; left: 2rem;
+      width: calc(100vw - 4rem);
+      height: calc(100vh - 8rem);
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      border-radius: 20px;
+    }
+    .hero-inner {
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 6vw;
+    }
+
+    /* #home is the GSAP pin trigger; canvas is fixed so no natural height needed */
+    #home {
+      height: 20vh;
+      min-height: 0;
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Hint only shows on hero — hidden via JS on leave */
+    #hint { z-index: 5; }
+
+
+    .hero-greeting {
+      font-family: 'Sora', sans-serif;
+      font-size: .72rem; font-weight:700;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--forest);
+      margin-bottom: 1rem;
+      display: flex; align-items:center; gap:.7rem;
+    }
+    .hero-greeting::before { display:none; }
+
+    /* The name — Eat Hungry Tiger scale */
+    .hero-name {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(4.5rem, 9.5vw, 10.5rem);
+      font-weight: 700;
+      letter-spacing: -.04em;
+      line-height: .95;
+      color: var(--forest);
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-role {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.2rem, 2.4vw, 2.2rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--forest);
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-tagline {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(.9rem, 1.1vw, 1.05rem);
+      color: var(--forest);
+      line-height: 1.75;
+      max-width: 44ch;
+      margin-bottom: 2.8rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── FLIP CARD ─────────────────────────────── */
+    .hero-card {
+      width: clamp(18rem, 30vw, 27rem);
+      max-width: 76vw;
+      margin-bottom: 2.5rem;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform .65s cubic-bezier(.4,0,.2,1);
+    }
+    .card-inner.flipped { transform: rotateY(180deg); }
+    .card-front,
+    .card-back {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .card-front { display: block; width: 100%; }
+    .card-front img { display: block; width: 100%; height: auto; }
+    .card-back {
+      position: absolute;
+      inset: 0;
+      transform: rotateY(180deg);
+    }
+    .card-back img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* Real paint stroke PNGs — squished thin, flipped to arc under text */
+    .paint-stroke {
+      position: absolute;
+      pointer-events: none;
+      transform: scaleY(-1);
+    }
+    .stroke-hello  { width: 56%; left: 22%; top: 25%; }
+    .stroke-nikhil { width: 44%; left: 28%; top: 47%; }
+    .paint-stroke img {
+      display: block;
+      width: 100%;
+      height: 22px;        /* enough height for visible arc curvature */
+      object-fit: fill;
+      filter: grayscale(1) sepia(1) hue-rotate(90deg) saturate(2) brightness(0.45);
+      opacity: 0.42;
+      transform: scaleX(0);
+      transform-origin: left center;
+    }
+    .card-inner.flipped .stroke-hello img {
+      animation: brushIn 1.1s cubic-bezier(.4,0,.2,1) 0.72s forwards;
+    }
+    .card-inner.flipped .stroke-nikhil img {
+      animation: brushIn 1.1s cubic-bezier(.4,0,.2,1) 1.0s forwards;
+    }
+    @keyframes brushIn { to { transform: scaleX(1); } }
+
+    /* Scale-in + drop entrance with squash on landing */
+    .hero-card.rv {
+      opacity: 0;
+      transform: translateY(-18px) scale(1.08);
+    }
+    .hero-card.rv.vis {
+      animation: stickerDrop .5s var(--ease-out) forwards;
+    }
+    @keyframes stickerDrop {
+      0%   { opacity: 0; transform: translateY(-18px) scale(1.08, 1.08); }
+      60%  { opacity: 1; transform: translateY(0)     scale(1, 1); }
+      75%  {              transform: translateY(0)     scale(1.05, .95); }
+      100% { opacity: 1; transform: translateY(0)     scale(1, 1); }
+    }
+
+    .hero-actions { display:flex; gap:1rem; align-items:center; flex-wrap:wrap; justify-content:center; }
+
+    .btn-dark {
+      display: inline-flex; align-items:center; gap:.5rem;
+      background: var(--forest); color: var(--mint);
+      font-family:'Sora',sans-serif; font-size:.78rem; font-weight:700;
+      letter-spacing:.06em; padding:.85rem 2rem; border-radius:100px;
+      transition: background .3s, transform .25s var(--ease-out), box-shadow .3s;
+    }
+    .btn-dark:hover { background:#0d4530; transform:translateY(-3px); box-shadow:0 12px 32px rgba(10,51,35,.2); }
+
+    .btn-ghost-dark {
+      display:inline-flex; align-items:center; gap:.5rem;
+      color:var(--forest); font-family:'Sora',sans-serif; font-size:.78rem;
+      font-weight:600; letter-spacing:.06em; padding:.85rem 2rem;
+      border: 1.5px solid rgba(10,51,35,.3); border-radius:100px;
+      transition: border-color .3s, transform .25s var(--ease-out);
+    }
+    .btn-ghost-dark:hover { border-color:var(--forest); transform:translateY(-3px); }
+
+    /* Bottom info strip */
+    .hero-strip {
+      position: absolute; bottom:0; left:0; right:0;
+      border-top: 1px solid rgba(10,51,35,.1);
+      padding: .9rem 5vw;
+      display: flex; align-items:center; gap:2rem;
+      font-family:'Sora',sans-serif; font-size:.65rem;
+      font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+      color: rgba(10,51,35,.4);
+    }
+    .strip-dot { width:5px; height:5px; border-radius:50%; background:var(--olive); }
+    .avail { color:var(--olive); }
+    .avail-pulse {
+      width:6px; height:6px; border-radius:50%; background:var(--olive);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+    /* ─── SECTION BASE ────────────────────────── */
+    section {
+      padding: 7rem 5vw;
+      position: relative;
+      z-index: 1;
+    }
+    footer { position: relative; z-index: 1; }
+
+    .sec-label {
+      font-family:'Sora',sans-serif; font-size:.62rem; font-weight:700;
+      letter-spacing:.24em; text-transform:uppercase;
+      display:flex; align-items:center; gap:.7rem;
+      margin-bottom:1.4rem;
+    }
+    .sec-label::after { content:''; display:block; width:2rem; height:1px; background:currentColor; }
+
+    .sec-heading {
+      font-family:'Sora',sans-serif;
+      font-size: clamp(2.4rem, 4.5vw, 5rem);
+      font-weight:600; letter-spacing:-.025em; line-height:1.1;
+    }
+    .sec-heading em { font-style:italic; }
+
+    /* ─── WORK SECTION ────────────────────────── */
+    /*
+      Dark forest green — Gourou contrast section.
+      Project rows: clean, Aryan Tripathi simplicity.
+    */
+    #work {
+      background: var(--forest);
+      color: var(--mint);
+    }
+    #work .sec-label { color: var(--olive); }
+    #work .sec-heading { color: var(--mint); }
+    #work .sec-heading em { color: var(--lime); }
+
+    .work-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+      gap: 2rem; flex-wrap: wrap;
+    }
+    .work-all {
+      font-family:'Sora',sans-serif; font-size:.7rem; font-weight:700;
+      letter-spacing:.12em; text-transform:uppercase;
+      color:var(--sage); display:flex; align-items:center; gap:.5rem;
+      transition: color .3s;
+    }
+    .work-all:hover { color:var(--lime); }
+    .work-all svg { transition: transform .3s var(--ease-out); }
+    .work-all:hover svg { transform:translate(4px,-4px); }
+
+    /* Project card grid */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    .proj-card {
+      border-radius: 0.75rem;
+      overflow: hidden;
+      border: 1px solid rgba(132,154,89,.14);
+      background: rgba(255,255,255,.02);
+      cursor: pointer;
+      transition: border-color .35s, transform .35s var(--ease-out), box-shadow .35s;
+    }
+    .proj-card:hover {
+      border-color: rgba(218,217,119,.28);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 48px rgba(0,0,0,.3);
+    }
+
+    .proj-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      position: relative;
+      background: rgba(0,0,0,.25);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .proj-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top;
+      display: block;
+      transition: transform .6s var(--ease-out);
+    }
+    .proj-card:hover .proj-thumb img { transform: scale(1.03); }
+    .proj-thumb-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .proj-thumb-placeholder span {
+      font-family:'Sora',sans-serif; font-size:5rem; font-weight:700;
+      letter-spacing:-.04em; color:rgba(255,255,255,.08);
+    }
+    .proj-thumb-loading {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(10,51,35,.5);
+    }
+    .proj-thumb-loading::after {
+      content: ''; width: 1.5rem; height: 1.5rem; border-radius: 50%;
+      border: 2px solid rgba(132,154,89,.3); border-top-color: var(--olive);
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .proj-info {
+      display: grid;
+      grid-template-columns: 3ch 1fr auto auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.1rem 1.4rem;
+      border-top: 1px solid rgba(132,154,89,.1);
+    }
+    .proj-card:hover .pr-name { color: var(--lime); }
+    .proj-card:hover .pr-tag  { border-color: rgba(218,217,119,.3); color: var(--lime); }
+    .proj-card:hover .pr-arr  {
+      background: var(--lime); border-color: var(--lime);
+      color: var(--forest); transform: rotate(45deg);
+    }
+
+    /* ─── PDF MODAL ─────────────────────────────── */
+    #pdf-modal {
+      position: fixed; inset: 0; z-index: 900;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    #pdf-modal.open { opacity: 1; pointer-events: all; }
+    #pdf-modal-bg { display: none; }
+    #pdf-modal-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      background: #ECEAE4;
+    }
+    #pdf-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .85rem 1.5rem;
+      background: var(--forest);
+      border-bottom: 1px solid rgba(132,154,89,.15);
+      flex-shrink: 0;
+    }
+    #pdf-modal-title {
+      font-family:'Sora',sans-serif; font-size:.72rem; font-weight:600;
+      letter-spacing:.08em; text-transform:uppercase; color:var(--mint);
+    }
+    #pdf-modal-controls { display:flex; align-items:center; gap:.5rem; }
+    .pdf-btn {
+      width:2rem; height:2rem; border-radius:50%;
+      border:1px solid rgba(132,154,89,.3);
+      background:transparent; color:var(--mint);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; font-size:.85rem;
+      transition: background .2s, border-color .2s, color .2s, transform .25s var(--ease-out);
+    }
+    .pdf-btn:hover { background:var(--lime); border-color:var(--lime); color:var(--forest); }
+    .pdf-btn:active { transform: scale(.92); }
+    #pdf-modal-viewport {
+      flex:1; overflow-y:auto; overflow-x:hidden;
+      display:flex; flex-direction:column;
+      align-items:center;
+      gap:1.5rem;
+      padding:2.5rem 2rem;
+    }
+    #pdf-loading {
+      display:flex; flex-direction:column; align-items:center;
+      gap:1rem; color:var(--sage);
+      font-family:'Sora',sans-serif; font-size:.8rem;
+      letter-spacing:.08em; text-transform:uppercase;
+      padding:4rem;
+    }
+    #pdf-loading::before {
+      content:''; width:2rem; height:2rem; border-radius:50%;
+      border:2px solid rgba(132,154,89,.3); border-top-color:var(--olive);
+      animation: spin .7s linear infinite;
+    }
+    .pdf-page-canvas {
+      width: min(100%, 1100px);
+      box-shadow: 0 4px 32px rgba(0,0,0,.15);
+      border-radius:4px;
+      display:block;
+    }
+
+    .pr-num {
+      font-family:'Sora',sans-serif; font-size:.65rem; font-weight:700;
+      letter-spacing:.12em; color:var(--olive); padding-top:.2rem;
+    }
+    .pr-name {
+      font-family:'Sora',sans-serif;
+      font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+      font-weight:600; letter-spacing:-.02em;
+      color: var(--mint);
+      transition: color .3s;
+      line-height:1.15;
+    }
+    .project-row:hover .pr-name { color: var(--lime); }
+    .pr-meta {
+      font-family:'Sora',sans-serif; font-size:.72rem;
+      color:var(--sage); margin-top:.25rem;
+      letter-spacing:.04em;
+    }
+
+    .pr-right {
+      display:flex; align-items:center; gap:1rem; justify-content:flex-end;
+    }
+    .pr-tag {
+      font-family:'Sora',sans-serif; font-size:.6rem; font-weight:700;
+      letter-spacing:.1em; text-transform:uppercase;
+      color:var(--sage); border:1px solid rgba(132,154,89,.3);
+      padding:.25rem .75rem; border-radius:100px;
+      transition: border-color .3s, color .3s;
+      white-space: nowrap;
+    }
+    .project-row:hover .pr-tag { border-color:rgba(218,217,119,.3); color:var(--lime); }
+    .pr-arr {
+      width:2.2rem; height:2.2rem; border-radius:50%;
+      border:1px solid rgba(132,154,89,.3);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--sage); flex-shrink:0;
+      transition: background .3s, border-color .3s, color .3s, transform .4s var(--ease-out);
+    }
+    .project-row:hover .pr-arr {
+      background:var(--lime); border-color:var(--lime);
+      color:var(--forest); transform:rotate(45deg);
+    }
+
+    /* ─── ABOUT SECTION ───────────────────────── */
+    /* GSAP wraps #about in a .pin-spacer for the sticker animation; fill it lime
+       so the body-bg sage doesn't bleed through during the 1200px scroll distance */
+    .pin-spacer:has(> #about) {
+      background: var(--lime);
+    }
+    #about {
+      background: var(--lime);
+      color: var(--forest);
+      padding: 0;           /* override section base — inner handles padding */
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    /* Sticker loading screen */
+    .sticker-seq {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .sticker-tray {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.5rem, 4vw, 4rem);
+      padding: 0 5vw;
+      width: 100%;
+      justify-content: center;
+    }
+    .si {
+      width: clamp(150px, 18vw, 230px);
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transform: translateY(50px);
+      flex-shrink: 0;
+    }
+    /* About content (initially invisible — GSAP reveals) */
+    .about-inner {
+      padding: 8rem 5vw 4.5rem;
+      opacity: 0;
+    }
+    #about .sec-label { color: rgba(10,51,35,.5); }
+    #about .sec-label::after { background: rgba(10,51,35,.4); }
+    #about .sec-heading { color: var(--forest); }
+    #about .sec-heading em { color: rgba(10,51,35,.45); font-style:italic; }
+
+    .about-cols {
+      display: flex;
+      align-items: center;
+      gap: 4.5rem;
+    }
+    .about-text {
+      flex: 1 1 0;
+      max-width: 560px;
+    }
+
+    .about-body {
+      font-family:'Sora',sans-serif; /* Brand spec: body at size 20 */
+      font-size: clamp(1.05rem, 1.3vw, 1.3rem);
+      line-height: 1.85;
+      color: rgba(10,51,35,.78);
+    }
+    .about-body + .about-body { margin-top:1.4rem; }
+
+    /* sticker + about-inner styles now in ABOUT SECTION block above */
+
+    /* ─── ABOUT PHOTO ─────────────────────────── */
+    .about-photo-wrap {
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
+    .about-photo {
+      width: min(420px, 38vw);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: rgba(10,51,35,.1);
+      border: 1.5px dashed rgba(10,51,35,.2);
+    }
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 25% center;
+      display: block;
+    }
+
+    /* ─── MARQUEE ZONE — diagonal zigzag ribbon straddling About / Play seam ─── */
+    .marquee-zone {
+      position: relative;
+      z-index: 25;
+      height: 22vw;
+      min-height: 260px;
+      max-height: 360px;
+      margin: -70px 0 -180px;
+      pointer-events: none;
+      overflow: hidden;
+      /* color split now lives in the SVG fills (.mz-fill-top / .mz-fill-bottom), traced along the same curve as the band itself */
+      background: var(--lime);
+    }
+    .mz-fill-top { fill: var(--lime); }
+    .mz-fill-bottom { fill: var(--forest); }
+    .mz-svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .mz-band {
+      fill: none;
+      stroke: var(--mint);   /* light green — reads against both the lime About surface and the dark Play surface */
+      stroke-width: 130;
+      stroke-linecap: round;
+      stroke-dasharray: 2400;
+      stroke-dashoffset: 2400;
+      transition: stroke-dashoffset 2.8s cubic-bezier(.16,1,.3,1);
+    }
+    .marquee-zone.mz-in .mz-band {
+      stroke-dashoffset: 0;
+    }
+    /* Logos hold until the band has fully drawn itself in (5.6s), then pop in one by one */
+    .mz-icon {
+      opacity: 0;
+      transform: scale(.6);
+      transform-origin: center;
+      transform-box: fill-box;
+      transition: opacity 1.1s var(--ease-out), transform 1.1s var(--ease-out);
+    }
+    .marquee-zone.mz-in .mz-icon {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .mz-icon:nth-of-type(1)  { transition-delay: 0.60s; }
+    .mz-icon:nth-of-type(2)  { transition-delay: 0.62s; }
+    .mz-icon:nth-of-type(3)  { transition-delay: 0.64s; }
+    .mz-icon:nth-of-type(4)  { transition-delay: 0.66s; }
+    .mz-icon:nth-of-type(5)  { transition-delay: 0.68s; }
+    .mz-icon:nth-of-type(6)  { transition-delay: 0.7s; }
+    .mz-icon:nth-of-type(7)  { transition-delay: 0.72s; }
+    .mz-icon:nth-of-type(8)  { transition-delay: 0.74s; }
+    .mz-icon:nth-of-type(9)  { transition-delay: 0.76s; }
+    .mz-icon:nth-of-type(10) { transition-delay: 0.78s; }
+    .mz-icon:nth-of-type(11) { transition-delay: 0.80s; }
+    /* Every logo retinted into our dark forest-green. grayscale+contrast first compresses each
+       mark's source luminance toward one common mid-tone (so pale brand colors and dark ones
+       land in the same range), then sepia/hue-rotate/saturate/brightness pulls that uniform base
+       down into the same deep shade as --forest (#0A3323). */
+    .mz-icon image {
+      filter: grayscale(1) contrast(.4) brightness(1.05) sepia(1) hue-rotate(88deg) saturate(2.6) brightness(.5);
+    }
+
+    /* .marquee-zone disables pointer-events so the decorative band/fills never block clicks;
+       re-enable it just on each icon's hit area so hover can be detected and isn't inherited as none. */
+    .mz-icon-pos { pointer-events: auto; }
+
+    /* Software name label, shown above whichever icon is hovered */
+    .mz-tooltip {
+      position: absolute;
+      top: 0; left: 0;
+      transform: translate(-50%, -120%) scale(.85);
+      background: var(--forest);
+      color: var(--mint);
+      font-family: 'Sora', sans-serif;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      padding: .4rem .8rem;
+      border-radius: .5rem;
+      box-shadow: 0 10px 22px -8px rgba(10,51,35,.4), 0 2px 8px -2px rgba(10,51,35,.25);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 30;
+      transition: opacity .22s var(--ease-out), transform .22s var(--ease-out);
+    }
+    .mz-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--forest);
+    }
+    .mz-tooltip.show {
+      opacity: 1;
+      transform: translate(-50%, -145%) scale(1);
+    }
+
+    /* ─── SKILLS MARQUEE (now unused as section; mz-ribbon uses same track CSS) ── */
+    #skills {
+      display: none; /* skills section replaced by marquee-zone */
+    }
+    .marquee-ribbon {
+      background: var(--lime);
+      transform: rotate(-2deg);
+      margin: 0 -6%;
+      width: 112%;
+      overflow: hidden;
+      padding: 1.6rem 0;
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      align-items: center;
+      animation: mq-scroll 42s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes mq-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .mq-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0 2.8rem;
+      flex-shrink: 0;
+    }
+    .mq-item img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      filter: brightness(0) opacity(0.72);
+    }
+    .mq-item span {
+      font-family: 'Sora', sans-serif;
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--forest);
+      white-space: nowrap;
+    }
+    .mq-sep {
+      font-size: 1rem;
+      color: var(--forest);
+      opacity: 0.28;
+      flex-shrink: 0;
+    }
+
+    /* ─── FOOTER ──────────────────────────────── */
+    footer {
+      background:var(--forest);
+      overflow:hidden;
+    }
+    .ft-visual {
+      position:relative; width:100%;
+      aspect-ratio:1440/800; min-height:300px;
+    }
+    .ft-bg {
+      position:absolute; inset:0;
+      width:100%; height:100%; object-fit:cover;
+      display:block;
+    }
+    .ft-bg-dark { opacity:0; }
+    .ft-scrim {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(6,18,13,.92) 0%, rgba(6,18,13,.55) 32%, rgba(6,18,13,0) 64%);
+    }
+    .ft-content {
+      position:absolute; left:0; right:0; bottom:0; z-index:2;
+      padding:2.4rem 5vw 1.8rem;
+      display:flex; flex-direction:column; gap:1.6rem;
+    }
+    .ft-top {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      flex-wrap:wrap; gap:1.2rem;
+      border-bottom:1px solid rgba(230,241,226,.15);
+      padding-bottom:1.6rem;
+    }
+    .ft-email {
+      font-family:'Lora',serif; font-style:italic;
+      font-size:clamp(1.4rem,2.6vw,2rem); color:var(--mint);
+      border-bottom:2px solid rgba(230,241,226,.35);
+      padding-bottom:.3rem; display:inline-block;
+      transition: color .3s, border-color .3s;
+    }
+    .ft-email:hover { color:var(--lime); border-color:var(--lime); }
+    .ft-socials { display:flex; gap:1.5rem; flex-wrap:wrap; }
+    .ft-soc {
+      font-family:'Sora',sans-serif; font-size:.68rem; font-weight:700;
+      letter-spacing:.12em; text-transform:uppercase;
+      color:rgba(230,241,226,.65); display:flex; align-items:center; gap:.35rem;
+      transition: color .3s;
+    }
+    .ft-soc:hover { color:var(--lime); }
+    .ft-bottom {
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:1rem;
+    }
+    footer .logo img { height:22px; }
+    .ft-nav { list-style:none; display:flex; gap:2rem; }
+    .ft-nav a {
+      font-family:'Sora',sans-serif; font-size:.68rem;
+      font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--mint); transition:color .3s;
+    }
+    .ft-nav a:hover { color:var(--lime); }
+    .ft-copy {
+      font-family:'Sora',sans-serif; font-size:.68rem;
+      color:rgba(230,241,226,.6); letter-spacing:.06em;
+    }
+
+    /* ─── REVEAL ANIMATIONS ───────────────────── */
+    /* Gourou-style: clean fade-in + lift on scroll */
+    .rv {
+      opacity:0;
+      transform: translateY(36px);
+      transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
+    }
+    .rv.vis { opacity:1; transform:translateY(0); }
+    .d1 { transition-delay:.08s }
+    .d2 { transition-delay:.16s }
+    .d3 { transition-delay:.24s }
+    .d4 { transition-delay:.32s }
+    .d5 { transition-delay:.40s }
+
+    /* ─── SECTION ENTRANCE TRANSITIONS ──────── */
+    .work-inner {
+      clip-path: inset(100% 0 0 0);
+      transform: translateY(40px);
+      opacity: 0;
+      transition: clip-path 1.1s var(--ease-out), transform 1.1s var(--ease-out), opacity 0.6s var(--ease-out);
+    }
+    #work.sec-in .work-inner { clip-path: inset(0% 0 0 0); transform: translateY(0); opacity: 1; }
+
+    .about-inner {
+      transform: rotate(-2.5deg) translateY(60px) scale(0.97);
+      opacity: 0;
+      transform-origin: center bottom;
+      transition: transform 0.9s cubic-bezier(.34,1.56,.64,1), opacity 0.5s var(--ease-out);
+    }
+    #about.sec-in .about-inner { transform: rotate(0deg) translateY(0) scale(1); opacity: 1; }
+
+    .skills-inner {
+      transform: translateX(-80px);
+      opacity: 0;
+      transition: transform 1.0s var(--ease-out), opacity 0.7s var(--ease-out);
+    }
+    #skills.sec-in .skills-inner { transform: translateX(0); opacity: 1; }
+
+    .play-inner {
+      transform: translateY(-50px) scale(0.96);
+      opacity: 0;
+      transition: transform 0.85s cubic-bezier(.34,1.56,.64,1), opacity 0.4s var(--ease-out);
+    }
+    #play.sec-in .play-inner { transform: translateY(0) scale(1); opacity: 1; }
+
+    /* ─── SECTION DIVIDERS ───────────────────── */
+    .sec-divider { position: relative; height: 0; overflow: visible; z-index: 3; pointer-events: none; }
+    .sec-divider-line {
+      position: absolute; left: 5vw; right: 5vw; top: 0; height: 1px;
+      background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 1.2s var(--ease-out);
+    }
+    .sec-divider-dot {
+      position: absolute; top: -3px; left: 5vw;
+      width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+      transform: scale(0); opacity: 0.6;
+      transition: transform 0.5s cubic-bezier(.34,1.56,.64,1) 0.9s, left 1.2s var(--ease-out);
+    }
+    .sec-divider.div-in .sec-divider-line { transform: scaleX(1); }
+    .sec-divider.div-in .sec-divider-dot { transform: scale(1); left: calc(95vw - 6px); }
+    .div-work-about  { color: var(--olive); }
+    .div-about-skills { color: rgba(10,51,35,0.25); }
+    .div-skills-play  { color: var(--sage); }
+
+    /* ─── WAVE DIVIDERS ──────────────────────── */
+    .wave-div {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .wave-div canvas {
+      display: block;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ─── PARALLAX ───────────────────────────── */
+    .parallax-el { will-change: transform; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .work-inner, .about-inner, .skills-inner, .play-inner {
+        clip-path: none !important; transform: translateY(20px) !important;
+        transition: transform 0.5s var(--ease-out), opacity 0.5s var(--ease-out) !important;
+      }
+    }
+    @media (max-width: 660px) {
+      .about-inner { transform: translateY(60px) !important; }
+    }
+
+    /* ─── BOUNCE SECTION ─────────────────────── */
+    @font-face {
+      font-family: 'GameFont';
+      src: url('bounce/assets/fonts/YanoneKaffeesatz-Bold.ttf');
+    }
+    #play {
+      background: var(--forest);
+      color: var(--mint);
+      padding-top: 10rem;   /* clears the ribbon's lowest curve point with a clean gap — text sits fully below it instead of straddling the seam */
+    }
+    #play .sec-label { color: var(--olive); }
+    #play .sec-heading { color: var(--mint); }
+    #play .sec-heading em { color: var(--lime); }
+    .play-intro {
+      font-family: 'Sora', sans-serif; /* same as .about-body */
+      font-size: clamp(1.05rem, 1.3vw, 1.3rem);
+      line-height: 1.85;
+      color: var(--sage);
+      text-align: right;
+    }
+
+    #gameArea {
+      display: block;
+      width: 640px;
+      height: 360px;
+      max-width: 100%;
+      position: relative;
+      background: #06100D;
+      border: 1px solid rgba(132,154,89,.2);
+      border-radius: 4px;
+      box-shadow: 0 0 60px rgba(10,51,35,.5);
+      font-family: 'GameFont';
+    }
+    #gameArea canvas { font-family: 'GameFont'; }
+    /* div keeps the `hidden` attribute until Play is clicked — without this,
+       the ID rule above (higher specificity than the [hidden] UA rule) forced it
+       to render at full size, doubling the section's height with an empty canvas */
+    #gameArea[hidden] { display: none; }
+    .gbar {
+      width: 630px;
+      height: 40px;
+      position: absolute;
+      top: 5px;
+      left: 5px;
+    }
+    .level-menu {
+      width: 640px;
+      height: 360px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .game-finished {
+      width: 480px;
+      height: 270px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #play-game-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex: 0 0 auto;
+    }
+    .play-cols {
+      display: flex;
+      align-items: stretch; /* text column stretches to match the game's height */
+      gap: 4.5rem;
+      margin-top: 3.5rem;
+    }
+    .play-text {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* centers the paragraph within the matched height */
+    }
+    @media (max-width: 900px) {
+      .play-cols { flex-direction: column; gap: 2.5rem; align-items: stretch; }
+    }
+
+    /* ─── PLAY COVER SCREEN ─────────────────────── */
+    #play-cover {
+      position: relative;
+      width: 640px; max-width: 100%;
+      aspect-ratio: 640 / 360;
+      background: #06100D;
+      border: 1px solid rgba(132,154,89,.2);
+      border-radius: 4px;
+      box-shadow: 0 0 60px rgba(10,51,35,.5);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1.5rem;
+      cursor: pointer;
+      transition: border-color .35s;
+    }
+    #play-cover:hover { border-color: rgba(218,217,119,.4); }
+    .pc-hud {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 50px; background: #DAD977;
+      border-bottom: 2px solid #0A3323;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.4rem;
+    }
+    .pc-hud-lives { font-family:'Sora',sans-serif; font-size:.85rem; font-weight:700; letter-spacing:.08em; color:#0A3323; }
+    .pc-hud-score { font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:700; color:#0A3323; }
+    .pc-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center;
+    }
+    .pc-label {
+      font-family:'Sora',sans-serif; font-size:.6rem; font-weight:700;
+      letter-spacing:.22em; text-transform:uppercase; color:#DAD977;
+    }
+    .pc-title {
+      font-family:'Sora',sans-serif; font-size:clamp(2.5rem,6vw,4.5rem);
+      font-weight:700; letter-spacing:-.03em; color:#0A3323; line-height:1; margin:0;
+    }
+    .pc-sub {
+      font-family:'Sora',sans-serif; font-size:clamp(.7rem,.9vw,.88rem);
+      color:#DAD977; letter-spacing:.1em; text-transform:uppercase;
+    }
+    #play-launch-btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: #0A3323; color: #DAD977;
+      font-family:'Sora',sans-serif; font-size:.85rem; font-weight:700;
+      letter-spacing:.06em; padding:.85rem 2.5rem; border-radius:100px;
+      border: none; cursor: pointer; margin-top: .5rem;
+      transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s;
+    }
+    #play-launch-btn:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(218,217,119,.25); }
+    .pc-hint {
+      font-family:'Sora',sans-serif; font-size:.58rem;
+      color:#DAD977; letter-spacing:.1em; text-transform:uppercase;
+    }
+
+    /* ─── PAINTERLY CANVAS ──────────────────────── */
+    #c {
+      position: fixed;
+      top: 5.8rem; left: 2rem;
+      width: calc(100vw - 4rem);
+      height: calc(100vh - 8rem);
+      border-radius: 20px;
+      box-shadow: 0 12px 56px rgba(10,51,35,.14);
+      z-index: 0;
+      display: block;
+    }
+    #sc {
+      position: fixed;
+      top: 5.8rem; left: 2rem;
+      width: calc(100vw - 4rem);
+      height: calc(100vh - 8rem);
+      border-radius: 20px;
+      z-index: 1;
+      pointer-events: none;
+      transition: opacity .15s ease;
+    }
+    #work, #about, #skills, #play, footer {
+      position: relative;
+      z-index: 2;
+    }
+    /* #play must not trap its own stacking context, so its heading can be promoted above the ribbon (z-index 25) without the section's opaque background also jumping in front of the ribbon graphic */
+    #play { z-index: auto; }
+    #play .sec-label,
+    #play .sec-heading {
+      position: relative;
+      z-index: 30;
+    }
+    #pcur {
+      position: fixed;
+      width: 22px; height: 22px;
+      border: 1.5px solid var(--olive);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity .2s, transform .1s, background .15s;
+    }
+    #pcur.active {
+      background: rgba(132,154,89,.2);
+      transform: translate(-50%,-50%) scale(1.6);
+    }
+    #pcur.painting { border-color: var(--forest); border-width: 2px; }
+    #hint {
+      position: absolute;   /* inside #hero-content, scales with card */
+      bottom: 1.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 6;
+      font-family: 'Sora', sans-serif;
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--forest);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .6s var(--ease-out);
+      white-space: nowrap;
+    }
+    #hint.vis { opacity: 1; }
+    .hero-name .ch.light,
+    .hero-greeting .ch.light,
+    .hero-role .ch.light,
+    .hero-tagline .ch.light { color: rgba(255,255,255,0.92) !important; }
+    .btn-dark.btn-light { background: var(--lime) !important; color: var(--forest) !important; }
+    .btn-ghost-dark.btn-light { color: var(--lime) !important; border-color: rgba(218,217,119,0.75) !important; }
+    .btn-ghost-dark.btn-light:hover { background: rgba(218,217,119,0.15) !important; }
+    .hero-greeting, .hero-name, .hero-role, .hero-tagline { user-select: none; -webkit-user-select: none; }
+    .ch { display: inline; transition: color .6s ease; }
+
+    /* ─── RESPONSIVE ──────────────────────────── */
+    @media (max-width:900px) {
+      .about-cols { flex-direction: column; align-items: stretch; gap: 2.5rem; }
+      .about-text { max-width: none; }
+      .about-photo { width: min(420px, 85vw); margin: 0 auto; }
+    }
+    @media (max-width:660px) {
+      section { padding:5rem 6vw; }
+      nav { padding:1.2rem 6vw; }
+      .nav-links li:not(:last-child) { display:none; }
+      .hero-strip span:not(.avail):not(.avail-pulse) { display:none; }
+      .proj-grid { grid-template-columns: 1fr; }
+      .project-row { grid-template-columns:3ch 1fr 2.2rem; }
+      .pr-tag { display:none; }
+      .ft-visual { min-height:400px; }
+      .ft-content { gap:1.2rem; }
+      .ft-top { flex-direction:column; align-items:flex-start; gap:1rem; }
+      .ft-bottom { flex-direction:column; align-items:flex-start; gap:.8rem; }
+      .ft-nav { gap:1.2rem; flex-wrap:wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Resume nav link wired after PDF viewer initializes -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('nav-resume-btn');
+    if (btn) btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (typeof openViewer === 'function') openViewer('resume.pdf', 'Resume');
+    });
+  });
+</script>
+
+<!-- ── PAINTERLY BACKDROP ────────────────────────── -->
+<canvas id="c"></canvas>
+<canvas id="sc"></canvas>
+<div id="pcur"></div>
+<!-- ── CURSOR ───────────────────────────────────── -->
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+
+<!-- ── NAV ──────────────────────────────────────── -->
+<nav id="nav">
+  <ul class="nav-left">
+    <li><a href="#work">Case Studies</a></li>
+    <li><a href="#" id="nav-resume-btn">Resume</a></li>
+  </ul>
+  <a href="#home" class="nav-logo">
+    <img src="nik.gif" alt="Nikhil" />
+  </a>
+  <ul class="nav-right">
+    <li><a href="#play">Play</a></li>
+    <li><a href="#contact" class="nav-hire">Hire Me</a></li>
+  </ul>
+</nav>
+
+<!-- Hero content fixed overlay — scales with canvas as one unit -->
+<div id="hero-content">
+  <p id="hint">Click to paint, click again to stop</p>
+  <div class="hero-inner">
+    <div class="hero-card rv" id="hero-flip">
+      <div class="card-inner">
+        <div class="card-front"><img src="front.png" alt="Nikhil Arora" /></div>
+        <div class="card-back">
+          <img src="back.png" alt="Contact card" />
+          <div class="paint-stroke stroke-hello" aria-hidden="true">
+            <img src="paintstrokes/PNG/Element 59.png" />
+          </div>
+          <div class="paint-stroke stroke-nikhil" aria-hidden="true">
+            <img src="paintstrokes/PNG/Element 59.png" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-actions rv d4">
+      <a href="#work" class="btn-dark">
+        View Work
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2.5 7h9M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#about" class="btn-ghost-dark">About Me</a>
+    </div>
+  </div>
+</div>
+
+<!-- Scroll spacer — drives the GSAP canvas exit animation -->
+<section id="home"></section>
+
+<div class="wave-div" data-from="#A8AD98" data-to="#0A3323"></div>
+
+<!-- ══════════════════════════════════════════════
+     WORK — dark forest, Gourou contrast section
+══════════════════════════════════════════════ -->
+<section id="work">
+<div class="work-inner">
+
+  <div class="work-header parallax-el" data-parallax="0.15">
+    <div>
+      <div class="sec-label rv">Selected Work</div>
+      <h2 class="sec-heading rv d1">Projects that made a <em>mark.</em></h2>
+    </div>
+    <a href="#contact" class="work-all rv d2">
+      Start a project
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="proj-grid rv" id="proj-grid"></div>
+
+</div>
+</section>
+
+<div class="wave-div" data-from="#0A3323" data-to="#DAD977"></div>
+
+<!-- ══════════════════════════════════════════════
+     ABOUT — lime #DAD977, Gourou bold color block
+══════════════════════════════════════════════ -->
+<section id="about">
+
+  <!-- ① Actual about content — visible as soon as the section is scrolled into view -->
+  <div class="about-inner">
+    <div class="about-cols">
+
+      <div class="about-text">
+        <p class="about-body rv d1">
+          I'm Nikhil — a brand and visual designer who believes great design is honest, intentional, and alive with meaning. My work sits at the intersection of global design sensibility and Indian visual culture.
+        </p>
+        <p class="about-body rv d2">
+          The duality in my name — written in both Latin and Devanagari-influenced letterforms — reflects how I approach every project: two worlds of reference, one coherent identity.
+        </p>
+        <p class="about-body rv d3">
+          From strategy through to execution, I build visual systems that grow with a brand's vision and speak directly to the people who matter most.
+        </p>
+      </div>
+
+      <div class="about-photo-wrap rv d4">
+        <div class="about-photo">
+          <img src="A8503087-2 (1).webp" alt="Photo of Nikhil" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ② Sticker pop-up — pinned overlay that plays after the about content is visible:
+       one scroll snap brings the stickers up, the next sends them away, then the section unpins. -->
+  <div class="sticker-seq">
+    <div class="sticker-tray">
+      <img class="si si-1" src="gym.png"  alt="">
+      <img class="si si-2" src="art.png"  alt="">
+      <img class="si si-3" src="cook.png" alt="">
+      <img class="si si-4" src="game.png" alt="">
+    </div>
+  </div>
+
+
+</section>
+
+<!-- Preserved (hidden) skills section so wave data-to is still correct -->
+<section id="skills">
+<div class="skills-inner">
+
+  <div class="skills-header rv">
+    <div class="sec-label">Software I Know</div>
+  </div>
+
+  <div class="marquee-ribbon">
+    <div class="marquee-track">
+      <!-- set 1 -->
+      <div class="mq-item"><img src="adobe-photoshop-svgrepo-com.svg" alt="Photoshop" loading="lazy"><span>Photoshop</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-illustrator-svgrepo-com.svg" alt="Illustrator" loading="lazy"><span>Illustrator</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-after-effects-svgrepo-com.svg" alt="After Effects" loading="lazy"><span>After Effects</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/figma" alt="Figma" loading="lazy"><span>Figma</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-premiere-svgrepo-com.svg" alt="Premiere Pro" loading="lazy"><span>Premiere Pro</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="claude-ai-icon.svg" alt="Claude" loading="lazy"><span>Claude</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/cursor" alt="Cursor" loading="lazy"><span>Cursor</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/wix" alt="Wix" loading="lazy"><span>Wix</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/framer" alt="Framer" loading="lazy"><span>Framer</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/vercel" alt="Vercel" loading="lazy"><span>Vercel</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-xd-svgrepo-com.svg" alt="Adobe XD" loading="lazy"><span>Adobe XD</span></div>
+      <span class="mq-sep">✦</span>
+      <!-- set 2 — duplicate for seamless loop -->
+      <div class="mq-item"><img src="adobe-photoshop-svgrepo-com.svg" alt="Photoshop" loading="lazy"><span>Photoshop</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-illustrator-svgrepo-com.svg" alt="Illustrator" loading="lazy"><span>Illustrator</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-after-effects-svgrepo-com.svg" alt="After Effects" loading="lazy"><span>After Effects</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/figma" alt="Figma" loading="lazy"><span>Figma</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-premiere-svgrepo-com.svg" alt="Premiere Pro" loading="lazy"><span>Premiere Pro</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="claude-ai-icon.svg" alt="Claude" loading="lazy"><span>Claude</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/cursor" alt="Cursor" loading="lazy"><span>Cursor</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/wix" alt="Wix" loading="lazy"><span>Wix</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/framer" alt="Framer" loading="lazy"><span>Framer</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/vercel" alt="Vercel" loading="lazy"><span>Vercel</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-xd-svgrepo-com.svg" alt="Adobe XD" loading="lazy"><span>Adobe XD</span></div>
+      <span class="mq-sep">✦</span>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- Diagonal zigzag ribbon — straddles the About → Play seam, logos flow along the band -->
+<div class="marquee-zone">
+  <svg class="mz-svg" viewBox="0 0 1600 400" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <path id="mz-path" d="M -80 70 C 60 70 140 130 250 130 C 360 130 440 120 550 120 C 660 120 740 250 850 250 C 960 250 1040 180 1150 180 C 1260 180 1340 330 1450 330 C 1560 330 1620 310 1680 310" />
+    </defs>
+    <!-- Fills trace the exact same curve as the band, so the ribbon itself reads as the seam between the two section colors -->
+    <!-- overdrawn 12px past the viewBox edges so sub-pixel scaling can never expose the wrong color through a hairline gap -->
+    <path class="mz-fill-top" d="M -80 70 C 60 70 140 130 250 130 C 360 130 440 120 550 120 C 660 120 740 250 850 250 C 960 250 1040 180 1150 180 C 1260 180 1340 330 1450 330 C 1560 330 1620 310 1680 310 L 1680 -12 L -80 -12 Z" />
+    <path class="mz-fill-bottom" d="M -80 70 C 60 70 140 130 250 130 C 360 130 440 120 550 120 C 660 120 740 250 850 250 C 960 250 1040 180 1150 180 C 1260 180 1340 330 1450 330 C 1560 330 1620 310 1680 310 L 1680 412 L -80 412 Z" />
+    <path class="mz-band" d="M -80 70 C 60 70 140 130 250 130 C 360 130 440 120 550 120 C 660 120 740 250 850 250 C 960 250 1040 180 1150 180 C 1260 180 1340 330 1450 330 C 1560 330 1620 310 1680 310" />
+
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Photoshop">
+      <image href="adobe-photoshop-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Illustrator">
+      <image href="adobe-illustrator-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="After Effects">
+      <image href="adobe-after-effects-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Figma">
+      <image href="https://cdn.simpleicons.org/figma" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Premiere Pro">
+      <image href="adobe-premiere-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Claude">
+      <image href="claude-ai-icon.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Cursor">
+      <image href="https://cdn.simpleicons.org/cursor" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Wix">
+      <image href="https://cdn.simpleicons.org/wix" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Framer">
+      <image href="https://cdn.simpleicons.org/framer" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Vercel">
+      <image href="https://cdn.simpleicons.org/vercel" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Adobe XD">
+      <image href="adobe-xd-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+  </svg>
+  <div class="mz-tooltip" id="mzTooltip"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     BOUNCE
+══════════════════════════════════════════════ -->
+<section id="play">
+<div class="play-inner">
+
+  <div class="rv">
+    <div class="sec-label">Take a Break</div>
+    <h2 class="sec-heading rv d1">Bounce <em>lives.</em></h2>
+  </div>
+
+  <div class="play-cols">
+
+  <div id="play-game-wrap">
+
+    <!-- Static splash — shown until user clicks Play -->
+    <div id="play-cover">
+
+      <!-- Sparkle field -->
+      <svg style="position:absolute;inset:0;pointer-events:none;" viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="34"  cy="20"  r="1.2" fill="white" opacity=".5"/>
+        <circle cx="102" cy="14"  r=".8"  fill="white" opacity=".3"/>
+        <circle cx="172" cy="34"  r="1"   fill="white" opacity=".4"/>
+        <circle cx="248" cy="10"  r=".7"  fill="white" opacity=".3"/>
+        <circle cx="318" cy="26"  r="1.3" fill="white" opacity=".45"/>
+        <circle cx="382" cy="8"   r=".9"  fill="white" opacity=".35"/>
+        <circle cx="452" cy="22"  r=".7"  fill="white" opacity=".3"/>
+        <circle cx="514" cy="12"  r="1.1" fill="white" opacity=".45"/>
+        <circle cx="588" cy="30"  r=".8"  fill="white" opacity=".3"/>
+        <circle cx="60"  cy="70"  r=".9"  fill="white" opacity=".35"/>
+        <circle cx="134" cy="58"  r="1.2" fill="white" opacity=".45"/>
+        <circle cx="276" cy="76"  r=".7"  fill="white" opacity=".3"/>
+        <circle cx="408" cy="60"  r="1"   fill="white" opacity=".4"/>
+        <circle cx="478" cy="72"  r=".8"  fill="white" opacity=".3"/>
+        <circle cx="558" cy="66"  r="1.1" fill="white" opacity=".45"/>
+        <!-- Brighter accent sparkle -->
+        <circle cx="350" cy="110" r="1.8" fill="#DAD977" opacity=".16"/>
+        <circle cx="160" cy="190" r="1.5" fill="#DAD977" opacity=".13"/>
+        <circle cx="520" cy="170" r="1.6" fill="#DAD977" opacity=".15"/>
+      </svg>
+
+      <!-- Real in-game screenshot (level 2, the throne enemy) as backdrop, with a black layer on top for legibility -->
+      <img src="bounce-enemy.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;">
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.6);pointer-events:none;"></div>
+
+      <!-- Depth glow behind the title -->
+      <div style="position:absolute;left:50%;top:54%;width:520px;height:320px;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center, rgba(218,217,119,.16), rgba(218,217,119,0) 70%);pointer-events:none;"></div>
+
+      <!-- HUD preview bar -->
+      <div class="pc-hud">
+        <span class="pc-hud-lives">♥ ♥ ♥</span>
+        <span class="pc-hud-score">0</span>
+      </div>
+
+      <!-- Centre content -->
+      <div class="pc-content">
+        <div class="pc-label">Nokia Classic — Rebuilt</div>
+        <h3 class="pc-title">Bounce</h3>
+        <p class="pc-sub">← → move &nbsp;·&nbsp; ↑ jump</p>
+        <button id="play-launch-btn">Play →</button>
+        <div class="pc-hint">Loads on demand</div>
+      </div>
+
+    </div>
+
+    <!-- Actual game — Bounce builds its own canvases inside this container when injected -->
+    <div id="gameArea" hidden></div>
+
+  </div>
+
+  <div class="play-text">
+    <p class="play-intro">I know it's a lot.<br>
+
+After hours of scrolling through portfolios,
+<br>even recruiters and curious visitors deserve a breather.<br>
+
+So before you move on, take a tiny detour <br> into something a little more playful.<br>
+
+A small splash of nostalgia, tucked between <br> all the case studies and pixels.<br>
+
+Something familiar.  Something fun.<br>
+
+Something with a little bounce.</p>
+  </div>
+
+  </div>
+
+</div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────── -->
+<footer>
+  <div class="ft-visual">
+    <img src="footer.png" alt="" class="ft-bg ft-bg-light" />
+    <img src="footer-dark.png" alt="" class="ft-bg ft-bg-dark" />
+    <div class="ft-scrim"></div>
+  </div>
+  <div class="ft-content">
+    <div class="ft-top" id="contact">
+      <a href="mailto:nikhilmail2009@gmail.com" class="ft-email">
+        nikhilmail2009@gmail.com
+      </a>
+      <div class="ft-socials">
+        <a href="#" class="ft-soc">Instagram ↗</a>
+        <a href="#" class="ft-soc">LinkedIn ↗</a>
+        <a href="#" class="ft-soc">Behance ↗</a>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <a href="#home" class="logo">
+        <img src="wordmark.png" alt="Nikhil" />
+      </a>
+      <ul class="ft-nav">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#play">Play</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <span class="ft-copy">© 2024 Nikhil. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── PDF MODAL ──────────────────────────────── -->
+<div id="pdf-modal">
+  <div id="pdf-modal-bg"></div>
+  <div id="pdf-modal-inner">
+    <div id="pdf-modal-header">
+      <span id="pdf-modal-title"></span>
+      <div id="pdf-modal-controls">
+        <button class="pdf-btn" id="pdf-close" title="Close (Esc)">&#10005;</button>
+      </div>
+    </div>
+    <div id="pdf-modal-viewport">
+      <div id="pdf-loading">Loading</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCRIPTS ────────────────────────────────── -->
+<script>
+  /* Custom cursor */
+  const dot = document.getElementById('cur-dot');
+  const ring = document.getElementById('cur-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx+'px'; dot.style.top = my+'px';
+  });
+  (function tick() {
+    rx += (mx-rx)*.1; ry += (my-ry)*.1;
+    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    requestAnimationFrame(tick);
+  })();
+  document.querySelectorAll('a,button,.project-row').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+  });
+
+  /* Nav scroll */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60), {passive:true});
+
+  /* Nav hides once the full-bleed footer comes into view */
+  const footerEl = document.querySelector('footer');
+  if (footerEl) {
+    const navFooterObs = new IntersectionObserver(entries => {
+      entries.forEach(e => nav.classList.toggle('nav-hidden', e.isIntersecting));
+    }, { threshold: 0, rootMargin: '0px' });
+    navFooterObs.observe(footerEl);
+  }
+
+  /* Scroll reveal — Gourou fade-in-up style */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.rv').forEach(el => {
+    /* Hero fires immediately */
+    if (el.closest('#home, #hero-content')) {
+      const delay = parseFloat(getComputedStyle(el).transitionDelay || 0) * 1000;
+      setTimeout(() => el.classList.add('vis'), 100 + delay);
+    } else {
+      obs.observe(el);
+    }
+  });
+
+  /* Ribbon entrance — band draws in left → right, logos fade/scale in along it */
+  const mz = document.querySelector('.marquee-zone');
+  if (mz) {
+    const mzObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('mz-in'); mzObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.25 });
+    mzObs.observe(mz);
+  }
+</script>
+
+<script>
+/* ── PROJECT CARDS + PDF VIEWER ───────────────── */
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+const PROJECTS = [
+  { num:'01', name:'Studiobee', meta:'Agency Website · 2026',  tag:'UI / UX · Front-end', img:'studiobee/1.png', url:'case studies/studiobee-cs.html' },
+  { num:'02', name:'BeeNext',   meta:'Brand Identity · 2025',  tag:'Brand Identity',      pdf:'beenext case study.pdf',   url:'case studies/beenext-cs.html'   },
+];
+
+function makeArrowSVG() {
+  const svg  = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','12'); svg.setAttribute('height','12');
+  svg.setAttribute('viewBox','0 0 12 12'); svg.setAttribute('fill','none');
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d','M1 11L11 1M11 1H4M11 1v7');
+  path.setAttribute('stroke','currentColor');
+  path.setAttribute('stroke-width','1.5');
+  path.setAttribute('stroke-linecap','round');
+  path.setAttribute('stroke-linejoin','round');
+  svg.appendChild(path);
+  return svg;
+}
+
+const grid = document.getElementById('proj-grid');
+
+PROJECTS.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'proj-card rv' + (i > 0 ? ' d' + Math.min(i,3) : '');
+
+  /* Thumb */
+  const thumb = document.createElement('div');
+  thumb.className = 'proj-thumb';
+  if (p.img) {
+    const img = document.createElement('img');
+    img.src = p.img;
+    img.alt = p.name;
+    thumb.appendChild(img);
+  } else if (p.pdf) {
+    const img = document.createElement('img');
+    img.className = 'pdf-thumb-img';
+    img.dataset.pdf = p.pdf;
+    img.alt = p.name;
+    const loader = document.createElement('div');
+    loader.className = 'proj-thumb-loading';
+    thumb.appendChild(img);
+    thumb.appendChild(loader);
+  } else {
+    const ph = document.createElement('div');
+    ph.className = 'proj-thumb-placeholder';
+    ph.style.background = p.bg;
+    const n = document.createElement('span');
+    n.textContent = p.num;
+    ph.appendChild(n);
+    thumb.appendChild(ph);
+  }
+
+  /* Info row */
+  const info = document.createElement('div');
+  info.className = 'proj-info';
+
+  const numEl = document.createElement('span');
+  numEl.className = 'pr-num';
+  numEl.textContent = p.num;
+
+  const main = document.createElement('div');
+  main.className = 'pr-main';
+  const nameEl = document.createElement('div');
+  nameEl.className = 'pr-name';
+  nameEl.textContent = p.name;
+  const metaEl = document.createElement('div');
+  metaEl.className = 'pr-meta';
+  metaEl.textContent = p.meta;
+  main.appendChild(nameEl);
+  main.appendChild(metaEl);
+
+  const tagEl = document.createElement('span');
+  tagEl.className = 'pr-tag';
+  tagEl.textContent = p.tag;
+
+  const arr = document.createElement('div');
+  arr.className = 'pr-arr';
+  arr.appendChild(makeArrowSVG());
+
+  info.appendChild(numEl);
+  info.appendChild(main);
+  info.appendChild(tagEl);
+  info.appendChild(arr);
+  card.appendChild(thumb);
+  card.appendChild(info);
+
+  if (p.url) card.addEventListener('click', () => window.open(p.url, '_blank'));
+  else if (p.pdf) card.addEventListener('click', () => openViewer(p.pdf, p.name));
+  card.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+  card.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+  grid.appendChild(card);
+});
+
+/* Scroll-reveal new cards */
+document.querySelectorAll('#proj-grid .rv').forEach(el => obs.observe(el));
+
+/* PDF cache — shared by thumbnail renderer and viewer */
+const pdfCache = {};
+async function getDoc(pdfPath) {
+  if (!pdfCache[pdfPath]) pdfCache[pdfPath] = pdfjsLib.getDocument(pdfPath).promise;
+  return pdfCache[pdfPath];
+}
+
+/* Render PDF thumbnails */
+document.querySelectorAll('.pdf-thumb-img').forEach(async img => {
+  const loader  = img.nextElementSibling;
+  const pdfPath = img.dataset.pdf;
+  try {
+    /* Cache the document now so the viewer opens instantly */
+    const pdf    = await getDoc(pdfPath);
+    const page   = await pdf.getPage(1);
+    const vp     = page.getViewport({ scale: 1 });
+    const scale  = (Math.min(img.parentElement.offsetWidth || 600, 800) * 2) / vp.width;
+    const scaled = page.getViewport({ scale });
+    const cvs    = document.createElement('canvas');
+    cvs.width    = scaled.width;
+    cvs.height   = scaled.height;
+    await page.render({ canvasContext: cvs.getContext('2d'), viewport: scaled }).promise;
+    img.src = cvs.toDataURL('image/jpeg', 0.88);
+    img.onload = () => { if (loader) loader.remove(); };
+  } catch(e) {
+    if (loader) loader.remove();
+    img.parentElement.style.background = 'rgba(10,51,35,0.6)';
+  }
+});
+
+/* ── PDF VIEWER ── */
+const modal     = document.getElementById('pdf-modal');
+const titleEl   = document.getElementById('pdf-modal-title');
+const viewport  = document.getElementById('pdf-modal-viewport');
+const loadingEl = document.getElementById('pdf-loading');
+const closeBtn  = document.getElementById('pdf-close');
+
+async function openViewer(pdfPath, title) {
+  titleEl.textContent = title;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  viewport.scrollTop = 0;
+
+  /* Clear old pages */
+  while (viewport.firstChild) viewport.removeChild(viewport.firstChild);
+  viewport.appendChild(loadingEl);
+
+  const doc  = await getDoc(pdfPath);
+  const maxW = Math.min(viewport.offsetWidth - 80, 1100);
+  const dpr  = window.devicePixelRatio || 1;
+
+  /* Remove loading indicator, render all pages */
+  if (loadingEl.parentNode) viewport.removeChild(loadingEl);
+
+  for (let i = 1; i <= doc.numPages; i++) {
+    const page   = await doc.getPage(i);
+    const vp     = page.getViewport({ scale: 1 });
+    const scale  = (maxW / vp.width) * dpr;
+    const scaled = page.getViewport({ scale });
+
+    const canvas       = document.createElement('canvas');
+    canvas.className   = 'pdf-page-canvas';
+    canvas.width       = scaled.width;
+    canvas.height      = scaled.height;
+    canvas.style.width  = (scaled.width  / dpr) + 'px';
+    canvas.style.height = (scaled.height / dpr) + 'px';
+    viewport.appendChild(canvas);
+
+    await page.render({ canvasContext: canvas.getContext('2d'), viewport: scaled }).promise;
+  }
+}
+
+function closeViewer() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+closeBtn.addEventListener('click', closeViewer);
+document.addEventListener('keydown', e => {
+  if (modal.classList.contains('open') && e.key === 'Escape') closeViewer();
+});
+</script>
+
+<!-- ── PAINTERLY HERO BACKDROP ───────────────── -->
+<script>
+(function(){
+'use strict';
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Canvas setup + accumulation buffer
+// ─────────────────────────────────────────────────────────────────────────────
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+const offC   = document.createElement('canvas');
+const offX   = offC.getContext('2d');
+
+let W = 0, H = 0;
+
+function resize() {
+  W = window.innerWidth;
+  H = window.innerHeight;
+
+  let saved = null;
+  if (offC.width > 0 && offC.height > 0) {
+    const tmp   = document.createElement('canvas');
+    tmp.width   = offC.width;
+    tmp.height  = offC.height;
+    tmp.getContext('2d').drawImage(offC, 0, 0);
+    saved = { img: tmp, w: offC.width, h: offC.height };
+  }
+
+  canvas.width  = W;
+  canvas.height = H;
+  offC.width    = W;
+  offC.height   = H;
+
+  offX.fillStyle = '#B8D4B0';
+  offX.fillRect(0, 0, W, H);
+
+  if (saved) offX.drawImage(saved.img, 0, 0, saved.w, saved.h, 0, 0, W, H);
+}
+
+let rsTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(rsTimer);
+  rsTimer = setTimeout(() => { resize(); resizeSC(); }, 150);
+});
+resize();
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Image preloading — brush element PNGs
+// ─────────────────────────────────────────────────────────────────────────────
+
+const elements = [];
+const ELEMENT_IDS = [21,22,23,24,25,26,28,29,30,31,32,33,40,51,52,53,54,58,59,61];
+
+function preload() {
+  const promises = ELEMENT_IDS.map(id => {
+    const img = new Image();
+    img.src = `paintstrokes/PNG/Element%20${id}.png`;
+    elements.push(img);
+    return new Promise(res => { img.onload = res; img.onerror = res; });
+  });
+  return Promise.all(promises);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Colour palette
+// ─────────────────────────────────────────────────────────────────────────────
+
+const PALETTE = [
+  [125, 27, 74, 20, '#B8D4B0'],
+  [ 98,  9, 62, 18, '#A8AD9B'],
+  [ 58, 65, 64, 26, '#DAD977'],
+  [ 84, 30, 46, 22, '#849A59'],
+  [155, 68, 17, 14, '#0A3323'],
+];
+const TOTAL_W = PALETTE.reduce((s, c) => s + c[3], 0);
+
+function pickColor() {
+  let r = Math.random() * TOTAL_W;
+  for (const [h, s, l, w] of PALETTE) {
+    r -= w;
+    if (r <= 0) {
+      const hv = h + (Math.random() - .5) * 14;
+      const sv = Math.max(5,  s + (Math.random() - .5) * 16);
+      const lv = Math.max(10, Math.min(88, l + (Math.random() - .5) * 11));
+      return `hsl(${hv},${sv}%,${lv}%)`;
+    }
+  }
+  return 'hsl(125,27%,74%)';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Stamp colorizer + cache
+// ─────────────────────────────────────────────────────────────────────────────
+
+const stampCache = new Map();
+
+function getColoredStamp(imgIndex, color) {
+  const key = `${imgIndex}|${color}`;
+  if (stampCache.has(key)) return stampCache.get(key);
+  const img = elements[imgIndex];
+  if (!img || !img.naturalWidth) return null;
+  const tmp  = document.createElement('canvas');
+  tmp.width  = img.naturalWidth;
+  tmp.height = img.naturalHeight;
+  const tCtx = tmp.getContext('2d');
+  tCtx.drawImage(img, 0, 0);
+  tCtx.globalCompositeOperation = 'source-in';
+  tCtx.fillStyle = color;
+  tCtx.fillRect(0, 0, tmp.width, tmp.height);
+  stampCache.set(key, tmp);
+  return tmp;
+}
+
+function placeStamp(targetCtx, imgIndex, x, y, angle, targetWidth, color, alpha) {
+  const stamp = getColoredStamp(imgIndex, color);
+  if (!stamp) return;
+  const scale = targetWidth / stamp.width;
+  const w     = stamp.width  * scale;
+  const h     = stamp.height * scale;
+  targetCtx.save();
+  targetCtx.globalCompositeOperation = 'multiply';
+  targetCtx.globalAlpha = alpha;
+  targetCtx.translate(x, y);
+  targetCtx.rotate(angle);
+  targetCtx.drawImage(stamp, -w / 2, -h / 2, w, h);
+  targetCtx.restore();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Helpers + zone picker
+// ─────────────────────────────────────────────────────────────────────────────
+
+function rand(a, b)    { return a + Math.random() * (b - a); }
+function randInt(a, b) { return Math.floor(rand(a, b + .99)); }
+
+const NAV_H = 72; // keep nav zone paint-free
+
+function inCenter(x, y, halfW = 0) {
+  const halfH = halfW * .55;
+  if (y - halfH < NAV_H) return true; // nav zone — exclude
+  if ((x + halfW) > W * .22 && (x - halfW) < W * .78 &&
+      (y + halfH) > H * .18 && (y - halfH) < H * .82) return true;
+
+  // Keep strokes off the hero card + CTAs, whatever size/position they end up at
+  const hero = document.querySelector('.hero-inner');
+  if (hero) {
+    const r = hero.getBoundingClientRect();
+    const pad = 40;
+    if ((x + halfW) > r.left - pad && (x - halfW) < r.right + pad &&
+        (y + halfH) > r.top - pad && (y - halfH) < r.bottom + pad) return true;
+  }
+  return false;
+}
+
+function pickAngle() {
+  const r = Math.random();
+  let base;
+  if      (r < .40) base = rand(-Math.PI * .18, Math.PI * .18);
+  else if (r < .70) base = rand( Math.PI * .22, Math.PI * .45);
+  else if (r < .90) base = rand(-Math.PI * .45, -Math.PI * .22);
+  else              base = rand( Math.PI * .40,  Math.PI * .60);
+  return base + (Math.random() > .5 ? 0 : Math.PI);
+}
+
+function pickZone() {
+  const r = Math.random();
+  if      (r < .18) return { x: rand(0, W * .28),     y: rand(NAV_H, H) };
+  else if (r < .36) return { x: rand(W * .72, W),     y: rand(NAV_H, H) };
+  else if (r < .50) return { x: rand(0, W),            y: rand(NAV_H, H * .22) };
+  else if (r < .64) return { x: rand(0, W),            y: rand(H * .78, H) };
+  else if (r < .80) return { x: rand(W*.05, W*.40),   y: rand(H*.25, H*.75) };
+  else              return { x: rand(W*.60, W*.95),   y: rand(H*.25, H*.75) };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Ambient painter
+// ─────────────────────────────────────────────────────────────────────────────
+
+function spawnAmbient(attempt = 0) {
+  if (attempt > 6) return;
+  const { x, y }   = pickZone();
+  const targetWidth = rand(W * .08, W * .40);
+  if (inCenter(x, y, targetWidth / 2)) { spawnAmbient(attempt + 1); return; }
+  const imgIdx = randInt(0, elements.length - 1);
+  if (!elements[imgIdx] || !elements[imgIdx].naturalWidth) { spawnAmbient(attempt + 1); return; }
+  placeStamp(offX, imgIdx, x, y, pickAngle(), targetWidth, pickColor(), rand(0.20, 0.52));
+}
+
+function spawnLarge() {
+  const { x, y }   = pickZone();
+  const targetWidth = rand(W * .25, W * .52);
+  if (inCenter(x, y, targetWidth / 2)) return;
+  const imgIdx = randInt(0, elements.length - 1);
+  if (!elements[imgIdx] || !elements[imgIdx].naturalWidth) return;
+  placeStamp(offX, imgIdx, x, y, pickAngle(), targetWidth, pickColor(), rand(.12, .26));
+}
+
+function spawnCorner(cx, cy) {
+  if (cy < NAV_H) return; // skip top corners that overlap nav
+  const imgIdx = randInt(0, elements.length - 1);
+  if (!elements[imgIdx] || !elements[imgIdx].naturalWidth) return;
+  placeStamp(offX, imgIdx, cx, cy, pickAngle(), rand(W * .08, W * .20), '#0A3323', rand(.25, .48));
+}
+
+function drawVignette() {
+  const grd = offX.createRadialGradient(W*.5, H*.5, H*.05, W*.5, H*.5, H*.82);
+  grd.addColorStop(0, 'rgba(200,210,190,0)');
+  grd.addColorStop(1, 'rgba(175,190,168,.30)');
+  offX.globalCompositeOperation = 'multiply';
+  offX.fillStyle = grd;
+  offX.fillRect(0, 0, W, H);
+  offX.globalCompositeOperation = 'source-over';
+}
+
+function seedPainting() {
+  for (let i = 0; i < 6;  i++) spawnLarge();
+  for (let i = 0; i < 18; i++) spawnAmbient();
+  spawnCorner(rand(W*.02, W*.14), rand(H*.02, H*.14));
+  spawnCorner(rand(W*.86, W*.98), rand(H*.02, H*.14));
+  spawnCorner(rand(W*.02, W*.14), rand(H*.86, H*.98));
+  spawnCorner(rand(W*.86, W*.98), rand(H*.86, H*.98));
+  drawVignette();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Mouse painter
+// ─────────────────────────────────────────────────────────────────────────────
+
+let isStroking = false, isPainting = false;
+let strokeElemIdx = -1, strokeColor = null, strokeWidth = 0;
+let brushAlpha = 0, brushSpacing = 0;
+let lastStampPos = null, lastPos = null, endTimer = null;
+let ghostElemIdx = 0, ghostAngle = 0;
+let cursorX = 0, cursorY = 0, isOverCanvas = false;
+let frameCount = 0, wipeInProgress = false, wipeProgress = 0, hasPainted = false;
+let inactivityTimer = null;
+
+const pcur = document.getElementById('pcur');
+const hint = document.getElementById('hint');
+const V_MIN = 3, INACTIVITY_MS = 3000;
+
+function _stampPNG(x, y, angle) {
+  const stamp = getColoredStamp(strokeElemIdx, strokeColor);
+  if (!stamp) return;
+  const scale = strokeWidth / stamp.width;
+  const w = stamp.width * scale, h = stamp.height * scale;
+  offX.save();
+  offX.globalCompositeOperation = 'multiply';
+  offX.globalAlpha = brushAlpha;
+  offX.translate(x, y);
+  offX.rotate(angle);
+  offX.drawImage(stamp, -w / 2, -h / 2, w, h);
+  offX.restore();
+  hasPainted = true;
+}
+
+function beginBrushStroke(x, y) {
+  let tries = 0;
+  do { strokeElemIdx = randInt(0, elements.length - 1); tries++; }
+  while (tries < 8 && (!elements[strokeElemIdx] || !elements[strokeElemIdx].naturalWidth));
+  if (!elements[strokeElemIdx] || !elements[strokeElemIdx].naturalWidth) return;
+  strokeColor  = pickColor();
+  strokeWidth  = rand(40, 110);
+  brushAlpha   = rand(0.22, 0.42);
+  brushSpacing = Math.max(2, strokeWidth * 0.22);
+  isStroking   = true;
+  lastStampPos = { x, y };
+  _stampPNG(x, y, 0);
+}
+
+function continueBrushStroke(x, y) {
+  if (!isStroking || !lastStampPos) return;
+  const dx = x - lastStampPos.x, dy = y - lastStampPos.y;
+  const d  = Math.sqrt(dx * dx + dy * dy);
+  if (d < brushSpacing) return;
+  const angle = Math.atan2(dy, dx);
+  const steps = Math.floor(d / brushSpacing);
+  for (let i = 1; i <= steps; i++) {
+    const t = (i * brushSpacing) / d;
+    _stampPNG(lastStampPos.x + dx * t, lastStampPos.y + dy * t, angle);
+  }
+  const moved = steps * brushSpacing;
+  lastStampPos = { x: lastStampPos.x + dx * (moved / d), y: lastStampPos.y + dy * (moved / d) };
+}
+
+function endBrushStroke() {
+  isStroking = false; lastStampPos = null;
+  if (pcur) pcur.classList.remove('active');
+}
+
+function startWipe() {
+  if (wipeInProgress || isStroking || !hasPainted) return;
+  wipeInProgress = true; wipeProgress = 0;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Spring cursor trail
+// ─────────────────────────────────────────────────────────────────────────────
+
+const sc   = document.getElementById('sc');
+const sCtx = sc.getContext('2d');
+
+function resizeSC() { sc.width = window.innerWidth; sc.height = window.innerHeight; }
+resizeSC();
+
+const SP = { friction: 0.5, trails: 50, size: 50, dampening: 0.025, tension: 0.99 };
+
+function SineWave(opts) {
+  this.phase = opts.phase || 0; this.offset = opts.offset || 0;
+  this.frequency = opts.frequency || 0.001; this.amplitude = opts.amplitude || 1;
+}
+SineWave.prototype.update = function () {
+  this.phase += this.frequency;
+  return this.offset + Math.sin(this.phase) * this.amplitude;
+};
+
+function SNode() { this.x = 0; this.y = 0; this.vx = 0; this.vy = 0; }
+
+function SLine(spring) {
+  this.spring   = spring + 0.1 * Math.random() - 0.05;
+  this.friction = SP.friction + 0.01 * Math.random() - 0.005;
+  this.nodes    = [];
+  for (let i = 0; i < SP.size; i++) {
+    const nd = new SNode(); nd.x = cursorX; nd.y = cursorY; this.nodes.push(nd);
+  }
+}
+SLine.prototype.update = function () {
+  let k = this.spring, t = this.nodes[0];
+  t.vx += (cursorX - t.x) * k; t.vy += (cursorY - t.y) * k;
+  for (let i = 0, a = this.nodes.length; i < a; i++) {
+    t = this.nodes[i];
+    if (i > 0) {
+      const prev = this.nodes[i - 1];
+      t.vx += (prev.x - t.x) * k; t.vy += (prev.y - t.y) * k;
+      t.vx += prev.vx * SP.dampening; t.vy += prev.vy * SP.dampening;
+    }
+    t.vx *= this.friction; t.vy *= this.friction;
+    t.x  += t.vx; t.y  += t.vy; k *= SP.tension;
+  }
+};
+SLine.prototype.draw = function () {
+  let nx = this.nodes[0].x, ny = this.nodes[0].y;
+  sCtx.beginPath(); sCtx.moveTo(nx, ny);
+  let a, en, en1;
+  for (a = 1; a < this.nodes.length - 2; a++) {
+    en = this.nodes[a]; en1 = this.nodes[a + 1];
+    nx = 0.5 * (en.x + en1.x); ny = 0.5 * (en.y + en1.y);
+    sCtx.quadraticCurveTo(en.x, en.y, nx, ny);
+  }
+  en = this.nodes[a]; en1 = this.nodes[a + 1];
+  sCtx.quadraticCurveTo(en.x, en.y, en1.x, en1.y);
+  sCtx.stroke(); sCtx.closePath();
+};
+
+let springLines = [], springInitialized = false, hueOsc, isOverUI = false;
+
+document.addEventListener('mouseover', e => {
+  isOverUI = !!e.target.closest('a, button, [role="button"]');
+  sc.style.opacity = isOverUI ? '0' : '1';
+});
+
+function initSpring() {
+  springLines = [];
+  for (let i = 0; i < SP.trails; i++) springLines.push(new SLine(0.45 + (i / SP.trails) * 0.025));
+}
+
+function renderSpring() {
+  sCtx.globalCompositeOperation = 'source-over';
+  sCtx.clearRect(0, 0, sc.width, sc.height);
+  sCtx.globalCompositeOperation = 'lighter';
+  sCtx.strokeStyle = `hsla(${Math.round(hueOsc.update())}, 55%, 45%, 0.025)`;
+  sCtx.lineWidth   = 4;
+  for (const line of springLines) { line.update(); line.draw(); }
+  requestAnimationFrame(renderSpring);
+}
+
+document.addEventListener('mousemove', e => {
+  const mx = e.clientX, my = e.clientY;
+  cursorX = mx; cursorY = my; isOverCanvas = true;
+
+  if (pcur) { pcur.style.left = mx + 'px'; pcur.style.top = my + 'px'; pcur.style.opacity = (isOverUI || my < NAV_H) ? '0' : '1'; }
+
+  if (!springInitialized) { initSpring(); springInitialized = true; }
+
+  if (lastPos) {
+    const dx = mx - lastPos.x, dy = my - lastPos.y;
+    const v  = Math.sqrt(dx * dx + dy * dy);
+    if (v > V_MIN) {
+      ghostAngle = Math.atan2(dy, dx);
+      if (isPainting && my > NAV_H) {
+        if (pcur) pcur.classList.add('active');
+        if (!isStroking) beginBrushStroke(mx, my); else continueBrushStroke(mx, my);
+        clearTimeout(endTimer); endTimer = setTimeout(endBrushStroke, 260);
+      }
+    }
+  }
+
+  // Always restart inactivity timer on any mouse movement
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(startWipe, INACTIVITY_MS);
+
+  lastPos = { x: mx, y: my };
+});
+
+document.addEventListener('mouseleave', () => {
+  isOverCanvas = false; if (pcur) pcur.style.opacity = '0'; endBrushStroke();
+});
+
+document.addEventListener('click', e => {
+  if (e.target.closest('.hero-actions, nav, #hero-flip')) return;
+  isPainting = !isPainting;
+  if (isPainting) {
+    if (pcur) pcur.classList.add('painting');
+    if (hint) hint.classList.remove('vis');
+  } else {
+    endBrushStroke(); clearTimeout(inactivityTimer);
+    if (pcur) pcur.classList.remove('painting', 'active');
+    if (hint) { hint.textContent = 'Click to paint, click again to stop'; hint.classList.add('vis'); setTimeout(() => hint.classList.remove('vis'), 2500); }
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Scroll + render loop
+// ─────────────────────────────────────────────────────────────────────────────
+
+window.addEventListener('scroll', () => {
+  /* opacity fade removed — canvas exits via GSAP scale/translate only */
+}, { passive: true });
+
+function sampleLum(data, r) {
+  const sx = Math.max(0, Math.floor(r.left)),  sy = Math.max(0, Math.floor(r.top));
+  const ex = Math.min(W - 1, Math.ceil(r.right)), ey = Math.min(H - 1, Math.ceil(r.bottom));
+  if (sx >= ex || sy >= ey) return null;
+  let total = 0, count = 0;
+  for (let py = sy; py <= ey; py += 3) for (let px = sx; px <= ex; px += 3) {
+    const i = (py * W + px) * 4;
+    total += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]; count++;
+  }
+  return count ? total / count : null;
+}
+
+function updateTextColor() {
+  if (wipeInProgress) return;
+  const data  = offX.getImageData(0, 0, W, H).data;
+  const spans = [...document.querySelectorAll('#hero-content .ch')];
+  spans.forEach(span => {
+    const lum = sampleLum(data, span.getBoundingClientRect());
+    if (lum === null) return;
+    if (lum < 130) span.classList.add('light'); else if (lum > 158) span.classList.remove('light');
+  });
+  const btns = [...document.querySelectorAll('#hero-content .hero-actions a')];
+  btns.forEach(btn => {
+    const lum = sampleLum(data, btn.getBoundingClientRect());
+    if (lum === null) return;
+    if (lum < 130) btn.classList.add('btn-light'); else if (lum > 158) btn.classList.remove('btn-light');
+  });
+}
+
+function frame() {
+  if (wipeInProgress) {
+    // Sequential zig-zag blackboard eraser: each band sweeps one at a time,
+    // alternating L→R and R→L, like a real eraser dragged across a chalkboard.
+    // Total duration ~3s at 60fps (1/180 per frame).
+    wipeProgress = Math.min(1, wipeProgress + 1 / 360);
+
+    const BANDS    = 14;
+    const FEATHER  = 50;
+    // Each band occupies BAND_DUR of [0,1]; bands start staggered so they
+    // begin just as the previous one finishes (~10% overlap for fluidity).
+    const BAND_DUR = 0.22;
+    const OVERLAP  = 0.04;
+    const step     = (1 - BAND_DUR) / (BANDS - 1);
+    const bH       = H / BANDS;
+
+    offX.save();
+    offX.globalCompositeOperation = 'source-over';
+
+    for (let b = 0; b < BANDS; b++) {
+      const bandStart = b * step;
+      const rawBp     = (wipeProgress - bandStart) / BAND_DUR;
+      const bp        = Math.max(0, Math.min(1, rawBp + OVERLAP));
+      if (bp <= 0) continue;
+
+      // Smooth ease-in-out (smoothstep) for a weighty eraser feel
+      const eased  = bp * bp * (3 - 2 * bp);
+      const goRight = (b % 2 === 0);
+
+      const y0 = Math.floor(b * bH);
+      const y1 = Math.ceil(y0 + bH + 1);
+
+      if (goRight) {
+        // Tip travels left→right
+        const tipX  = eased * (W + FEATHER);
+        const solidW = Math.min(Math.max(0, tipX - FEATHER), W);
+        if (solidW > 0) {
+          offX.fillStyle = '#B8D4B0';
+          offX.fillRect(0, y0, solidW, y1 - y0);
+        }
+        const gx0 = Math.max(0, tipX - FEATHER);
+        const gx1 = Math.min(W, tipX);
+        if (gx1 > gx0) {
+          const grad = offX.createLinearGradient(gx0, 0, gx1, 0);
+          grad.addColorStop(0, 'rgba(184,212,176,1)');
+          grad.addColorStop(1, 'rgba(184,212,176,0)');
+          offX.fillStyle = grad;
+          offX.fillRect(gx0, y0, gx1 - gx0, y1 - y0);
+        }
+      } else {
+        // Tip travels right→left
+        const tipX  = W - eased * (W + FEATHER);
+        const solidX = Math.max(0, tipX + FEATHER);
+        if (solidX < W) {
+          offX.fillStyle = '#B8D4B0';
+          offX.fillRect(solidX, y0, W - solidX, y1 - y0);
+        }
+        const gx0 = Math.max(0, tipX);
+        const gx1 = Math.min(W, tipX + FEATHER);
+        if (gx1 > gx0) {
+          const grad = offX.createLinearGradient(gx0, 0, gx1, 0);
+          grad.addColorStop(0, 'rgba(184,212,176,0)');
+          grad.addColorStop(1, 'rgba(184,212,176,1)');
+          offX.fillStyle = grad;
+          offX.fillRect(gx0, y0, gx1 - gx0, y1 - y0);
+        }
+      }
+    }
+
+    offX.restore();
+
+    if (wipeProgress >= 1) {
+      offX.globalCompositeOperation = 'source-over';
+      offX.fillStyle = '#B8D4B0';
+      offX.fillRect(0, 0, W, H);
+      wipeInProgress = false; wipeProgress = 0; hasPainted = false;
+      ghostElemIdx = randInt(0, elements.length - 1); seedPainting();
+    }
+  }
+
+  ctx.clearRect(0, 0, W, H); ctx.drawImage(offC, 0, 0);
+
+  if (isOverCanvas && !isStroking && !wipeInProgress) {
+    const stamp = getColoredStamp(ghostElemIdx, '#A8AD9B');
+    if (stamp) {
+      const targetW = 80, scale = targetW / stamp.width;
+      const w = stamp.width * scale, h = stamp.height * scale;
+      ctx.save(); ctx.globalAlpha = 0.15; ctx.globalCompositeOperation = 'multiply';
+      ctx.translate(cursorX, cursorY); ctx.rotate(ghostAngle);
+      ctx.drawImage(stamp, -w / 2, -h / 2, w, h); ctx.restore();
+    }
+  }
+
+  if (++frameCount % 45 === 0) updateTextColor();
+  requestAnimationFrame(frame);
+}
+frame();
+
+hueOsc = new SineWave({ phase: Math.random() * Math.PI * 2, amplitude: 30, frequency: 0.0015, offset: 100 });
+renderSpring();
+
+preload().then(() => {
+  ghostElemIdx = randInt(0, elements.length - 1);
+  seedPainting();
+});
+
+['.hero-greeting', '.hero-name', '.hero-role', '.hero-tagline'].forEach(sel => {
+  const el = document.querySelector(sel);
+  if (!el) return;
+  const chars = [...el.textContent];
+  el.textContent = '';
+  chars.forEach(ch => {
+    const span = document.createElement('span');
+    span.className = 'ch'; span.textContent = ch; el.appendChild(span);
+  });
+});
+
+setTimeout(() => { if (hint) { hint.textContent = 'Click to paint, click again to stop'; hint.classList.add('vis'); } }, 900);
+
+// Card flip: click to toggle, auto-flips every 5s
+const flipInner = document.querySelector('#hero-flip .card-inner');
+if (flipInner) {
+  document.getElementById('hero-flip').addEventListener('click', () => {
+    flipInner.classList.toggle('flipped');
+  });
+  setInterval(() => flipInner.classList.toggle('flipped'), 15000);
+}
+
+})();
+</script>
+
+
+<!-- ── BOUNCE — load on demand ────────────────── -->
+<script>
+document.getElementById('play-launch-btn').addEventListener('click', function () {
+  document.getElementById('play-cover').style.display = 'none';
+  var cv = document.getElementById('gameArea');
+  cv.removeAttribute('hidden');
+  var s = document.createElement('script');
+  s.src = 'bounce/js/bundle.js';
+  document.body.appendChild(s);
+});
+</script>
+
+<!-- ── LETTER SWAP ANIMATION ──────────────────── -->
+<script>
+(function () {
+  'use strict';
+
+  var STAGGER = 22;   // ms between each shuffled letter
+  var DUR     = 700;  // ms per letter animation
+  var EASE    = 'cubic-bezier(0.34,1.56,0.64,1)'; // spring overshoot
+  var TICK    = 4000; // ms between auto-triggers
+
+  /* Build per-character DOM structure for one heading */
+  function wrap(h) {
+    var nodes = Array.prototype.slice.call(h.childNodes);
+    while (h.firstChild) h.removeChild(h.firstChild);
+    var letters = [];
+
+    function processChars(text, parent) {
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i];
+
+        /* Spaces: plain text node — never wrap them or word-spacing collapses */
+        if (ch === ' ') {
+          parent.appendChild(document.createTextNode(' '));
+          continue;
+        }
+
+        var w = document.createElement('span');
+        /* overflow:hidden clips the animation; vertical-align:top
+           avoids the inline-block baseline-shift that overflow:hidden triggers */
+        w.style.cssText = 'display:inline-block;clip-path:inset(-0.15em -4px);position:relative;vertical-align:top;line-height:inherit;';
+
+        var p = document.createElement('span');
+        p.style.cssText = 'display:inline-block;';
+        p.textContent   = ch;
+
+        var s = document.createElement('span');
+        s.setAttribute('aria-hidden', 'true');
+        s.style.cssText = 'display:inline-block;position:absolute;left:0;top:0;width:100%;transform:translateY(-110%);';
+        s.textContent   = ch;
+
+        w.appendChild(p);
+        w.appendChild(s);
+        parent.appendChild(w);
+        letters.push({ p: p, s: s });
+      }
+    }
+
+    nodes.forEach(function (n) {
+      if (n.nodeType === 3) {           /* plain text node */
+        processChars(n.textContent, h);
+      } else if (n.nodeName === 'EM') { /* preserve italic colour rules */
+        var em = document.createElement('em');
+        processChars(n.textContent, em);
+        h.appendChild(em);
+      } else {
+        h.appendChild(n.cloneNode(true));
+      }
+    });
+
+    h._ls      = letters;
+    h._lsBlock = false;
+    h._lsVis   = false;
+  }
+
+  /* Fire one shuffle-and-return cycle */
+  function play(h) {
+    if (h._lsBlock || !h._lsVis) return;
+    h._lsBlock = true;
+
+    var order = h._ls.slice().sort(function () { return Math.random() - 0.5; });
+
+    order.forEach(function (letter, i) {
+      var d = i * STAGGER;
+      var p = letter.p;
+      var s = letter.s;
+
+      /* OUT phase — primary falls down, secondary rises in from above */
+      setTimeout(function () {
+        p.style.transition = 'transform ' + DUR + 'ms ' + EASE;
+        p.style.transform  = 'translateY(110%)';
+        s.style.transition = 'transform ' + DUR + 'ms ' + EASE;
+        s.style.transform  = 'translateY(0)';
+      }, d);
+
+      /* RESET — snap both back to start positions instantly */
+      setTimeout(function () {
+        p.style.transition = 'none';
+        p.style.transform  = '';
+        s.style.transition = 'none';
+        s.style.transform  = 'translateY(-110%)';
+        if (i === order.length - 1) h._lsBlock = false;
+      }, d + DUR + 80);
+    });
+  }
+
+  /* Track visibility so off-screen headings stay quiet */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { e.target._lsVis = e.isIntersecting; });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.sec-heading').forEach(function (h) {
+    wrap(h);
+    io.observe(h);
+  });
+
+  setInterval(function () {
+    document.querySelectorAll('.sec-heading').forEach(play);
+  }, TICK);
+})();
+</script>
+
+<script>
+/* ─── SECTION ENTRANCE OBSERVER + PARALLAX ─── */
+(function () {
+  'use strict';
+
+  /* Section entrance observer — fires sec-in class at 12% visibility */
+  var secObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('sec-in'); secObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  ['#work','#about','#skills','#play'].forEach(function (s) {
+    var el = document.querySelector(s); if (el) secObs.observe(el);
+  });
+
+  /* Divider draw-line observer — fires at 50% visibility */
+  var divObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('div-in'); divObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.sec-divider').forEach(function (el) { divObs.observe(el); });
+
+  /* Parallax scroll handler — rAF-throttled */
+  var pEls = Array.from(document.querySelectorAll('.parallax-el[data-parallax]'));
+  function getTop(el) { var t = 0; while (el) { t += el.offsetTop; el = el.offsetParent; } return t; }
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var sy = window.scrollY, vh = window.innerHeight;
+      pEls.forEach(function (el) {
+        var top  = getTop(el);
+        var rate = parseFloat(el.dataset.parallax) || 0.1;
+        var dist = top - sy;
+        if (dist > -vh && dist < vh * 2) {
+          el.style.transform = 'translateY(' + (-(sy - top + vh) * rate * 0.5).toFixed(2) + 'px)';
+        }
+      });
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+<script>
+/* ── Hero canvas card: scale + lift away on scroll ─────────────────── */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var hint = document.getElementById('hint');
+
+  gsap.fromTo(
+    ['#c', '#sc', '#hero-content'],
+    { clipPath: 'inset(0% 0% 0% 0% round 20px)', y: 0 },
+    {
+      clipPath: 'inset(0% 0% 100% 0% round 20px)',
+      y: -160,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#home',
+        start: 'top top',
+        end: '+=700',
+        pin: true,
+        scrub: 0.4,
+        onLeave: function() {
+          gsap.set(['#c', '#sc', '#hero-content'], { visibility: 'hidden' });
+          if (hint) hint.style.display = 'none';
+        },
+        onEnterBack: function() {
+          gsap.set(['#c', '#sc', '#hero-content'], {
+            visibility: 'visible',
+            clipPath: 'inset(0% 0% 0% 0% round 20px)',
+            y: 0,
+          });
+          if (hint) hint.style.display = '';
+        },
+      }
+    }
+  );
+})();
+
+/* ── Sticker pop-up for #about ─────────────────────────────────────
+   The about text/photo reveal on their own via the standard .rv/sec-in
+   scroll-reveal (no pin needed). Once the section is pinned: the about
+   content holds fully visible for a while first (so it doesn't feel
+   like it vanishes the instant you start scrolling), then fades out,
+   then — only once it's completely gone, with a clean gap so the two
+   never overlap — the 4 stickers pop in together as one snap stop; the
+   next snap stop sends the stickers away for good (about content does
+   not return), and the section unpins into normal scroll. */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#about',
+      start: 'top top',
+      end: '+=950',
+      pin: true,
+      scrub: 1.4,
+      anticipatePin: 1,
+      snap: {
+        snapTo: [0, 0.69, 1],
+        duration: { min: 0.2, max: 0.5 },
+        ease: 'power2.inOut',
+      },
+    }
+  });
+
+  // About content holds visible, then fully fades out...
+  // (explicit fromTo, not to() — at build time .about-inner is still pre-reveal
+  // opacity:0, so a plain to() would capture that stale 0 as its start value)
+  tl.fromTo('.about-inner', { opacity: 1 }, { opacity: 1, duration: 1 }, 0)
+    .to('.about-inner', { opacity: 0, duration: 0.4 }, 1)
+    // ...then, once it's gone (clean 0.3-unit gap with nothing happening), the
+    // 4 stickers pop in together (slight stagger for life, not sequence)
+    .fromTo('.si', { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 1.7)
+    // Hold at fully-shown, then fly away together for good (about content stays hidden)
+    .to('.si', { opacity: 0, y: -80, ease: 'power2.in', duration: 1, stagger: 0.08 }, 3.66);
+})();
+</script>
+
+<script>
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.querySelectorAll('.wave-div').forEach(function (div) {
+    var canvas = document.createElement('canvas');
+    div.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+    var fromColor = div.dataset.from;
+    var toColor   = div.dataset.to;
+    var progress  = 0;
+
+    function resize() {
+      canvas.width  = div.offsetWidth;
+      canvas.height = div.offsetHeight;
+      draw();
+    }
+
+    function draw() {
+      var W = canvas.width;
+      var H = canvas.height;
+      if (!W || !H) return;
+      ctx.clearRect(0, 0, W, H);
+
+      var midY = H * 0.5;
+      // control point travels far outside canvas bounds for dramatic arch
+      var cy = H * (-0.8 + progress * 2.6);
+
+      // top fill — from-color
+      ctx.fillStyle = fromColor;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(W, 0);
+      ctx.lineTo(W, midY);
+      ctx.quadraticCurveTo(W * 0.5, cy, 0, midY);
+      ctx.closePath();
+      ctx.fill();
+
+      // bottom fill — to-color
+      ctx.fillStyle = toColor;
+      ctx.beginPath();
+      ctx.moveTo(0, midY);
+      ctx.quadraticCurveTo(W * 0.5, cy, W, midY);
+      ctx.lineTo(W, H);
+      ctx.lineTo(0, H);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    ScrollTrigger.create({
+      trigger: div,
+      start: 'top bottom',
+      end: 'bottom top',
+      onUpdate: function (self) {
+        progress = self.progress;
+        draw();
+      }
+    });
+  });
+})();
+</script>
+
+<script>
+/* ── Footer: illustration arcs into view as the section scrolls in ── */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var ftVisual = document.querySelector('.ft-visual');
+  if (!ftVisual) return;
+
+  function setClip(progress) {
+    var W = ftVisual.offsetWidth;
+    var H = ftVisual.offsetHeight;
+    var edgeY = H * (1 - progress);
+    var bulge = H * 0.22 * Math.sin(progress * Math.PI);
+    var controlY = edgeY - bulge;
+    ftVisual.style.clipPath =
+      'path("M0,' + edgeY + ' Q' + (W / 2) + ',' + controlY + ' ' + W + ',' + edgeY +
+      ' L' + W + ',' + H + ' L0,' + H + ' Z")';
+  }
+
+  setClip(0);
+
+  var revealST = ScrollTrigger.create({
+    trigger: 'footer',
+    start: 'top bottom',
+    end: 'top center',
+    onUpdate: function (self) { setClip(self.progress); }
+  });
+
+  window.addEventListener('resize', function () { setClip(revealST.progress); });
+})();
+</script>
+
+<script>
+/* ── Footer: day → night crossfade as the illustration scrolls in ── */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var darkBg = document.querySelector('.ft-bg-dark');
+  if (!darkBg) return;
+
+  ScrollTrigger.create({
+    trigger: 'footer',
+    start: 'top bottom',
+    end: 'bottom bottom',
+    onUpdate: function (self) {
+      darkBg.style.opacity = self.progress;
+    }
+  });
+})();
+</script>
+
+<script>
+/* ── Software arc: logos advance along mz-path with scroll instead of on a timer ── */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var path = document.getElementById('mz-path');
+  var icons = document.querySelectorAll('.marquee-zone .mz-icon-pos');
+  if (!path || !icons.length) return;
+
+  var totalLength = path.getTotalLength();
+  var count = icons.length;
+
+  var speed = 0.4; // fraction of the full path covered across the ribbon's whole scroll range — lower = slower
+
+  var zoneEl = document.querySelector('.marquee-zone');
+  var tooltip = document.getElementById('mzTooltip');
+  var hovered = null; // currently-hovered icon element, or null
+
+  function positionTooltip(icon) {
+    var iconRect = icon.getBoundingClientRect();
+    var zoneRect = zoneEl.getBoundingClientRect();
+    tooltip.style.left = (iconRect.left + iconRect.width / 2 - zoneRect.left) + 'px';
+    tooltip.style.top = (iconRect.top - zoneRect.top) + 'px';
+  }
+
+  function setPositions(progress) {
+    icons.forEach(function (icon, i) {
+      var t = (progress * speed + i / count) % 1;
+      var pt = path.getPointAtLength(t * totalLength);
+      icon.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ')');
+    });
+    // Keep the tooltip glued to its icon if the user scrolls mid-hover
+    if (hovered) positionTooltip(hovered);
+  }
+
+  setPositions(0);
+
+  ScrollTrigger.create({
+    trigger: '.marquee-zone',
+    start: 'top bottom',
+    end: 'bottom top',
+    onUpdate: function (self) { setPositions(self.progress); }
+  });
+
+  // Show the software's name above whichever icon is hovered
+  icons.forEach(function (icon) {
+    icon.addEventListener('pointerenter', function () {
+      hovered = icon;
+      tooltip.textContent = icon.dataset.name;
+      positionTooltip(icon);
+      tooltip.classList.add('show');
+    });
+    icon.addEventListener('pointerleave', function () {
+      hovered = null;
+      tooltip.classList.remove('show');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

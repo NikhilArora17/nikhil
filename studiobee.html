@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studiobee — Case Study · Nikhil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    :root {
+      --blue:      #3B3BCC;
+      --blue-pale: #DDDEFF;
+      --black:     #0A0A0A;
+      --cream:     #F0EBE0;
+      --white:     #FFFFFF;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    #cs-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    #cs-nav.dark  { background: rgba(10,10,10,0.82);  border-bottom-color: rgba(255,255,255,0.06); }
+    #cs-nav.light { background: rgba(255,255,255,0.88); border-bottom-color: rgba(0,0,0,0.07); }
+    .nav-back {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: opacity 0.2s;
+    }
+    .nav-back:hover { opacity: 0.5; }
+    #cs-nav.dark  .nav-back { color: white; }
+    #cs-nav.light .nav-back { color: var(--black); }
+    .nav-tag {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; opacity: 0.4;
+    }
+    #cs-nav.dark  .nav-tag { color: white; }
+    #cs-nav.light .nav-tag { color: var(--black); }
+
+    /* ── SECTION LABEL ── */
+    .sec-label {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.22em;
+      text-transform: uppercase; margin-bottom: 1.1rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .sec-label::before { content: ''; display: block; width: 1.5rem; height: 1.5px; }
+    .sl-blue        { color: var(--blue); }
+    .sl-blue::before { background: var(--blue); }
+    .sl-white       { color: rgba(255,255,255,0.45); }
+    .sl-white::before { background: rgba(255,255,255,0.25); }
+    .sl-muted       { color: rgba(10,10,10,0.35); }
+    .sl-muted::before { background: rgba(10,10,10,0.2); }
+
+    /* ── HEADINGS ── */
+    .h1 { font-size: clamp(3.5rem,8vw,9rem); font-weight: 700; letter-spacing: -0.04em; line-height: 0.92; }
+    .h2 { font-size: clamp(1.7rem,3vw,3.2rem);  font-weight: 600; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 1.1rem; }
+
+    /* ── CARD BASES ── */
+    .card { border-radius: 0.85rem; padding: 1.1rem; }
+    .card-blue  { background: var(--blue-pale); border-top: 2.5px solid var(--blue); }
+    .card-dark  { background: #141414;           border-top: 2.5px solid var(--blue); }
+    .card-plain { background: white;             border-top: 2.5px solid rgba(0,0,0,0.09); }
+    .c-label { font-size: 0.56rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.35rem; color: var(--blue); }
+    .c-title { font-size: 0.9rem; font-weight: 700; line-height: 1.25; margin-bottom: 0.35rem; }
+    .c-body  { font-size: 0.76rem; line-height: 1.42; opacity: 0.72; }
+
+    /* ── PULL QUOTE ── */
+    .pull-quote {
+      border-left: 3px solid var(--blue);
+      background: var(--blue-pale);
+      border-radius: 0 0.75rem 0.75rem 0;
+      padding: 0.9rem 1.4rem; margin: 1.1rem 0;
+    }
+    .pull-quote p { font-size: clamp(0.85rem,1.3vw,1.05rem); font-style: italic; line-height: 1.45; margin-bottom: 0.4rem; }
+    .pull-quote cite { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); font-style: normal; }
+
+    /* ── PROCESS STRIP ── */
+    .process-strip { display: flex; overflow-x: auto; border-radius: 0.5rem; overflow: hidden; margin-top: 0.9rem; }
+    .p-step { flex: 1; min-width: 100px; padding: 0.6rem 0.5rem; text-align: center; }
+    .p-step.on  { background: var(--blue); color: white; }
+    .p-step.off { background: var(--blue-pale); color: var(--black); }
+    .p-step-num  { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.15em; opacity: 0.55; margin-bottom: 0.2rem; }
+    .p-step-name { font-size: 0.74rem; font-weight: 700; }
+    .p-step-sub  { font-size: 0.58rem; opacity: 0.55; margin-top: 0.1rem; }
+
+    /* ── SWATCHES ── */
+    .swatch { width: 68px; height: 46px; border-radius: 0.4rem; display: flex; align-items: flex-end; padding: 0.25rem 0.35rem; }
+    .swatch span { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.04em; }
+
+    /* ── RESEARCH → DECISION ── */
+    .rd-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.6rem; align-items: center; margin-bottom: 0.45rem; }
+    .rd-box { border-radius: 0.65rem; padding: 0.75rem 0.9rem; }
+    .rd-ins  { background: rgba(255,255,255,0.06); border-left: 3px solid var(--blue); }
+    .rd-dec  { background: rgba(59,59,204,0.15);   border-left: 3px solid rgba(255,255,255,0.12); }
+    .rd-lbl  { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .rd-txt  { font-size: 0.74rem; line-height: 1.35; color: rgba(255,255,255,0.72); }
+    .rd-arrow { color: var(--blue); font-size: 1rem; }
+
+    /* ── SITEMAP ── */
+    .sm-item { border-radius: 0.4rem; padding: 0.55rem 1rem; font-size: 0.72rem; font-weight: 600; text-align: center; margin-bottom: 0.3rem; }
+    .sm-on   { background: var(--blue); color: white; }
+    .sm-off  { background: var(--blue-pale); color: var(--black); }
+    .sm-fixed { background: rgba(0,0,0,0.06); color: rgba(0,0,0,0.45); font-size: 0.66rem; }
+
+    /* ── CONSTRAINT GRID ── */
+    .cg-problem  { background: rgba(255,255,255,0.05); border-radius: 0.65rem; padding: 0.85rem; border-left: 3px solid var(--blue); margin-bottom: 0.4rem; }
+    .cg-decision { background: rgba(59,59,204,0.12);   border-radius: 0.65rem; padding: 0.85rem; border-left: 3px solid rgba(255,255,255,0.12); }
+    .cg-label    { font-size: 0.54rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 0.3rem; }
+
+    /* ── GRID MOCKUPS ── */
+    .grid-option { background: white; border-radius: 0.65rem; padding: 0.7rem; border: 1.5px solid rgba(0,0,0,0.08); }
+    .grid-option.chosen { border-color: var(--blue); border-width: 2px; }
+    .gmock { display: grid; gap: 4px; height: 88px; margin-bottom: 0.5rem; }
+    .mc { background: var(--blue-pale); border-radius: 3px; }
+    .mc.a { background: var(--blue); }
+    .mc.b { background: #8888EE; }
+
+    /* ── SECTION SPACING ── */
+    .sec { padding: 3.5rem 5vw; }
+    .inner { max-width: 1100px; margin: 0 auto; width: 100%; }
+
+    /* ── STACK PANELS ──
+       Each top-level section is a full-viewport "card". GSAP pins the
+       current card while the next one rises to cover it, so scrolling
+       reads as a deck of pages landing on top of one another instead
+       of a continuous scroll. */
+    .stack-panel {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+      will-change: transform, opacity, filter;
+    }
+
+    /* ── DIVIDER ── */
+    .div-line { height: 1px; margin: 1.1rem 0; }
+    .div-dark  { background: rgba(0,0,0,0.08); }
+    .div-light { background: rgba(255,255,255,0.08); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .fu   { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both; }
+    .d1   { animation-delay: 0.1s; }
+    .d2   { animation-delay: 0.25s; }
+    .d3   { animation-delay: 0.4s; }
+    .d4   { animation-delay: 0.55s; }
+
+    @media (max-width: 640px) {
+      .rd-grid { grid-template-columns: 1fr; }
+      .rd-arrow { display: none; }
+      .two-col, .three-col, .four-col { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="cs-nav" class="dark">
+  <a href="nik.html" class="nav-back">← Portfolio</a>
+  <span class="nav-tag">Case Study</span>
+</nav>
+
+<!-- ══════════════════════════════
+     1. HERO
+══════════════════════════════ -->
+<section class="stack-panel" data-theme="dark" style="background:linear-gradient(140deg,#2323BB 0%,#4444EE 45%,#7777FF 75%,#AAAAFF 100%); justify-content:flex-end; padding:0 5vw 6rem; position:relative;">
+  <!-- stripe texture -->
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.025) 0,rgba(255,255,255,0.025) 1px,transparent 1px,transparent 56px);pointer-events:none;"></div>
+
+  <div class="inner fu d1" style="width:100%;">
+    <p style="font-size:0.62rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:1.5rem;">UK / US · STUDIOBEE.CO.IN</p>
+    <h1 class="h1 fu d1" style="color:white;margin-bottom:0.5rem;">
+      studio<span style="font-style:italic;font-weight:300;">bee</span>
+    </h1>
+    <p style="font-size:0.7rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:1.75rem;" class="fu d2">Case Study</p>
+    <p style="font-size:clamp(1rem,1.8vw,1.35rem);color:rgba(255,255,255,0.78);max-width:50ch;line-height:1.65;margin-bottom:4rem;" class="fu d3">
+      Designing a brand-forward agency website that gives a feel of luxury, is trustworthy — and looks like the best agency in the room.
+    </p>
+    <div style="display:flex;gap:3.5rem;flex-wrap:wrap;" class="fu d4">
+      <div>
+        <p style="font-size:0.57rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:0.3rem;">Role</p>
+        <p style="font-size:0.82rem;font-weight:600;color:white;">Lead UI/UX Designer &amp; AI Front-end</p>
+      </div>
+      <div>
+        <p style="font-size:0.57rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:0.3rem;">Year</p>
+        <p style="font-size:0.82rem;font-weight:600;color:white;">2026</p>
+      </div>
+      <div>
+        <p style="font-size:0.57rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:0.3rem;">Deliverables</p>
+        <p style="font-size:0.82rem;font-weight:600;color:white;">Brand system · UI design · Prototype · Front-end build</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     2. PROJECT OVERVIEW
+══════════════════════════════ -->
+<section class="sec stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="inner">
+    <p class="sec-label sl-blue">Overview</p>
+    <h2 class="h2">Design a brand-forward website<br>from the ground up.</h2>
+
+    <div class="pull-quote">
+      <p>"The brief was simple: make it feel like the best agency in the room — and make sure it doesn't crash on an iPhone."</p>
+      <cite>Project Brief — Studiobee, 2025</cite>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.85rem;" class="three-col">
+      <div class="card card-blue">
+        <p class="c-label">Audience</p>
+        <p class="c-title">Indian founders<br>&amp; marketing leads</p>
+        <p class="c-body">Mobile-first visitors comparing agencies — decisions made in 8 seconds, often mid-commute.</p>
+      </div>
+      <div class="card card-blue">
+        <p class="c-label">Goals</p>
+        <p class="c-title">Premium positioning<br>through restraint</p>
+        <p class="c-body">Showcase work first. Signal quality through type and motion, not decoration.</p>
+      </div>
+      <div class="card card-blue">
+        <p class="c-label">Design Constraints</p>
+        <p class="c-title">Hard technical limits shaped<br>every decision</p>
+        <p class="c-body">Mobile-first touch targets · No UI framework · Brand must feel premium, not templated · Work must be front-and-center</p>
+      </div>
+    </div>
+
+    <div class="div-line div-dark"></div>
+
+    <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.32);margin-bottom:1rem;">Design Process</p>
+    <div class="process-strip">
+      <div class="p-step on"><p class="p-step-num">01</p><p class="p-step-name">Discover</p><p class="p-step-sub">Research</p></div>
+      <div class="p-step off"><p class="p-step-num">02</p><p class="p-step-name">Define</p><p class="p-step-sub">Brand + IA</p></div>
+      <div class="p-step on"><p class="p-step-num">03</p><p class="p-step-name">Design</p><p class="p-step-sub">Wireframes</p></div>
+      <div class="p-step off"><p class="p-step-num">04</p><p class="p-step-name">Prototype</p><p class="p-step-sub">Build + Test</p></div>
+      <div class="p-step on" style="opacity:0.55;"><p class="p-step-num">05</p><p class="p-step-name">Iterate</p><p class="p-step-sub">Refine + Ship</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     3. DISCOVERY & BRAND SYSTEM
+══════════════════════════════ -->
+<section class="sec stack-panel" data-theme="light" style="background:var(--cream);">
+  <div class="inner">
+    <p class="sec-label sl-muted">Discovery &amp; Brand System</p>
+    <h2 class="h2">Brand principles that drove<br>every decision.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.85rem;margin-bottom:1.1rem;" class="three-col">
+      <div class="card card-blue">
+        <p class="c-label">Principle 01</p>
+        <p class="c-title">Premium Restraint</p>
+        <p class="c-body">Every element earns its place. Curated, not busy.</p>
+      </div>
+      <div class="card card-blue">
+        <p class="c-label">Principle 02</p>
+        <p class="c-title">Motion With Purpose</p>
+        <p class="c-body">Animation signals craft, not decoration — every moving element earns its budget.</p>
+      </div>
+      <div class="card card-blue">
+        <p class="c-label">Principle 03</p>
+        <p class="c-title">Work First, Always</p>
+        <p class="c-body">The portfolio is the product. Visitors reach the work within 3 scroll stops.</p>
+      </div>
+    </div>
+
+    <div class="div-line div-dark"></div>
+
+    <div style="display:grid;grid-template-columns:1.1fr 1.4fr;gap:2rem;align-items:end;" class="two-col">
+      <div>
+        <p style="font-size:0.58rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.32);margin-bottom:0.6rem;">Colour Tokens</p>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+          <div class="swatch" style="background:#3B3BCC;"><span style="color:white;">#3B3BCC</span></div>
+          <div class="swatch" style="background:#0A0A0A;"><span style="color:white;">#0A0A0A</span></div>
+          <div class="swatch" style="background:#FFFFFF;border:1px solid rgba(0,0,0,0.1);"><span style="color:#aaa;">#FFFFFF</span></div>
+          <div class="swatch" style="background:#F0EBE0;border:1px solid rgba(0,0,0,0.07);"><span style="color:#aaa;">#F0EBE0</span></div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:0.58rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.32);margin-bottom:0.6rem;">Typography — DM Sans, -0.04em tracking</p>
+        <p style="font-size:clamp(1.8rem,4vw,3.2rem);font-weight:600;letter-spacing:-0.04em;line-height:1;">Headlines.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     4. USER RESEARCH
+══════════════════════════════ -->
+<section class="sec stack-panel" data-theme="dark" style="background:var(--black);">
+  <div class="inner">
+    <p class="sec-label sl-white">User Research</p>
+    <h2 class="h2" style="color:white;">Understanding who decides —<br>and how fast</h2>
+
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.1rem;">
+      <div style="background:#141414;border-radius:2rem;padding:0.4rem 0.9rem;font-size:0.72rem;color:rgba(255,255,255,0.6);"><b style="color:white;">Ragged Edge</b> — serious craft, no compromise</div>
+      <div style="background:#141414;border-radius:2rem;padding:0.4rem 0.9rem;font-size:0.72rem;color:rgba(255,255,255,0.6);"><b style="color:white;">Superside</b> — scalable, trustworthy</div>
+      <div style="background:#141414;border-radius:2rem;padding:0.4rem 0.9rem;font-size:0.72rem;color:rgba(255,255,255,0.6);"><b style="color:white;">Koto</b> — considered, expensive taste</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-bottom:1.1rem;" class="two-col">
+      <div style="background:var(--blue);border-radius:0.85rem;padding:1.1rem;">
+        <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.45rem;">Primary Persona</p>
+        <p style="font-size:0.95rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.1rem;">Rahul M. — Co-founder &amp; Marketing Lead</p>
+        <p style="font-size:0.76rem;color:rgba(255,255,255,0.75);line-height:1.45;margin-bottom:0.6rem;">Compares 3 agencies on an iPhone 13 during his commute. Decides within 8 seconds.</p>
+        <p style="font-size:0.74rem;color:rgba(255,255,255,0.7);line-height:1.5;border-top:1px solid rgba(255,255,255,0.15);padding-top:0.5rem;">Values: proof of work · speed of response · local market understanding</p>
+      </div>
+      <div style="background:#141414;border-radius:0.85rem;padding:1.1rem;">
+        <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.45rem;">What The Data Showed</p>
+        <p style="font-size:0.76rem;color:rgba(255,255,255,0.62);line-height:1.55;">
+          · First-contact visits are mostly mobile<br>
+          · Work portfolio is the #1 decision factor<br>
+          · Dark/premium aesthetics score 40% higher on perceived quality
+        </p>
+      </div>
+    </div>
+
+    <p style="font-size:0.58rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.5rem;">Research → Design Decision</p>
+    <div style="display:flex;flex-direction:column;gap:0.4rem;">
+      <div class="rd-grid">
+        <div class="rd-box rd-ins"><p class="rd-lbl" style="color:var(--blue);">Research Insight</p><p class="rd-txt">Mobile-first audience, quick scroll — decisions made in under 10 seconds</p></div>
+        <span class="rd-arrow">→</span>
+        <div class="rd-box rd-dec"><p class="rd-lbl" style="color:rgba(255,255,255,0.3);">Design Decision</p><p class="rd-txt">9:16 portrait work cards that feel native on a phone — same ratio as Instagram Stories</p></div>
+      </div>
+      <div class="rd-grid">
+        <div class="rd-box rd-ins"><p class="rd-lbl" style="color:var(--blue);">Research Insight</p><p class="rd-txt">Clients compare agencies side-by-side — quality signal matters as much as content</p></div>
+        <span class="rd-arrow">→</span>
+        <div class="rd-box rd-dec"><p class="rd-lbl" style="color:rgba(255,255,255,0.3);">Design Decision</p><p class="rd-txt">Dark sections + precise typography to signal premium positioning instantly</p></div>
+      </div>
+      <div class="rd-grid">
+        <div class="rd-box rd-ins"><p class="rd-lbl" style="color:var(--blue);">Research Insight</p><p class="rd-txt">Indian market: warmth and approachability matter as much as prestige</p></div>
+        <span class="rd-arrow">→</span>
+        <div class="rd-box rd-dec"><p class="rd-lbl" style="color:rgba(255,255,255,0.3);">Design Decision</p><p class="rd-txt">Cream section for Team, Kulim Park body font for warmth and personality</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     5. IA & CONVERSION ARCHITECTURE
+══════════════════════════════ -->
+<section class="sec stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="inner">
+    <p class="sec-label sl-blue">IA &amp; Conversion Architecture</p>
+    <h2 class="h2">Section order is as intentional<br>as section design.</h2>
+    <p style="font-size:clamp(0.85rem,1.1vw,1rem);color:rgba(0,0,0,0.52);max-width:58ch;line-height:1.55;margin-bottom:1.1rem;">Every section position is a deliberate conversion decision — Hero, proof of work, process, then the CTA in 3 scroll stops.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:2rem;align-items:start;" class="two-col">
+      <div>
+        <p style="font-size:0.58rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.6rem;">Site Structure</p>
+        <div class="sm-item sm-fixed">Fixed Navigation — always accessible</div>
+        <div class="sm-item sm-on">01 Hero</div>
+        <div class="sm-item sm-off">02 Services</div>
+        <div class="sm-item sm-on">03 Work</div>
+        <div class="sm-item sm-off">04 Stats</div>
+        <div class="sm-item sm-on">05 Process</div>
+        <div class="sm-item sm-off">06 Testimonials</div>
+        <div class="sm-item sm-on">07 Team</div>
+        <div class="sm-item sm-off">08 Contact</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.85rem;">
+        <div class="card card-blue">
+          <p class="c-label">Why Work Is Section #3</p>
+          <p class="c-title">Proof before pitch</p>
+          <p class="c-body">Showing work before services bypasses the credibility question — visitors validate quality in 8 seconds, then read how you do it.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Supporting Decisions</p>
+          <p class="c-title">Nav, marquee, conversion path</p>
+          <p class="c-body">"Start a project" is the only pill CTA in nav. Work surfaces passively via an auto-scroll 9:16 marquee. Hero → Work → Contact averages 3 scroll stops.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     6. DESIGN FOR CONSTRAINTS
+══════════════════════════════ -->
+<section class="sec stack-panel" data-theme="dark" style="background:var(--black);">
+  <div class="inner">
+    <p class="sec-label sl-white">Design for Constraints</p>
+    <h2 class="h2" style="color:white;">When limitations made<br>the design better.</h2>
+    <p style="font-size:clamp(0.85rem,1.1vw,1rem);color:rgba(255,255,255,0.42);max-width:58ch;line-height:1.55;margin-bottom:1.1rem;">Four moments where a technical or device constraint forced a rethink — and produced a more considered result.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;" class="two-col">
+      <div class="cg-problem" style="margin-bottom:0;">
+        <p class="cg-label" style="color:rgba(100,100,255,0.8);">Animation Audit</p>
+        <p style="font-size:0.74rem;color:rgba(255,255,255,0.45);line-height:1.4;margin-bottom:0.3rem;">50 animated elements were crashing iPhones.</p>
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.78);line-height:1.4;">→ Treated animation like typography — kept only the wave strips.</p>
+      </div>
+      <div class="cg-problem" style="margin-bottom:0;">
+        <p class="cg-label" style="color:rgba(100,100,255,0.8);">Ghost Button Duplication</p>
+        <p style="font-size:0.74rem;color:rgba(255,255,255,0.45);line-height:1.4;margin-bottom:0.3rem;">Animating the whole button broke the wave-strip illusion.</p>
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.78);line-height:1.4;">→ Only the arrow moves now — a directed gesture, not a floating shape.</p>
+      </div>
+      <div class="cg-problem" style="margin-bottom:0;">
+        <p class="cg-label" style="color:rgba(100,100,255,0.8);">Texture Rendering Artefacts</p>
+        <p style="font-size:0.74rem;color:rgba(255,255,255,0.45);line-height:1.4;margin-bottom:0.3rem;">A grain filter forced one compositor layer, flickering on Android.</p>
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.78);line-height:1.4;">→ Removed the filter entirely — cleaner and more legible.</p>
+      </div>
+      <div class="cg-problem" style="margin-bottom:0;">
+        <p class="cg-label" style="color:rgba(100,100,255,0.8);">Blurred Badge Components</p>
+        <p style="font-size:0.74rem;color:rgba(255,255,255,0.45);line-height:1.4;margin-bottom:0.3rem;">Glass-blur on 30+ cards loaded the GPU and looked cluttered.</p>
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.78);line-height:1.4;">→ Swapped backdrop-blur for a solid rgba() overlay.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     7. OUTCOMES & REFLECTION
+══════════════════════════════ -->
+<section class="sec stack-panel" data-theme="light" style="background:var(--cream);">
+  <div class="inner">
+    <p class="sec-label sl-muted">Outcomes</p>
+    <h2 class="h2">What shipped and what<br>it taught us.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.85rem;margin-bottom:1.1rem;" class="three-col">
+      <div style="background:var(--black);border-radius:0.85rem;padding:1.1rem;border-top:2.5px solid var(--blue);">
+        <p class="c-label" style="color:rgba(100,100,255,0.8);">Premium Positioning</p>
+        <p class="c-title" style="color:white;">Reads like a top-tier agency</p>
+        <p class="c-body" style="color:rgba(255,255,255,0.52);">Dark/blue rhythm, tight type, and wave motion consistently draw comparisons to international agencies.</p>
+      </div>
+      <div style="background:var(--black);border-radius:0.85rem;padding:1.1rem;border-top:2.5px solid var(--blue);">
+        <p class="c-label" style="color:rgba(100,100,255,0.8);">Mobile Performance</p>
+        <p class="c-title" style="color:white;">60fps on iPhone 12+</p>
+        <p class="c-body" style="color:rgba(255,255,255,0.52);">Despite a complex animation system — every decision was validated on a real device first.</p>
+      </div>
+      <div style="background:var(--black);border-radius:0.85rem;padding:1.1rem;border-top:2.5px solid var(--blue);">
+        <p class="c-label" style="color:rgba(100,100,255,0.8);">Conversion-led Structure</p>
+        <p class="c-title" style="color:white;">Work is the second thing you see</p>
+        <p class="c-body" style="color:rgba(255,255,255,0.52);">Proof of work is the primary conversion driver — not the about page, not the services list.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;" class="two-col">
+      <div style="background:var(--black);border-radius:0.85rem;padding:1.1rem;">
+        <p style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.4rem;">Decisions That Worked</p>
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.58);line-height:1.55;">Wave strip brand signature · 9:16 portrait work cards · arrow-only ghost button · greyscale team hover</p>
+      </div>
+      <div style="background:rgba(0,0,0,0.06);border-radius:0.85rem;padding:1.1rem;">
+        <p style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.4rem;">What I'd Revisit</p>
+        <p style="font-size:0.78rem;color:rgba(0,0,0,0.52);line-height:1.55;">Skeleton loading states for 4G · a real component library before coding · case studies link in primary nav</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     8. CASE STUDIES PAGE DESIGN
+══════════════════════════════ -->
+<section class="sec stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="inner">
+    <p class="sec-label sl-blue">Case Studies Page Design</p>
+    <h2 class="h2">Nine projects, one page,<br>no uniform grid.</h2>
+    <p style="font-size:clamp(0.85rem,1.1vw,1rem);color:rgba(0,0,0,0.52);max-width:62ch;line-height:1.55;margin-bottom:1.1rem;">The challenge: display 9 projects so it feels curated, not templated — a uniform grid treats every project with identical weight, which no curated portfolio should do.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;margin-bottom:1.1rem;" class="four-col">
+      <div class="grid-option">
+        <div class="gmock" style="grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr;">
+          <div class="mc"></div><div class="mc"></div><div class="mc"></div>
+          <div class="mc"></div><div class="mc"></div><div class="mc"></div>
+          <div class="mc"></div><div class="mc"></div><div class="mc"></div>
+        </div>
+        <p style="font-size:0.72rem;font-weight:700;color:var(--black);">A — Uniform 3×3</p>
+        <p style="font-size:0.68rem;color:rgba(0,0,0,0.42);margin-top:0.2rem;">Feels like a template</p>
+      </div>
+      <div class="grid-option">
+        <div class="gmock" style="grid-template-columns:1fr 1fr;grid-template-rows:1fr 1.5fr 1fr;">
+          <div class="mc" style="grid-row:span 2;"></div><div class="mc"></div>
+          <div class="mc"></div>
+          <div class="mc" style="grid-column:span 2;"></div>
+        </div>
+        <p style="font-size:0.72rem;font-weight:700;color:var(--black);">B — Full Masonry</p>
+        <p style="font-size:0.68rem;color:rgba(0,0,0,0.42);margin-top:0.2rem;">Organic but not curated</p>
+      </div>
+      <div class="grid-option">
+        <div class="gmock" style="grid-template-columns:1fr 1.4fr;grid-template-rows:1fr 1fr 1fr;">
+          <div class="mc" style="grid-row:span 2;"></div><div class="mc"></div>
+          <div class="mc"></div>
+          <div class="mc" style="grid-column:span 2;"></div>
+        </div>
+        <p style="font-size:0.72rem;font-weight:700;color:var(--black);">C — Mixed Portrait+Landscape</p>
+        <p style="font-size:0.68rem;color:rgba(0,0,0,0.42);margin-top:0.2rem;">No system — hard to scan</p>
+      </div>
+      <div class="grid-option chosen">
+        <div class="gmock" style="grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr;">
+          <div class="mc a" style="grid-row:span 2;"></div>
+          <div class="mc b"></div><div class="mc a"></div>
+          <div class="mc b"></div>
+          <div class="mc a" style="grid-column:span 2;"></div>
+          <div class="mc b"></div>
+        </div>
+        <p style="font-size:0.72rem;font-weight:700;color:var(--blue);">D — Bento Asymmetric <span style="color:rgba(0,0,0,0.45);font-weight:400;">(Final)</span></p>
+        <p style="font-size:0.68rem;color:rgba(0,0,0,0.42);margin-top:0.2rem;">Each card has a role</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;" class="two-col">
+      <div class="card card-blue">
+        <p class="c-label">Card Roles</p>
+        <p class="c-title">Every card has a job, not just a slot</p>
+        <p class="c-body">Portrait (9:16) for hero case studies, wide spans for horizontal work, squares for brand/logo work needing equal framing.</p>
+      </div>
+      <div class="card card-blue">
+        <p class="c-label">Interaction Decisions</p>
+        <p class="c-title">Hover on desktop, tap-to-reveal on mobile</p>
+        <p class="c-body">Hover scales the card 1.02x with a colour overlay. On touch, tap once reveals the info panel, tap again navigates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     9. FINAL UI — MOBILE SHOWCASE
+══════════════════════════════ -->
+<section class="stack-panel" data-theme="dark" style="background:var(--black);padding:3rem 5vw;">
+  <div class="inner">
+    <p class="sec-label sl-white">Final UI — Mobile Showcase</p>
+    <img src="studiobee/9.png" alt="Final UI — Mobile Showcase" style="width:100%;max-height:72vh;object-fit:contain;border-radius:1rem;display:block;margin:0 auto;" />
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     FOOTER CTA
+══════════════════════════════ -->
+<section class="stack-panel" data-theme="dark" style="background:var(--blue);padding:3rem 5vw;text-align:center;align-items:center;">
+  <div class="inner">
+    <p style="font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:1rem;">Up Next</p>
+    <h2 style="font-size:clamp(2rem,5vw,4rem);font-weight:700;letter-spacing:-0.03em;color:white;margin-bottom:2rem;">See more work →</h2>
+    <a href="nik.html" style="display:inline-flex;align-items:center;gap:0.75rem;background:white;color:var(--blue);font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:1rem 2.5rem;border-radius:100px;text-decoration:none;transition:transform 0.25s cubic-bezier(0.16,1,0.3,1),box-shadow 0.25s;">← Back to Portfolio</a>
+  </div>
+</section>
+
+<script>
+  const nav = document.getElementById('cs-nav');
+  const secs = document.querySelectorAll('section[data-theme]');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        nav.className = 'cs-nav ' + (e.target.dataset.theme === 'dark' ? 'dark' : 'light');
+      }
+    });
+  }, { rootMargin: '-50% 0px -50% 0px' });
+  secs.forEach(s => io.observe(s));
+
+  // Card-stack scroll: each panel pins in place while the next one rises
+  // to cover it. All panels get an explicit z-index up front (not just the
+  // pinned one) so paint order stays correct even though GSAP only swaps
+  // the active panel's `position` to fixed for the duration of its pin.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion && window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    const panels = gsap.utils.toArray('.stack-panel');
+
+    panels.forEach((panel, i) => {
+      panel.style.position = 'relative';
+      panel.style.zIndex = i + 1;
+    });
+
+    panels.forEach((panel, i) => {
+      if (i === panels.length - 1) return;
+
+      ScrollTrigger.create({
+        trigger: panel,
+        start: 'top top',
+        end: 'bottom top',
+        pin: true,
+        pinSpacing: false,
+      });
+
+      gsap.to(panel, {
+        scale: 0.92,
+        opacity: 0.5,
+        ease: 'none',
+        transformOrigin: 'top center',
+        scrollTrigger: {
+          trigger: panels[i + 1],
+          start: 'top bottom',
+          end: 'top top',
+          scrub: true,
+        },
+      });
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>UX/UI Case Study — BEENEXT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+@page{size:A4 portrait;margin:0;}
+body{font-family:'Barlow',sans-serif;background:#2a2a2a;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;height:297mm;overflow:hidden;position:relative;page-break-after:always;background:#131313;}
+@media screen{
+  body{overflow-x:hidden;padding:0;}
+  .page{margin:0;transform-origin:top left;box-shadow:none;}
+}
+
+.ph{height:9mm;display:flex;align-items:center;justify-content:space-between;padding:0 12mm;border-bottom:0.3mm solid rgba(255,187,80,0.15);}
+.ph-label{font-size:6.5pt;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,187,80,0.45);}
+.ph-num{font-size:6.5pt;color:rgba(255,255,255,0.2);}
+.ph-dark{background:#000;border-bottom:none;}
+.ph-dark .ph-label{color:rgba(255,187,80,0.4);}.ph-dark .ph-num{color:rgba(255,255,255,0.2);}
+
+.ci{padding:11mm 12mm;height:calc(297mm - 9mm);display:flex;flex-direction:column;gap:5mm;justify-content:space-between;}
+.ci-tight{padding:9mm 12mm 8mm;height:calc(297mm - 9mm);display:flex;flex-direction:column;gap:4mm;justify-content:space-between;}
+
+.c-tag{font-size:6.5pt;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FFBB50;}
+.c-h2{font-size:20pt;font-weight:700;letter-spacing:-0.03em;color:#FFFFFF;line-height:1.05;}
+.c-body{font-size:8.5pt;line-height:1.72;font-weight:300;color:rgba(255,255,255,0.65);}
+
+.c-grid2{display:grid;grid-template-columns:1fr 1fr;gap:4.5mm;}
+.c-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3.5mm;}
+.c-grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:3mm;}
+
+.c-card{background:#1E1E1E;border:0.3mm solid rgba(255,187,80,0.12);padding:6mm;}
+.c-card-accent{border-top:1.5mm solid #FFBB50;}
+.c-card-tag{font-size:6pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#FFBB50;margin-bottom:1.5mm;}
+.c-card-h{font-size:10pt;font-weight:600;color:#FFFFFF;margin-bottom:1.5mm;line-height:1.2;}
+.c-card-b{font-size:8pt;line-height:1.65;font-weight:300;color:rgba(255,255,255,0.55);}
+
+.prob{border-left:1mm solid #E53E3E;padding:3mm 4mm;background:rgba(229,62,62,0.06);margin-bottom:2mm;}
+.sol{border-left:1mm solid #FFBB50;padding:3mm 4mm;background:rgba(255,187,80,0.06);margin-bottom:2mm;}
+.ps-lbl{font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.2mm;}
+.prob .ps-lbl{color:#E53E3E;}.sol .ps-lbl{color:#FFBB50;}
+.ps-txt{font-size:8pt;line-height:1.62;font-weight:300;color:rgba(255,255,255,0.7);}
+
+.pull-quote{border-left:1mm solid #FFBB50;padding:5mm 6mm;background:rgba(255,187,80,0.06);}
+.pull-quote-text{font-size:11pt;line-height:1.65;font-weight:300;font-style:italic;color:rgba(255,187,80,0.9);}
+.pull-quote-attr{font-size:6.5pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.35);margin-top:2.5mm;}
+
+.swatch-row{display:flex;gap:3mm;flex-wrap:nowrap;}
+.swatch{height:20mm;display:flex;flex-direction:column;justify-content:flex-end;padding:2.5mm 3mm;flex-shrink:0;}
+.swatch-label{font-size:7.5pt;font-weight:700;}
+.swatch-hex{font-size:6pt;opacity:0.7;}
+.swatch-use{font-size:5.5pt;opacity:0.55;margin-top:0.5mm;}
+
+.wf-inner{padding:7mm 11mm 6mm;height:calc(297mm - 9mm);display:flex;flex-direction:column;}
+.wf-tag{font-size:6.5pt;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FFBB50;margin-bottom:1.5mm;}
+.wf-h{font-size:15pt;font-weight:700;letter-spacing:-0.03em;color:#FFFFFF;line-height:1.1;margin-bottom:1.5mm;}
+.wf-desc{font-size:7.5pt;line-height:1.6;font-weight:300;color:rgba(255,255,255,0.5);max-width:158mm;margin-bottom:3.5mm;}
+.wf-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3.5mm;flex:1;min-height:0;}
+.wf-panel{display:flex;flex-direction:column;border:0.35mm solid rgba(255,187,80,0.15);background:#1A1A1A;}
+.wf-panel svg{flex:1;width:100%;min-height:0;display:block;}
+.wf-foot{padding:2mm 3mm;border-top:0.35mm solid rgba(255,187,80,0.1);background:#111;flex-shrink:0;}
+.wf-stage{font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.5mm;color:#FFBB50;}
+.wf-stage-note{font-size:6.5pt;font-weight:300;color:rgba(255,255,255,0.4);line-height:1.35;}
+
+.divider{height:0.3mm;background:rgba(255,187,80,0.1);flex-shrink:0;}
+.tag-pill{display:inline-block;font-size:7pt;font-weight:600;letter-spacing:0.04em;background:rgba(255,187,80,0.1);color:#FFBB50;padding:1.5mm 3mm;margin:0.8mm;}
+
+.insight-band{background:#000;padding:5mm 6mm;border:0.3mm solid rgba(255,187,80,0.2);}
+.insight-band-text{font-size:10pt;line-height:1.72;font-weight:300;color:rgba(255,255,255,0.75);}
+.insight-band-attr{font-size:6pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-top:2mm;}
+
+.contrib-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;}
+.contrib-item{padding:3.5mm 4mm;background:#1E1E1E;border:0.3mm solid rgba(255,187,80,0.1);}
+.contrib-label{font-size:6pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FFBB50;margin-bottom:1.5mm;}
+.contrib-desc{font-size:7.5pt;line-height:1.5;font-weight:300;color:rgba(255,255,255,0.5);}
+
+.stat-block{text-align:center;padding:6mm 4mm;background:#1A1A1A;border:0.3mm solid rgba(255,187,80,0.12);}
+.stat-num{font-size:28pt;font-weight:800;letter-spacing:-0.04em;color:#FFBB50;line-height:1;}
+.stat-label{font-size:6.5pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:2mm;}
+
+.map-row{display:grid;grid-template-columns:80mm 8mm 1fr;align-items:stretch;background:#1A1A1A;border:0.3mm solid rgba(255,187,80,0.1);margin-bottom:2.5mm;}
+.map-insight{padding:3mm 4mm;border-right:0.3mm solid rgba(255,187,80,0.1);}
+.map-arrow{display:flex;align-items:center;justify-content:center;background:rgba(255,187,80,0.08);font-size:8pt;color:#FFBB50;}
+.map-decision{padding:3mm 4mm;}
+.map-label{font-size:5.5pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FFBB50;margin-bottom:1mm;}
+.map-text{font-size:7.5pt;line-height:1.5;font-weight:300;color:rgba(255,255,255,0.65);}
+
+.persona-card{background:#1A1A1A;border:0.3mm solid rgba(255,187,80,0.12);padding:5mm;}
+.persona-name{font-size:11pt;font-weight:700;color:#FFFFFF;margin-bottom:0.5mm;}
+.persona-role{font-size:7pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#FFBB50;margin-bottom:3mm;}
+.persona-attr{font-size:6.5pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1mm;margin-top:2.5mm;}
+.persona-val{font-size:8pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.6);}
+
+.jrn-row{display:grid;grid-template-columns:28mm 1fr 1fr 1fr 1fr;gap:0;border:0.3mm solid rgba(255,187,80,0.1);margin-bottom:1.5mm;}
+.jrn-label{background:#000;padding:2mm 3mm;display:flex;align-items:center;}
+.jrn-label-text{font-size:6pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FFBB50;}
+.jrn-cell{padding:2mm 3mm;border-left:0.3mm solid rgba(255,187,80,0.08);font-size:6.5pt;line-height:1.4;font-weight:300;color:rgba(255,255,255,0.55);}
+.jrn-header{background:rgba(255,187,80,0.08);padding:2mm 3mm;border-left:0.3mm solid rgba(255,187,80,0.1);}
+.jrn-header-text{font-size:6.5pt;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER -->
+<div class="page">
+  <div style="background:#000;height:297mm;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:14mm;">
+    <!-- Hex grid bg -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.07;" viewBox="0 0 595 842" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id="hexPat" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse"><polygon points="30,2 58,17 58,47 30,62 2,47 2,17" fill="none" stroke="#FFBB50" stroke-width="0.6"/></pattern></defs>
+      <rect width="595" height="842" fill="url(#hexPat)"/>
+    </svg>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 55%,rgba(255,187,80,0.07) 0%,rgba(0,0,0,0.95) 65%);z-index:1;"></div>
+    <!-- Eyebrow -->
+    <div style="position:relative;z-index:2;">
+      <div style="font-size:7pt;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.3);">beenext.co.in</div>
+    </div>
+    <!-- Title block -->
+    <div style="position:relative;z-index:2;flex:1;display:flex;align-items:center;">
+      <div>
+        <div style="font-size:7pt;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFBB50;margin-bottom:5mm;">UX / UI</div>
+        <div style="font-size:52pt;font-weight:800;letter-spacing:-0.04em;line-height:0.9;color:#FFFFFF;">Case</div>
+        <div style="font-size:52pt;font-weight:800;letter-spacing:-0.04em;line-height:0.9;color:#FFFFFF;">Study</div>
+        <div style="font-size:52pt;font-weight:300;letter-spacing:-0.04em;line-height:0.9;color:rgba(255,255,255,0.18);">2025</div>
+        <div style="height:0.4mm;width:32mm;background:#FFBB50;margin-top:7mm;margin-bottom:7mm;"></div>
+        <div style="font-size:9.5pt;line-height:1.7;font-weight:300;color:rgba(255,255,255,0.5);max-width:115mm;">Designing a luxury-grade digital presence for India's premier AV, IT &amp; automation Value Added Distributor — precise, authoritative, and built to convert Custom Integrators.</div>
+      </div>
+    </div>
+    <!-- Bottom meta -->
+    <div style="position:relative;z-index:2;">
+      <div style="height:0.3mm;background:rgba(255,187,80,0.25);margin-bottom:6mm;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6mm;">
+        <div>
+          <div style="font-size:5.5pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:1.5mm;">Role</div>
+          <div style="font-size:8.5pt;font-weight:600;color:#FFFFFF;">Lead UX/UI Designer &amp; Front-end</div>
+        </div>
+        <div>
+          <div style="font-size:5.5pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:1.5mm;">Year</div>
+          <div style="font-size:8.5pt;font-weight:600;color:#FFFFFF;">2025</div>
+        </div>
+        <div>
+          <div style="font-size:5.5pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:1.5mm;">Deliverables</div>
+          <div style="font-size:8.5pt;font-weight:600;color:#FFFFFF;">Brand system · UI design · Prototype · Front-end</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: PROJECT OVERVIEW -->
+<div class="page">
+  <div class="ph"><span class="ph-label">Project Overview</span><span class="ph-num">02 / 10</span></div>
+  <div class="ci">
+    <div>
+      <div class="c-tag">Overview</div>
+      <div class="c-h2" style="margin-top:1.5mm;">Build a luxury-grade digital presence<br/>for India's premier technology VAD.</div>
+    </div>
+    <div class="pull-quote">
+      <div class="pull-quote-text">"BEENEXT needed a website that felt like a premium partner walking into the room — not a product catalogue. Every Custom Integrator visiting should immediately understand: this is the best distribution network in India."</div>
+      <div class="pull-quote-attr">Project Brief — BEENEXT, 2025</div>
+    </div>
+    <div class="c-grid3">
+      <div class="c-card c-card-accent">
+        <div class="c-card-tag">Primary Audience</div>
+        <div class="c-card-h">Custom Integrators &amp; System Integrators</div>
+        <div class="c-card-b">AV/IT professionals evaluating distribution partners. Decision-makers who need to trust quality, verify brand portfolio, and initiate a partnership — often researching on mobile between site visits.</div>
+      </div>
+      <div class="c-card c-card-accent">
+        <div class="c-card-tag">Business Goal</div>
+        <div class="c-card-h">Convert visitors into partner enquiries</div>
+        <div class="c-card-b">Signal premium positioning. Build trust through brand authority and editorial confidence. Drive Custom Integrators to the "Become a Partner" conversion path with minimal friction.</div>
+      </div>
+      <div class="c-card c-card-accent">
+        <div class="c-card-tag">Design Constraints</div>
+        <div class="c-card-h">Dark luxury language, no templates</div>
+        <div class="c-card-b">Zero UI framework · Single HTML file · Must feel Bang &amp; Olufsen meets enterprise IT · Gold as sole accent color · Sharp architectural layouts, no rounded corners</div>
+      </div>
+    </div>
+    <!-- Design process -->
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2mm;">Design Process</div>
+      <svg viewBox="0 0 520 68" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <defs><marker id="arrowG" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#FFBB50" opacity="0.5"/></marker></defs>
+        <rect x="4" y="16" width="84" height="36" fill="rgba(255,187,80,0.1)" stroke="#FFBB50" stroke-width="0.4"/>
+        <text x="46" y="30" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" letter-spacing="1.2" fill="rgba(255,187,80,0.55)">DISCOVER</text>
+        <text x="46" y="43" text-anchor="middle" font-family="Barlow,sans-serif" font-size="8" font-weight="600" fill="#FFF">Research</text>
+        <line x1="88" y1="34" x2="102" y2="34" stroke="#FFBB50" stroke-width="1.5" marker-end="url(#arrowG)" opacity="0.5"/>
+        <rect x="106" y="16" width="84" height="36" fill="rgba(255,187,80,0.1)" stroke="#FFBB50" stroke-width="0.4"/>
+        <text x="148" y="30" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" letter-spacing="1.2" fill="rgba(255,187,80,0.55)">DEFINE</text>
+        <text x="148" y="43" text-anchor="middle" font-family="Barlow,sans-serif" font-size="8" font-weight="600" fill="#FFF">Brand + IA</text>
+        <line x1="190" y1="34" x2="204" y2="34" stroke="#FFBB50" stroke-width="1.5" marker-end="url(#arrowG)" opacity="0.5"/>
+        <rect x="208" y="16" width="84" height="36" fill="rgba(255,187,80,0.1)" stroke="#FFBB50" stroke-width="0.4"/>
+        <text x="250" y="30" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" letter-spacing="1.2" fill="rgba(255,187,80,0.55)">DESIGN</text>
+        <text x="250" y="43" text-anchor="middle" font-family="Barlow,sans-serif" font-size="8" font-weight="600" fill="#FFF">Wireframes</text>
+        <line x1="292" y1="34" x2="306" y2="34" stroke="#FFBB50" stroke-width="1.5" marker-end="url(#arrowG)" opacity="0.5"/>
+        <rect x="310" y="16" width="84" height="36" fill="rgba(255,187,80,0.1)" stroke="#FFBB50" stroke-width="0.4"/>
+        <text x="352" y="30" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" letter-spacing="1.2" fill="rgba(255,187,80,0.55)">PROTOTYPE</text>
+        <text x="352" y="43" text-anchor="middle" font-family="Barlow,sans-serif" font-size="8" font-weight="600" fill="#FFF">Build + Test</text>
+        <line x1="394" y1="34" x2="408" y2="34" stroke="#FFBB50" stroke-width="1.5" marker-end="url(#arrowG)" opacity="0.5"/>
+        <rect x="412" y="16" width="100" height="36" fill="rgba(255,187,80,0.1)" stroke="#FFBB50" stroke-width="0.4"/>
+        <text x="462" y="30" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" letter-spacing="1.2" fill="rgba(255,187,80,0.55)">ITERATE</text>
+        <text x="462" y="43" text-anchor="middle" font-family="Barlow,sans-serif" font-size="8" font-weight="600" fill="#FFF">Refine + Ship</text>
+        <text x="46" y="62" text-anchor="middle" font-family="Barlow,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.25)">Week 1</text>
+        <text x="148" y="62" text-anchor="middle" font-family="Barlow,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.25)">Week 1–2</text>
+        <text x="250" y="62" text-anchor="middle" font-family="Barlow,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.25)">Week 2–3</text>
+        <text x="352" y="62" text-anchor="middle" font-family="Barlow,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.25)">Week 3–4</text>
+        <text x="462" y="62" text-anchor="middle" font-family="Barlow,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.25)">Ongoing</text>
+      </svg>
+    </div>
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2mm;">My Contribution</div>
+      <div class="contrib-grid">
+        <div class="contrib-item"><div class="contrib-label">UX Research</div><div class="contrib-desc">Competitor benchmarking, CI persona mapping, decision journey analysis</div></div>
+        <div class="contrib-item"><div class="contrib-label">Visual Design</div><div class="contrib-desc">Gold/black brand system, typography scale, component design, bento grid layouts</div></div>
+        <div class="contrib-item"><div class="contrib-label">Content Strategy</div><div class="contrib-desc">Messaging hierarchy, brand voice, SEO &amp; AEO structured data strategy</div></div>
+        <div class="contrib-item"><div class="contrib-label">Front-end Build</div><div class="contrib-desc">Single HTML file, inline CSS, vanilla JS, admin config panel, zero frameworks</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: DISCOVERY & RESEARCH -->
+<div class="page">
+  <div class="ph"><span class="ph-label">Discovery &amp; Research</span><span class="ph-num">03 / 10</span></div>
+  <div class="ci-tight">
+    <div>
+      <div class="c-tag">Discovery</div>
+      <div class="c-h2" style="margin-top:1.5mm;">Understanding the CI's digital journey.</div>
+    </div>
+    <div class="c-body" style="max-width:165mm;">Custom Integrators research distribution partners the same way they evaluate premium brands — they look for authority, portfolio depth, and evidence of support infrastructure. The website had to answer three questions in under 8 seconds: Who are you? What brands do you carry? Why should I trust you?</div>
+    <div>
+      <div class="prob"><div class="ps-lbl">Problem 01</div><div class="ps-txt">Existing distributor websites in India look like product catalogues — dense, utilitarian, and indistinguishable. CIs have no emotional reason to prefer one over another.</div></div>
+      <div class="sol"><div class="ps-lbl">Solution 01</div><div class="ps-txt">Adopt a luxury editorial visual language: dark backgrounds, gold accents, generous whitespace, and architectural grid layouts. Make BEENEXT feel like a premium partner, not a warehouse.</div></div>
+      <div class="prob"><div class="ps-lbl">Problem 02</div><div class="ps-txt">Brand portfolio is BEENEXT's core differentiator, but most distributors bury it in navigation. CIs can't discover exclusive brands quickly enough.</div></div>
+      <div class="sol"><div class="ps-lbl">Solution 02</div><div class="ps-txt">Surface brands two ways: an auto-scrolling marquee for immediate recognition, and a bento-grid Featured Brands section for deeper discovery. Brand names appear within 2 scrolls.</div></div>
+      <div class="prob"><div class="ps-lbl">Problem 03</div><div class="ps-txt">The "Become a Partner" CTA — the primary business conversion — had no persistent visibility. Users left without being reminded of the next step.</div></div>
+      <div class="sol"><div class="ps-lbl">Solution 03</div><div class="ps-txt">Anchor "Become a Partner" in the navigation as a persistent gold button. Reinforce with a full-width Partner CTA section above the footer. Two guaranteed exposures per visit.</div></div>
+    </div>
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2mm;">Competitor Benchmarking — Key Findings</div>
+      <div class="c-grid3">
+        <div class="c-card">
+          <div class="c-card-tag">Visual Identity</div>
+          <div class="c-card-h">Generic, template-driven</div>
+          <div class="c-card-b">90% of Indian VAD websites use blue/white templates with stock photography. Zero visual differentiation at a glance.</div>
+        </div>
+        <div class="c-card">
+          <div class="c-card-tag">Navigation</div>
+          <div class="c-card-h">Buried brand portfolios</div>
+          <div class="c-card-b">Brand sections averaged 3 clicks deep. Logo recognition was inconsistent and missing on key landing pages.</div>
+        </div>
+        <div class="c-card">
+          <div class="c-card-tag">Conversion</div>
+          <div class="c-card-h">No visible CTA architecture</div>
+          <div class="c-card-b">Partner CTAs appeared once, mid-page. No persistent nav CTA. Multi-field forms created high enquiry friction.</div>
+        </div>
+      </div>
+    </div>
+    <div class="insight-band">
+      <div class="insight-band-text">"If BEENEXT looked like every other distributor, Custom Integrators would treat it like every other distributor — as a commodity. The design needed to make the brand self-evident as the premium choice before a single word was read."</div>
+      <div class="insight-band-attr">Design Research Insight</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: USER PERSONAS -->
+<div class="page">
+  <div class="ph"><span class="ph-label">User Personas</span><span class="ph-num">04 / 10</span></div>
+  <div class="ci-tight">
+    <div>
+      <div class="c-tag">Personas</div>
+      <div class="c-h2" style="margin-top:1.5mm;">Two decision-makers. Two paths to conversion.</div>
+    </div>
+    <div class="c-grid2" style="gap:4mm;">
+      <div class="persona-card">
+        <div style="display:flex;align-items:flex-start;gap:3mm;margin-bottom:3mm;">
+          <div style="width:14mm;height:14mm;background:rgba(255,187,80,0.12);border:0.3mm solid rgba(255,187,80,0.25);display:flex;align-items:center;justify-content:center;font-size:16pt;flex-shrink:0;">⚙️</div>
+          <div><div class="persona-name">Arjun Mehta</div><div class="persona-role">Independent Custom Integrator, Mumbai</div></div>
+        </div>
+        <div class="persona-attr">About</div>
+        <div class="persona-val">10 years in AV integration. Boutique firm delivering residential automation and corporate AV. Evaluates new distribution partners 2–3 times a year.</div>
+        <div class="persona-attr">Goals</div>
+        <div class="persona-val">Reliable exclusive brands with Indian stock. A single VAD for AV + IT + automation — fewer relationships, faster execution.</div>
+        <div class="persona-attr">Frustrations</div>
+        <div class="persona-val">No pre-sales support. Hidden MOQ requirements. Brands not stocked locally. Generic distributors who don't understand integration.</div>
+        <div class="persona-attr">How he evaluates</div>
+        <div class="persona-val">Scans brand logos first. Reads testimonials. Looks for phone/WhatsApp contact. Decides in under 90 seconds on mobile.</div>
+        <div style="margin-top:3mm;"><span class="tag-pill">AV Integration</span><span class="tag-pill">Automation</span><span class="tag-pill">Mobile-first</span></div>
+      </div>
+      <div class="persona-card">
+        <div style="display:flex;align-items:flex-start;gap:3mm;margin-bottom:3mm;">
+          <div style="width:14mm;height:14mm;background:rgba(255,187,80,0.12);border:0.3mm solid rgba(255,187,80,0.25);display:flex;align-items:center;justify-content:center;font-size:16pt;flex-shrink:0;">🏢</div>
+          <div><div class="persona-name">Priya Sharma</div><div class="persona-role">IT Procurement Lead, Enterprise, Bangalore</div></div>
+        </div>
+        <div class="persona-attr">About</div>
+        <div class="persona-val">Head of IT procurement managing AV/IT vendor relationships for 3 office locations. Evaluates vendors on credibility, warranty terms, and GST compliance.</div>
+        <div class="persona-attr">Goals</div>
+        <div class="persona-val">Authorised distributors with verifiable brand partnerships. A contact who understands enterprise requirements, not just retail channel sales.</div>
+        <div class="persona-attr">Frustrations</div>
+        <div class="persona-val">Distributors who push stock over recommendations. Lack of documented brand authorisation. Poor post-sales follow-through.</div>
+        <div class="persona-attr">How she evaluates</div>
+        <div class="persona-val">Reads brand list carefully. Looks for "official/exclusive distributor" language. Saves page, emails from desktop later.</div>
+        <div style="margin-top:3mm;"><span class="tag-pill">Enterprise IT</span><span class="tag-pill">Network Infra</span><span class="tag-pill">Compliance-Driven</span></div>
+      </div>
+    </div>
+    <!-- Journey map -->
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2.5mm;">CI Decision Journey — Arjun's Visit Path</div>
+      <div class="jrn-row">
+        <div class="jrn-label"><div class="jrn-label-text"></div></div>
+        <div class="jrn-header"><div class="jrn-header-text">Awareness</div></div>
+        <div class="jrn-header"><div class="jrn-header-text">Discovery</div></div>
+        <div class="jrn-header"><div class="jrn-header-text">Evaluation</div></div>
+        <div class="jrn-header"><div class="jrn-header-text">Decision</div></div>
+      </div>
+      <div class="jrn-row">
+        <div class="jrn-label"><div class="jrn-label-text">Touchpoint</div></div>
+        <div class="jrn-cell">Google: "Peplink distributor India"</div>
+        <div class="jrn-cell">Lands on Hero. Sees brand marquee within 1 scroll.</div>
+        <div class="jrn-cell">Reads Featured Brands + Why BEENEXT stats</div>
+        <div class="jrn-cell">Clicks "Become a Partner" CTA</div>
+      </div>
+      <div class="jrn-row">
+        <div class="jrn-label"><div class="jrn-label-text">Emotion</div></div>
+        <div class="jrn-cell">Skeptical — has tried three distributors before</div>
+        <div class="jrn-cell">Intrigued — site looks different, premium</div>
+        <div class="jrn-cell">Confident — brand depth + stat credibility</div>
+        <div class="jrn-cell">Committed — fills enquiry form</div>
+      </div>
+      <div class="jrn-row">
+        <div class="jrn-label"><div class="jrn-label-text">Design Need</div></div>
+        <div class="jrn-cell">Strong SEO + fast LCP to land on page</div>
+        <div class="jrn-cell">Immediate premium signal + brand visibility</div>
+        <div class="jrn-cell">Stats, USPs, brand grid — trust builders</div>
+        <div class="jrn-cell">Persistent nav CTA + low-friction form</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: INFORMATION ARCHITECTURE -->
+<div class="page">
+  <div class="ph"><span class="ph-label">Information Architecture</span><span class="ph-num">05 / 10</span></div>
+  <div style="padding:10mm 12mm 9mm;height:calc(297mm - 9mm);display:flex;flex-direction:column;gap:4.5mm;justify-content:space-between;">
+    <div>
+      <div class="c-tag">Information Architecture</div>
+      <div class="c-h2" style="margin-top:1.5mm;">Every section earns its position.</div>
+    </div>
+    <div class="c-body">The homepage follows a deliberate persuasion sequence: introduce → validate → demonstrate → convert. Each section answers the question the CI asks at that scroll depth.</div>
+    <!-- Section flow SVG -->
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2.5mm;">Homepage Section Flow</div>
+      <svg viewBox="0 0 520 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#0D0D0D;">
+        <line x1="260" y1="15" x2="260" y2="200" stroke="rgba(255,187,80,0.15)" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <!-- Sections -->
+        <rect x="190" y="8" width="140" height="24" fill="rgba(255,187,80,0.15)" stroke="#FFBB50" stroke-width="0.5"/>
+        <text x="260" y="23" text-anchor="middle" font-family="Barlow,sans-serif" font-size="7.5" font-weight="700" fill="#FFBB50">01 — HERO</text>
+        <text x="20" y="22" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,187,80,0.35)">ABOVE FOLD</text>
+        <line x1="85" y1="21" x2="188" y2="21" stroke="rgba(255,187,80,0.12)" stroke-width="0.5"/>
+        <text x="370" y="22" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Introduce + dual CTA</text>
+
+        <rect x="190" y="38" width="140" height="24" fill="#1A1A1A" stroke="rgba(255,187,80,0.2)" stroke-width="0.4"/>
+        <text x="260" y="53" text-anchor="middle" font-family="Barlow,sans-serif" font-size="7" font-weight="600" fill="rgba(255,255,255,0.75)">02 — BRAND MARQUEE</text>
+        <text x="370" y="52" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Immediate brand recognition</text>
+
+        <rect x="190" y="68" width="140" height="24" fill="#1A1A1A" stroke="rgba(255,187,80,0.2)" stroke-width="0.4"/>
+        <text x="260" y="83" text-anchor="middle" font-family="Barlow,sans-serif" font-size="7" font-weight="600" fill="rgba(255,255,255,0.75)">03 — WHAT WE DO</text>
+        <text x="20" y="82" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.2)">TRUST BUILD</text>
+        <line x1="76" y1="81" x2="188" y2="81" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+        <text x="370" y="82" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Value proposition + 4 cards</text>
+
+        <rect x="190" y="98" width="140" height="24" fill="#1A1A1A" stroke="rgba(255,187,80,0.2)" stroke-width="0.4"/>
+        <text x="260" y="113" text-anchor="middle" font-family="Barlow,sans-serif" font-size="7" font-weight="600" fill="rgba(255,255,255,0.75)">04 — FEATURED BRANDS</text>
+        <text x="370" y="112" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Bento grid — 6 exclusive brands</text>
+
+        <rect x="190" y="128" width="140" height="24" fill="#1A1A1A" stroke="rgba(255,187,80,0.2)" stroke-width="0.4"/>
+        <text x="260" y="143" text-anchor="middle" font-family="Barlow,sans-serif" font-size="7" font-weight="600" fill="rgba(255,255,255,0.75)">05 — STATS + WHY US</text>
+        <text x="20" y="142" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.2)">VALIDATE</text>
+        <text x="370" y="142" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">9yr / 8 brands / 500+ partners</text>
+
+        <rect x="190" y="158" width="140" height="24" fill="#1A1A1A" stroke="rgba(255,187,80,0.2)" stroke-width="0.4"/>
+        <text x="260" y="170" text-anchor="middle" font-family="Barlow,sans-serif" font-size="6" font-weight="600" fill="rgba(255,255,255,0.75)">06–07 — SOLUTIONS / BLOG</text>
+        <text x="370" y="170" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Verticals + content credibility</text>
+
+        <rect x="190" y="188" width="140" height="22" fill="rgba(255,187,80,0.15)" stroke="#FFBB50" stroke-width="0.5"/>
+        <text x="260" y="201" text-anchor="middle" font-family="Barlow,sans-serif" font-size="7" font-weight="700" fill="#FFBB50">08–09 — PARTNER CTA + FOOTER</text>
+        <text x="20" y="200" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,187,80,0.35)">CONVERT</text>
+        <text x="370" y="200" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,187,80,0.45)">Primary conversion zone</text>
+      </svg>
+    </div>
+    <!-- Key IA decisions -->
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2mm;">Key Architecture Decisions</div>
+      <div class="map-row">
+        <div class="map-insight"><div class="map-label">Insight</div><div class="map-text">CIs recognise brands before reading body copy. Brand identity is their shortcut to trust.</div></div>
+        <div class="map-arrow">→</div>
+        <div class="map-decision"><div class="map-label">Decision</div><div class="map-text">Brand marquee in Section 2, immediately below hero. All 9 brands surface within 1 scroll — no navigation required.</div></div>
+      </div>
+      <div class="map-row">
+        <div class="map-insight"><div class="map-label">Insight</div><div class="map-text">Stats ("9 years", "500+ partners") are the most cited B2B credibility signals when evaluating new vendors.</div></div>
+        <div class="map-arrow">→</div>
+        <div class="map-decision"><div class="map-label">Decision</div><div class="map-text">Dedicate a full section (Section 5) to large-format gold stats paired with USP columns. Data-first credibility.</div></div>
+      </div>
+      <div class="map-row">
+        <div class="map-insight"><div class="map-label">Insight</div><div class="map-text">Conversion drop-off is highest at the footer when users have lost context on why they should act.</div></div>
+        <div class="map-arrow">→</div>
+        <div class="map-decision"><div class="map-label">Decision</div><div class="map-text">Full-width Partner CTA section (Section 8) with headline, sub-copy, and re-anchored value prop placed before footer.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: WIREFRAMES -->
+<div class="page">
+  <div class="ph ph-dark"><span class="ph-label">Wireframes</span><span class="ph-num">06 / 10</span></div>
+  <div class="wf-inner">
+    <div>
+      <div class="wf-tag">Low-Fidelity Wireframes</div>
+      <div class="wf-h">Structure before style.</div>
+      <div class="wf-desc">Wireframes stripped color and texture to test layout logic: hierarchy, content density, and CTA placement. Each panel reviewed against the CI decision journey before visual design began.</div>
+    </div>
+    <div class="wf-grid">
+      <!-- Panel 1: Hero -->
+      <div class="wf-panel">
+        <svg viewBox="0 0 240 165" xmlns="http://www.w3.org/2000/svg">
+          <rect width="240" height="165" fill="#0E0E0E"/>
+          <rect x="0" y="0" width="240" height="13" fill="#080808"/>
+          <rect x="8" y="3.5" width="18" height="6" fill="rgba(255,187,80,0.35)"/>
+          <rect x="168" y="3.5" width="34" height="6" fill="rgba(255,187,80,0.15)" stroke="rgba(255,187,80,0.4)" stroke-width="0.5"/>
+          <text x="185" y="8.5" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4" fill="rgba(255,187,80,0.7)">BECOME PARTNER</text>
+          <rect x="14" y="26" width="58" height="4" fill="rgba(255,187,80,0.1)"/>
+          <text x="43" y="29.5" text-anchor="middle" font-family="Barlow,sans-serif" font-size="3.5" fill="rgba(255,187,80,0.5)">◆ VALUE ADDED DISTRIBUTOR</text>
+          <rect x="14" y="35" width="98" height="9" fill="rgba(255,255,255,0.2)"/>
+          <rect x="14" y="47" width="118" height="9" fill="rgba(255,255,255,0.12)"/>
+          <rect x="14" y="59" width="88" height="3" fill="rgba(255,255,255,0.08)"/>
+          <rect x="14" y="64" width="76" height="3" fill="rgba(255,255,255,0.08)"/>
+          <rect x="14" y="74" width="50" height="9" fill="rgba(255,187,80,0.8)"/>
+          <text x="39" y="80" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4" font-weight="700" fill="#000">Explore Brands →</text>
+          <rect x="70" y="74" width="46" height="9" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+          <text x="93" y="80" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4" fill="rgba(255,255,255,0.5)">Become Partner</text>
+          <rect x="154" y="20" width="78" height="136" fill="rgba(255,187,80,0.03)" stroke="rgba(255,187,80,0.1)" stroke-width="0.5"/>
+          <text x="193" y="88" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5" fill="rgba(255,187,80,0.2)">HEX GRID</text>
+          <text x="193" y="96" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5" fill="rgba(255,187,80,0.2)">ANIMATION</text>
+        </svg>
+        <div class="wf-foot">
+          <div class="wf-stage">Section 01 — Hero</div>
+          <div class="wf-stage-note">Full viewport · left text · persistent nav CTA · animated hex bg</div>
+        </div>
+      </div>
+      <!-- Panel 2: Marquee + What We Do -->
+      <div class="wf-panel">
+        <svg viewBox="0 0 240 165" xmlns="http://www.w3.org/2000/svg">
+          <rect width="240" height="165" fill="#0E0E0E"/>
+          <rect x="0" y="0" width="240" height="30" fill="#080808"/>
+          <text x="14" y="9" font-family="Barlow,sans-serif" font-size="4" font-weight="700" letter-spacing="1.5" fill="rgba(255,187,80,0.35)">TRUSTED GLOBAL BRANDS</text>
+          <rect x="14" y="13" width="22" height="9" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="0.4"/>
+          <rect x="40" y="13" width="22" height="9" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="0.4"/>
+          <rect x="66" y="13" width="22" height="9" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="0.4"/>
+          <rect x="92" y="13" width="22" height="9" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="0.4"/>
+          <rect x="118" y="13" width="22" height="9" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="0.4"/>
+          <rect x="144" y="13" width="22" height="9" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="0.4"/>
+          <rect x="170" y="13" width="22" height="9" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="0.4"/>
+          <rect x="196" y="13" width="22" height="9" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="0.4"/>
+          <rect x="14" y="40" width="55" height="5" fill="rgba(255,255,255,0.18)"/>
+          <rect x="14" y="48" width="88" height="3.5" fill="rgba(255,255,255,0.07)"/>
+          <rect x="14" y="53" width="78" height="3.5" fill="rgba(255,255,255,0.07)"/>
+          <rect x="14" y="65" width="50" height="38" fill="rgba(255,187,80,0.06)" stroke="rgba(255,187,80,0.15)" stroke-width="0.4"/>
+          <rect x="14" y="65" width="50" height="1.5" fill="#FFBB50" opacity="0.5"/>
+          <text x="39" y="78" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4.5" fill="rgba(255,255,255,0.4)">Exclusive Dist.</text>
+          <rect x="68" y="65" width="50" height="38" fill="rgba(255,187,80,0.06)" stroke="rgba(255,187,80,0.15)" stroke-width="0.4"/>
+          <rect x="68" y="65" width="50" height="1.5" fill="#FFBB50" opacity="0.5"/>
+          <text x="93" y="78" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4.5" fill="rgba(255,255,255,0.4)">Strategy-First</text>
+          <rect x="122" y="65" width="50" height="38" fill="rgba(255,187,80,0.06)" stroke="rgba(255,187,80,0.15)" stroke-width="0.4"/>
+          <rect x="122" y="65" width="50" height="1.5" fill="#FFBB50" opacity="0.5"/>
+          <text x="147" y="78" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4.5" fill="rgba(255,255,255,0.4)">Full Stack Supp.</text>
+          <rect x="176" y="65" width="50" height="38" fill="rgba(255,187,80,0.06)" stroke="rgba(255,187,80,0.15)" stroke-width="0.4"/>
+          <rect x="176" y="65" width="50" height="1.5" fill="#FFBB50" opacity="0.5"/>
+          <text x="201" y="78" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4.5" fill="rgba(255,255,255,0.4)">Pan-India</text>
+        </svg>
+        <div class="wf-foot">
+          <div class="wf-stage">Sections 02–03 — Brand Marquee + What We Do</div>
+          <div class="wf-stage-note">Infinite scroll marquee · 4 capability cards with gold top border</div>
+        </div>
+      </div>
+      <!-- Panel 3: Featured Brands Bento -->
+      <div class="wf-panel">
+        <svg viewBox="0 0 240 165" xmlns="http://www.w3.org/2000/svg">
+          <rect width="240" height="165" fill="#0E0E0E"/>
+          <text x="14" y="13" font-family="Barlow,sans-serif" font-size="5" font-weight="700" letter-spacing="1.5" fill="rgba(255,187,80,0.45)">OUR GLOBAL BRANDS</text>
+          <rect x="14" y="18" width="78" height="78" fill="#181818" stroke="rgba(255,187,80,0.15)" stroke-width="0.5"/>
+          <text x="53" y="61" text-anchor="middle" font-family="Barlow,sans-serif" font-size="7.5" font-weight="700" fill="rgba(255,255,255,0.55)">Peplink</text>
+          <rect x="96" y="18" width="78" height="78" fill="#181818" stroke="rgba(255,187,80,0.15)" stroke-width="0.5"/>
+          <text x="135" y="57" text-anchor="middle" font-family="Barlow,sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,0.55)">AVPro</text>
+          <text x="135" y="66" text-anchor="middle" font-family="Barlow,sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,0.55)">Edge</text>
+          <rect x="178" y="18" width="48" height="37" fill="#181818" stroke="rgba(255,187,80,0.15)" stroke-width="0.5"/>
+          <text x="202" y="40" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.45)">Webro</text>
+          <rect x="178" y="59" width="48" height="37" fill="#181818" stroke="rgba(255,187,80,0.15)" stroke-width="0.5"/>
+          <text x="202" y="81" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.45)">LILIN</text>
+          <rect x="14" y="100" width="36" height="36" fill="#181818" stroke="rgba(255,187,80,0.15)" stroke-width="0.5"/>
+          <text x="32" y="121" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5" fill="rgba(255,255,255,0.45)">Murideo</text>
+          <rect x="54" y="100" width="120" height="36" fill="#181818" stroke="rgba(255,187,80,0.15)" stroke-width="0.5"/>
+          <text x="114" y="121" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.45)">Gude Power Solutions</text>
+          <rect x="178" y="100" width="48" height="36" fill="#181818" stroke="rgba(255,187,80,0.15)" stroke-width="0.5"/>
+          <text x="202" y="121" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.45)">AVA</text>
+          <text x="120" y="152" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,187,80,0.55)">[ View All Brands → ]</text>
+        </svg>
+        <div class="wf-foot">
+          <div class="wf-stage">Section 04 — Featured Brands Bento Grid</div>
+          <div class="wf-stage-note">Asymmetric layout · gold hover border · 6 brand tiles</div>
+        </div>
+      </div>
+      <!-- Panel 4: Stats + Partner CTA -->
+      <div class="wf-panel">
+        <svg viewBox="0 0 240 165" xmlns="http://www.w3.org/2000/svg">
+          <rect width="240" height="165" fill="#0E0E0E"/>
+          <rect x="0" y="0" width="240" height="68" fill="#080808"/>
+          <text x="14" y="11" font-family="Barlow,sans-serif" font-size="4.5" font-weight="700" letter-spacing="1.5" fill="rgba(255,187,80,0.3)">WHY BEENEXT</text>
+          <rect x="14" y="17" width="60" height="40" fill="#131313" stroke="rgba(255,187,80,0.12)" stroke-width="0.4"/>
+          <text x="44" y="37" text-anchor="middle" font-family="Barlow,sans-serif" font-size="18" font-weight="800" fill="#FFBB50">9+</text>
+          <text x="44" y="49" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4" fill="rgba(255,255,255,0.28)">YEARS EXCELLENCE</text>
+          <rect x="90" y="17" width="60" height="40" fill="#131313" stroke="rgba(255,187,80,0.12)" stroke-width="0.4"/>
+          <text x="120" y="37" text-anchor="middle" font-family="Barlow,sans-serif" font-size="18" font-weight="800" fill="#FFBB50">8+</text>
+          <text x="120" y="49" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4" fill="rgba(255,255,255,0.28)">GLOBAL BRANDS</text>
+          <rect x="166" y="17" width="60" height="40" fill="#131313" stroke="rgba(255,187,80,0.12)" stroke-width="0.4"/>
+          <text x="196" y="35" text-anchor="middle" font-family="Barlow,sans-serif" font-size="15" font-weight="800" fill="#FFBB50">500+</text>
+          <text x="196" y="49" text-anchor="middle" font-family="Barlow,sans-serif" font-size="4" fill="rgba(255,255,255,0.28)">PARTNERS SERVED</text>
+          <!-- Partner CTA -->
+          <rect x="0" y="90" width="240" height="75" fill="#000"/>
+          <rect x="0" y="90" width="240" height="0.5" fill="rgba(255,187,80,0.2)"/>
+          <text x="120" y="111" text-anchor="middle" font-family="Barlow,sans-serif" font-size="8.5" font-weight="700" fill="rgba(255,255,255,0.8)">Ready to Elevate Your</text>
+          <text x="120" y="122" text-anchor="middle" font-family="Barlow,sans-serif" font-size="8.5" font-weight="700" fill="rgba(255,255,255,0.8)">Integration Business?</text>
+          <text x="120" y="133" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5" fill="rgba(255,255,255,0.3)">Join India's leading CI network. We grow together.</text>
+          <rect x="85" y="141" width="70" height="12" fill="#FFBB50"/>
+          <text x="120" y="149" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="#000">Become a Partner →</text>
+        </svg>
+        <div class="wf-foot">
+          <div class="wf-stage">Sections 05 + 08 — Stats &amp; Partner CTA</div>
+          <div class="wf-stage-note">Large-format gold stats · full-width conversion section</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3.5mm;background:rgba(255,187,80,0.04);border:0.3mm solid rgba(255,187,80,0.1);padding:3mm 4mm;">
+      <div>
+        <div style="font-size:6pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FFBB50;margin-bottom:1.5mm;">Layout Rationale</div>
+        <div style="font-size:7pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.45);">Left-aligned hero text with right-side graphic follows natural F-pattern reading. CTA buttons placed at the terminal point of the eye path — below headline and sub-copy.</div>
+      </div>
+      <div>
+        <div style="font-size:6pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FFBB50;margin-bottom:1.5mm;">Spacing System</div>
+        <div style="font-size:7pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.45);">8px base unit. Section vertical padding: 96px desktop / 64px mobile. Card padding: 32px. 1px gold border as consistent elegance signal throughout.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7: DESIGN SYSTEM -->
+<div class="page">
+  <div class="ph"><span class="ph-label">Design System</span><span class="ph-num">07 / 10</span></div>
+  <div class="ci-tight">
+    <div>
+      <div class="c-tag">Design System</div>
+      <div class="c-h2" style="margin-top:1.5mm;">One accent color. Total visual coherence.</div>
+    </div>
+    <!-- Color tokens -->
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2.5mm;">Colour Tokens — Primary Palette</div>
+      <div class="swatch-row">
+        <div class="swatch" style="background:#FFBB50;width:34mm;">
+          <div class="swatch-label" style="color:#000;">Gold</div>
+          <div class="swatch-hex" style="color:rgba(0,0,0,0.6);">#FFBB50</div>
+          <div class="swatch-use" style="color:rgba(0,0,0,0.45);">Primary accent · CTAs · links</div>
+        </div>
+        <div class="swatch" style="background:#E79D29;width:34mm;">
+          <div class="swatch-label" style="color:#000;">Marigold</div>
+          <div class="swatch-hex" style="color:rgba(0,0,0,0.6);">#E79D29</div>
+          <div class="swatch-use" style="color:rgba(0,0,0,0.45);">Gradient end · hover states</div>
+        </div>
+        <div class="swatch" style="background:#000;width:34mm;border:0.4mm solid rgba(255,187,80,0.15);">
+          <div class="swatch-label" style="color:#fff;">Black</div>
+          <div class="swatch-hex" style="color:rgba(255,255,255,0.5);">#000000</div>
+          <div class="swatch-use" style="color:rgba(255,255,255,0.3);">Hero bg · deep sections</div>
+        </div>
+        <div class="swatch" style="background:#131313;width:34mm;border:0.4mm solid rgba(255,187,80,0.1);">
+          <div class="swatch-label" style="color:#fff;">Surface</div>
+          <div class="swatch-hex" style="color:rgba(255,255,255,0.5);">#131313</div>
+          <div class="swatch-use" style="color:rgba(255,255,255,0.3);">Main page background</div>
+        </div>
+        <div class="swatch" style="background:#212121;width:34mm;border:0.4mm solid rgba(255,187,80,0.1);">
+          <div class="swatch-label" style="color:#fff;">Raisin</div>
+          <div class="swatch-hex" style="color:rgba(255,255,255,0.5);">#212121</div>
+          <div class="swatch-use" style="color:rgba(255,255,255,0.3);">Card bg · nav bg</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <!-- Typography -->
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2.5mm;">Typography System — Barlow Family</div>
+      <div class="c-grid2" style="gap:5mm;">
+        <div>
+          <div style="font-size:26pt;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF;line-height:1.0;margin-bottom:2mm;">Headlines.</div>
+          <div style="font-size:6.5pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FFBB50;margin-bottom:1.5mm;">Barlow 800 — Display / Hero</div>
+          <div style="font-size:7.5pt;line-height:1.6;font-weight:300;color:rgba(255,255,255,0.4);">Tight tracking −0.03em signals precision and authority. 800 weight at large size creates the luxury editorial impression at first glance.</div>
+        </div>
+        <div>
+          <div style="font-size:9pt;font-weight:300;line-height:1.72;color:rgba(255,255,255,0.6);margin-bottom:2mm;">Body copy flows with clarity and restraint — designed for sustained reading on dark backgrounds without eye fatigue.</div>
+          <div style="font-size:6.5pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FFBB50;margin-bottom:1.5mm;">Barlow 300 — Body copy</div>
+          <div style="font-size:7.5pt;line-height:1.6;font-weight:300;color:rgba(255,255,255,0.4);">300 weight body paired with 800 headings creates stark contrast hierarchy. Single-family approach eliminates font-swap jank on load.</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <!-- Section cadence -->
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2mm;">Section Colour Cadence</div>
+      <svg viewBox="0 0 520 52" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <rect x="0" y="0" width="56" height="30" fill="#000" stroke="rgba(255,187,80,0.35)" stroke-width="0.5"/>
+        <text x="28" y="19" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.8)">HERO</text>
+        <text x="28" y="42" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Pure Black</text>
+        <rect x="59" y="0" width="56" height="30" fill="#0D0D0D" stroke="rgba(255,187,80,0.12)" stroke-width="0.4"/>
+        <text x="87" y="19" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.7)">MARQUEE</text>
+        <text x="87" y="42" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Near-Black</text>
+        <rect x="118" y="0" width="56" height="30" fill="#131313" stroke="rgba(255,187,80,0.1)" stroke-width="0.4"/>
+        <text x="146" y="19" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.7)">WHAT WE DO</text>
+        <text x="146" y="42" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Surface</text>
+        <rect x="177" y="0" width="56" height="30" fill="#131313" stroke="rgba(255,187,80,0.1)" stroke-width="0.4"/>
+        <text x="205" y="19" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.7)">BRANDS</text>
+        <text x="205" y="42" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Surface</text>
+        <rect x="236" y="0" width="56" height="30" fill="#0A0A0A" stroke="rgba(255,187,80,0.1)" stroke-width="0.4"/>
+        <text x="264" y="15" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.7)">STATS</text>
+        <text x="264" y="24" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,187,80,0.8)">◆ GOLD</text>
+        <text x="264" y="42" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Near-Black</text>
+        <rect x="295" y="0" width="56" height="30" fill="#131313" stroke="rgba(255,187,80,0.1)" stroke-width="0.4"/>
+        <text x="323" y="19" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.7)">SOLUTIONS</text>
+        <text x="323" y="42" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Surface</text>
+        <rect x="354" y="0" width="56" height="30" fill="#131313" stroke="rgba(255,187,80,0.1)" stroke-width="0.4"/>
+        <text x="382" y="19" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.7)">BLOG</text>
+        <text x="382" y="42" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Surface</text>
+        <rect x="413" y="0" width="56" height="30" fill="#000" stroke="rgba(255,187,80,0.35)" stroke-width="0.5"/>
+        <text x="441" y="14" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5" font-weight="700" fill="rgba(255,255,255,0.8)">PARTNER</text>
+        <text x="441" y="23" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5" font-weight="700" fill="rgba(255,187,80,0.8)">◆ PEAK</text>
+        <text x="441" y="42" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Pure Black</text>
+        <rect x="472" y="0" width="48" height="30" fill="#0A0A0A" stroke="rgba(255,187,80,0.1)" stroke-width="0.4"/>
+        <text x="496" y="19" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.7)">FOOTER</text>
+        <text x="496" y="42" text-anchor="middle" font-family="Barlow,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.25)">Near-Black</text>
+      </svg>
+    </div>
+    <!-- Design principles -->
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2mm;">Core Design Principles</div>
+      <div class="c-grid3">
+        <div style="border-left:1mm solid #FFBB50;padding:3mm 4mm;background:rgba(255,187,80,0.04);">
+          <div class="c-card-tag">Principle 01</div>
+          <div class="c-card-h">Gold as signal, not decoration</div>
+          <div class="c-card-b">Every gold element earns its place: CTAs, borders, stats, tags. Gold is never used for body text or backgrounds. Restraint amplifies impact.</div>
+        </div>
+        <div style="border-left:1mm solid #FFBB50;padding:3mm 4mm;background:rgba(255,187,80,0.04);">
+          <div class="c-card-tag">Principle 02</div>
+          <div class="c-card-h">Architectural sharpness</div>
+          <div class="c-card-b">Zero border radius throughout. Sharp card edges signal precision — consistent with enterprise technology positioning. Rounded corners feel consumer.</div>
+        </div>
+        <div style="border-left:1mm solid #FFBB50;padding:3mm 4mm;background:rgba(255,187,80,0.04);">
+          <div class="c-card-tag">Principle 03</div>
+          <div class="c-card-h">Strategic whitespace</div>
+          <div class="c-card-b">Sections breathe. Generous padding signals premium positioning — crowded layouts signal commodity. Space is the luxury signal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8: VISUAL DESIGN — KEY SCREENS -->
+<div class="page">
+  <div class="ph ph-dark"><span class="ph-label">Visual Design — Key Screens</span><span class="ph-num">08 / 10</span></div>
+  <div style="padding:9mm 12mm 8mm;height:calc(297mm - 9mm);display:flex;flex-direction:column;gap:5mm;">
+    <div>
+      <div class="c-tag">Visual Design</div>
+      <div class="c-h2" style="margin-top:1.5mm;">High-fidelity screens — bringing the brand to life.</div>
+    </div>
+    <!-- Hero mockup -->
+    <div style="background:#000;border:0.3mm solid rgba(255,187,80,0.2);flex:1;min-height:0;overflow:hidden;position:relative;">
+      <!-- Nav -->
+      <div style="background:rgba(0,0,0,0.85);padding:3.5mm 7mm;display:flex;align-items:center;justify-content:space-between;border-bottom:0.3mm solid rgba(255,187,80,0.1);">
+        <div style="display:flex;align-items:baseline;">
+          <span style="font-size:9pt;font-weight:800;letter-spacing:-0.02em;color:#FFBB50;">BEE</span><span style="font-size:9pt;font-weight:800;letter-spacing:-0.02em;color:#FFF;">NEXT</span>
+        </div>
+        <div style="display:flex;gap:5mm;align-items:center;">
+          <span style="font-size:5.5pt;font-weight:700;letter-spacing:0.08em;color:rgba(255,255,255,0.45);">HOME</span>
+          <span style="font-size:5.5pt;font-weight:700;letter-spacing:0.08em;color:rgba(255,255,255,0.45);">ABOUT</span>
+          <span style="font-size:5.5pt;font-weight:700;letter-spacing:0.08em;color:rgba(255,255,255,0.45);">BRANDS</span>
+          <span style="font-size:5.5pt;font-weight:700;letter-spacing:0.08em;color:rgba(255,255,255,0.45);">SOLUTIONS</span>
+          <span style="font-size:5.5pt;font-weight:700;letter-spacing:0.08em;color:rgba(255,255,255,0.45);">BLOG</span>
+          <div style="background:#FFBB50;padding:1.8mm 3.5mm;"><span style="font-size:5.5pt;font-weight:700;color:#000;">BECOME A PARTNER</span></div>
+        </div>
+      </div>
+      <!-- Hero body -->
+      <div style="padding:7mm 7mm 5mm;display:grid;grid-template-columns:1fr 1fr;gap:5mm;height:calc(100% - 11mm);">
+        <div style="display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:5.5pt;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,187,80,0.6);margin-bottom:3mm;">◆ VALUE ADDED DISTRIBUTOR — INDIA</div>
+          <div style="font-size:21pt;font-weight:800;letter-spacing:-0.04em;color:#FFF;line-height:0.92;margin-bottom:1mm;">India's Premier</div>
+          <div style="font-size:21pt;font-weight:800;letter-spacing:-0.04em;color:#FFF;line-height:0.92;margin-bottom:1mm;">Technology</div>
+          <div style="font-size:21pt;font-weight:800;letter-spacing:-0.04em;font-style:italic;color:#FFBB50;line-height:0.92;margin-bottom:4mm;">Distributor.</div>
+          <div style="font-size:7pt;line-height:1.7;font-weight:300;color:rgba(255,255,255,0.5);max-width:86mm;margin-bottom:4mm;">We bring next-generation AV, IT, and automation solutions to Custom Integrators across India. Strategy-first. Results-focused.</div>
+          <div style="display:flex;gap:3mm;">
+            <div style="background:#FFBB50;padding:2.5mm 4.5mm;"><span style="font-size:6pt;font-weight:700;color:#000;">Explore Our Brands →</span></div>
+            <div style="border:0.5mm solid rgba(255,255,255,0.3);padding:2.5mm 4.5mm;"><span style="font-size:6pt;font-weight:600;color:rgba(255,255,255,0.65);">Become a Partner</span></div>
+          </div>
+        </div>
+        <!-- Right hex grid -->
+        <div style="position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <svg viewBox="0 0 200 200" style="position:absolute;width:100%;height:100%;opacity:0.15;" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="hxS" x="0" y="0" width="40" height="34.64" patternUnits="userSpaceOnUse"><polygon points="20,1 39,11 39,31 20,41 1,31 1,11" fill="none" stroke="#FFBB50" stroke-width="0.7"/></pattern></defs>
+            <rect width="200" height="200" fill="url(#hxS)"/>
+          </svg>
+          <div style="position:relative;background:rgba(255,187,80,0.07);border:0.5mm solid rgba(255,187,80,0.3);padding:4mm 5.5mm;text-align:center;">
+            <div style="font-size:5pt;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,187,80,0.5);margin-bottom:1.5mm;">Exclusive Distributor</div>
+            <div style="font-size:7.5pt;font-weight:700;color:#FFF;line-height:1.6;">Peplink · AVPro Edge</div>
+            <div style="font-size:7.5pt;font-weight:700;color:#FFF;line-height:1.6;">Webro · Murideo</div>
+            <div style="font-size:7.5pt;font-weight:700;color:#FFF;line-height:1.6;">Gude · LILIN · AVA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Component annotations -->
+    <div class="c-grid3">
+      <div class="c-card">
+        <div class="c-card-tag">Navigation</div>
+        <div class="c-card-h">Transparent → Frosted glass on scroll</div>
+        <div class="c-card-b">rgba(0,0,0,0.85) + backdrop-filter:blur(20px) at 80px scroll. Gold CTA button persists at all scroll states.</div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-tag">Hero Headline</div>
+        <div class="c-card-h">Mixed weight + italic gold accent word</div>
+        <div class="c-card-b">800 weight white for first lines. Gold italic "Distributor." creates the focal point and brand color payoff simultaneously.</div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-tag">CTA Hierarchy</div>
+        <div class="c-card-h">Gold filled primary, outlined secondary</div>
+        <div class="c-card-b">Primary: solid #FFBB50 / #000 text — maximum contrast. Secondary: white outline for discovery path. Both above the fold.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9: ANIMATION & INTERACTIONS -->
+<div class="page">
+  <div class="ph"><span class="ph-label">Animation &amp; Interaction Design</span><span class="ph-num">09 / 10</span></div>
+  <div class="ci-tight">
+    <div>
+      <div class="c-tag">Interaction Design</div>
+      <div class="c-h2" style="margin-top:1.5mm;">Motion as brand language.</div>
+    </div>
+    <div class="c-grid2" style="gap:4mm;">
+      <div>
+        <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2mm;">Entrance Animations</div>
+        <div style="background:#1A1A1A;border:0.3mm solid rgba(255,187,80,0.1);padding:3mm 4mm;margin-bottom:2mm;">
+          <div class="map-label" style="margin-bottom:1mm;">Hero Load Sequence</div>
+          <div class="map-text">Logo + eyebrow (0ms) → H1 line 1 (300ms) → H1 line 2 (450ms) → H1 gold word (600ms) → sub-copy (700ms) → CTA primary (900ms) → CTA secondary (1050ms)</div>
+        </div>
+        <div style="background:#1A1A1A;border:0.3mm solid rgba(255,187,80,0.1);padding:3mm 4mm;margin-bottom:2mm;">
+          <div class="map-label" style="margin-bottom:1mm;">Scroll Entrance</div>
+          <div class="map-text">IntersectionObserver: translateY(20px) → Y(0) + opacity(0→1) over 600ms ease-out. Section items stagger at 100ms increments.</div>
+        </div>
+        <div style="background:#1A1A1A;border:0.3mm solid rgba(255,187,80,0.1);padding:3mm 4mm;">
+          <div class="map-label" style="margin-bottom:1mm;">Brand Marquee</div>
+          <div class="map-text">Pure CSS @keyframes infinite scroll at 30s linear. animation-play-state:paused on hover. No JS required.</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2mm;">Hover Micro-Interactions</div>
+        <div style="background:#1A1A1A;border:0.3mm solid rgba(255,187,80,0.1);padding:3mm 4mm;margin-bottom:2mm;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5mm;"><div class="c-card-tag">Cards</div><div style="font-size:6pt;color:rgba(255,255,255,0.22);">200ms ease</div></div>
+          <div style="font-size:7.5pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.5);">border-color: rgba(255,187,80,0.12) → rgba(255,187,80,0.5). Subtle gold glow: box-shadow:0 0 20px rgba(255,187,80,0.07).</div>
+        </div>
+        <div style="background:#1A1A1A;border:0.3mm solid rgba(255,187,80,0.1);padding:3mm 4mm;margin-bottom:2mm;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5mm;"><div class="c-card-tag">Navigation Links</div><div style="font-size:6pt;color:rgba(255,255,255,0.22);">200ms ease</div></div>
+          <div style="font-size:7.5pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.5);">color → #FFBB50 + ::after pseudo thin bottom border slides in from left (scaleX 0→1, transform-origin:left).</div>
+        </div>
+        <div style="background:#1A1A1A;border:0.3mm solid rgba(255,187,80,0.1);padding:3mm 4mm;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5mm;"><div class="c-card-tag">CTA Buttons</div><div style="font-size:6pt;color:rgba(255,255,255,0.22);">200ms ease</div></div>
+          <div style="font-size:7.5pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.5);">Gold filled: background slides to #E79D29 (marigold) + scale(1.02). Outlined: white fill at 8% opacity on hover.</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <!-- Admin config feature -->
+    <div>
+      <div class="c-tag" style="margin-bottom:1.5mm;">Admin Config Panel — config.html</div>
+      <div class="c-grid2" style="gap:4mm;">
+        <div class="c-card c-card-accent">
+          <div class="c-card-tag">Architecture</div>
+          <div class="c-card-h">Password-protected localStorage CMS</div>
+          <div class="c-card-b">SHA-256 hashed key comparison (client-side). 3-attempt lockout with 30s cooldown. Hero, brands, stats, blog, contact — all editable without touching code.</div>
+        </div>
+        <div class="c-card c-card-accent">
+          <div class="c-card-tag">UX Decision</div>
+          <div class="c-card-h">Dark-themed, brand-consistent admin UI</div>
+          <div class="c-card-b">Config panel matches site visual language — not a jarring light-mode admin break. Collapsible sections reduce cognitive load. JSON export as backup.</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <!-- Performance -->
+    <div>
+      <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.3);margin-bottom:2mm;">Performance Targets &amp; Accessibility</div>
+      <div class="c-grid4">
+        <div class="stat-block"><div class="stat-num" style="font-size:16pt;">&lt;2.5s</div><div class="stat-label">LCP Target</div></div>
+        <div class="stat-block"><div class="stat-num" style="font-size:16pt;">&lt;0.1</div><div class="stat-label">CLS Target</div></div>
+        <div class="stat-block"><div class="stat-num" style="font-size:16pt;">AA</div><div class="stat-label">WCAG Contrast</div></div>
+        <div class="stat-block"><div class="stat-num" style="font-size:16pt;">0</div><div class="stat-label">JS Frameworks</div></div>
+      </div>
+    </div>
+    <div class="pull-quote">
+      <div class="pull-quote-text">"All animations respect prefers-reduced-motion: reduce. When users opt out of motion, animations collapse to 0.01ms — the site remains fully functional and visually coherent."</div>
+      <div class="pull-quote-attr">Accessibility Principle — BEENEXT Design System</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: RESULTS & BACK COVER -->
+<div class="page">
+  <div style="background:#000;height:297mm;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+    <!-- BG hex -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.045;" viewBox="0 0 595 842" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id="hexBack" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse"><polygon points="30,2 58,17 58,47 30,62 2,47 2,17" fill="none" stroke="#FFBB50" stroke-width="0.7"/></pattern></defs>
+      <rect width="595" height="842" fill="url(#hexBack)"/>
+    </svg>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:55%;background:linear-gradient(to top,rgba(255,187,80,0.04) 0%,transparent 100%);pointer-events:none;"></div>
+    <div style="position:relative;z-index:2;padding:14mm;display:flex;flex-direction:column;height:100%;justify-content:space-between;">
+      <!-- Header -->
+      <div>
+        <div style="font-size:6.5pt;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,187,80,0.4);">Results &amp; Impact</div>
+        <div style="height:0.3mm;background:rgba(255,187,80,0.15);margin-top:3mm;margin-bottom:6mm;"></div>
+      </div>
+      <!-- Results -->
+      <div>
+        <div style="font-size:7pt;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FFBB50;margin-bottom:3mm;">Design Outcomes</div>
+        <div style="font-size:22pt;font-weight:800;letter-spacing:-0.04em;color:#FFF;line-height:1.0;margin-bottom:7mm;">A website that performs<br/>as a premium brand asset.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm;margin-bottom:8mm;">
+          <div style="background:rgba(255,187,80,0.07);border:0.3mm solid rgba(255,187,80,0.2);padding:6mm;text-align:center;">
+            <div style="font-size:30pt;font-weight:800;letter-spacing:-0.04em;color:#FFBB50;line-height:1;">100%</div>
+            <div style="font-size:6pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:2mm;">Single-File Delivery</div>
+            <div style="font-size:7pt;line-height:1.5;font-weight:300;color:rgba(255,255,255,0.4);margin-top:2mm;">Zero dependencies. Deployable anywhere. No build pipeline, no framework, no runtime risk.</div>
+          </div>
+          <div style="background:rgba(255,187,80,0.07);border:0.3mm solid rgba(255,187,80,0.2);padding:6mm;text-align:center;">
+            <div style="font-size:30pt;font-weight:800;letter-spacing:-0.04em;color:#FFBB50;line-height:1;">9</div>
+            <div style="font-size:6pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:2mm;">Homepage Sections</div>
+            <div style="font-size:7pt;line-height:1.5;font-weight:300;color:rgba(255,255,255,0.4);margin-top:2mm;">Full persuasion sequence: introduce → validate → demonstrate → convert. Every section placed by data.</div>
+          </div>
+          <div style="background:rgba(255,187,80,0.07);border:0.3mm solid rgba(255,187,80,0.2);padding:6mm;text-align:center;">
+            <div style="font-size:30pt;font-weight:800;letter-spacing:-0.04em;color:#FFBB50;line-height:1;">2×</div>
+            <div style="font-size:6pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:2mm;">CTA Exposures / Visit</div>
+            <div style="font-size:7pt;line-height:1.5;font-weight:300;color:rgba(255,255,255,0.4);margin-top:2mm;">Partner CTA in persistent nav + full-width section pre-footer. Users can't miss the conversion path.</div>
+          </div>
+        </div>
+        <!-- Key achievements -->
+        <div style="border:0.3mm solid rgba(255,187,80,0.15);padding:5mm 6mm;background:rgba(255,187,80,0.03);margin-bottom:7mm;">
+          <div style="font-size:6pt;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,187,80,0.4);margin-bottom:3mm;">Key Design Achievements</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:3mm;">
+            <div style="display:flex;gap:2mm;align-items:flex-start;">
+              <div style="color:#FFBB50;font-size:7pt;margin-top:0.5mm;flex-shrink:0;">◆</div>
+              <div style="font-size:7.5pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.6);">Luxury dark/gold language differentiates BEENEXT from all generic competitors in the Indian VAD market</div>
+            </div>
+            <div style="display:flex;gap:2mm;align-items:flex-start;">
+              <div style="color:#FFBB50;font-size:7pt;margin-top:0.5mm;flex-shrink:0;">◆</div>
+              <div style="font-size:7.5pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.6);">Brand marquee surfaces all 9 exclusive brands within 1 scroll — CI's primary evaluation criterion met immediately</div>
+            </div>
+            <div style="display:flex;gap:2mm;align-items:flex-start;">
+              <div style="color:#FFBB50;font-size:7pt;margin-top:0.5mm;flex-shrink:0;">◆</div>
+              <div style="font-size:7.5pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.6);">Admin config panel enables non-technical content updates — hero, brands, stats, blog, contact all editable without code</div>
+            </div>
+            <div style="display:flex;gap:2mm;align-items:flex-start;">
+              <div style="color:#FFBB50;font-size:7pt;margin-top:0.5mm;flex-shrink:0;">◆</div>
+              <div style="font-size:7.5pt;line-height:1.55;font-weight:300;color:rgba(255,255,255,0.6);">Full SEO + AEO + GEO structured data: Organization, FAQ, WebSite schema for maximum AI search discoverability</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom close -->
+      <div>
+        <div style="height:0.3mm;background:rgba(255,187,80,0.15);margin-bottom:6mm;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8mm;align-items:flex-end;">
+          <div>
+            <div style="display:flex;align-items:baseline;margin-bottom:2mm;">
+              <span style="font-size:16pt;font-weight:800;letter-spacing:-0.02em;color:#FFBB50;">BEE</span><span style="font-size:16pt;font-weight:800;letter-spacing:-0.02em;color:#FFF;">NEXT</span>
+            </div>
+            <div style="font-size:7pt;font-weight:300;color:rgba(255,255,255,0.3);line-height:1.65;">Bringing the Next in Technology Solutions<br/>to Custom Integrators across India.</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:6pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,187,80,0.35);margin-bottom:2mm;">Contact</div>
+            <div style="font-size:7.5pt;font-weight:300;color:rgba(255,255,255,0.4);line-height:1.7;">info@beenext.co.in<br/>+91 93117 89572<br/>beenext.co.in</div>
+          </div>
+        </div>
+        <div style="margin-top:5mm;font-size:5.5pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.1);">© 2025 BEENEXT — UX/UI Case Study · Confidential</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var MM = 3.7795275591;
+  var W_PX = 210 * MM;
+  var H_PX = 297 * MM;
+  function fit(){
+    var scale = window.innerWidth / W_PX;
+    var extra = H_PX * scale - H_PX;
+    document.querySelectorAll('.page').forEach(function(p){
+      p.style.transform = 'scale('+scale+')';
+      p.style.marginBottom = extra + 'px';
+    });
+  }
+  window.addEventListener('resize', fit);
+  fit();
+})();
+</script>
+</body>
+</html>

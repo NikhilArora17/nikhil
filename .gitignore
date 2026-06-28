@@ -1,0 +1,134 @@
+# Dependencies
+node_modules/
+
+# Local tooling / Claude Code state
+.claude/
+serve.log
+
+# Scratch screenshot output (regenerated locally, never deployed)
+temporary screenshots/
+
+# Backup/working copies from the asset-recolor process (not loaded by any code)
+bounce/assets/_backup_white_bg/
+bounce/assets/tile/old/
+bounce/assets/bg/old/
+
+# Orphaned experiments (not linked from any live page)
+tunnel.html
+mandala-hero.html
+painterly-hero.html
+space impact/
+
+# Unreferenced debug/comparison screenshots from past design iterations
+8a17f17e5c863842201afef702e88a40.jpg
+A8503087-2.jpg
+A8503087.jpg
+about-bottom-check.png
+about-bottom-check2.png
+about-illus.jpeg
+about-redesign-1.png
+about-redesign-2.png
+about-redesign-3.png
+about-redesign-4.png
+about-redesign-5.png
+about-redesign-6.png
+about-sidebyside-1.png
+about-sidebyside-2.png
+about-sidebyside-3.png
+about-sidebyside-4.png
+about-sidebyside-5.png
+bigger-hero.jpeg
+bigger-mid.jpeg
+canvas-exit.jpeg
+contact-lime.jpeg
+contact-section.png
+debug-0.jpeg
+debug-400.jpeg
+debug-820.jpeg
+divider-about.png
+dramatic-wave-1.jpeg
+exit-late.jpeg
+exit-mid.jpeg
+footer dark.png
+header-bigger.jpeg
+hero sticker.png
+hero-card.jpeg
+hero-check.png
+hero-final.jpeg
+hero-fixed.jpeg
+hero-gap.jpeg
+hero-hint-check.jpeg
+hero-load.jpeg
+hero-rest.jpeg
+hero-scrolled.jpeg
+hero-symmetry.jpeg
+hero-top.jpeg
+hero-transition.jpeg
+hero-unified.jpeg
+linear-350.jpeg
+linear-560.jpeg
+logomark.png
+look-now.jpeg
+marquee-zone-check.png
+marquee-zone-verify.png
+marquee-zone.jpeg
+mz-full-check.png
+nav-translucent.jpeg
+nik design guidelines.pdf
+nik.mp4
+noblock-scroll.jpeg
+p3-400.jpeg
+p3-600.jpeg
+p3-720.jpeg
+pin-350.jpeg
+pin-700.jpeg
+pin-720.jpeg
+play-section-1.png
+play-section-2.png
+play-section-4052.png
+play-section-4350.png
+ribbon-diag-1.png
+ribbon-diag-2.png
+ribbon-diag-3.png
+ribbon-diag-4.png
+scroll-1400.jpeg
+scroll-500.jpeg
+scroll-900.jpeg
+seam-check-1.png
+seam-check-2.png
+seam-check-3.png
+seam-check-4.png
+seam-check.png
+seam-crop-1.png
+seam-crop-heading.png
+seam-crop-label.png
+seam-crop-overlap.png
+seam-zoom.png
+skills-marquee.jpeg
+skills-section.png
+sticker-0.jpeg
+sticker-1.jpeg
+sticker-3.jpeg
+sticker-center-1.jpeg
+sticker-center-3.jpeg
+studiobee case study.pdf
+unified-scroll.jpeg
+voldog-animations.json
+voldog-screenshot.png
+voldog-scroll-0.png
+voldog-scroll-1200.png
+voldog-scroll-3000.png
+voldog-scroll-5500.png
+wave-0-mint-forest.jpeg
+wave-1-forest-lime.jpeg
+wave-bowed-down.jpeg
+wave-bowed-up.jpeg
+wave-top.jpeg
+wave-zfix.jpeg
+wipe-350.jpeg
+wipe-560.jpeg
+wipe-check.png
+wipe-up-300.jpeg
+work-section.png
+y500-350.jpeg
+y500-580.jpeg
