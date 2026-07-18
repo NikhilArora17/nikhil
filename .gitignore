@@ -132,3 +132,19 @@ wipe-up-300.jpeg
 work-section.png
 y500-350.jpeg
 y500-580.jpeg
+
+.vercel
+.env*
+
+# Playwright MCP browser cache
+.playwright-mcp/
+
+# Figma SVG exports (reference files, not deployed)
+screen 1.svg
+screen 2.svg
+Screen 3.svg
+Screen 4.svg
+Screen 5.svg
+Screen 6.svg
+Screen 7.svg
+Screen 8.svg
