@@ -597,33 +597,70 @@
 
   <div class="panel-body panel-body-top">
     <div class="inner">
-      <p class="sec-label sl-blue">Layout Iteration</p>
-      <h2 class="h2">Every section found its<br>layout through constraint.</h2>
+      <p class="sec-label sl-blue">Testimonials</p>
+      <h2 class="h2">Light, cream, dark &mdash;<br>the third version shipped.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        The case studies page and testimonials section each went through three layout iterations. In both cases, the constraint &mdash; content variety, scroll behaviour, mobile performance &mdash; produced the final structure.
+        The testimonials section went through three layout passes. A light split-screen felt corporate. A cream card stack looked warm but dragged on Android. The dark glass carousel solved both &mdash; full-bleed impact, no backdrop-filter cost.
       </p>
 
-      <!-- 3 screenshots: case studies header, case studies grid, testimonials dark -->
+      <!-- 3 screenshots: testimonials entry, card close-up, exit to team -->
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
         <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
-          <img src="studiobee/cs-a.png" alt="Case studies &mdash; hero" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+          <img src="studiobee/testi-a.png" alt="Testimonials &mdash; section entry" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
         </div>
         <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
-          <img src="studiobee/cs-b.png" alt="Case studies &mdash; grid" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+          <img src="studiobee/testi-b.png" alt="Testimonials &mdash; glass card" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
         </div>
         <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
-          <img src="studiobee/testi-b.png" alt="Testimonials &mdash; final dark" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+          <img src="studiobee/testi-c.png" alt="Testimonials &mdash; final shipped" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
         </div>
       </div>
 
       <!-- annotation -->
       <div class="annot-card">
-        <p class="annot-label">Layout Iteration</p>
-        <p class="annot-body">An irregular masonry grid competed with the video thumbnails &mdash; every card wanted to be the focal point. A uniform 4-column grid with consistent proportions let the photography lead. The testimonials section made the same journey: light split, cream stack, settled on dark glass &mdash; the constraint was scroll performance on lower-end Android devices.</p>
+        <p class="annot-label">Testimonials Iterations</p>
+        <p class="annot-body">Light split, cream stack, dark glass. Each version was eliminated by a real constraint &mdash; scroll performance on lower-end Android. The glass card with a solid rgba() overlay rendered faster than any backdrop-filter approach at scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     6c. DESIGNING FOR CONSTRAINTS — CASE STUDIES
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 03</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Case Studies Layout</p>
+      <h2 class="h2">A masonry grid that got<br>out of the photography&rsquo;s way.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        An irregular masonry layout competed with the video thumbnails &mdash; every card wanted to be the focal point. A uniform 4-column grid with consistent proportions let the work lead. Eight projects, mixed formats, one structure.
+      </p>
+
+      <!-- 3 screenshots: case studies header, upper grid, lower grid -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
+          <img src="studiobee/cs-a.png" alt="Case studies &mdash; page header" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
+          <img src="studiobee/cs-b.png" alt="Case studies &mdash; upper grid" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
+          <img src="studiobee/cs-c.png" alt="Case studies &mdash; full grid" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
       </div>
 
-      <!-- OLD: 3 constraint cards removed in favour of image-led storytelling -->
-      <!-- Kept as context cards in a tighter row -->
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">Case Studies Layout</p>
+        <p class="annot-body">Masonry gave each project breathing room but fractured the visual rhythm. A uniform 4-column grid imposed the consistency the content lacked &mdash; the constraint of eight diverse projects produced the most disciplined layout on the site.</p>
+      </div>
+
+      <!-- 3 constraint detail cards -->
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
         <div class="card card-blue">
           <p class="c-label">Ghost Button</p>
