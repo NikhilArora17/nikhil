@@ -581,10 +581,12 @@
       display: flex;
       align-items: center;
       gap: 4.5rem;
+      max-width: 1240px;
+      margin: 0 auto;
     }
     .about-text {
       flex: 1 1 0;
-      max-width: 560px;
+      max-width: 620px;
     }
 
     .about-body {
@@ -998,6 +1000,9 @@
       align-items: stretch; /* text column stretches to match the game's height */
       gap: 4.5rem;
       margin-top: 3.5rem;
+      max-width: 1320px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .play-text {
       flex: 1 1 0;
@@ -2165,7 +2170,16 @@ function initSpring() {
   for (let i = 0; i < SP.trails; i++) springLines.push(new SLine(0.45 + (i / SP.trails) * 0.025));
 }
 
+// Hero RAF loops (frame/renderSpring) only need to run while the hero canvas
+// is actually on screen. GSAP's ScrollTrigger onLeave/onEnterBack (below)
+// flips this flag in lockstep with the same visibility:hidden toggle it
+// already applies, so the loops pause the instant the canvas is hidden and
+// pick back up exactly where they left off when it reappears - no visible
+// change while the hero is in view.
+let heroActive = true;
+
 function renderSpring() {
+  if (!heroActive) return;
   sCtx.globalCompositeOperation = 'source-over';
   sCtx.clearRect(0, 0, sc.width, sc.height);
   sCtx.globalCompositeOperation = 'lighter';
@@ -2258,6 +2272,7 @@ function updateTextColor() {
 }
 
 function frame() {
+  if (!heroActive) return;
   if (wipeInProgress) {
     // Sequential zig-zag blackboard eraser: each band sweeps one at a time,
     // alternating L→R and R→L, like a real eraser dragged across a chalkboard.
@@ -2384,6 +2399,16 @@ if (flipInner) {
   });
   setInterval(() => flipInner.classList.toggle('flipped'), 15000);
 }
+
+// Exposed so the ScrollTrigger onLeave/onEnterBack below (same trigger that
+// hides/shows these canvases) can pause and resume the RAF loops in step.
+window.__heroCanvasPause = () => { heroActive = false; };
+window.__heroCanvasResume = () => {
+  if (heroActive) return;
+  heroActive = true;
+  frame();
+  renderSpring();
+};
 
 })();
 </script>
@@ -2583,6 +2608,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
         onLeave: function() {
           gsap.set(['#c', '#sc', '#hero-content'], { visibility: 'hidden' });
           if (hint) hint.style.display = 'none';
+          if (window.__heroCanvasPause) window.__heroCanvasPause();
         },
         onEnterBack: function() {
           gsap.set(['#c', '#sc', '#hero-content'], {
@@ -2591,6 +2617,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
             y: 0,
           });
           if (hint) hint.style.display = '';
+          if (window.__heroCanvasResume) window.__heroCanvasResume();
         },
       }
     }
