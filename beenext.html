@@ -1,0 +1,1026 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BEENEXT - Case Study &middot; Nikhil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <style>
+    :root {
+      --blue:      #FFBB50;
+      --blue-pale: #212121;
+      --black:     #000000;
+      --cream:     #E79D29;
+      --white:     #131313;
+      --display:   -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'Barlow', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--white);
+      color: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* â”€â”€ NAV â”€â”€ */
+    #cs-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.1rem 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    #cs-nav.dark  { background: rgba(0,0,0,0.86);  border-bottom-color: rgba(255,187,80,0.14); }
+    #cs-nav.light { background: rgba(19,19,19,0.88); border-bottom-color: rgba(255,255,255,0.08); }
+    .nav-back {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: opacity 0.2s;
+    }
+    .nav-back:hover { opacity: 0.45; }
+    #cs-nav.dark  .nav-back { color: white; }
+    #cs-nav.light .nav-back { color: white; }
+    .nav-tag { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.4; }
+    #cs-nav.dark  .nav-tag { color: white; }
+    #cs-nav.light .nav-tag { color: white; }
+
+    /* â”€â”€ STACK PANELS â”€â”€ */
+    .stack-panel {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      will-change: transform, opacity;
+      position: relative;
+    }
+
+    /* â”€â”€ CHAPTER BAR (top of each panel) â”€â”€ */
+    .ch-bar {
+      padding: 0.8rem 5vw;
+      flex-shrink: 0;
+    }
+    .ch-bar-light { border-bottom: 1px solid rgba(255,255,255,0.09); }
+    .ch-bar-dark  { border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .ch-label {
+      font-size: 0.54rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+    }
+    .ch-label-light { color: rgba(255,255,255,0.32); }
+    .ch-label-dark  { color: rgba(255,255,255,0.28); }
+
+    /* â”€â”€ PANEL CONTENT AREA â”€â”€ */
+    .panel-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 2.5rem 5vw;
+    }
+    .panel-body-top { align-items: flex-start; padding-top: 2rem; }
+    .inner { max-width: 1100px; margin: 0 auto; width: 100%; }
+
+    /* â”€â”€ SECTION SUB-LABEL â”€â”€ */
+    .sec-label {
+      font-size: 0.57rem; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; margin-bottom: 0.65rem;
+    }
+    .sl-blue  { color: var(--blue); }
+    .sl-white { color: rgba(255,255,255,0.4); }
+    .sl-muted { color: rgba(255,255,255,0.4); }
+
+    /* â”€â”€ HEADINGS â”€â”€ */
+    .h1 { font-family: var(--display); font-size: clamp(3.5rem,8vw,9rem); font-weight: 800; letter-spacing: -0.03em; line-height: 0.9; }
+    .h2 { font-family: var(--display); font-size: clamp(1.6rem,2.8vw,3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 1rem; }
+
+    /* â”€â”€ CARDS â”€â”€ */
+    .card { border-radius: 0; padding: 1rem 1.1rem; }
+    .card-blue { background: var(--blue-pale); border-top: 2.5px solid var(--blue); }
+    .card-dark { background: #141414;           border-top: 2.5px solid var(--blue); }
+    .c-label { font-size: 0.54rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.3rem; color: var(--blue); }
+    .c-title { font-family: var(--display); font-size: 0.88rem; font-weight: 700; line-height: 1.25; margin-bottom: 0.3rem; }
+    .c-body  { font-size: 0.75rem; line-height: 1.45; opacity: 0.68; }
+
+    /* â”€â”€ PULL QUOTE â”€â”€ */
+    .pull-quote {
+      border-left: 3px solid var(--blue);
+      background: var(--blue-pale);
+      border-radius: 0;
+      padding: 0.85rem 1.3rem; margin: 0.9rem 0;
+    }
+    .pull-quote p { font-size: clamp(0.85rem,1.2vw,1rem); font-style: italic; line-height: 1.5; margin-bottom: 0.35rem; }
+    .pull-quote cite { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); font-style: normal; }
+
+    /* â”€â”€ PROCESS STRIP â”€â”€ */
+    .process-strip { display: flex; overflow-x: auto; border-radius: 0; overflow: hidden; margin-top: 0.75rem; gap: 2px; }
+    .p-step { flex: 1; min-width: 90px; padding: 0.55rem 0.5rem; text-align: center; border-top: 2px solid transparent; }
+    .p-step.on  { background: rgba(255,187,80,0.12); border-top-color: var(--blue); color: #FFFFFF; }
+    .p-step.off { background: var(--blue-pale); border-top-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.72); }
+    .p-step-num  { font-size: 0.48rem; font-weight: 700; letter-spacing: 0.14em; opacity: 0.55; margin-bottom: 0.15rem; }
+    .p-step-name { font-family: var(--display); font-size: 0.72rem; font-weight: 700; }
+    .p-step-sub  { font-size: 0.56rem; opacity: 0.5; margin-top: 0.1rem; }
+
+    /* â”€â”€ COLOUR SWATCHES â”€â”€ */
+    .swatch { width: 72px; height: 50px; border-radius: 0; display: flex; align-items: flex-end; padding: 0.3rem 0.4rem; }
+    .swatch span { font-size: 0.48rem; font-weight: 700; letter-spacing: 0.04em; }
+
+    /* â”€â”€ RESEARCH &rarr; DECISION â”€â”€ */
+    .rd-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.5rem; align-items: center; margin-bottom: 0.4rem; }
+    .rd-box { border-radius: 0; padding: 0.65rem 0.85rem; }
+    .rd-ins  { background: rgba(255,255,255,0.05); border-left: 3px solid var(--blue); }
+    .rd-dec  { background: rgba(255,187,80,0.14);   border-left: 3px solid rgba(255,255,255,0.1); }
+    .rd-lbl  { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 0.25rem; }
+    .rd-txt  { font-size: 0.72rem; line-height: 1.35; color: rgba(255,255,255,0.7); }
+    .rd-arrow { color: var(--blue); font-size: 1rem; }
+
+    /* â”€â”€ SITEMAP â”€â”€ */
+    .sm-item { font-family: var(--display); border-radius: 0; padding: 0.5rem 1rem; font-size: 0.7rem; font-weight: 600; text-align: center; margin-bottom: 0.28rem; border-left: 2px solid transparent; }
+    .sm-on   { background: rgba(255,187,80,0.1); border-left-color: var(--blue); color: #FFFFFF; }
+    .sm-off  { background: var(--blue-pale); color: rgba(255,255,255,0.7); }
+    .sm-fixed { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.4); font-size: 0.63rem; }
+
+    /* â”€â”€ BROWSER FRAME â”€â”€ */
+    .browser-frame {
+      flex: 1; border-radius: 0;
+      border: 1.5px solid rgba(255,255,255,0.12); overflow: hidden;
+      background: var(--blue-pale);
+    }
+    .browser-chrome {
+      background: #1a1a1a; border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0.35rem 0.55rem;
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .b-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .b-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.12); border-radius: 3px; margin: 0 0.4rem; }
+
+    /* â”€â”€ ANNOTATION CARD â”€â”€ */
+    .annot-card {
+      background: var(--blue-pale);
+      border-left: 3px solid rgba(255,255,255,0.4);
+      border-radius: 0;
+      padding: 0.75rem 1rem;
+    }
+    .annot-label { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 0.3rem; }
+    .annot-body  { font-size: 0.74rem; line-height: 1.45; color: rgba(255,255,255,0.68); }
+
+    /* â”€â”€ PHONE FRAME (Panel 7) â”€â”€ */
+    .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+    .phone-outer {
+      width: 148px; border-radius: 1.75rem;
+      border: 2.5px solid #2a2a2a;
+      overflow: hidden; position: relative;
+      display: flex; flex-direction: column;
+    }
+    .phone-notch {
+      position: absolute; top: 0.55rem; left: 50%; transform: translateX(-50%);
+      width: 36px; height: 5px; background: #1a1a1a; border-radius: 3px; z-index: 2;
+    }
+    .phone-screen { flex: 1; padding: 1.4rem 0.45rem 0.45rem; min-height: 290px; }
+    .phone-label-name { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); text-align: center; }
+    .phone-label-desc { font-size: 0.56rem; color: rgba(255,255,255,0.4); text-align: center; line-height: 1.4; max-width: 140px; }
+
+    /* hero phone elements */
+    .wire-strips { display: flex; gap: 2.5px; height: 62px; margin-bottom: 0.5rem; }
+    .wire-strip  { flex: 1; border-radius: 0; }
+    .ph-line  { height: 6px; border-radius: 0; background: rgba(255,255,255,0.12); margin-bottom: 5px; }
+    .ph-pill  { height: 18px; border-radius: 0; display: inline-block; }
+    .ph-card  { border-radius: 0; padding: 0.5rem; margin-bottom: 0.3rem; }
+    .ph-input { height: 14px; border-radius: 0; background: rgba(255,255,255,0.1); margin-bottom: 0.3rem; }
+
+    /* â”€â”€ OUTCOME GRID (Panel 8) â”€â”€ */
+    .outcome-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(3, auto);
+      gap: 0.65rem;
+    }
+    .outcome-frame { border-radius: 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); }
+    .outcome-frame img { width: 100%; height: 140px; object-fit: cover; display: block; }
+
+    /* â”€â”€ DIVIDER â”€â”€ */
+    .div-line { height: 1px; margin: 0.9rem 0; }
+    .div-dark  { background: rgba(255,255,255,0.1); }
+    .div-light { background: rgba(255,255,255,0.07); }
+
+    /* â”€â”€ ANIMATIONS â”€â”€ */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    .fu   { animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both; }
+    .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.18s; }
+    .d3 { animation-delay: 0.32s; } .d4 { animation-delay: 0.46s; }
+
+    @media (max-width: 640px) {
+      .rd-grid { grid-template-columns: 1fr; }
+      .rd-arrow { display: none; }
+      .two-col, .three-col, .four-col { grid-template-columns: 1fr !important; }
+      .phone-showcase { flex-wrap: wrap !important; }
+      .phone-outer { width: 130px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="cs-nav" class="light">
+  <a href="nik.html" class="nav-back">&larr; Portfolio</a>
+  <span class="nav-tag">Case Study</span>
+</nav>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     1. COVER
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="light"
+  style="background: radial-gradient(ellipse 75% 85% at 105% 0%, #3a2c12 0%, #201a10 35%, #16130d 58%, #131313 72%);
+         justify-content: space-between; padding-top: 5rem;">
+
+  <!-- top label -->
+  <div style="padding: 1.5rem 5vw 0;">
+    <p style="font-size:0.55rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.45);">UX/UI | BEENEXT.CO.IN</p>
+  </div>
+
+  <!-- main title block -->
+  <div style="padding: 0 5vw;">
+    <img src="beenext logo 1.png" alt="BEENEXT" style="height:clamp(4rem,9vw,10rem);width:auto;margin-bottom:0.3rem;" class="fu d1" />
+    <p style="font-family:var(--display);font-size:clamp(1.8rem,4vw,4rem);font-weight:800;letter-spacing:-0.03em;color:#FFFFFF;margin-bottom:1.25rem;" class="fu d2">case study</p>
+    <div style="width:clamp(6rem,20vw,16rem);height:1.5px;background:rgba(255,255,255,0.16);margin-bottom:1.25rem;"></div>
+    <p style="font-size:clamp(0.9rem,1.3vw,1.1rem);color:rgba(255,255,255,0.62);line-height:1.65;max-width:52ch;" class="fu d3">
+      BEENEXT is India's Value Added Distributor for premium AV, IT &amp; automation brands. The goal: make it feel like the most credible, premium distribution partner in India, in the first few seconds on the site.
+    </p>
+  </div>
+
+  <!-- metadata footer bar -->
+  <div style="border-top:1px solid rgba(255,255,255,0.1);padding:1.25rem 5vw;display:flex;gap:3rem;flex-wrap:wrap;" class="fu d4">
+    <div>
+      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem;">Role</p>
+      <p style="font-size:0.82rem;font-weight:600;">Lead UX/UI Designer</p>
+    </div>
+    <div>
+      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem;">Year</p>
+      <p style="font-size:0.82rem;font-weight:600;">2026</p>
+    </div>
+    <div>
+      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem;">Deliverables</p>
+      <p style="font-size:0.82rem;font-weight:600;">User research &middot; Brand system &middot; UI design &middot; Prototype &middot; Content management panel</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     2. PROJECT OVERVIEW
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Project Overview</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Overview</p>
+      <h2 class="h2">Build a luxury-grade digital<br>presence for India's premier VAD.</h2>
+
+      <div class="pull-quote">
+        <p>"We needed a website that felt like a premium partner walking into the room, not a product catalogue. Every Custom Integrator visiting should immediately understand this is the best distribution network in India."</p>
+        <cite>Project Brief &mdash; BEENEXT, 2026</cite>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">Primary Audience</p>
+          <p class="c-title">Custom Integrators<br>&amp; System Integrators</p>
+          <p class="c-body">AV and IT professionals who evaluate distribution partners for a living. Time-poor, brand-literate, and used to being sold to - many checking the site from a phone between site visits, not at a desk with time to read.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Business Goal</p>
+          <p class="c-title">Turn visitors into<br>partner enquiries</p>
+          <p class="c-body">Signal premium positioning immediately. Build trust through brand authority. Guide Custom Integrators toward the "Become a Partner" path with as little friction as possible.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Design Constraints</p>
+          <p class="c-title">Dark luxury language,<br>no shortcuts</p>
+          <p class="c-body">Gold as the only accent color &middot; sharp architectural layouts &middot; no rounded corners anywhere &middot; the brief described the feel as Bang &amp; Olufsen meets enterprise IT.</p>
+        </div>
+      </div>
+
+      <div class="div-line div-dark"></div>
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.7rem;">Design Process</p>
+      <div class="process-strip">
+        <div class="p-step on"><p class="p-step-name">Discover</p><p class="p-step-sub">Research</p></div>
+        <div class="p-step off"><p class="p-step-name">Define</p><p class="p-step-sub">Brand + IA</p></div>
+        <div class="p-step on"><p class="p-step-name">Design</p><p class="p-step-sub">Wireframes</p></div>
+        <div class="p-step off"><p class="p-step-name">Validate</p><p class="p-step-sub">Prototype</p></div>
+        <div class="p-step on" style="opacity:0.55;"><p class="p-step-name">Launch</p><p class="p-step-sub">Deliver</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     3. DISCOVERY & BRAND SYSTEM
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Visual Design System</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Visual Design System</p>
+      <h2 class="h2">Dark. Gold. Architectural.</h2>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem;margin-bottom:0.9rem;" class="four-col">
+        <div class="card card-blue">
+          <p class="c-label">Core Principle</p>
+          <p class="c-title">No Rounded Corners</p>
+          <p class="c-body">Sharp, architectural geometry reads as precision and confidence - the small detail that consistently separates premium from generic.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Core Principle</p>
+          <p class="c-title">Gold as Sole Accent</p>
+          <p class="c-body">Every interactive element, highlight and CTA uses the same gold, #FFBB50 fading to #E79D29. No secondary accent competes for attention.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Core Principle</p>
+          <p class="c-title">Weight Contrast</p>
+          <p class="c-body">Extra bold headlines against light body text create an editorial, high-end feel - closer to luxury print than a typical SaaS site.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Core Principle</p>
+          <p class="c-title">Dark Surfaces Only</p>
+          <p class="c-body">No white sections anywhere. The palette stays in black, raisin (#212121) and near-black surfaces from the first pixel to the last.</p>
+        </div>
+      </div>
+
+      <div class="div-line div-dark"></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;" class="two-col">
+        <div>
+          <div style="margin-bottom:1.1rem;">
+            <p style="font-size:0.54rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.55rem;">Colour Tokens - Accent</p>
+            <div style="display:flex;gap:0.55rem;flex-wrap:wrap;">
+              <div class="swatch" style="background:#FFBB50;"><span style="color:#000;">#FFBB50</span></div>
+              <div class="swatch" style="background:#E79D29;"><span style="color:#000;">#E79D29</span></div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:0.54rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.55rem;">Colour Tokens - Surfaces</p>
+            <div style="display:flex;gap:0.55rem;flex-wrap:wrap;">
+              <div class="swatch" style="background:#000000;"><span style="color:white;">#000000</span></div>
+              <div class="swatch" style="background:#131313;border:1px solid rgba(255,255,255,0.09);"><span style="color:#bbb;">#131313</span></div>
+              <div class="swatch" style="background:#212121;border:1px solid rgba(255,255,255,0.09);"><span style="color:#bbb;">#212121</span></div>
+              <div class="swatch" style="background:#FFFFFF;"><span style="color:#000;">#FFFFFF</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:0.54rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.45rem;">Typography - Barlow Family</p>
+          <p style="font-family:var(--display);font-size:clamp(2rem,5vw,4rem);font-weight:800;letter-spacing:-0.03em;line-height:1;margin-bottom:0.35rem;">Headlines.</p>
+          <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.55rem;">Barlow &middot; a close match to SF Pro Display</p>
+          <p style="font-size:0.78rem;color:rgba(255,255,255,0.6);line-height:1.5;max-width:42ch;">Tight tracking at -0.03em on headlines signals precision; a light 300 weight keeps long paragraphs easy to read against the dark background.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     4. USER RESEARCH
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">User Research</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">User Research</p>
+      <h2 class="h2">Understanding the<br>Custom Integrator.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.1rem;">Before any visuals, the work started with research. A Custom Integrator does not read a distributor's website the way a typical visitor reads a marketing site - they scan it, looking for proof, and decide fast.</p>
+
+      <!-- research methods -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1rem;" class="three-col">
+        <div class="card card-blue">
+          <p style="font-family:var(--display);font-size:2.1rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:0.3rem;">6</p>
+          <p class="c-title">Stakeholder Interviews</p>
+          <p class="c-body">Deep dives with the BEENEXT founders &amp; sales team to map CI pain points and buying signals.</p>
+        </div>
+        <div class="card card-blue">
+          <p style="font-family:var(--display);font-size:2.1rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:0.3rem;">12</p>
+          <p class="c-title">Competitor Audit</p>
+          <p class="c-body">Distributor websites audited across India, Singapore &amp; the UAE - surfaced a clear luxury gap in the category.</p>
+        </div>
+        <div class="card card-blue">
+          <p style="font-family:var(--display);font-size:2.1rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:0.3rem;">3</p>
+          <p class="c-title">Persona Workshops</p>
+          <p class="c-body">Mapped out who was actually going to use the site. Arjun, an AV Systems Integrator, became the primary lens for every decision.</p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:1rem;margin-bottom:0.9rem;" class="two-col">
+        <!-- persona -->
+        <div style="display:flex;flex-direction:column;gap:0.7rem;">
+          <div style="background:var(--black);border:1px solid rgba(255,187,80,0.3);border-top:2.5px solid var(--blue);border-radius:0;padding:1rem;flex:1;">
+            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.4rem;">Primary Persona</p>
+            <p style="font-family:var(--display);font-size:0.85rem;font-weight:700;color:white;margin-bottom:0.1rem;">Arjun</p>
+            <p style="font-size:0.72rem;color:rgba(255,255,255,0.65);margin-bottom:0.4rem;">AV Systems Integrator</p>
+            <p style="font-size:0.72rem;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:0.5rem;">Goal: confirm BEENEXT carries the brands he needs, like Peplink &amp; AVPro Edge, before he calls. Frustration: sites that bury the brand list behind a "Contact Us" wall.</p>
+            <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:0.45rem;">
+              <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.25rem;">Behavior</p>
+              <p style="font-size:0.7rem;color:rgba(255,255,255,0.65);line-height:1.45;">Scans the hero for brand names, checks the logo strip. If the brands match, he calls. If not, he leaves.</p>
+            </div>
+          </div>
+          <div style="background:#0f0f0f;border-radius:0;padding:1rem;">
+            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.4rem;">Key Research Insight</p>
+            <p style="font-size:0.78rem;font-style:italic;color:white;line-height:1.5;margin-bottom:0.4rem;">"Custom Integrators recognize brands before they read copy. Brand identity is their shortcut to trust. Show the logos first, explain everything else second."</p>
+            <p style="font-size:0.56rem;color:rgba(255,255,255,0.4);">BEENEXT Discovery Phase</p>
+          </div>
+        </div>
+
+        <!-- 3 questions CIs ask -->
+        <div style="background:#0f0f0f;border-radius:0;padding:1rem;">
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.6rem;">3 Questions CIs Ask in 15 Seconds</p>
+          <div style="display:flex;flex-direction:column;gap:0.4rem;">
+            <div class="rd-grid">
+              <div class="rd-box rd-ins">
+                <p class="rd-lbl" style="color:var(--blue);">Question</p>
+                <p class="rd-txt">"Do they carry the brands I need?"</p>
+              </div>
+              <span class="rd-arrow">&rarr;</span>
+              <div class="rd-box rd-dec">
+                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+                <p class="rd-txt">Brand marquee above fold, all 9 brands visible within 1 scroll</p>
+              </div>
+            </div>
+            <div class="rd-grid">
+              <div class="rd-box rd-ins">
+                <p class="rd-lbl" style="color:var(--blue);">Question</p>
+                <p class="rd-txt">"Are they a credible, established partner?"</p>
+              </div>
+              <span class="rd-arrow">&rarr;</span>
+              <div class="rd-box rd-dec">
+                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+                <p class="rd-txt">Stats section: 9yr &middot; 8 brands &middot; 500+ partners &middot; Pan-India</p>
+              </div>
+            </div>
+            <div class="rd-grid">
+              <div class="rd-box rd-ins">
+                <p class="rd-lbl" style="color:var(--blue);">Question</p>
+                <p class="rd-txt">"How do I get started?"</p>
+              </div>
+              <span class="rd-arrow">&rarr;</span>
+              <div class="rd-box rd-dec">
+                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+                <p class="rd-txt">Persistent nav CTA + full-width Partner section pre-footer</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     5. INFORMATION ARCHITECTURE
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="light"
+  style="background: radial-gradient(ellipse 90% 100% at 110% 50%, #2a2110 0%, #181510 40%, var(--white) 65%);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Information Architecture</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Information Architecture</p>
+      <h2 class="h2">Every section earns<br>its position.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:56ch;line-height:1.6;margin-bottom:1.1rem;">
+        The homepage follows a deliberate persuasion sequence: introduce &rarr; validate &rarr; demonstrate &rarr; convert. Each section answers the question the CI asks at that scroll depth.
+      </p>
+
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:2rem;" class="two-col">
+        <!-- sitemap -->
+        <div>
+          <div class="sm-item sm-fixed">Fixed Navigation - always accessible</div>
+          <div class="sm-item sm-on">01 Hero</div>
+          <div class="sm-item sm-off">02 Brand Marquee</div>
+          <div class="sm-item sm-off">03 What We Do</div>
+          <div class="sm-item sm-off">04 Featured Brands</div>
+          <div class="sm-item sm-off">05 Stats + Why Us</div>
+          <div class="sm-item sm-off">06 Solutions</div>
+          <div class="sm-item sm-off">07 Blog Preview</div>
+          <div class="sm-item sm-on">08 Partner CTA</div>
+          <div class="sm-item sm-fixed">09 Footer</div>
+        </div>
+
+        <!-- annotation cards -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;" class="three-col">
+          <div class="card card-blue">
+            <p class="c-label">Brand Marquee Placement</p>
+            <p class="c-title">Recognition before reading</p>
+            <p class="c-body">CIs recognise brands before reading body copy - brand identity is their shortcut to trust. Marquee sits in Section 2, immediately below hero, all 9 brands surface within 1 scroll.</p>
+          </div>
+          <div class="card card-blue">
+            <p class="c-label">Stats Section Weight</p>
+            <p class="c-title">Credibility signals, dedicated</p>
+            <p class="c-body">"9 years" and "500+ partners" are the most cited B2B credibility signals - a full section (05) is dedicated to large-format gold stats. Data-first credibility.</p>
+          </div>
+          <div class="card card-blue">
+            <p class="c-label">Partner CTA Before Footer</p>
+            <p class="c-title">Re-anchor before the exit</p>
+            <p class="c-body">Conversion drop-off is highest at the footer when visitors have lost context on why they should act. A full-width Partner CTA (08) re-anchors the value prop before the footer (09).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     6a. DESIGNING FOR CONSTRAINTSANIMATION AUDIT
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 01</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Design for Constraints</p>
+      <h2 class="h2">When limitations made<br>the design better.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        The hero's animated gold particle grid and hexagonal mesh brought the dark canvas to life - but early versions piled on more motion than the headline could carry. The fix wasn't cutting the motion, it was treating animation like typography: does this earn its place?
+      </p>
+
+      <!-- 3 hero screenshots: early &rarr; mid &rarr; final -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
+          <img src="beenext/hero-early.png" alt="Hero - initial load, motion competing with headline" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
+          <img src="beenext/hero-a.png" alt="Hero - hex mesh mid-state" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
+          <img src="beenext/1.png" alt="Hero - final shipped" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">Animation Audit</p>
+        <p class="annot-body">Early motion competed with the words instead of supporting them. We kept only what reinforced the brand's energy, and added a quieter, reduced-motion version of the same background for visitors who prefer calmer motion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     6b. DESIGNING FOR CONSTRAINTSLAYOUT ITERATION
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 02</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Brand Marquee</p>
+      <h2 class="h2">Effortless, not heavy <br>the hover pause took five passes.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        An infinite strip of nine brand logos sounds simple. It has to move at a pace people can actually read, pause the instant a CI hovers a name, and never feel like it's fighting the visitor for control - details most visitors never consciously notice, but would notice the absence of.
+      </p>
+
+      <!-- 3 screenshots: marquee scroll pace, hover pause, final shipped -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
+          <img src="beenext/testi-a.png" alt="Brand marquee - scroll pace test" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
+          <img src="beenext/testi-b.png" alt="Brand marquee - hover pause state" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
+          <img src="beenext/testi-c.png" alt="Brand marquee - final shipped" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">Brand Marquee Craft</p>
+        <p class="annot-body">Speed, hover pause, and infinite-loop seams all needed several passes to feel invisible. The version that shipped moves at a readable pace, pauses cleanly on hover with zero lag, and never feels like it's fighting the visitor for control.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     6c. DESIGNING FOR CONSTRAINTSCASE STUDIES
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 03</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Stats Section</p>
+      <h2 class="h2">The number is the design.<br>Nothing else competes.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        Icons, charts and ornamentation would have been easy to add and easy to justify. But the research was clear: what actually convinces a Custom Integrator is the number itself - large, confident, in gold, with nothing competing for attention. Restraint was the harder decision to commit to.
+      </p>
+
+      <!-- 3 screenshots: stats section iterations -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
+          <img src="beenext/cs-a.png" alt="Stats section - decorated draft" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
+          <img src="beenext/cs-b.png" alt="Stats section - icon test" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
+          <img src="beenext/cs-c.png" alt="Stats section - final shipped" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">Stats Section Restraint</p>
+        <p class="annot-body">Every decorative option - icons, charts, dividers - was tested and cut. The numbers alone, set large and in gold, tested better than any version with added ornamentation.</p>
+      </div>
+
+      <!-- content panel: a fourth constraint, usability for a non-technical editor -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">Content Panel &middot; Login</p>
+          <p class="c-body">One calm login screen - no dashboard clutter before you're inside.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Content Panel &middot; Structure</p>
+          <p class="c-body">Hero content, brand marquee, stats, featured brands, blog posts and contact details, each clearly labelled and collapsed by default.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Content Panel &middot; Built for a Hurry</p>
+          <p class="c-body">Whoever updates a phone number on a Friday afternoon can find the field and be done in under a minute.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     7. FINAL UIMOBILE SHOWCASE (was panel 7, now same number)
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     7. FINAL UIMOBILE SHOWCASE
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="dark" style="background:var(--black);">
+  <div class="ch-bar ch-bar-dark">
+    <span class="ch-label ch-label-dark">Low-Fidelity Wireframes</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-white">Low-Fidelity Wireframes</p>
+      <h2 class="h2" style="color:white;">Structure before style.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.2rem;">Before any colour or type treatment, wireframes tested layout logic alone: hierarchy, content density, and where each CTA needed to sit. Every panel was checked against one question - does this match the order a CI actually decides in?</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;" class="two-col">
+
+        <!-- Hero wireframe -->
+        <div>
+          <div style="background:#141414;border:1px solid rgba(255,255,255,0.1);padding:1rem;display:flex;flex-direction:column;gap:0.5rem;min-height:220px;">
+            <div style="display:flex;justify-content:space-between;">
+              <div style="width:70px;height:14px;background:var(--blue);"></div>
+              <div style="width:90px;height:14px;background:rgba(255,255,255,0.08);"></div>
+            </div>
+            <div style="display:flex;gap:0.8rem;flex:1;margin-top:0.5rem;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:0.4rem;justify-content:center;">
+                <div style="width:80%;height:16px;background:rgba(255,255,255,0.75);"></div>
+                <div style="width:60%;height:16px;background:rgba(255,255,255,0.55);"></div>
+                <div style="width:70%;height:8px;background:rgba(255,255,255,0.2);margin-top:0.3rem;"></div>
+                <div style="width:50%;height:8px;background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex;gap:0.4rem;margin-top:0.5rem;">
+                  <div style="width:110px;height:26px;background:var(--blue);"></div>
+                  <div style="width:110px;height:26px;border:1.5px solid rgba(255,255,255,0.3);"></div>
+                </div>
+              </div>
+              <div style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);"></div>
+            </div>
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:var(--blue);margin-top:0.6rem;">Section 01 &mdash; Hero</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.4);">Full viewport &middot; persistent nav with CTA &middot; brand statement above the fold</p>
+        </div>
+
+        <!-- Brand Marquee + What We Do wireframe -->
+        <div>
+          <div style="background:#141414;border:1px solid rgba(255,255,255,0.1);padding:1rem;display:flex;flex-direction:column;gap:0.6rem;min-height:220px;">
+            <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0;">Trusted Global Brands</p>
+            <div style="display:flex;gap:0.3rem;flex-wrap:wrap;">
+              <div style="width:11%;height:20px;background:rgba(255,255,255,0.08);"></div>
+              <div style="width:11%;height:20px;background:rgba(255,255,255,0.08);"></div>
+              <div style="width:11%;height:20px;background:rgba(255,255,255,0.08);"></div>
+              <div style="width:11%;height:20px;background:rgba(255,255,255,0.08);"></div>
+              <div style="width:11%;height:20px;background:rgba(255,255,255,0.08);"></div>
+              <div style="width:11%;height:20px;background:rgba(255,255,255,0.08);"></div>
+              <div style="width:11%;height:20px;background:rgba(255,255,255,0.08);"></div>
+              <div style="width:11%;height:20px;background:rgba(255,255,255,0.08);"></div>
+            </div>
+            <div style="width:55%;height:14px;background:rgba(255,255,255,0.55);margin-top:0.3rem;"></div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.3rem;flex:1;">
+              <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--blue);"></div>
+              <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--blue);"></div>
+              <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--blue);"></div>
+              <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--blue);"></div>
+            </div>
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:var(--blue);margin-top:0.6rem;">Sections 02&ndash;03 &mdash; Brand Marquee + What We Do</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.4);">Infinite scroll marquee &middot; 4 capability cards with gold top border</p>
+        </div>
+
+        <!-- Featured Brands wireframe -->
+        <div>
+          <div style="background:#141414;border:1px solid rgba(255,255,255,0.1);padding:1rem;display:flex;flex-direction:column;gap:0.5rem;min-height:220px;">
+            <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0;">Featured Brands</p>
+            <div style="width:45%;height:10px;background:rgba(255,255,255,0.3);margin-bottom:0.2rem;"></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.35rem;flex:1;">
+              <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);"></div>
+              <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);"></div>
+              <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);"></div>
+              <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);"></div>
+              <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);"></div>
+              <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);"></div>
+            </div>
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:var(--blue);margin-top:0.6rem;">Section 04 &mdash; Featured Brands</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.4);">Asymmetric bento grid &middot; flagship brands get more visual weight</p>
+        </div>
+
+        <!-- Why BEENEXT wireframe -->
+        <div>
+          <div style="background:#141414;border:1px solid rgba(255,255,255,0.1);padding:1rem;display:flex;flex-direction:column;gap:0.5rem;min-height:220px;">
+            <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0;">Why BEENEXT</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-top:0.3rem;">
+              <p style="font-family:var(--display);font-size:1.8rem;font-weight:800;color:var(--blue);text-align:center;margin:0;">9+</p>
+              <p style="font-family:var(--display);font-size:1.8rem;font-weight:800;color:var(--blue);text-align:center;margin:0;">8</p>
+              <p style="font-family:var(--display);font-size:1.8rem;font-weight:800;color:var(--blue);text-align:center;margin:0;">500+</p>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.4rem;flex:1;margin-top:0.3rem;">
+              <div style="background:rgba(255,255,255,0.04);border-top:2px solid var(--blue);"></div>
+              <div style="background:rgba(255,255,255,0.04);border-top:2px solid var(--blue);"></div>
+              <div style="background:rgba(255,255,255,0.04);border-top:2px solid var(--blue);"></div>
+            </div>
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:var(--blue);margin-top:0.6rem;">Section 05 &mdash; Stats + Why Us</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.4);">Three large stat numbers &middot; three supporting USPs beneath</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     8. OUTCOMES & REFLECTION
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Outcomes &amp; Reflection</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Outcomes</p>
+      <h2 class="h2">What shipped and what it taught us.</h2>
+
+      <!-- Carousel centred -->
+      <div style="position:relative;max-width:560px;margin:0 auto 0.7rem;">
+        <div style="overflow:hidden;border-radius:0;aspect-ratio:16/9;border:1px solid rgba(255,255,255,0.12);background:#1a1a1a;">
+          <div id="oc-track" style="display:flex;height:100%;transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);">
+
+            <div onclick="ocZoom(0)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="beenext/1.png" alt="Hero" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Hero</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">1 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(1)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="beenext/2.png" alt="Brand Marquee" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Brand Marquee</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">2 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(2)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="beenext/3.png" alt="Featured Brands" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Featured Brands</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">3 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(3)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="beenext/4.png" alt="Stats + Why Us" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Stats + Why Us</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">4 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(4)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="beenext/5.png" alt="Solutions" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Solutions</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">5 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(5)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="beenext/6.png" alt="Partner CTA" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Partner CTA</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">6 / 6</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Prev / Next arrows -->
+        <button onclick="ocNav(-1)" aria-label="Previous"
+          style="position:absolute;left:0.55rem;top:50%;transform:translateY(-50%);width:1.9rem;height:1.9rem;border-radius:50%;background:rgba(0,0,0,0.52);border:none;cursor:pointer;color:white;font-size:0.72rem;display:flex;align-items:center;justify-content:center;transition:background 0.18s;"
+          onmouseover="this.style.background='rgba(0,0,0,0.82)'" onmouseout="this.style.background='rgba(0,0,0,0.52)'">&larr;</button>
+        <button onclick="ocNav(1)" aria-label="Next"
+          style="position:absolute;right:0.55rem;top:50%;transform:translateY(-50%);width:1.9rem;height:1.9rem;border-radius:50%;background:rgba(0,0,0,0.52);border:none;cursor:pointer;color:white;font-size:0.72rem;display:flex;align-items:center;justify-content:center;transition:background 0.18s;"
+          onmouseover="this.style.background='rgba(0,0,0,0.82)'" onmouseout="this.style.background='rgba(0,0,0,0.52)'">&rarr;</button>
+
+        <!-- Dot indicators -->
+        <div style="display:flex;gap:0.4rem;justify-content:center;margin-top:0.6rem;">
+          <span class="oc-dot" onclick="ocGo(0)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:var(--blue);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(1)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(255,255,255,0.22);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(2)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(255,255,255,0.22);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(3)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(255,255,255,0.22);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(4)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(255,255,255,0.22);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(5)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(255,255,255,0.22);cursor:pointer;transition:background 0.2s;display:block;"></span>
+        </div>
+      </div>
+
+      <!-- 3 blue outcome cards -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-bottom:0.55rem;">
+        <div class="card card-blue">
+          <p class="c-label">Brand-First Trust</p>
+          <p class="c-title">Marquee under the hero earns trust fastest</p>
+          <p class="c-body">Leading with the brand marquee directly under the hero consistently tested as the fastest way to earn a CI's trust.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Numbers Over Adjectives</p>
+          <p class="c-title">Plain stats matched how B2B buyers evaluate</p>
+          <p class="c-body">Keeping the stats section plain and numbers-first, rather than decorated, matched how B2B buyers actually evaluate credibility.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Always-On CTA</p>
+          <p class="c-title">Getting started never needs a scroll</p>
+          <p class="c-body">A "Become a Partner" CTA in the persistent navigation meant the answer to "how do I get started" was never more than a click away.</p>
+        </div>
+      </div>
+
+      <!-- What Worked / What I'd Revisit -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+        <div style="background:var(--black);border-radius:0;border-top:2px solid var(--blue);padding:0.9rem;">
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.35rem;">What Worked</p>
+          <p style="font-size:0.7rem;color:rgba(255,255,255,0.6);line-height:1.55;">Brand marquee straight under the hero &middot; plain, number-first stats &middot; every animation earning its place &middot; a persistent nav CTA</p>
+        </div>
+        <div style="background:var(--blue-pale);border-radius:0;padding:0.9rem;">
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.35rem;">What I'd Revisit</p>
+          <p style="font-size:0.7rem;color:rgba(255,255,255,0.55);line-height:1.55;">Wider CI testing before launch &middot; watching someone use the content panel live, not after handoff &middot; more time specifically on mobile</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     FOOTER CTA
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section class="stack-panel" data-theme="dark"
+  style="background:var(--black);justify-content:center;align-items:center;text-align:center;padding:3rem 5vw;">
+  <div class="inner">
+    <p style="font-size:0.58rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem;">Up Next</p>
+    <h2 style="font-size:clamp(2rem,5vw,4rem);font-weight:800;letter-spacing:-0.03em;color:white;margin-bottom:2rem;">See more work &rarr;</h2>
+    <a href="nik.html"
+      style="display:inline-flex;align-items:center;gap:0.75rem;background:var(--blue);color:var(--black);font-size:0.76rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.9rem 2.25rem;border-radius:0;text-decoration:none;transition:transform 0.25s cubic-bezier(0.16,1,0.3,1),box-shadow 0.25s;"
+      onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 12px 32px rgba(255,187,80,0.28)'"
+      onmouseout="this.style.transform='scale(1)';this.style.boxShadow='none'">
+      &larr; Back to Portfolio
+    </a>
+  </div>
+</section>
+
+
+<!-- Lightbox overlay -->
+<div id="oc-lightbox" onclick="ocLightboxClose()"
+  style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;cursor:zoom-out;">
+  <img id="oc-lb-img" src="" alt="Screenshot"
+    onclick="event.stopPropagation()"
+    style="max-width:90vw;max-height:88vh;border-radius:0;box-shadow:0 24px 80px rgba(0,0,0,0.7);object-fit:contain;">
+  <button onclick="ocLightboxClose()"
+    style="position:fixed;top:1.2rem;right:1.4rem;width:2.4rem;height:2.4rem;border-radius:50%;background:rgba(255,255,255,0.12);border:none;cursor:pointer;color:white;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.18s;"
+    onmouseover="this.style.background='rgba(255,255,255,0.28)'"
+    onmouseout="this.style.background='rgba(255,255,255,0.12)'">&#10005;</button>
+</div>
+
+<script>
+  // Outcomes carousel
+  let ocIdx = 0;
+  function ocGo(n) {
+    ocIdx = ((n % 6) + 6) % 6;
+    document.getElementById('oc-track').style.transform = 'translateX(-' + (ocIdx * 100) + '%)';
+    document.querySelectorAll('.oc-dot').forEach(function(d, i) {
+      d.style.background = i === ocIdx ? 'var(--blue)' : 'rgba(255,255,255,0.22)';
+    });
+  }
+  function ocNav(dir) { ocGo(ocIdx + dir); }
+
+  // Lightbox
+  var ocSrcs = [
+    'beenext/1.png','beenext/2.png','beenext/3.png',
+    'beenext/4.png','beenext/5.png','beenext/6.png'
+  ];
+  function ocZoom(n) {
+    var lb = document.getElementById('oc-lightbox');
+    document.getElementById('oc-lb-img').src = ocSrcs[n];
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function ocLightboxClose() {
+    document.getElementById('oc-lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') ocLightboxClose();
+  });
+
+  // Nav theme toggle based on section in view
+  const nav = document.getElementById('cs-nav');
+  const secs = document.querySelectorAll('section[data-theme]');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        nav.className = e.target.dataset.theme === 'dark' ? 'dark' : 'light';
+      }
+    });
+  }, { rootMargin: '-50% 0px -50% 0px' });
+  secs.forEach(s => io.observe(s));
+
+  // Card-stack scroll: each panel pins in place while the next one rises
+  // to cover it. All panels get an explicit z-index up front so paint order
+  // stays correct throughout the pin cycle.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion && window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    const panels = gsap.utils.toArray('.stack-panel');
+
+    panels.forEach((panel, i) => {
+      panel.style.position = 'relative';
+      panel.style.zIndex = i + 1;
+    });
+
+    panels.forEach((panel, i) => {
+      if (i === panels.length - 1) return;
+
+      ScrollTrigger.create({
+        trigger: panel,
+        start: 'top top',
+        end: 'bottom top',
+        pin: true,
+        pinSpacing: false,
+      });
+
+      gsap.to(panel, {
+        scale: 0.92,
+        opacity: 0.5,
+        ease: 'none',
+        transformOrigin: 'top center',
+        scrollTrigger: {
+          trigger: panels[i + 1],
+          start: 'top bottom',
+          end: 'top top',
+          scrub: true,
+        },
+      });
+    });
+  }
+</script>
+</body>
+</html>

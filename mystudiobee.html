@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mystudiobee - Case Study &middot; Nikhil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <style>
+    :root {
+      --blue:      #2F48DF;
+      --blue-pale: #E4E9FA;
+      --black:     #0A0A0A;
+      --cream:     #EDE8DC;
+      --white:     #FFFFFF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    #cs-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.1rem 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    #cs-nav.dark  { background: rgba(10,10,10,0.82);  border-bottom-color: rgba(255,255,255,0.06); }
+    #cs-nav.light { background: rgba(255,255,255,0.88); border-bottom-color: rgba(0,0,0,0.07); }
+    .nav-back {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: opacity 0.2s;
+    }
+    .nav-back:hover { opacity: 0.45; }
+    #cs-nav.dark  .nav-back { color: white; }
+    #cs-nav.light .nav-back { color: var(--black); }
+    .nav-tag { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.4; }
+    #cs-nav.dark  .nav-tag { color: white; }
+    #cs-nav.light .nav-tag { color: var(--black); }
+
+    /* ── STACK PANELS ── */
+    .stack-panel {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      will-change: transform, opacity;
+      position: relative;
+    }
+
+    /* ── CHAPTER BAR (top of each panel) ── */
+    .ch-bar {
+      padding: 0.8rem 5vw;
+      flex-shrink: 0;
+    }
+    .ch-bar-light { border-bottom: 1px solid rgba(0,0,0,0.09); }
+    .ch-bar-dark  { border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .ch-label {
+      font-size: 0.54rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+    }
+    .ch-label-light { color: rgba(0,0,0,0.3); }
+    .ch-label-dark  { color: rgba(255,255,255,0.28); }
+
+    /* ── PANEL CONTENT AREA ── */
+    .panel-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 2.5rem 5vw;
+    }
+    .panel-body-top { align-items: flex-start; padding-top: 2rem; }
+    .inner { max-width: 1100px; margin: 0 auto; width: 100%; }
+
+    /* ── SECTION SUB-LABEL ── */
+    .sec-label {
+      font-size: 0.57rem; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; margin-bottom: 0.65rem;
+    }
+    .sl-blue  { color: var(--blue); }
+    .sl-white { color: rgba(255,255,255,0.38); }
+    .sl-muted { color: rgba(0,0,0,0.32); }
+
+    /* ── HEADINGS ── */
+    .h1 { font-size: clamp(3.5rem,8vw,9rem); font-weight: 700; letter-spacing: -0.04em; line-height: 0.9; }
+    .h2 { font-size: clamp(1.6rem,2.8vw,3rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 1rem; }
+
+    /* ── CARDS ── */
+    .card { border-radius: 0.85rem; padding: 1rem 1.1rem; }
+    .card-blue { background: var(--blue-pale); border-top: 2.5px solid var(--blue); }
+    .card-dark { background: #141414;           border-top: 2.5px solid var(--blue); }
+    .c-label { font-size: 0.54rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.3rem; color: var(--blue); }
+    .c-title { font-size: 0.88rem; font-weight: 700; line-height: 1.25; margin-bottom: 0.3rem; }
+    .c-body  { font-size: 0.75rem; line-height: 1.45; opacity: 0.68; }
+
+    /* ── PULL QUOTE ── */
+    .pull-quote {
+      border-left: 3px solid var(--blue);
+      background: var(--blue-pale);
+      border-radius: 0 0.75rem 0.75rem 0;
+      padding: 0.85rem 1.3rem; margin: 0.9rem 0;
+    }
+    .pull-quote p { font-size: clamp(0.85rem,1.2vw,1rem); font-style: italic; line-height: 1.5; margin-bottom: 0.35rem; }
+    .pull-quote cite { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); font-style: normal; }
+
+    /* ── PROCESS STRIP ── */
+    .process-strip { display: flex; overflow-x: auto; border-radius: 0.5rem; overflow: hidden; margin-top: 0.75rem; }
+    .p-step { flex: 1; min-width: 90px; padding: 0.55rem 0.5rem; text-align: center; }
+    .p-step.on  { background: var(--blue); color: white; }
+    .p-step.off { background: var(--blue-pale); color: var(--black); }
+    .p-step-num  { font-size: 0.48rem; font-weight: 700; letter-spacing: 0.14em; opacity: 0.55; margin-bottom: 0.15rem; }
+    .p-step-name { font-size: 0.72rem; font-weight: 700; }
+    .p-step-sub  { font-size: 0.56rem; opacity: 0.5; margin-top: 0.1rem; }
+
+    /* ── COLOUR SWATCHES ── */
+    .swatch { width: 72px; height: 50px; border-radius: 0.5rem; display: flex; align-items: flex-end; padding: 0.3rem 0.4rem; }
+    .swatch span { font-size: 0.48rem; font-weight: 700; letter-spacing: 0.04em; }
+
+    /* ── RESEARCH → DECISION ── */
+    .rd-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.5rem; align-items: center; margin-bottom: 0.4rem; }
+    .rd-box { border-radius: 0.6rem; padding: 0.65rem 0.85rem; }
+    .rd-ins  { background: rgba(255,255,255,0.05); border-left: 3px solid var(--blue); }
+    .rd-dec  { background: rgba(47,72,223,0.14);   border-left: 3px solid rgba(255,255,255,0.1); }
+    .rd-lbl  { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 0.25rem; }
+    .rd-txt  { font-size: 0.72rem; line-height: 1.35; color: rgba(255,255,255,0.7); }
+    .rd-arrow { color: var(--blue); font-size: 1rem; }
+
+    /* ── SITEMAP ── */
+    .sm-item { border-radius: 0.4rem; padding: 0.5rem 1rem; font-size: 0.7rem; font-weight: 600; text-align: center; margin-bottom: 0.28rem; }
+    .sm-on   { background: var(--blue); color: white; }
+    .sm-off  { background: var(--blue-pale); color: var(--black); }
+    .sm-fixed { background: rgba(0,0,0,0.05); color: rgba(0,0,0,0.38); font-size: 0.63rem; }
+
+    /* ── BROWSER FRAME ── */
+    .browser-frame {
+      flex: 1; border-radius: 0.6rem 0.6rem 0.4rem 0.4rem;
+      border: 1.5px solid rgba(0,0,0,0.1); overflow: hidden;
+      background: white;
+    }
+    .browser-chrome {
+      background: #f2f2f2; border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding: 0.35rem 0.55rem;
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .b-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .b-bar { flex: 1; height: 6px; background: rgba(0,0,0,0.09); border-radius: 3px; margin: 0 0.4rem; }
+
+    /* ── ANNOTATION CARD (pink/salmon) ── */
+    .annot-card {
+      background: #FDEAEA;
+      border-left: 3px solid #E05050;
+      border-radius: 0 0.6rem 0.6rem 0;
+      padding: 0.75rem 1rem;
+    }
+    .annot-label { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #C04040; margin-bottom: 0.3rem; }
+    .annot-body  { font-size: 0.74rem; line-height: 1.45; color: rgba(0,0,0,0.62); }
+
+    /* ── OUTCOME GRID ── */
+    .outcome-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(3, auto);
+      gap: 0.65rem;
+    }
+    .outcome-frame { border-radius: 0.6rem; overflow: hidden; border: 1px solid rgba(0,0,0,0.07); }
+    .outcome-frame img { width: 100%; height: 140px; object-fit: cover; display: block; }
+
+    /* ── DIVIDER ── */
+    .div-line { height: 1px; margin: 0.9rem 0; }
+    .div-dark  { background: rgba(0,0,0,0.08); }
+    .div-light { background: rgba(255,255,255,0.07); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    .fu   { animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both; }
+    .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.18s; }
+    .d3 { animation-delay: 0.32s; } .d4 { animation-delay: 0.46s; }
+
+    @media (max-width: 640px) {
+      .rd-grid { grid-template-columns: 1fr; }
+      .rd-arrow { display: none; }
+      .two-col, .three-col, .four-col { grid-template-columns: 1fr !important; }
+      .app-showcase { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="cs-nav" class="light">
+  <a href="nik.html" class="nav-back">&larr; Portfolio</a>
+  <span class="nav-tag">Case Study</span>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     1. COVER
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light"
+  style="background: radial-gradient(ellipse 75% 85% at 105% 0%, #B8C4F2 0%, #D8DFFA 35%, #EEF1FD 58%, #fff 72%);
+         justify-content: space-between; padding-top: 5rem;">
+
+  <!-- top label -->
+  <div style="padding: 1.5rem 5vw 0;">
+    <p style="font-size:0.55rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,0,0,0.35);">PRODUCT / OPS TOOL | INTERNAL</p>
+  </div>
+
+  <!-- main title block -->
+  <div style="padding: 0 5vw;">
+    <h1 style="font-size:clamp(3.2rem,8vw,8.5rem);font-weight:700;letter-spacing:-0.04em;line-height:0.9;margin-bottom:0.3rem;" class="fu d1">
+      <span style="color:var(--blue);font-weight:300;">my</span><span style="color:var(--blue);font-weight:700;">studiobee</span>
+    </h1>
+    <p style="font-size:clamp(1.8rem,4vw,4rem);font-weight:600;letter-spacing:-0.03em;color:var(--black);margin-bottom:1.25rem;" class="fu d2">case study</p>
+    <div style="width:clamp(6rem,20vw,16rem);height:1.5px;background:rgba(0,0,0,0.14);margin-bottom:1.25rem;"></div>
+    <p style="font-size:clamp(0.9rem,1.3vw,1.1rem);color:rgba(0,0,0,0.5);line-height:1.65;max-width:56ch;" class="fu d3">
+      Turning quotes, invoices, and studio ops into one system the team actually opens every day &mdash; instead of spreadsheets, WhatsApp, and a shared notebook.
+    </p>
+  </div>
+
+  <!-- metadata footer bar -->
+  <div style="border-top:1px solid rgba(0,0,0,0.09);padding:1.25rem 5vw;display:flex;gap:3rem;flex-wrap:wrap;" class="fu d4">
+    <div>
+      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.3rem;">Role</p>
+      <p style="font-size:0.82rem;font-weight:600;">Product Designer &amp; Full-Stack Builder</p>
+    </div>
+    <div>
+      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.3rem;">Year</p>
+      <p style="font-size:0.82rem;font-weight:600;">2026 &middot; in active use</p>
+    </div>
+    <div>
+      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.3rem;">Deliverables</p>
+      <p style="font-size:0.82rem;font-weight:600;">Billing engine &middot; CRM &middot; Cost &amp; profit model &middot; Supabase backend</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     2. PROJECT OVERVIEW
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Project Overview</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Overview</p>
+      <h2 class="h2">Build the tool StudioBee's own<br>billing was held together without.</h2>
+
+      <div class="pull-quote">
+        <p>"Quotes lived in one Word template, invoices in another, and nobody could say which projects actually made money until the year was over."</p>
+        <cite>Project Brief &middot; StudioBee Internal, 2026</cite>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">Audience</p>
+          <p class="c-title">A two-person team,<br>not a market</p>
+          <p class="c-body">Owner and one production manager, composing quotes at 11pm after a shoot wraps. Every screen has exactly one user persona to design for.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Goals</p>
+          <p class="c-title">GST-correct billing,<br>real profit visibility</p>
+          <p class="c-body">Quotes → proformas → invoices → receipts as one lifecycle, plus a true cost model so margin is known per project, not guessed at tax time.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Constraints</p>
+          <p class="c-title">Live data from day one,<br>no sandbox period</p>
+          <p class="c-body">Real clients, real invoices, real money &middot; built and used by the same person &middot; must never slow down a team mid-shoot</p>
+        </div>
+      </div>
+
+      <div class="div-line div-dark"></div>
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.7rem;">Build Process</p>
+      <div class="process-strip">
+        <div class="p-step on"><p class="p-step-name">Discover</p><p class="p-step-sub">Ops audit</p></div>
+        <div class="p-step off"><p class="p-step-name">Define</p><p class="p-step-sub">Data model + IA</p></div>
+        <div class="p-step on"><p class="p-step-name">Design</p><p class="p-step-sub">Screens + flows</p></div>
+        <div class="p-step off"><p class="p-step-name">Ship</p><p class="p-step-sub">Build + migrate</p></div>
+        <div class="p-step on" style="opacity:0.55;"><p class="p-step-name">Iterate</p><p class="p-step-sub">Weekly, on real use</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     3. DISCOVERY & SYSTEM
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Discovery &amp; System</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Discovery</p>
+      <h2 class="h2">One brand, extended into<br>a tool nobody outside the team sees.</h2>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">Principle 01</p>
+          <p class="c-title">Numbers You Can Trust</p>
+          <p class="c-body">Every total on screen has to be traceable to a line item. No rounding surprises, no totals that don't match the PDF the client receives.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Principle 02</p>
+          <p class="c-title">Speed for a Team of Two</p>
+          <p class="c-body">The person designing this is also the person using it at 11pm after a shoot. Every extra click is a tax on the exact same person twice over.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Principle 03</p>
+          <p class="c-title">Desktop-First, on Purpose</p>
+          <p class="c-body">Unlike the public site, this tool is opened at a desk between shoots, not on a commute. Density and keyboard speed beat mobile polish here.</p>
+        </div>
+      </div>
+
+      <div class="div-line div-dark"></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;" class="two-col">
+        <div>
+          <div style="margin-bottom:1.1rem;">
+            <p style="font-size:0.54rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.55rem;">Colour Tokens &mdash; Same Brand, Reused</p>
+            <div style="display:flex;gap:0.55rem;flex-wrap:wrap;">
+              <div class="swatch" style="background:#2F48DF;"><span style="color:white;">#2F48DF</span></div>
+              <div class="swatch" style="background:#0A0A0A;"><span style="color:white;">#0A0A0A</span></div>
+              <div class="swatch" style="background:#FBFBFB;border:1px solid rgba(0,0,0,0.09);"><span style="color:#bbb;">#FBFBFB</span></div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:0.54rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.55rem;">Semantic Tokens &mdash; New for This Tool</p>
+            <div style="display:flex;gap:0.55rem;flex-wrap:wrap;">
+              <div class="swatch" style="background:#E5484D;"><span style="color:white;">#E5484D</span></div>
+              <div class="swatch" style="background:#1D2E94;"><span style="color:white;">#1D2E94</span></div>
+              <div class="swatch" style="background:#EEF1FC;border:1px solid rgba(0,0,0,0.07);"><span style="color:#7a7f95;">#EEF1FC</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:0.54rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.45rem;">Typography System</p>
+          <p style="font-size:clamp(2rem,5vw,4rem);font-weight:600;letter-spacing:-0.02em;line-height:1;margin-bottom:0.35rem;font-family:'Quicksand',sans-serif;">Dense tables.</p>
+          <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.38);margin-bottom:0.55rem;">Quicksand &middot; One Face, Every Weight</p>
+          <p style="font-size:0.78rem;color:rgba(0,0,0,0.5);line-height:1.5;max-width:42ch;">The marketing site pairs a display serif with DM Sans for brand impact. This tool drops the display pairing entirely &mdash; one rounded, legible sans across headings, tables, and forms, because the job here is scanning numbers fast, not making a first impression.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     4. USER RESEARCH
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">User Research</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">User Research</p>
+      <h2 class="h2">The research was watching<br>one person do the job badly.</h2>
+
+      <!-- prior-tool cards -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">Before &middot; Quotes</p>
+          <p class="c-title">A Word template</p>
+          <p class="c-body">Copy-pasted per client, GST maths done by hand, no record of what was actually sent or when it expired.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Before &middot; Costs</p>
+          <p class="c-title">Purchase price only</p>
+          <p class="c-body">Equipment and subscriptions were tracked as one-off costs. Nothing captured what gear was actually costing per month.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Before &middot; Clients</p>
+          <p class="c-title">One delete button</p>
+          <p class="c-body">Removing a client wiped their record outright &mdash; including any invoices already tied to real, filed income.</p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:1rem;margin-bottom:0.9rem;" class="two-col">
+        <!-- persona -->
+        <div style="display:flex;flex-direction:column;gap:0.7rem;">
+          <div style="background:var(--blue);border-radius:0.85rem;padding:1rem;flex:1;">
+            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.4rem;">Primary Persona</p>
+            <p style="font-size:0.85rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.1rem;">Nikhil, Owner</p>
+            <p style="font-size:0.72rem;color:rgba(255,255,255,0.65);margin-bottom:0.4rem;">Runs production and the books</p>
+            <p style="font-size:0.72rem;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:0.5rem;">Scenario: closing out a shoot at 11pm, needs a GST-correct quote out before the client's morning, and a clean single total &mdash; not forty line items &mdash; on the PDF.</p>
+            <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:0.45rem;">
+              <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.25rem;">Values</p>
+              <p style="font-size:0.7rem;color:rgba(255,255,255,0.65);line-height:1.45;">&middot; Speed over ceremony &middot; Numbers that don't need rechecking &middot; Nothing deleted by accident</p>
+            </div>
+          </div>
+          <div style="background:#0f0f0f;border-radius:0.85rem;padding:1rem;">
+            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.4rem;">What the ops audit showed</p>
+            <p style="font-size:0.72rem;font-weight:700;color:white;margin-bottom:0.4rem;">What the old process actually cost</p>
+            <p style="font-size:0.7rem;color:rgba(255,255,255,0.55);line-height:1.6;">
+              &middot; Different clients need different levels of billing detail on the same kind of document<br>
+              &middot; Deleting the wrong client once would be catastrophic to real financial records<br>
+              &middot; Recurring costs (subscriptions, amortised gear) never made it into true project cost<br>
+              &middot; Margin was only known once the accountant closed the year
+            </p>
+          </div>
+        </div>
+
+        <!-- research → decision -->
+        <div style="background:#0f0f0f;border-radius:0.85rem;padding:1rem;">
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.6rem;">Research &rarr; Design Decision</p>
+          <div style="display:flex;flex-direction:column;gap:0.4rem;">
+            <div class="rd-grid">
+              <div class="rd-box rd-ins">
+                <p class="rd-lbl" style="color:var(--blue);">Insight</p>
+                <p class="rd-txt">A corporate client wants a full breakdown; a retainer client just wants one clean number, on the same type of document</p>
+              </div>
+              <span class="rd-arrow">&rarr;</span>
+              <div class="rd-box rd-dec">
+                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+                <p class="rd-txt">Itemised, Grouped, and Summary line-item views, switchable per document &mdash; not a global setting</p>
+              </div>
+            </div>
+            <div class="rd-grid">
+              <div class="rd-box rd-ins">
+                <p class="rd-lbl" style="color:var(--blue);">Insight</p>
+                <p class="rd-txt">Deleting a client is rare, but invoices and receipts are financial records that can't just vanish</p>
+              </div>
+              <span class="rd-arrow">&rarr;</span>
+              <div class="rd-box rd-dec">
+                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+                <p class="rd-txt">Delete is a soft-delete into a Bin &mdash; 30-day recovery, auto-purged by a scheduled job</p>
+              </div>
+            </div>
+            <div class="rd-grid">
+              <div class="rd-box rd-ins">
+                <p class="rd-lbl" style="color:var(--blue);">Insight</p>
+                <p class="rd-txt">Subscriptions renew annually, gear amortises over years &mdash; neither showed up as a monthly cost anywhere</p>
+              </div>
+              <span class="rd-arrow">&rarr;</span>
+              <div class="rd-box rd-dec">
+                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+                <p class="rd-txt">Internal Costing tab: billing-period-aware, auto-converts to an effective monthly cost that feeds the P&amp;L</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     5. INFORMATION ARCHITECTURE
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light"
+  style="background: radial-gradient(ellipse 90% 100% at 110% 50%, #D4DAF7 0%, #EEF0FB 40%, var(--white) 65%);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Information Architecture</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">IA &amp; Nav Structure</p>
+      <h2 class="h2">A sidebar, not a scroll &mdash;<br>grouped by how often you visit.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:56ch;line-height:1.6;margin-bottom:1.1rem;">
+        There's no landing page to design for here &mdash; just a dashboard and a permanent sidebar. So the real IA work was grouping: daily workflow at the top, document lifecycle in the middle, configuration and safety nets pushed to the edges.
+      </p>
+
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:2rem;" class="two-col">
+        <!-- sitemap -->
+        <div>
+          <div class="sm-item sm-on">Dashboard</div>
+          <div class="sm-item sm-off">CRM &middot; Clients</div>
+          <div class="sm-item sm-on">Projects &middot; Tasks &middot; Time</div>
+          <div class="sm-item sm-off">Billing &middot; Quotes → Proformas → Invoices → Receipts</div>
+          <div class="sm-item sm-on">Admin &middot; Team, Services, Cost Model, Profit Split, Equipment, Vendors, Hires</div>
+          <div class="sm-item sm-off">Insights &middot; Reports, Time Log</div>
+          <div class="sm-item sm-fixed">Bin &mdash; owner/admin only, kept separate</div>
+        </div>
+
+        <!-- annotation cards -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;" class="two-col">
+          <div class="card card-blue">
+            <p class="c-label">Why Billing Is One Group</p>
+            <p class="c-title">One editor, four documents</p>
+            <p class="c-body">Quote → proforma → invoice → receipt is a linear lifecycle. All four share one editor component, so grouping them under a single nav label matches how the code &mdash; and the money &mdash; actually flows.</p>
+          </div>
+          <div class="card card-blue">
+            <p class="c-label">Why Admin Is Pushed Down</p>
+            <p class="c-title">Configuration, not daily use</p>
+            <p class="c-body">Team, cost model, profit split, equipment, vendor and hire ratings are set-and-forget. Keeping them out of the primary flow means the daily-use items never compete for attention.</p>
+          </div>
+          <div class="card card-blue">
+            <p class="c-label">Why Bin Sits Alone</p>
+            <p class="c-title">A safety net, not a workflow</p>
+            <p class="c-body">Deliberately separated from every other group, owner/admin only, and visually distinct &mdash; you should only ever land here on purpose, after a mistake, not while browsing.</p>
+          </div>
+          <div class="card card-blue">
+            <p class="c-label">Primary Path</p>
+            <p class="c-title">Dashboard &rarr; Quote &rarr; Invoice</p>
+            <p class="c-body">The dashboard's "+ Quote" shortcut and Recent Quotes list exist because that's the single most common path into the app &mdash; money starting to move.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     6a. DESIGNING FOR CONSTRAINTS · LINE-ITEM VIEWS
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 01</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Line-Item Views</p>
+      <h2 class="h2">One document, three levels<br>of how much detail to show.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        Full itemised breakdowns were right for some clients and unnecessarily granular for others &mdash; but rebuilding the same quote twice wasn't an option. The fix was a per-document toggle, not a global setting: Itemised, Grouped, and Summary, switchable on the same line items.
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
+          <img src="mystudiobee/quote-itemised.png" alt="Quote editor - itemised view" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
+          <img src="mystudiobee/quote-grouped.png" alt="Quote editor - grouped view" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/10;">
+          <img src="mystudiobee/quote-summary.png" alt="Quote editor - summary view" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <div class="annot-card">
+        <p class="annot-label">Grouped View Iteration</p>
+        <p class="annot-body">Grouped view first shipped with its own editable "Total shown on PDF" override row &mdash; a second source of truth for the total. It was removed once the real Subtotal/GST/Discount/Total box below already covered it; one number, one place it lives. Summary and Grouped overrides also default to the pre-GST amount, not the GST-inclusive total, since that read as confusing tax-inclusive pricing at a glance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     6b. DESIGNING FOR CONSTRAINTS · INTERNAL COSTING
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 02</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Internal Costing</p>
+      <h2 class="h2">Purchase price isn't cost &mdash;<br>a subscription bills every year.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        Equipment inventory only ever tracked one-time purchase cost and rental rates &mdash; useful for quoting gear to a client, useless for knowing what running the studio actually costs per month. A dedicated Internal Costing tab followed, and even that needed one more refinement: a billing-period field, so an annual Adobe subscription converts to the right monthly figure instead of a manually-guessed one.
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
+          <img src="mystudiobee/equipment.png" alt="Equipment inventory - purchase cost and rental rates only" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
+          <img src="mystudiobee/internal-costing.png" alt="Internal Costing tab - effective monthly cost" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/10;">
+          <img src="mystudiobee/internal-costing-edit.png" alt="Internal Costing - billing period detail" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <div class="annot-card">
+        <p class="annot-label">Billing Period Refinement</p>
+        <p class="annot-body">Shipped first as a flat "amount → monthly cost" split. That silently assumed everything recurring was billed monthly, which wasn't true &mdash; Adobe bills annually. Adding a Billed field (Monthly / Annual) with an auto-calculated, still-editable monthly figure meant the P&amp;L report's overhead number finally matched what the studio was actually paying.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">Recurring vs. One-Time</p>
+          <p class="c-body">Two costing types, one table: recurring subscriptions and one-time purchases amortised over their useful life, both collapsing to a single "effective monthly cost" column.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Auto-Calculated, Editable</p>
+          <p class="c-body">The monthly figure is computed from amount and billing period by default, but stays a plain editable field &mdash; the system's best guess, not a locked value.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Feeds the P&amp;L Directly</p>
+          <p class="c-body">Active internal costing items sum straight into the P&amp;L report's overhead line, so margin reflects real running cost, not just per-project labor and direct spend.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     6c. DESIGNING FOR CONSTRAINTS · CLIENT BIN
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 03</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Client Bin</p>
+      <h2 class="h2">Delete had to stop meaning<br>&ldquo;gone forever, instantly.&rdquo;</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        A single Delete button on a client record looked simple &mdash; until you notice it cascades to every project, invoice, and receipt tied to that client. Those are financial records, not disposable rows. Delete became a soft-delete with a 30-day recovery window instead, and building it surfaced a real bug along the way.
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-bottom:1.1rem;" class="two-col">
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/11;">
+          <img src="mystudiobee/client-detail.png" alt="Client detail page with Delete action" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/11;">
+          <img src="mystudiobee/bin.png" alt="Bin page - 30-day recovery with restore" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <div class="annot-card">
+        <p class="annot-label">A Bug Found Along the Way</p>
+        <p class="annot-body">Building the soft-delete migration surfaced a pre-existing bug: a database trigger on the clients table referenced an updated_at column that never existed, meaning every prior "Edit client" save had been silently failing. Fixed in the same migration pass &mdash; worth remembering that a feature build is also a chance to find bugs nobody had noticed yet.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">30-Day Window</p>
+          <p class="c-body">Soft-deleted clients, and everything under them, restore in one click for 30 days, then auto-purge on a nightly scheduled job.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Filtered Everywhere</p>
+          <p class="c-body">Every list, dashboard, and report query across the app excludes binned records &mdash; swept across roughly twenty queries when this shipped.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Owner/Admin Only</p>
+          <p class="c-body">The Bin itself is restricted and kept out of the everyday sidebar groups, so recovering a mistake is deliberate, not a click away by accident.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     7. FINAL UI · DESKTOP SHOWCASE
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="dark" style="background:var(--black);">
+  <div class="ch-bar ch-bar-dark">
+    <span class="ch-label ch-label-dark">Final UI</span>
+  </div>
+
+  <div class="panel-body" style="align-items:center;justify-content:center;padding-top:1rem;">
+    <div class="inner">
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;text-align:center;">Final UI &middot; Desktop Showcase</p>
+
+      <div class="app-showcase" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <div class="b-dot" style="background:#e5484d;"></div>
+              <div class="b-dot" style="background:#f0b429;"></div>
+              <div class="b-dot" style="background:#2f9e44;"></div>
+              <div class="b-bar"></div>
+            </div>
+            <div class="browser-frame" style="border-radius:0 0 0.4rem 0.4rem;aspect-ratio:16/10;">
+              <img src="mystudiobee/dashboard.png" alt="Dashboard" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+            </div>
+          </div>
+          <p style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);text-align:center;">Dashboard</p>
+          <p style="font-size:0.56rem;color:rgba(255,255,255,0.38);text-align:center;line-height:1.4;">Outstanding, overdue &amp; profit margin at a glance</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <div class="b-dot" style="background:#e5484d;"></div>
+              <div class="b-dot" style="background:#f0b429;"></div>
+              <div class="b-dot" style="background:#2f9e44;"></div>
+              <div class="b-bar"></div>
+            </div>
+            <div class="browser-frame" style="border-radius:0 0 0.4rem 0.4rem;aspect-ratio:16/10;">
+              <img src="mystudiobee/quote-grouped.png" alt="Quote editor" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+            </div>
+          </div>
+          <p style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);text-align:center;">Quote Editor</p>
+          <p style="font-size:0.56rem;color:rgba(255,255,255,0.38);text-align:center;line-height:1.4;">Grouped line items &middot; live GST &amp; profit split</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <div class="b-dot" style="background:#e5484d;"></div>
+              <div class="b-dot" style="background:#f0b429;"></div>
+              <div class="b-dot" style="background:#2f9e44;"></div>
+              <div class="b-bar"></div>
+            </div>
+            <div class="browser-frame" style="border-radius:0 0 0.4rem 0.4rem;aspect-ratio:16/10;">
+              <img src="mystudiobee/vendors.png" alt="Equipment vendor ratings" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+            </div>
+          </div>
+          <p style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);text-align:center;">Vendor Ratings</p>
+          <p style="font-size:0.56rem;color:rgba(255,255,255,0.38);text-align:center;line-height:1.4;">Profile-level star ratings &middot; generated overall score</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <div class="b-dot" style="background:#e5484d;"></div>
+              <div class="b-dot" style="background:#f0b429;"></div>
+              <div class="b-dot" style="background:#2f9e44;"></div>
+              <div class="b-bar"></div>
+            </div>
+            <div class="browser-frame" style="border-radius:0 0 0.4rem 0.4rem;aspect-ratio:16/10;">
+              <img src="mystudiobee/pnl.png" alt="P&L report" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+            </div>
+          </div>
+          <p style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);text-align:center;">P&amp;L Report</p>
+          <p style="font-size:0.56rem;color:rgba(255,255,255,0.38);text-align:center;line-height:1.4;">Per-document margin, driven by real internal cost</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <div class="b-dot" style="background:#e5484d;"></div>
+              <div class="b-dot" style="background:#f0b429;"></div>
+              <div class="b-dot" style="background:#2f9e44;"></div>
+              <div class="b-bar"></div>
+            </div>
+            <div class="browser-frame" style="border-radius:0 0 0.4rem 0.4rem;aspect-ratio:16/10;">
+              <img src="mystudiobee/bin.png" alt="Bin" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+            </div>
+          </div>
+          <p style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);text-align:center;">Bin</p>
+          <p style="font-size:0.56rem;color:rgba(255,255,255,0.38);text-align:center;line-height:1.4;">30-day recovery window &middot; restore or purge</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <div class="b-dot" style="background:#e5484d;"></div>
+              <div class="b-dot" style="background:#f0b429;"></div>
+              <div class="b-dot" style="background:#2f9e44;"></div>
+              <div class="b-bar"></div>
+            </div>
+            <div class="browser-frame" style="border-radius:0 0 0.4rem 0.4rem;aspect-ratio:16/10;">
+              <img src="mystudiobee/login.png" alt="Login screen" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+            </div>
+          </div>
+          <p style="font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);text-align:center;">Sign In</p>
+          <p style="font-size:0.56rem;color:rgba(255,255,255,0.38);text-align:center;line-height:1.4;">Same brand blue, dark canvas, zero decoration</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     8. OUTCOMES & REFLECTION
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Outcomes &amp; Reflection</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Outcomes</p>
+      <h2 class="h2">What shipped and what it taught us.</h2>
+
+      <!-- Carousel centred -->
+      <div style="position:relative;max-width:560px;margin:0 auto 0.7rem;">
+        <div style="overflow:hidden;border-radius:0.65rem;aspect-ratio:16/9;border:1px solid rgba(0,0,0,0.07);background:#eee;">
+          <div id="oc-track" style="display:flex;height:100%;transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);">
+
+            <div onclick="ocZoom(0)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="mystudiobee/dashboard.png" alt="Dashboard" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Dashboard</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">1 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(1)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="mystudiobee/quote-grouped.png" alt="Quotes" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Quotes</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">2 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(2)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="mystudiobee/internal-costing.png" alt="Internal Costing" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Costing</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">3 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(3)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="mystudiobee/vendors.png" alt="Vendor Ratings" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Vendors</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">4 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(4)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="mystudiobee/bin.png" alt="Bin" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">Bin</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">5 / 6</span>
+            </div>
+
+            <div onclick="ocZoom(5)" style="min-width:100%;flex-shrink:0;position:relative;cursor:zoom-in;">
+              <img src="mystudiobee/pnl.png" alt="P&L Report" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.48) 0%,transparent 45%);pointer-events:none;"></div>
+              <span style="position:absolute;bottom:0.6rem;left:0.75rem;font-size:0.5rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);pointer-events:none;">P&amp;L</span>
+              <span style="position:absolute;bottom:0.6rem;right:0.75rem;font-size:0.5rem;color:rgba(255,255,255,0.4);pointer-events:none;">6 / 6</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Prev / Next arrows -->
+        <button onclick="ocNav(-1)" aria-label="Previous"
+          style="position:absolute;left:0.55rem;top:50%;transform:translateY(-50%);width:1.9rem;height:1.9rem;border-radius:50%;background:rgba(0,0,0,0.52);border:none;cursor:pointer;color:white;font-size:0.72rem;display:flex;align-items:center;justify-content:center;transition:background 0.18s;"
+          onmouseover="this.style.background='rgba(0,0,0,0.82)'" onmouseout="this.style.background='rgba(0,0,0,0.52)'">&larr;</button>
+        <button onclick="ocNav(1)" aria-label="Next"
+          style="position:absolute;right:0.55rem;top:50%;transform:translateY(-50%);width:1.9rem;height:1.9rem;border-radius:50%;background:rgba(0,0,0,0.52);border:none;cursor:pointer;color:white;font-size:0.72rem;display:flex;align-items:center;justify-content:center;transition:background 0.18s;"
+          onmouseover="this.style.background='rgba(0,0,0,0.82)'" onmouseout="this.style.background='rgba(0,0,0,0.52)'">&rarr;</button>
+
+        <!-- Dot indicators -->
+        <div style="display:flex;gap:0.4rem;justify-content:center;margin-top:0.6rem;">
+          <span class="oc-dot" onclick="ocGo(0)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:var(--blue);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(1)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(0,0,0,0.14);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(2)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(0,0,0,0.14);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(3)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(0,0,0,0.14);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(4)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(0,0,0,0.14);cursor:pointer;transition:background 0.2s;display:block;"></span>
+          <span class="oc-dot" onclick="ocGo(5)" style="width:0.42rem;height:0.42rem;border-radius:50%;background:rgba(0,0,0,0.14);cursor:pointer;transition:background 0.2s;display:block;"></span>
+        </div>
+      </div>
+
+      <!-- 3 blue outcome cards -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-bottom:0.55rem;">
+        <div class="card card-blue">
+          <p class="c-label">Real Money, Day One</p>
+          <p class="c-title">Every invoice is a real invoice</p>
+          <p class="c-body">No sandbox period, no dummy data migration &mdash; the first quote generated by this tool is what StudioBee actually billed a client with.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Profit Visibility</p>
+          <p class="c-title">Margin known per project, not per year</p>
+          <p class="c-body">The P&amp;L report nets true internal cost against revenue per document, replacing a once-a-year accountant surprise with a live number.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Zero Data-Loss Incidents</p>
+          <p class="c-title">The Bin has already earned its place</p>
+          <p class="c-body">A wrong-client delete has already been caught and reversed inside the 30-day window since shipping &mdash; exactly the scenario it was built for.</p>
+        </div>
+      </div>
+
+      <!-- What Worked / What I'd Revisit -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+        <div style="background:var(--black);border-radius:0.75rem;padding:0.9rem;">
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.35rem;">What Worked</p>
+          <p style="font-size:0.7rem;color:rgba(255,255,255,0.55);line-height:1.55;">Per-document line-item views &middot; soft-delete-everywhere pattern &middot; shared QuoteEditor across all four document types &middot; single profile-level star ratings</p>
+        </div>
+        <div style="background:rgba(0,0,0,0.05);border-radius:0.75rem;padding:0.9rem;">
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.35rem;">What I'd Revisit</p>
+          <p style="font-size:0.7rem;color:rgba(0,0,0,0.45);line-height:1.55;">A tracked migration history from day one &middot; billing-period awareness designed in from the start, not bolted on &middot; earlier security pass on admin-only RPCs</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FOOTER CTA
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="dark"
+  style="background:var(--blue);justify-content:center;align-items:center;text-align:center;padding:3rem 5vw;">
+  <div class="inner">
+    <p style="font-size:0.58rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:1rem;">Up Next</p>
+    <h2 style="font-size:clamp(2rem,5vw,4rem);font-weight:700;letter-spacing:-0.03em;color:white;margin-bottom:2rem;">See more work &rarr;</h2>
+    <a href="nik.html"
+      style="display:inline-flex;align-items:center;gap:0.75rem;background:white;color:var(--blue);font-size:0.76rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.9rem 2.25rem;border-radius:100px;text-decoration:none;transition:transform 0.25s cubic-bezier(0.16,1,0.3,1),box-shadow 0.25s;"
+      onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 12px 32px rgba(0,0,0,0.18)'"
+      onmouseout="this.style.transform='scale(1)';this.style.boxShadow='none'">
+      &larr; Back to Portfolio
+    </a>
+  </div>
+</section>
+
+
+<!-- Lightbox overlay -->
+<div id="oc-lightbox" onclick="ocLightboxClose()"
+  style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;cursor:zoom-out;">
+  <img id="oc-lb-img" src="" alt="Screenshot"
+    onclick="event.stopPropagation()"
+    style="max-width:90vw;max-height:88vh;border-radius:0.5rem;box-shadow:0 24px 80px rgba(0,0,0,0.7);object-fit:contain;">
+  <button onclick="ocLightboxClose()"
+    style="position:fixed;top:1.2rem;right:1.4rem;width:2.4rem;height:2.4rem;border-radius:50%;background:rgba(255,255,255,0.12);border:none;cursor:pointer;color:white;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.18s;"
+    onmouseover="this.style.background='rgba(255,255,255,0.28)'"
+    onmouseout="this.style.background='rgba(255,255,255,0.12)'">&#10005;</button>
+</div>
+
+<script>
+  // Outcomes carousel
+  let ocIdx = 0;
+  function ocGo(n) {
+    ocIdx = ((n % 6) + 6) % 6;
+    document.getElementById('oc-track').style.transform = 'translateX(-' + (ocIdx * 100) + '%)';
+    document.querySelectorAll('.oc-dot').forEach(function(d, i) {
+      d.style.background = i === ocIdx ? 'var(--blue)' : 'rgba(0,0,0,0.14)';
+    });
+  }
+  function ocNav(dir) { ocGo(ocIdx + dir); }
+
+  // Lightbox
+  var ocSrcs = [
+    'mystudiobee/dashboard.png','mystudiobee/quote-grouped.png','mystudiobee/internal-costing.png',
+    'mystudiobee/vendors.png','mystudiobee/bin.png','mystudiobee/pnl.png'
+  ];
+  function ocZoom(n) {
+    var lb = document.getElementById('oc-lightbox');
+    document.getElementById('oc-lb-img').src = ocSrcs[n];
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function ocLightboxClose() {
+    document.getElementById('oc-lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') ocLightboxClose();
+  });
+
+  // Nav theme toggle based on section in view
+  const nav = document.getElementById('cs-nav');
+  const secs = document.querySelectorAll('section[data-theme]');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        nav.className = e.target.dataset.theme === 'dark' ? 'dark' : 'light';
+      }
+    });
+  }, { rootMargin: '-50% 0px -50% 0px' });
+  secs.forEach(s => io.observe(s));
+
+  // Card-stack scroll: each panel pins in place while the next one rises
+  // to cover it. All panels get an explicit z-index up front so paint order
+  // stays correct throughout the pin cycle.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion && window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    const panels = gsap.utils.toArray('.stack-panel');
+
+    panels.forEach((panel, i) => {
+      panel.style.position = 'relative';
+      panel.style.zIndex = i + 1;
+    });
+
+    panels.forEach((panel, i) => {
+      if (i === panels.length - 1) return;
+
+      ScrollTrigger.create({
+        trigger: panel,
+        start: 'top top',
+        end: 'bottom top',
+        pin: true,
+        pinSpacing: false,
+      });
+
+      gsap.to(panel, {
+        scale: 0.92,
+        opacity: 0.5,
+        ease: 'none',
+        transformOrigin: 'top center',
+        scrollTrigger: {
+          trigger: panels[i + 1],
+          start: 'top bottom',
+          end: 'top top',
+          scrub: true,
+        },
+      });
+    });
+  }
+</script>
+</body>
+</html>

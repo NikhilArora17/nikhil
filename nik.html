@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nikhil — Brand &amp; Visual Designer</title>
+  <title>Nikhil - Brand &amp; Visual Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -34,7 +34,7 @@
     html::-webkit-scrollbar { display: none; } /* Chrome / Edge / Safari */
     body {
       font-family: 'Sora', sans-serif;
-      background: #A8AD98;   /* sage — card sits on this */
+      background: #A8AD98;   /* sage - card sits on this */
       color: var(--forest);
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
@@ -66,7 +66,7 @@
       overflow: hidden; /* clips the sliding bg rect */
       transition: transform .45s var(--ease-out);
     }
-    /* Footer is a full-bleed illustrated close — nav steps aside rather than floating over it */
+    /* Footer is a full-bleed illustrated close - nav steps aside rather than floating over it */
     nav.nav-hidden { transform: translateY(-110%); }
     /* Rectangle that slides in from above on scroll */
     nav::before {
@@ -111,10 +111,10 @@
     /* ─── HERO ────────────────────────────────── */
     /*
       Aryan Tripathi structure: greeting → name → role → tagline → CTAs
-      Eat Hungry Tiger scale: the name IS the hero — huge, bold, commanding
-      Gourou color: mint (#E6F1E2) section — clean, warm, not white
+      Eat Hungry Tiger scale: the name IS the hero - huge, bold, commanding
+      Gourou color: mint (#E6F1E2) section - clean, warm, not white
     */
-    /* Fixed overlay — positions text over the canvas card, scales with it */
+    /* Fixed overlay - positions text over the canvas card, scales with it */
     #hero-content {
       position: fixed;
       top: 5.8rem; left: 2rem;
@@ -147,7 +147,7 @@
       z-index: 1;
     }
 
-    /* Hint only shows on hero — hidden via JS on leave */
+    /* Hint only shows on hero - hidden via JS on leave */
     #hint { z-index: 5; }
 
 
@@ -161,7 +161,7 @@
     }
     .hero-greeting::before { display:none; }
 
-    /* The name — Eat Hungry Tiger scale */
+    /* The name - Eat Hungry Tiger scale */
     .hero-name {
       font-family: 'Sora', sans-serif;
       font-size: clamp(4.5rem, 9.5vw, 10.5rem);
@@ -221,7 +221,7 @@
     }
     .card-back img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-    /* Real paint stroke PNGs — squished thin, flipped to arc under text */
+    /* Real paint stroke PNGs - squished thin, flipped to arc under text */
     .paint-stroke {
       position: absolute;
       pointer-events: none;
@@ -325,7 +325,7 @@
 
     /* ─── WORK SECTION ────────────────────────── */
     /*
-      Dark forest green — Gourou contrast section.
+      Dark forest green - Gourou contrast section.
       Project rows: clean, Aryan Tripathi simplicity.
     */
     #work {
@@ -536,7 +536,7 @@
     #about {
       background: var(--lime);
       color: var(--forest);
-      padding: 0;           /* override section base — inner handles padding */
+      padding: 0;           /* override section base - inner handles padding */
       min-height: 100vh;
       overflow: hidden;
     }
@@ -567,7 +567,7 @@
       transform: translateY(50px);
       flex-shrink: 0;
     }
-    /* About content (initially invisible — GSAP reveals) */
+    /* About content (initially invisible - GSAP reveals) */
     .about-inner {
       padding: 8rem 5vw 4.5rem;
       opacity: 0;
@@ -618,7 +618,7 @@
       display: block;
     }
 
-    /* ─── MARQUEE ZONE — diagonal zigzag ribbon straddling About / Play seam ─── */
+    /* ─── MARQUEE ZONE - diagonal zigzag ribbon straddling About / Play seam ─── */
     .marquee-zone {
       position: relative;
       z-index: 25;
@@ -640,7 +640,7 @@
     }
     .mz-band {
       fill: none;
-      stroke: var(--mint);   /* light green — reads against both the lime About surface and the dark Play surface */
+      stroke: var(--mint);   /* light green - reads against both the lime About surface and the dark Play surface */
       stroke-width: 130;
       stroke-linecap: round;
       stroke-dasharray: 2400;
@@ -935,7 +935,7 @@
     #play {
       background: var(--forest);
       color: var(--mint);
-      padding-top: 10rem;   /* clears the ribbon's lowest curve point with a clean gap — text sits fully below it instead of straddling the seam */
+      padding-top: 10rem;   /* clears the ribbon's lowest curve point with a clean gap - text sits fully below it instead of straddling the seam */
     }
     #play .sec-label { color: var(--olive); }
     #play .sec-heading { color: var(--mint); }
@@ -961,7 +961,7 @@
       font-family: 'GameFont';
     }
     #gameArea canvas { font-family: 'GameFont'; }
-    /* div keeps the `hidden` attribute until Play is clicked — without this,
+    /* div keeps the `hidden` attribute until Play is clicked - without this,
        the ID rule above (higher specificity than the [hidden] UA rule) forced it
        to render at full size, doubling the section's height with an empty canvas */
     #gameArea[hidden] { display: none; }
@@ -1199,7 +1199,7 @@
   </ul>
 </nav>
 
-<!-- Hero content fixed overlay — scales with canvas as one unit -->
+<!-- Hero content fixed overlay - scales with canvas as one unit -->
 <div id="hero-content">
   <p id="hint">Click to paint, click again to stop</p>
   <div class="hero-inner">
@@ -1229,13 +1229,13 @@
   </div>
 </div>
 
-<!-- Scroll spacer — drives the GSAP canvas exit animation -->
+<!-- Scroll spacer - drives the GSAP canvas exit animation -->
 <section id="home"></section>
 
 <div class="wave-div" data-from="#A8AD98" data-to="#0A3323"></div>
 
 <!-- ══════════════════════════════════════════════
-     WORK — dark forest, Gourou contrast section
+     WORK - dark forest, Gourou contrast section
 ══════════════════════════════════════════════ -->
 <section id="work">
 <div class="work-inner">
@@ -1261,20 +1261,20 @@
 <div class="wave-div" data-from="#0A3323" data-to="#DAD977"></div>
 
 <!-- ══════════════════════════════════════════════
-     ABOUT — lime #DAD977, Gourou bold color block
+     ABOUT - lime #DAD977, Gourou bold color block
 ══════════════════════════════════════════════ -->
 <section id="about">
 
-  <!-- ① Actual about content — visible as soon as the section is scrolled into view -->
+  <!-- ① Actual about content - visible as soon as the section is scrolled into view -->
   <div class="about-inner">
     <div class="about-cols">
 
       <div class="about-text">
         <p class="about-body rv d1">
-          I'm Nikhil — a brand and visual designer who believes great design is honest, intentional, and alive with meaning. My work sits at the intersection of global design sensibility and Indian visual culture.
+          I'm Nikhil - a brand and visual designer who believes great design is honest, intentional, and alive with meaning. My work sits at the intersection of global design sensibility and Indian visual culture.
         </p>
         <p class="about-body rv d2">
-          The duality in my name — written in both Latin and Devanagari-influenced letterforms — reflects how I approach every project: two worlds of reference, one coherent identity.
+          The duality in my name - written in both Latin and Devanagari-influenced letterforms - reflects how I approach every project: two worlds of reference, one coherent identity.
         </p>
         <p class="about-body rv d3">
           From strategy through to execution, I build visual systems that grow with a brand's vision and speak directly to the people who matter most.
@@ -1290,7 +1290,7 @@
     </div>
   </div>
 
-  <!-- ② Sticker pop-up — pinned overlay that plays after the about content is visible:
+  <!-- ② Sticker pop-up - pinned overlay that plays after the about content is visible:
        one scroll snap brings the stickers up, the next sends them away, then the section unpins. -->
   <div class="sticker-seq">
     <div class="sticker-tray">
@@ -1337,7 +1337,7 @@
       <span class="mq-sep">✦</span>
       <div class="mq-item"><img src="adobe-xd-svgrepo-com.svg" alt="Adobe XD" loading="lazy"><span>Adobe XD</span></div>
       <span class="mq-sep">✦</span>
-      <!-- set 2 — duplicate for seamless loop -->
+      <!-- set 2 - duplicate for seamless loop -->
       <div class="mq-item"><img src="adobe-photoshop-svgrepo-com.svg" alt="Photoshop" loading="lazy"><span>Photoshop</span></div>
       <span class="mq-sep">✦</span>
       <div class="mq-item"><img src="adobe-illustrator-svgrepo-com.svg" alt="Illustrator" loading="lazy"><span>Illustrator</span></div>
@@ -1366,7 +1366,7 @@
 </div>
 </section>
 
-<!-- Diagonal zigzag ribbon — straddles the About → Play seam, logos flow along the band -->
+<!-- Diagonal zigzag ribbon - straddles the About → Play seam, logos flow along the band -->
 <div class="marquee-zone">
   <svg class="mz-svg" viewBox="0 0 1600 400" preserveAspectRatio="none" aria-hidden="true">
     <defs>
@@ -1430,7 +1430,7 @@
 
   <div id="play-game-wrap">
 
-    <!-- Static splash — shown until user clicks Play -->
+    <!-- Static splash - shown until user clicks Play -->
     <div id="play-cover">
 
       <!-- Sparkle field -->
@@ -1471,7 +1471,7 @@
 
       <!-- Centre content -->
       <div class="pc-content">
-        <div class="pc-label">Nokia Classic — Rebuilt</div>
+        <div class="pc-label">Nokia Classic - Rebuilt</div>
         <h3 class="pc-title">Bounce</h3>
         <p class="pc-sub">← → move &nbsp;·&nbsp; ↑ jump</p>
         <button id="play-launch-btn">Play →</button>
@@ -1480,7 +1480,7 @@
 
     </div>
 
-    <!-- Actual game — Bounce builds its own canvases inside this container when injected -->
+    <!-- Actual game - Bounce builds its own canvases inside this container when injected -->
     <div id="gameArea" hidden></div>
 
   </div>
@@ -1587,7 +1587,7 @@ Something with a little bounce.</p>
     navFooterObs.observe(footerEl);
   }
 
-  /* Scroll reveal — Gourou fade-in-up style */
+  /* Scroll reveal - Gourou fade-in-up style */
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
   }, { threshold: 0.15 });
@@ -1602,7 +1602,7 @@ Something with a little bounce.</p>
     }
   });
 
-  /* Ribbon entrance — band draws in left → right, logos fade/scale in along it */
+  /* Ribbon entrance - band draws in left → right, logos fade/scale in along it */
   const mz = document.querySelector('.marquee-zone');
   if (mz) {
     const mzObs = new IntersectionObserver(entries => {
@@ -1621,7 +1621,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 const PROJECTS = [
   { num:'01', name:'Studiobee', meta:'Agency Website · 2026',  tag:'UI / UX · Front-end', img:'studiobee/1.png', url:'studiobee.html' },
-  { num:'02', name:'BeeNext',   meta:'Brand Identity · 2025',  tag:'Brand Identity',      pdf:'beenext case study.pdf',   url:'case studies/beenext-cs.html'   },
+  { num:'02', name:'BeeNext',   meta:'Brand Identity · 2025',  tag:'Brand Identity',      pdf:'beenext case study.pdf',   url:'beenext.html'   },
 ];
 
 function makeArrowSVG() {
@@ -1715,7 +1715,7 @@ PROJECTS.forEach((p, i) => {
 /* Scroll-reveal new cards */
 document.querySelectorAll('#proj-grid .rv').forEach(el => obs.observe(el));
 
-/* PDF cache — shared by thumbnail renderer and viewer */
+/* PDF cache - shared by thumbnail renderer and viewer */
 const pdfCache = {};
 async function getDoc(pdfPath) {
   if (!pdfCache[pdfPath]) pdfCache[pdfPath] = pdfjsLib.getDocument(pdfPath).promise;
@@ -1846,7 +1846,7 @@ window.addEventListener('resize', () => {
 resize();
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Image preloading — brush element PNGs
+//  Image preloading - brush element PNGs
 // ─────────────────────────────────────────────────────────────────────────────
 
 const elements = [];
@@ -1938,7 +1938,7 @@ const NAV_H = 72; // keep nav zone paint-free
 
 function inCenter(x, y, halfW = 0) {
   const halfH = halfW * .55;
-  if (y - halfH < NAV_H) return true; // nav zone — exclude
+  if (y - halfH < NAV_H) return true; // nav zone - exclude
   if ((x + halfW) > W * .22 && (x - halfW) < W * .78 &&
       (y + halfH) > H * .18 && (y - halfH) < H * .82) return true;
 
@@ -2225,7 +2225,7 @@ document.addEventListener('click', e => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 window.addEventListener('scroll', () => {
-  /* opacity fade removed — canvas exits via GSAP scale/translate only */
+  /* opacity fade removed - canvas exits via GSAP scale/translate only */
 }, { passive: true });
 
 function sampleLum(data, r) {
@@ -2389,7 +2389,7 @@ if (flipInner) {
 </script>
 
 
-<!-- ── BOUNCE — load on demand ────────────────── -->
+<!-- ── BOUNCE - load on demand ────────────────── -->
 <script>
 document.getElementById('play-launch-btn').addEventListener('click', function () {
   document.getElementById('play-cover').style.display = 'none';
@@ -2421,7 +2421,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
       for (var i = 0; i < text.length; i++) {
         var ch = text[i];
 
-        /* Spaces: plain text node — never wrap them or word-spacing collapses */
+        /* Spaces: plain text node - never wrap them or word-spacing collapses */
         if (ch === ' ') {
           parent.appendChild(document.createTextNode(' '));
           continue;
@@ -2477,7 +2477,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
       var p = letter.p;
       var s = letter.s;
 
-      /* OUT phase — primary falls down, secondary rises in from above */
+      /* OUT phase - primary falls down, secondary rises in from above */
       setTimeout(function () {
         p.style.transition = 'transform ' + DUR + 'ms ' + EASE;
         p.style.transform  = 'translateY(110%)';
@@ -2485,7 +2485,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
         s.style.transform  = 'translateY(0)';
       }, d);
 
-      /* RESET — snap both back to start positions instantly */
+      /* RESET - snap both back to start positions instantly */
       setTimeout(function () {
         p.style.transition = 'none';
         p.style.transform  = '';
@@ -2517,7 +2517,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
 (function () {
   'use strict';
 
-  /* Section entrance observer — fires sec-in class at 12% visibility */
+  /* Section entrance observer - fires sec-in class at 12% visibility */
   var secObs = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) { e.target.classList.add('sec-in'); secObs.unobserve(e.target); }
@@ -2527,7 +2527,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
     var el = document.querySelector(s); if (el) secObs.observe(el);
   });
 
-  /* Divider draw-line observer — fires at 50% visibility */
+  /* Divider draw-line observer - fires at 50% visibility */
   var divObs = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) { e.target.classList.add('div-in'); divObs.unobserve(e.target); }
@@ -2535,7 +2535,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
   }, { threshold: 0.5 });
   document.querySelectorAll('.sec-divider').forEach(function (el) { divObs.observe(el); });
 
-  /* Parallax scroll handler — rAF-throttled */
+  /* Parallax scroll handler - rAF-throttled */
   var pEls = Array.from(document.querySelectorAll('.parallax-el[data-parallax]'));
   function getTop(el) { var t = 0; while (el) { t += el.offsetTop; el = el.offsetParent; } return t; }
   var ticking = false;
@@ -2602,8 +2602,8 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
    scroll-reveal (no pin needed). Once the section is pinned: the about
    content holds fully visible for a while first (so it doesn't feel
    like it vanishes the instant you start scrolling), then fades out,
-   then — only once it's completely gone, with a clean gap so the two
-   never overlap — the 4 stickers pop in together as one snap stop; the
+   then - only once it's completely gone, with a clean gap so the two
+   never overlap - the 4 stickers pop in together as one snap stop; the
    next snap stop sends the stickers away for good (about content does
    not return), and the section unpins into normal scroll. */
 (function () {
@@ -2626,7 +2626,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
   });
 
   // About content holds visible, then fully fades out...
-  // (explicit fromTo, not to() — at build time .about-inner is still pre-reveal
+  // (explicit fromTo, not to() - at build time .about-inner is still pre-reveal
   // opacity:0, so a plain to() would capture that stale 0 as its start value)
   tl.fromTo('.about-inner', { opacity: 1 }, { opacity: 1, duration: 1 }, 0)
     .to('.about-inner', { opacity: 0, duration: 0.4 }, 1)
@@ -2666,7 +2666,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
       // control point travels far outside canvas bounds for dramatic arch
       var cy = H * (-0.8 + progress * 2.6);
 
-      // top fill — from-color
+      // top fill - from-color
       ctx.fillStyle = fromColor;
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -2676,7 +2676,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
       ctx.closePath();
       ctx.fill();
 
-      // bottom fill — to-color
+      // bottom fill - to-color
       ctx.fillStyle = toColor;
       ctx.beginPath();
       ctx.moveTo(0, midY);
@@ -2766,7 +2766,7 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
   var totalLength = path.getTotalLength();
   var count = icons.length;
 
-  var speed = 0.4; // fraction of the full path covered across the ribbon's whole scroll range — lower = slower
+  var speed = 0.4; // fraction of the full path covered across the ribbon's whole scroll range - lower = slower
 
   var zoneEl = document.querySelector('.marquee-zone');
   var tooltip = document.getElementById('mzTooltip');

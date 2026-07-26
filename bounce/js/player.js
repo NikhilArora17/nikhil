@@ -15,6 +15,7 @@ class Player extends Entity {
 	update() {
 		const { keys } = this.game.input;
 		const vel = 7;
+		const walkSpeed = 4;
 
 		if (this.game.isBig === true) {
 			this.sprite = 'bigball';
@@ -72,13 +73,13 @@ class Player extends Entity {
 		}
 
 		if(keys.right.hold) {
-			this.x += vel;
+			this.x += walkSpeed;
 			this.direction = -1;
 			this.adjustWalk('right');
 		}
 
 		if(keys.left.hold) {
-			this.x -= vel;
+			this.x -= walkSpeed;
 			this.direction = -1;
 			this.adjustWalk('left');
 		}
