@@ -108,6 +108,50 @@
     .nav-hire::after { display:none !important; }
     .nav-hire:hover { background: #0d4530 !important; transform: translateY(-2px) !important; }
 
+    /* ─── NAV: MOBILE HAMBURGER ───────────────── */
+    .nav-burger {
+      display: none;
+      width: 44px; height: 44px;
+      align-items: center; justify-content: center;
+      background: transparent; border: none; padding: 0;
+      cursor: pointer; position: relative; z-index: 310;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-burger span {
+      position: absolute; left: 50%; top: 50%;
+      width: 24px; height: 2px; border-radius: 2px;
+      background: var(--forest);
+      transform-origin: center;
+      transition: transform .35s var(--ease-out), opacity .2s;
+    }
+    .nav-burger span:nth-child(1) { transform: translate(-50%, -50%) translateY(-4.5px); }
+    .nav-burger span:nth-child(2) { transform: translate(-50%, -50%) translateY(4.5px); }
+    .nav-burger.open span:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { transform: translate(-50%, -50%) rotate(-45deg); }
+
+    /* ─── NAV: MOBILE DROPDOWN MENU ────────────── */
+    .nav-mobile-menu {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 290;
+      display: flex; flex-direction: column;
+      padding: 6.4rem 8vw 2.4rem;
+      background: rgba(230, 241, 226, .97);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transform: translateY(-100%);
+      transition: transform .5s var(--ease-out);
+    }
+    .nav-mobile-menu.open { transform: translateY(0); }
+    .nav-mobile-menu a {
+      font-family: 'Sora', sans-serif; font-size: 1.05rem; font-weight: 700;
+      letter-spacing: .04em; text-transform: uppercase; color: var(--forest);
+      padding: 1rem 0; border-bottom: 1px solid rgba(10,51,35,.12);
+    }
+    .nav-mobile-menu .nav-hire {
+      background: var(--forest); color: var(--mint) !important;
+      text-align: center; border-radius: 100px; border-bottom: none;
+      padding: 1rem; margin-top: 1rem;
+    }
+
     /* ─── HERO ────────────────────────────────── */
     /*
       Aryan Tripathi structure: greeting → name → role → tagline → CTAs
@@ -576,6 +620,11 @@
     #about .sec-label::after { background: rgba(10,51,35,.4); }
     #about .sec-heading { color: var(--forest); }
     #about .sec-heading em { color: rgba(10,51,35,.45); font-style:italic; }
+
+    .about-header {
+      max-width: 1240px;
+      margin: 0 auto 3rem;
+    }
 
     .about-cols {
       display: flex;
@@ -1154,8 +1203,16 @@
     }
     @media (max-width:660px) {
       section { padding:5rem 6vw; }
-      nav { padding:1.2rem 6vw; }
-      .nav-links li:not(:last-child) { display:none; }
+      nav {
+        padding: 1rem 6vw;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-logo { justify-self: unset; }
+      .nav-logo img { height: 42px; }
+      .nav-left, .nav-right { display: none; }
+      .nav-burger { display: flex; }
       .hero-strip span:not(.avail):not(.avail-pulse) { display:none; }
       .proj-grid { grid-template-columns: 1fr; }
       .project-row { grid-template-columns:3ch 1fr 2.2rem; }
@@ -1165,6 +1222,99 @@
       .ft-top { flex-direction:column; align-items:flex-start; gap:1rem; }
       .ft-bottom { flex-direction:column; align-items:flex-start; gap:.8rem; }
       .ft-nav { gap:1.2rem; flex-wrap:wrap; }
+
+      /* Hero painting canvas: static decorative backdrop, no cursor/paint UI */
+      #pcur, #cur-dot, #cur-ring, #hint { display: none !important; }
+      #c, #sc, #hero-content {
+        top: 5rem; left: 1rem;
+        width: calc(100vw - 2rem);
+        height: 68vh;
+      }
+      .hero-card {
+        width: min(90vw, 26rem);
+        max-width: 90vw;
+        margin-bottom: 1.8rem;
+      }
+      .hero-actions { gap: .9rem; }
+      .btn-dark, .btn-ghost-dark {
+        padding: 1.05rem 2.3rem;
+        font-size: .88rem;
+      }
+
+      /* About: no pin/scrub on mobile (see the matching JS matchMedia split) -
+         photo scrolls into view with the rest of the text, stickers sit in
+         normal flow below as a 2x2 grid instead of an absolute pinned overlay. */
+      .about-inner { padding: 6.5rem 6vw 3rem; }
+      .sticker-seq {
+        position: static;
+        height: auto;
+        padding: 1rem 0 0;
+        pointer-events: auto;
+      }
+      .sticker-tray {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.4rem;
+        width: 100%;
+        padding: 0;
+      }
+      .si {
+        width: 100%;
+        max-width: none;
+      }
+
+      /* Software arc: the SVG viewBox is 1600x400 (4:1) with preserveAspectRatio="none",
+         so it stretches to whatever box height it's given - the old fixed 260px min-height
+         floor was ~2.7x taller than a narrow phone's width/4 "true" ratio, squashing the
+         curve horizontally. Matching height to width/4 here keeps it undistorted. */
+      .marquee-zone {
+        height: 25vw;
+        min-height: 0;
+        max-height: none;
+        margin: -28px 0 -56px;
+      }
+
+      /* Bounce: the game canvas is a fixed 640x360 pixel coordinate space (real Nokia
+         engine internals, not reflowable) - #gameArea gets a JS-computed transform:scale
+         so it (and its HUD/level-select/end-screen overlays, all in the same coordinate
+         space) shrink together to fit a phone's width instead of overflowing it. */
+      #play-game-wrap { flex-direction: column; align-items: center; gap: 1.1rem; }
+      #gameArea-scaler { position: relative; }
+      /* max-width:100% (set for desktop) would otherwise measure "100%" against this
+         wrapper's own JS-sized (already-scaled-down) width, capping #gameArea's layout
+         box a second time before transform:scale even runs - the wrapper below already
+         reflects the true scaled footprint, so #gameArea itself must stay at its native
+         640px layout size for scale() to be the only thing shrinking it. */
+      #gameArea { max-width: none; transform-origin: top left; }
+      #touch-controls {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 1.1rem;
+      }
+      #touch-controls.tc-active { display: flex; }
+      .tc-btn {
+        width: 60px; height: 60px;
+        border-radius: 50%;
+        border: none;
+        background: var(--forest);
+        color: var(--lime);
+        display: flex; align-items: center; justify-content: center;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        transition: transform .15s var(--ease-out), background .15s;
+      }
+      .tc-btn:active { transform: scale(.92); background: #0d4530; }
+      .tc-jump {
+        width: 68px; height: 68px;
+        background: var(--lime);
+        color: var(--forest);
+      }
+      .tc-jump:active { background: #c7c65f; }
+
+      /* Footer: full-bleed illustration reflows to a taller, portrait-friendly crop
+         instead of the desktop 16:9 landscape frame. */
+      .ft-visual { aspect-ratio: 9/14; min-height: 0; }
     }
   </style>
 </head>
@@ -1177,6 +1327,37 @@
     if (btn) btn.addEventListener('click', function(e) {
       e.preventDefault();
       if (typeof openViewer === 'function') openViewer('resume.pdf', 'Resume');
+    });
+    var btnMobile = document.getElementById('nav-resume-btn-mobile');
+    if (btnMobile) btnMobile.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (typeof openViewer === 'function') openViewer('resume.pdf', 'Resume');
+    });
+  });
+</script>
+
+<!-- Mobile nav hamburger: two-line icon animates into an X, toggles a dropdown menu -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var burger = document.getElementById('nav-burger');
+    var menu = document.getElementById('nav-mobile-menu');
+    if (!burger || !menu) return;
+
+    function setOpen(open) {
+      burger.classList.toggle('open', open);
+      menu.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    burger.addEventListener('click', function() {
+      setOpen(!burger.classList.contains('open'));
+    });
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { setOpen(false); });
+    });
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 660) setOpen(false);
     });
   });
 </script>
@@ -1202,7 +1383,17 @@
     <li><a href="#play">Play</a></li>
     <li><a href="#contact" class="nav-hire">Hire Me</a></li>
   </ul>
+  <button id="nav-burger" class="nav-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav-mobile-menu">
+    <span></span><span></span>
+  </button>
 </nav>
+
+<div id="nav-mobile-menu" class="nav-mobile-menu">
+  <a href="#work">Case Studies</a>
+  <a href="#" id="nav-resume-btn-mobile">Resume</a>
+  <a href="#play">Play</a>
+  <a href="#contact" class="nav-hire">Hire Me</a>
+</div>
 
 <!-- Hero content fixed overlay - scales with canvas as one unit -->
 <div id="hero-content">
@@ -1272,6 +1463,10 @@
 
   <!-- ① Actual about content - visible as soon as the section is scrolled into view -->
   <div class="about-inner">
+    <div class="about-header rv">
+      <div class="sec-label">About</div>
+      <h2 class="sec-heading rv d1">A bit about <em>me.</em></h2>
+    </div>
     <div class="about-cols">
 
       <div class="about-text">
@@ -1299,10 +1494,10 @@
        one scroll snap brings the stickers up, the next sends them away, then the section unpins. -->
   <div class="sticker-seq">
     <div class="sticker-tray">
-      <img class="si si-1" src="gym.png"  alt="">
-      <img class="si si-2" src="art.png"  alt="">
-      <img class="si si-3" src="cook.png" alt="">
-      <img class="si si-4" src="game.png" alt="">
+      <img class="si si-1 rv" src="gym.png"  alt="">
+      <img class="si si-2 rv d1" src="art.png"  alt="">
+      <img class="si si-3 rv d2" src="cook.png" alt="">
+      <img class="si si-4 rv d3" src="game.png" alt="">
     </div>
   </div>
 
@@ -1485,8 +1680,27 @@
 
     </div>
 
-    <!-- Actual game - Bounce builds its own canvases inside this container when injected -->
-    <div id="gameArea" hidden></div>
+    <!-- Actual game - Bounce builds its own canvases inside this container when injected.
+         The game's canvases are a fixed 640x360 pixel coordinate space (real Nokia engine,
+         not reflowable) - on mobile #gameArea-scaler is sized to the scaled footprint in JS
+         and #gameArea itself gets a matching CSS transform:scale so everything inside
+         (game canvas, HUD bar, level-select, end screen) shrinks together as one unit. -->
+    <div id="gameArea-scaler">
+      <div id="gameArea" hidden></div>
+    </div>
+
+    <!-- Mobile-only on-screen controls - the real game only reads keyboard arrow/space input -->
+    <div id="touch-controls" aria-hidden="true">
+      <button type="button" id="tc-left" class="tc-btn" aria-label="Move left">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" id="tc-jump" class="tc-btn tc-jump" aria-label="Jump">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 15l7-7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" id="tc-right" class="tc-btn" aria-label="Move right">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
 
   </div>
 
@@ -1807,6 +2021,10 @@ document.addEventListener('keydown', e => {
 <script>
 (function(){
 'use strict';
+
+// Mobile: canvas stays a single static decorative painting - no drag-to-paint,
+// no cursor trail, no inactivity-triggered eraser sweep, no continuous RAF loop.
+const IS_MOBILE = window.matchMedia('(max-width: 660px)').matches;
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Canvas setup + accumulation buffer
@@ -2161,6 +2379,7 @@ SLine.prototype.draw = function () {
 let springLines = [], springInitialized = false, hueOsc, isOverUI = false;
 
 document.addEventListener('mouseover', e => {
+  if (IS_MOBILE) return;
   isOverUI = !!e.target.closest('a, button, [role="button"]');
   sc.style.opacity = isOverUI ? '0' : '1';
 });
@@ -2179,7 +2398,7 @@ function initSpring() {
 let heroActive = true;
 
 function renderSpring() {
-  if (!heroActive) return;
+  if (!heroActive || IS_MOBILE) return;
   sCtx.globalCompositeOperation = 'source-over';
   sCtx.clearRect(0, 0, sc.width, sc.height);
   sCtx.globalCompositeOperation = 'lighter';
@@ -2190,6 +2409,7 @@ function renderSpring() {
 }
 
 document.addEventListener('mousemove', e => {
+  if (IS_MOBILE) return;
   const mx = e.clientX, my = e.clientY;
   cursorX = mx; cursorY = my; isOverCanvas = true;
 
@@ -2222,6 +2442,7 @@ document.addEventListener('mouseleave', () => {
 });
 
 document.addEventListener('click', e => {
+  if (IS_MOBILE) return;
   if (e.target.closest('.hero-actions, nav, #hero-flip')) return;
   isPainting = !isPainting;
   if (isPainting) {
@@ -2366,6 +2587,10 @@ function frame() {
   }
 
   if (++frameCount % 45 === 0) updateTextColor();
+  // Mobile: canvas is a single static painting, not an animation - draw once
+  // per call (still needed after seedPainting resolves below) and stop, rather
+  // than perpetuating requestAnimationFrame forever for a picture that never changes.
+  if (IS_MOBILE) return;
   requestAnimationFrame(frame);
 }
 frame();
@@ -2376,6 +2601,7 @@ renderSpring();
 preload().then(() => {
   ghostElemIdx = randInt(0, elements.length - 1);
   seedPainting();
+  if (IS_MOBILE) { frame(); updateTextColor(); }
 });
 
 ['.hero-greeting', '.hero-name', '.hero-role', '.hero-tagline'].forEach(sel => {
@@ -2416,14 +2642,64 @@ window.__heroCanvasResume = () => {
 
 <!-- ── BOUNCE - load on demand ────────────────── -->
 <script>
-document.getElementById('play-launch-btn').addEventListener('click', function () {
-  document.getElementById('play-cover').style.display = 'none';
-  var cv = document.getElementById('gameArea');
-  cv.removeAttribute('hidden');
-  var s = document.createElement('script');
-  s.src = 'bounce/js/bundle.js';
-  document.body.appendChild(s);
-});
+(function () {
+  var scaler = document.getElementById('gameArea-scaler');
+  var gameArea = document.getElementById('gameArea');
+  var touchControls = document.getElementById('touch-controls');
+
+  // The game's canvases (main canvas, HUD bar, level-select, end screen) all share
+  // one fixed 640x360 pixel coordinate space - scale #gameArea as a unit to fit
+  // whatever width is actually available on a phone, and size the wrapper to match
+  // so it doesn't leave a stale 360px-tall gap (or overflow) in the flex layout.
+  function fitGameArea() {
+    if (gameArea.hidden) return;
+    var maxW = scaler.parentElement.clientWidth;
+    var scale = Math.min(1, maxW / 640);
+    gameArea.style.transform = 'scale(' + scale + ')';
+    scaler.style.width = (640 * scale) + 'px';
+    scaler.style.height = (360 * scale) + 'px';
+  }
+  window.addEventListener('resize', fitGameArea);
+
+  // Drive the real Input class the exact same way a keyboard would (it only ever
+  // listens for window keydown/keyup and reads e.which against its keymap:
+  // left=37, up=38, right=39) rather than reaching for bundle.js's `game` variable
+  // directly - that avoids depending on cross-script `let` scoping, and it keeps
+  // working automatically across a game-over replay, since main.js swaps in a new
+  // Game/Input instance internally and this never has to know about it.
+  function bindTouchButton(btn, keyCode) {
+    if (!btn) return;
+    var fire = function (type) {
+      return function (e) {
+        e.preventDefault();
+        window.dispatchEvent(new KeyboardEvent(type, { keyCode: keyCode, which: keyCode, bubbles: true }));
+      };
+    };
+    btn.addEventListener('touchstart', fire('keydown'), { passive: false });
+    btn.addEventListener('touchend', fire('keyup'), { passive: false });
+    btn.addEventListener('touchcancel', fire('keyup'), { passive: false });
+    // Also mouse events, so the controls are testable with a mouse/trackpad too
+    btn.addEventListener('mousedown', fire('keydown'));
+    btn.addEventListener('mouseup', fire('keyup'));
+    btn.addEventListener('mouseleave', fire('keyup'));
+  }
+
+  document.getElementById('play-launch-btn').addEventListener('click', function () {
+    document.getElementById('play-cover').style.display = 'none';
+    gameArea.removeAttribute('hidden');
+    fitGameArea();
+    if (touchControls) {
+      touchControls.classList.add('tc-active');
+      bindTouchButton(document.getElementById('tc-left'), 37);
+      bindTouchButton(document.getElementById('tc-jump'), 38);
+      bindTouchButton(document.getElementById('tc-right'), 39);
+    }
+
+    var s = document.createElement('script');
+    s.src = 'bounce/js/bundle.js';
+    document.body.appendChild(s);
+  });
+})();
 </script>
 
 <!-- ── LETTER SWAP ANIMATION ──────────────────── -->
@@ -2625,43 +2901,56 @@ document.getElementById('play-launch-btn').addEventListener('click', function ()
 })();
 
 /* ── Sticker pop-up for #about ─────────────────────────────────────
-   The about text/photo reveal on their own via the standard .rv/sec-in
-   scroll-reveal (no pin needed). Once the section is pinned: the about
-   content holds fully visible for a while first (so it doesn't feel
-   like it vanishes the instant you start scrolling), then fades out,
-   then - only once it's completely gone, with a clean gap so the two
-   never overlap - the 4 stickers pop in together as one snap stop; the
-   next snap stop sends the stickers away for good (about content does
-   not return), and the section unpins into normal scroll. */
+   Desktop only (min-width:661px) - the about text/photo reveal on their
+   own via the standard .rv/sec-in scroll-reveal (no pin needed). Once the
+   section is pinned: the about content holds fully visible for a while
+   first (so it doesn't feel like it vanishes the instant you start
+   scrolling), then fades out, then - only once it's completely gone, with
+   a clean gap so the two never overlap - the 4 stickers pop in together as
+   one snap stop; the next snap stop sends the stickers away for good
+   (about content does not return), and the section unpins into normal
+   scroll.
+   Mobile skips the pin entirely (scroll-jacking a pinned/scrubbed section
+   is exactly what made the about photo never scroll into view - it was
+   pushed below the pinned viewport's fold and the section unpinned before
+   a user could ever scroll far enough to see it). On mobile the photo and
+   stickers instead just flow in the normal document and reveal via the
+   same generic .rv IntersectionObserver everything else on the page uses:
+   about text/photo scroll into view first, then further scrolling reveals
+   the sticker grid below. */
 (function () {
   gsap.registerPlugin(ScrollTrigger);
 
-  var tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '#about',
-      start: 'top top',
-      end: '+=950',
-      pin: true,
-      scrub: 1.4,
-      anticipatePin: 1,
-      snap: {
-        snapTo: [0, 0.69, 1],
-        duration: { min: 0.2, max: 0.5 },
-        ease: 'power2.inOut',
-      },
+  ScrollTrigger.matchMedia({
+    '(min-width: 661px)': function () {
+      var tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#about',
+          start: 'top top',
+          end: '+=950',
+          pin: true,
+          scrub: 1.4,
+          anticipatePin: 1,
+          snap: {
+            snapTo: [0, 0.69, 1],
+            duration: { min: 0.2, max: 0.5 },
+            ease: 'power2.inOut',
+          },
+        }
+      });
+
+      // About content holds visible, then fully fades out...
+      // (explicit fromTo, not to() - at build time .about-inner is still pre-reveal
+      // opacity:0, so a plain to() would capture that stale 0 as its start value)
+      tl.fromTo('.about-inner', { opacity: 1 }, { opacity: 1, duration: 1 }, 0)
+        .to('.about-inner', { opacity: 0, duration: 0.4 }, 1)
+        // ...then, once it's gone (clean 0.3-unit gap with nothing happening), the
+        // 4 stickers pop in together (slight stagger for life, not sequence)
+        .fromTo('.si', { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 1.7)
+        // Hold at fully-shown, then fly away together for good (about content stays hidden)
+        .to('.si', { opacity: 0, y: -80, ease: 'power2.in', duration: 1, stagger: 0.08 }, 3.66);
     }
   });
-
-  // About content holds visible, then fully fades out...
-  // (explicit fromTo, not to() - at build time .about-inner is still pre-reveal
-  // opacity:0, so a plain to() would capture that stale 0 as its start value)
-  tl.fromTo('.about-inner', { opacity: 1 }, { opacity: 1, duration: 1 }, 0)
-    .to('.about-inner', { opacity: 0, duration: 0.4 }, 1)
-    // ...then, once it's gone (clean 0.3-unit gap with nothing happening), the
-    // 4 stickers pop in together (slight stagger for life, not sequence)
-    .fromTo('.si', { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 1.7)
-    // Hold at fully-shown, then fly away together for good (about content stays hidden)
-    .to('.si', { opacity: 0, y: -80, ease: 'power2.in', duration: 1, stagger: 0.08 }, 3.66);
 })();
 </script>
 

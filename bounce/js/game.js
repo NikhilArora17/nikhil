@@ -151,8 +151,12 @@ class Game {
 
 		function startScreenEventHandler(e) {
 			let rect = startCanvas.getBoundingClientRect();
-			let xVal = e.clientX - rect.left;
-			let yVal = e.clientY - rect.top;
+			// Scale click coords back into the canvas's native pixel space - on mobile
+			// #gameArea is shrunk via CSS transform:scale, so rect.width no longer
+			// equals startCanvas.width and a raw clientX-rect.left would read far too
+			// small to ever cross the hardcoded hit-box thresholds below.
+			let xVal = (e.clientX - rect.left) * (startCanvas.width / rect.width);
+			let yVal = (e.clientY - rect.top) * (startCanvas.height / rect.height);
 
 			if (xVal > 380 && xVal < 558 && yVal > 220 && yVal < 270) {
 				window.removeEventListener('click', startScreenEventHandler);
@@ -217,8 +221,10 @@ class Game {
 
 		function levelEventHandler(e) {
 			let rect = levelCanvas.getBoundingClientRect();
-			let xVal = e.clientX - rect.left;
-			let yVal = e.clientY - rect.top;
+			// Scale click coords back into the canvas's native pixel space (see the
+			// matching comment in startScreenEventHandler above).
+			let xVal = (e.clientX - rect.left) * (levelCanvas.width / rect.width);
+			let yVal = (e.clientY - rect.top) * (levelCanvas.height / rect.height);
 			if (xVal > 120 && xVal < 220 && yVal > 100 && yVal < 200) {
 				if (!self.gameData[0].locked){
 						self.frame = 1;
@@ -358,8 +364,10 @@ class Game {
 
 		function endScreenEventHandler(e) {
 			let rect = endCanvas.getBoundingClientRect();
-			let xVal = e.clientX - rect.left;
-			let yVal = e.clientY - rect.top;
+			// Scale click coords back into the canvas's native pixel space (see the
+			// matching comment in startScreenEventHandler above).
+			let xVal = (e.clientX - rect.left) * (endCanvas.width / rect.width);
+			let yVal = (e.clientY - rect.top) * (endCanvas.height / rect.height);
 
 			if (gameWon) {
 				if (xVal > 277 && xVal < 425 && yVal > 185 && yVal < 235) {
