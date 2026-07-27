@@ -131,8 +131,9 @@
 
     /* ─── NAV: MOBILE DROPDOWN MENU ────────────── */
     .nav-mobile-menu {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 290;
+      position: fixed; inset: 0; z-index: 290;
       display: flex; flex-direction: column;
+      justify-content: center;
       padding: 6.4rem 8vw 2.4rem;
       background: rgba(230, 241, 226, .97);
       backdrop-filter: blur(14px);
@@ -1241,21 +1242,24 @@
         font-size: .88rem;
       }
 
-      /* About: no pin/scrub on mobile (see the matching JS matchMedia split) -
-         photo scrolls into view with the rest of the text, stickers sit in
-         normal flow below as a 2x2 grid instead of an absolute pinned overlay. */
+      /* About: the pin/crossfade is still GSAP-driven on mobile (see the matching
+         JS matchMedia split) so the sticker hand-off still reads as a transition
+         like desktop, just triggered later - once natural scroll has already
+         brought the photo fully into view, not the instant #about's top hits the
+         viewport. .about-inner gets pinned mid-document (not at its own natural
+         top), so anchoring .sticker-seq relative to any ancestor's box via
+         top/bottom math would depend on exactly how tall the scrolled-past content
+         was - fragile. Using position:fixed directly instead sidesteps that
+         entirely: a fixed box is always viewport-relative, so it trivially lines
+         up with whatever's currently pinned on screen, no coordinate math needed. */
       .about-inner { padding: 6.5rem 6vw 3rem; }
-      .sticker-seq {
-        position: static;
-        height: auto;
-        padding: 1rem 0 0;
-        pointer-events: auto;
-      }
+      .sticker-seq { position: fixed; top: 0; bottom: 0; height: auto; }
       .sticker-tray {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1.4rem;
-        width: 100%;
+        gap: 1.2rem;
+        width: 86%;
+        max-width: 420px;
         padding: 0;
       }
       .si {
@@ -1314,7 +1318,7 @@
 
       /* Footer: full-bleed illustration reflows to a taller, portrait-friendly crop
          instead of the desktop 16:9 landscape frame. */
-      .ft-visual { aspect-ratio: 9/14; min-height: 0; }
+      .ft-visual { aspect-ratio: auto; min-height: 100vh; }
     }
   </style>
 </head>
@@ -1491,7 +1495,11 @@
   </div>
 
   <!-- ② Sticker pop-up - pinned overlay that plays after the about content is visible:
-       one scroll snap brings the stickers up, the next sends them away, then the section unpins. -->
+       one scroll snap brings the stickers up, the next sends them away, then the section
+       unpins. Kept as a sibling of .about-inner (not nested inside it) deliberately -
+       .about-inner is the element GSAP fades to opacity:0 during the handoff, and CSS
+       opacity always compounds onto descendants, so nesting the stickers inside it would
+       make them inherit that fade-to-invisible no matter what their own tween did. -->
   <div class="sticker-seq">
     <div class="sticker-tray">
       <img class="si si-1 rv" src="gym.png"  alt="">
@@ -1500,7 +1508,6 @@
       <img class="si si-4 rv d3" src="game.png" alt="">
     </div>
   </div>
-
 
 </section>
 
@@ -2901,23 +2908,26 @@ window.__heroCanvasResume = () => {
 })();
 
 /* ── Sticker pop-up for #about ─────────────────────────────────────
-   Desktop only (min-width:661px) - the about text/photo reveal on their
-   own via the standard .rv/sec-in scroll-reveal (no pin needed). Once the
-   section is pinned: the about content holds fully visible for a while
-   first (so it doesn't feel like it vanishes the instant you start
-   scrolling), then fades out, then - only once it's completely gone, with
-   a clean gap so the two never overlap - the 4 stickers pop in together as
-   one snap stop; the next snap stop sends the stickers away for good
-   (about content does not return), and the section unpins into normal
-   scroll.
-   Mobile skips the pin entirely (scroll-jacking a pinned/scrubbed section
-   is exactly what made the about photo never scroll into view - it was
-   pushed below the pinned viewport's fold and the section unpinned before
-   a user could ever scroll far enough to see it). On mobile the photo and
-   stickers instead just flow in the normal document and reveal via the
-   same generic .rv IntersectionObserver everything else on the page uses:
-   about text/photo scroll into view first, then further scrolling reveals
-   the sticker grid below. */
+   Desktop (min-width:661px): the about text/photo reveal on their own via
+   the standard .rv/sec-in scroll-reveal (no pin needed). Once the section
+   is pinned: the about content holds fully visible for a while first (so
+   it doesn't feel like it vanishes the instant you start scrolling), then
+   fades out, then - only once it's completely gone, with a clean gap so
+   the two never overlap - the 4 stickers pop in together as one snap
+   stop; the next snap stop sends the stickers away for good (about
+   content does not return), and the section unpins into normal scroll.
+
+   Mobile (max-width:660px): same crossfade *transition*, but the pin
+   can't engage at #about's own top like desktop does - on a narrow
+   column layout the text+photo stack is taller than the viewport, so
+   pinning immediately (before any of it has been seen) traps the photo
+   below the pinned fold, unreachable by scroll. Instead the pin's
+   ScrollTrigger start is tied to .about-inner's own *bottom* reaching the
+   viewport's bottom - the exact scroll position at which the full stack
+   (text, then photo) has just finished naturally scrolling into view.
+   From that frozen frame, the same fade-out/fade-in handoff as desktop
+   plays, just without desktop's initial "hold before fading" segment
+   (natural scroll already served as that hold). */
 (function () {
   gsap.registerPlugin(ScrollTrigger);
 
@@ -2949,6 +2959,33 @@ window.__heroCanvasResume = () => {
         .fromTo('.si', { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 1.7)
         // Hold at fully-shown, then fly away together for good (about content stays hidden)
         .to('.si', { opacity: 0, y: -80, ease: 'power2.in', duration: 1, stagger: 0.08 }, 3.66);
+    },
+
+    '(max-width: 660px)': function () {
+      var tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.about-inner',
+          start: 'bottom bottom',
+          end: '+=650',
+          pin: true,
+          scrub: 1.2,
+          anticipatePin: 1,
+          snap: {
+            snapTo: [0, 0.6, 1],
+            duration: { min: 0.2, max: 0.5 },
+            ease: 'power2.inOut',
+          },
+        }
+      });
+
+      // No initial hold segment here - by the time this pin engages, the user has
+      // already naturally scrolled through the full text+photo stack once, so
+      // fading straight out reads as "you've seen it, now the transition begins"
+      // rather than the content vanishing instantly (explicit fromTo for the same
+      // stale-opacity reason as the desktop branch above).
+      tl.fromTo('.about-inner', { opacity: 1 }, { opacity: 0, duration: 0.4 }, 0)
+        .fromTo('.si', { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 0.7)
+        .to('.si', { opacity: 0, y: -80, ease: 'power2.in', duration: 1, stagger: 0.08 }, 2.66);
     }
   });
 })();
