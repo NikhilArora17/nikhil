@@ -2928,7 +2928,8 @@ window.__heroCanvasResume = () => {
   // exactly that class of bug: it takes over touch scroll handling so pins get a
   // single normalized scroll value to work from instead of raw, erratic native
   // events. Scoped to mobile only so desktop's mouse-wheel feel is untouched.
-  if (window.matchMedia('(max-width: 660px)').matches) {
+  var isMobile = window.matchMedia('(max-width: 660px)').matches;
+  if (isMobile) {
     ScrollTrigger.normalizeScroll(true);
   }
 
@@ -2944,9 +2945,15 @@ window.__heroCanvasResume = () => {
       scrollTrigger: {
         trigger: '#home',
         start: 'top top',
-        end: '+=700',
+        // Mobile gets a longer pin distance and tighter scrub than desktop's
+        // original 700/0.4 - CDP-level touch-swipe testing against the live site
+        // showed a single real fast swipe can cover 600-900+px in one motion,
+        // which could blow straight through a 700px pin range and interact
+        // unpredictably with the onLeave/onEnterBack visibility toggling (the
+        // reported "canvas disappears sometimes when scrolling back up").
+        end: isMobile ? '+=1100' : '+=700',
         pin: true,
-        scrub: 0.4,
+        scrub: isMobile ? 0.25 : 0.4,
         onLeave: function() {
           gsap.set(['#c', '#sc', '#hero-content'], { visibility: 'hidden' });
           if (hint) hint.style.display = 'none';
@@ -3025,9 +3032,22 @@ window.__heroCanvasResume = () => {
         scrollTrigger: {
           trigger: '.about-inner',
           start: 'bottom bottom',
-          end: '+=650',
+          // 650px was too short: a single real fast swipe on a phone easily covers
+          // 600-900+px in one motion (confirmed via CDP-level touch simulation
+          // against the live site, not just mouse-wheel ticks - a single swipe blew
+          // straight through 650px of pin range, taking progress from 0.23 to 1.0
+          // between two consecutive swipes). That read as a jarring snap instead of
+          // a transition, and combined with scrub's catch-up lag, could leave the
+          // fade-out tween still visually "in flight" after the pin had already
+          // released and scroll had moved into the next section underneath it -
+          // exactly the reported "stickers linger on the next section" symptom.
+          // 1300px gives real headroom against a single swipe fully consuming it.
+          end: '+=1300',
           pin: true,
-          scrub: 1.2,
+          // Lower than desktop's 1.4 - less catch-up lag means the animation can
+          // never trail behind after the pin releases, which was the direct cause
+          // of the lingering-stickers symptom above.
+          scrub: 0.4,
           anticipatePin: 1,
           snap: {
             snapTo: [0, 0.6, 1],
