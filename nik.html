@@ -1319,6 +1319,18 @@
       /* Footer: full-bleed illustration reflows to a taller, portrait-friendly crop
          instead of the desktop 16:9 landscape frame. */
       .ft-visual { aspect-ratio: auto; min-height: 100vh; }
+
+      /* Software arc: fixing the squish (matching container height to the SVG's
+         native 4:1 ratio) made the whole ribbon - icons included, since they share
+         its one coordinate space - shrink to roughly a quarter of desktop's size,
+         reading as barely-visible specks on a phone. The curve's shape itself must
+         stay undistorted, but each icon can be enlarged independently: .mz-icon's
+         CSS transform:scale is a local scale around that icon's own center only
+         (applied on top of, not instead of, the SVG's own viewBox scaling), so
+         bumping it up here makes the icons themselves bigger without touching the
+         band/path at all. */
+      .mz-icon { transform: scale(1.3); }
+      .marquee-zone.mz-in .mz-icon { transform: scale(2.3); }
     }
   </style>
 </head>
@@ -2071,7 +2083,18 @@ function resize() {
 let rsTimer;
 window.addEventListener('resize', () => {
   clearTimeout(rsTimer);
-  rsTimer = setTimeout(() => { resize(); resizeSC(); }, 150);
+  rsTimer = setTimeout(() => {
+    resize(); resizeSC();
+    // Setting canvas.width/height (inside resize()) clears the visible canvas's
+    // pixels - on desktop the still-running RAF loop repaints it on the very next
+    // tick, but on mobile that loop is intentionally stopped once static (see the
+    // IS_MOBILE guards in frame()/renderSpring() below), so nothing would ever
+    // redraw it again. Mobile browsers fire resize constantly mid-scroll as the
+    // address bar shows/hides, which is exactly what made the canvas "disappear
+    // sometimes when scrolling" - one extra frame() call here repaints it from the
+    // (correctly preserved) offscreen buffer immediately after every such resize.
+    if (IS_MOBILE) frame();
+  }, 150);
 });
 resize();
 
@@ -2872,6 +2895,18 @@ window.__heroCanvasResume = () => {
 /* ── Hero canvas card: scale + lift away on scroll ─────────────────── */
 (function () {
   gsap.registerPlugin(ScrollTrigger);
+
+  // Mobile browsers resize the viewport as the address bar shows/hides mid-scroll,
+  // and momentum/inertial touch scrolling doesn't map to scroll position the same
+  // continuous way mouse-wheel does - both confuse pinned/scrubbed ScrollTriggers
+  // (the painterly hero canvas going blank on scroll-up, About's photo/sticker pin
+  // jittering or landing inconsistently). This is GSAP's own documented fix for
+  // exactly that class of bug: it takes over touch scroll handling so pins get a
+  // single normalized scroll value to work from instead of raw, erratic native
+  // events. Scoped to mobile only so desktop's mouse-wheel feel is untouched.
+  if (window.matchMedia('(max-width: 660px)').matches) {
+    ScrollTrigger.normalizeScroll(true);
+  }
 
   var hint = document.getElementById('hint');
 
