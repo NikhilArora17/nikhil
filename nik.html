@@ -614,7 +614,12 @@
     }
     /* About content (initially invisible - GSAP reveals) */
     .about-inner {
-      padding: 8rem 5vw 4.5rem;
+      /* Trimmed from 8rem/4.5rem after adding .about-header below pushed total
+         height past common desktop viewport heights (measured 947px tall at
+         1440x900 with the old padding - taller than the 900px pin viewport
+         itself, cutting the photo off at the bottom since desktop's pin engages
+         immediately with no scroll-to-reveal buffer the way mobile's does). */
+      padding: 4rem 5vw 2.5rem;
       opacity: 0;
     }
     #about .sec-label { color: rgba(10,51,35,.5); }
@@ -624,7 +629,7 @@
 
     .about-header {
       max-width: 1240px;
-      margin: 0 auto 3rem;
+      margin: 0 auto 1.75rem;
     }
 
     .about-cols {
@@ -655,7 +660,7 @@
       margin-left: auto;
     }
     .about-photo {
-      width: min(420px, 38vw);
+      width: min(340px, 30vw);
       border-radius: 1.4rem;
       overflow: hidden;
       aspect-ratio: 3/4;
@@ -1045,6 +1050,12 @@
       align-items: flex-start;
       flex: 0 0 auto;
     }
+    /* Mobile-only touch controls, hidden by default on every viewport - only the
+       mobile media query's #touch-controls.tc-active override ever shows them.
+       Without this base rule a bare <div> falls back to display:block, so once JS
+       adds .tc-active (it does unconditionally, regardless of device) they'd show
+       up stacked next to the game on desktop too, where a keyboard already works. */
+    #touch-controls { display: none; }
     .play-cols {
       display: flex;
       align-items: stretch; /* text column stretches to match the game's height */
@@ -1268,14 +1279,19 @@
       }
 
       /* Software arc: the SVG viewBox is 1600x400 (4:1) with preserveAspectRatio="none",
-         so it stretches to whatever box height it's given - the old fixed 260px min-height
-         floor was ~2.7x taller than a narrow phone's width/4 "true" ratio, squashing the
-         curve horizontally. Matching height to width/4 here keeps it undistorted. */
+         so it stretches to whatever box height it's given. 25vw exactly matches that
+         native ratio (zero distortion), but once the icons were enlarged (below) that
+         read as too thin/cramped a strip to comfortably hold them - 30vw trades a mild,
+         intentional stretch (the curve reads slightly taller/steeper) for real breathing
+         room, and as a side effect a taller curve has more total arc length, which
+         naturally spaces the evenly-distributed icons further apart too. Margins scaled
+         proportionally with the height increase to keep the same relative overlap into
+         About/Play. */
       .marquee-zone {
-        height: 25vw;
+        height: 30vw;
         min-height: 0;
         max-height: none;
-        margin: -28px 0 -56px;
+        margin: -34px 0 -67px;
       }
 
       /* Bounce: the game canvas is a fixed 640x360 pixel coordinate space (real Nokia
@@ -1290,13 +1306,12 @@
          reflects the true scaled footprint, so #gameArea itself must stay at its native
          640px layout size for scale() to be the only thing shrinking it. */
       #gameArea { max-width: none; transform-origin: top left; }
-      #touch-controls {
-        display: none;
+      #touch-controls.tc-active {
+        display: flex;
         align-items: center;
         justify-content: center;
         gap: 1.1rem;
       }
-      #touch-controls.tc-active { display: flex; }
       .tc-btn {
         width: 60px; height: 60px;
         border-radius: 50%;
@@ -1319,6 +1334,15 @@
       /* Footer: full-bleed illustration reflows to a taller, portrait-friendly crop
          instead of the desktop 16:9 landscape frame. */
       .ft-visual { aspect-ratio: auto; min-height: 100vh; }
+
+      /* GSAP explicitly warns that ScrollTrigger.normalizeScroll() (enabled for
+         mobile - see the hero-canvas-exit script) conflicts with CSS
+         scroll-behavior:smooth: the browser's own smooth-scroll easing fights the
+         synthetic positioning normalizeScroll uses internally to regularize touch
+         input for pinned/scrubbed sections, which is very plausibly why the About
+         pin/sticker handoff was still inconsistent even after normalizeScroll was
+         added. Desktop keeps smooth scroll (nav anchor links); mobile does not. */
+      html { scroll-behavior: auto; }
 
       /* Software arc: fixing the squish (matching container height to the SVG's
          native 4:1 ratio) made the whole ribbon - icons included, since they share
