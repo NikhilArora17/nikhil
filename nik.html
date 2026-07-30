@@ -698,7 +698,14 @@
     .mz-band {
       fill: none;
       stroke: var(--mint);   /* light green - reads against both the lime About surface and the dark Play surface */
-      stroke-width: 130;
+      /* Widened from 130 - icons sit centered on the path's centerline, but since
+         they're upright (not rotated to the local tangent), the band's diagonal
+         cross-section reads thinner than its true stroke-width wherever the curve
+         slopes steeply (the transition sides of each hump, not the flat peaks/
+         troughs) - a badge could visually touch or overflow the band edge there
+         even though it's centered along the path. More stroke-width buys margin
+         everywhere at once without touching icon size or the path itself. */
+      stroke-width: 190;
       stroke-linecap: round;
       stroke-dasharray: 2400;
       stroke-dashoffset: 2400;
@@ -981,7 +988,22 @@
       }
     }
     @media (max-width: 660px) {
+      /* This !important previously had no counterpart resetting it once #about.sec-in
+         fires - #about.sec-in .about-inner's reset rule (further up) has higher
+         specificity but no !important, so !important always won and .about-inner sat
+         permanently translateY(60px) even after reveal. That static, never-cleared
+         transform on the very element GSAP later pins/triggers off of ('.about-inner',
+         start:'bottom bottom') is exactly the anti-pattern GSAP's own docs warn about
+         (don't apply a CSS transform to a pinned/trigger element) - confirmed via a real
+         scroll trace that the pin-engage instant produced a ~60-70px backward jump in
+         .about-inner's on-screen position, i.e. the reported "jitters and gets pulled
+         back down". Adding the matching reset here means by the time the user has
+         scrolled far enough for the pin to engage, .sec-in has long since fired (12%
+         IntersectionObserver threshold, near the top of the section) and .about-inner
+         is already sitting at an identity transform - nothing left for the pin math to
+         fight with. */
       .about-inner { transform: translateY(60px) !important; }
+      #about.sec-in .about-inner { transform: translateY(0) !important; }
     }
 
     /* ─── BOUNCE SECTION ─────────────────────── */
@@ -1537,11 +1559,21 @@
        opacity always compounds onto descendants, so nesting the stickers inside it would
        make them inherit that fade-to-invisible no matter what their own tween did. -->
   <div class="sticker-seq">
+    <!-- No .rv/.d1-d3 classes here (there used to be) - GSAP's scrub timeline fully
+         owns these 4 opacity/y via inline styles every frame, but .rv declares its
+         own `transition: opacity .8s ...` with a per-class delay. A CSS transition
+         fires on ANY change to a transitioning property's computed value, inline or
+         not - so every GSAP scrub tick was retriggering each sticker's own .8s
+         catch-up animation (staggered further by d1/d2/d3's own delays), fighting
+         the scrub frame by frame. That's what actually produced the "come in/go
+         away one by one, with delay and jitter" symptom - confirmed live: even with
+         the GSAP stagger explicitly set to 0 below, the 4 stickers' computed
+         opacity read as 4 different values at the same scroll position. -->
     <div class="sticker-tray">
-      <img class="si si-1 rv" src="gym.png"  alt="">
-      <img class="si si-2 rv d1" src="art.png"  alt="">
-      <img class="si si-3 rv d2" src="cook.png" alt="">
-      <img class="si si-4 rv d3" src="game.png" alt="">
+      <img class="si si-1" src="gym.png"  alt="">
+      <img class="si si-2" src="art.png"  alt="">
+      <img class="si si-3" src="cook.png" alt="">
+      <img class="si si-4" src="game.png" alt="">
     </div>
   </div>
 
@@ -3062,9 +3094,13 @@ window.__heroCanvasResume = () => {
       // fading straight out reads as "you've seen it, now the transition begins"
       // rather than the content vanishing instantly (explicit fromTo for the same
       // stale-opacity reason as the desktop branch above).
+      // Stickers pop in/out together (stagger:0) on mobile, not one-by-one -
+      // desktop's per-icon stagger is a nice detail at desktop's slower/finer
+      // scrub, but on a phone's shorter, punchier swipe-driven scrub it read as
+      // a laggy sequence rather than a single beat, per user feedback.
       tl.fromTo('.about-inner', { opacity: 1 }, { opacity: 0, duration: 0.4 }, 0)
-        .fromTo('.si', { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 0.7)
-        .to('.si', { opacity: 0, y: -80, ease: 'power2.in', duration: 1, stagger: 0.08 }, 2.66);
+        .fromTo('.si', { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0 }, 0.7)
+        .to('.si', { opacity: 0, y: -80, ease: 'power2.in', duration: 1, stagger: 0 }, 2.66);
     }
   });
 })();
