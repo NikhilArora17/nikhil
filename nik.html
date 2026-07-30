@@ -698,14 +698,7 @@
     .mz-band {
       fill: none;
       stroke: var(--mint);   /* light green - reads against both the lime About surface and the dark Play surface */
-      /* Widened from 130 - icons sit centered on the path's centerline, but since
-         they're upright (not rotated to the local tangent), the band's diagonal
-         cross-section reads thinner than its true stroke-width wherever the curve
-         slopes steeply (the transition sides of each hump, not the flat peaks/
-         troughs) - a badge could visually touch or overflow the band edge there
-         even though it's centered along the path. More stroke-width buys margin
-         everywhere at once without touching icon size or the path itself. */
-      stroke-width: 190;
+      stroke-width: 130;
       stroke-linecap: round;
       stroke-dasharray: 2400;
       stroke-dashoffset: 2400;
@@ -1315,6 +1308,15 @@
         max-height: none;
         margin: -34px 0 -67px;
       }
+      /* Mobile-only: icons sit centered on the path's centerline, but since they're
+         upright (not rotated to the local tangent), the band's diagonal cross-section
+         reads thinner than its true stroke-width wherever the curve slopes steeply
+         (the transition sides of each hump, not the flat peaks/troughs) - a badge
+         could visually touch or overflow the band edge there even though it's
+         centered along the path. Widening just here (desktop stays at the base 130)
+         buys margin around the enlarged mobile icons without touching icon size or
+         the path itself. */
+      .mz-band { stroke-width: 190; }
 
       /* Bounce: the game canvas is a fixed 640x360 pixel coordinate space (real Nokia
          engine internals, not reflowable) - #gameArea gets a JS-computed transform:scale
