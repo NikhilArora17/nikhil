@@ -31,6 +31,15 @@
       font-size: 16px;
       scrollbar-width: none;        /* Firefox */
     }
+    /* Past standard desktop the whole design scales proportionally instead of
+       stretching: every layout cap below is in rem, so growing the root em grows
+       the entire composition like a zoom. 1.1111vw = 16px at exactly 1440w (a
+       seamless handoff); the 2vh term (16px at 800h) keeps the vh-pinned About
+       section - 732px of content at 1440x900 - from ever outgrowing its 100vh pin
+       viewport on ultrawide (21:9) monitors, where width alone would over-scale. */
+    @media (min-width: 1441px) {
+      html { font-size: max(16px, min(1.1111vw, 2vh)); }
+    }
     html::-webkit-scrollbar { display: none; } /* Chrome / Edge / Safari */
     body {
       font-family: 'Sora', sans-serif;
@@ -49,11 +58,11 @@
       pointer-events: none; z-index: 9999;
       transform: translate(-50%,-50%);
     }
-    #cur-dot  { width:8px; height:8px; background:var(--forest); transition: background .3s; }
-    #cur-ring { width:32px; height:32px; border:1.5px solid rgba(10,51,35,.35);
+    #cur-dot  { width:.5rem; height:.5rem; background:var(--forest); transition: background .3s; }
+    #cur-ring { width:2rem; height:2rem; border:1.5px solid rgba(10,51,35,.35);
                 transition: width .3s var(--ease-out), height .3s var(--ease-out), border-color .3s; }
     body.hov #cur-dot  { background: var(--lime); }
-    body.hov #cur-ring { width:48px; height:48px; border-color: var(--forest); }
+    body.hov #cur-ring { width:3rem; height:3rem; border-color: var(--forest); }
 
     /* ─── NAV ─────────────────────────────────── */
     nav {
@@ -81,7 +90,7 @@
       z-index: -1;
     }
     nav.scrolled::before { transform: translateY(0); }
-    .nav-logo img { height: 52px; display:block; }
+    .nav-logo img { height: 3.25rem; display:block; }
     .nav-logo { justify-self: center; }
     .nav-left, .nav-right {
       display: flex; align-items: center;
@@ -170,7 +179,7 @@
       align-items: center;
       justify-content: center;
       pointer-events: none;
-      border-radius: 20px;
+      border-radius: 1.25rem;
     }
     .hero-inner {
       pointer-events: auto;
@@ -242,7 +251,7 @@
       width: clamp(18rem, 30vw, 27rem);
       max-width: 76vw;
       margin-bottom: 2.5rem;
-      perspective: 1000px;
+      perspective: 62.5rem;
       cursor: pointer;
     }
     .card-inner {
@@ -277,7 +286,7 @@
     .paint-stroke img {
       display: block;
       width: 100%;
-      height: 22px;        /* enough height for visible arc curvature */
+      height: 1.375rem;    /* enough height for visible arc curvature */
       object-fit: fill;
       filter: grayscale(1) sepia(1) hue-rotate(90deg) saturate(2) brightness(0.45);
       opacity: 0.42;
@@ -316,13 +325,13 @@
       letter-spacing:.06em; padding:.85rem 2rem; border-radius:100px;
       transition: background .3s, transform .25s var(--ease-out), box-shadow .3s;
     }
-    .btn-dark:hover { background:#0d4530; transform:translateY(-3px); box-shadow:0 12px 32px rgba(10,51,35,.2); }
+    .btn-dark:hover { background:#0d4530; transform:translateY(-3px); box-shadow:0 .75rem 2rem rgba(10,51,35,.2); }
 
     .btn-ghost-dark {
       display:inline-flex; align-items:center; gap:.5rem;
       color:var(--forest); font-family:'Sora',sans-serif; font-size:.78rem;
       font-weight:600; letter-spacing:.06em; padding:.85rem 2rem;
-      border: 1.5px solid rgba(10,51,35,.3); border-radius:100px;
+      border: .09375rem solid rgba(10,51,35,.3); border-radius:100px;
       transition: border-color .3s, transform .25s var(--ease-out);
     }
     .btn-ghost-dark:hover { border-color:var(--forest); transform:translateY(-3px); }
@@ -337,10 +346,10 @@
       font-weight:700; letter-spacing:.18em; text-transform:uppercase;
       color: rgba(10,51,35,.4);
     }
-    .strip-dot { width:5px; height:5px; border-radius:50%; background:var(--olive); }
+    .strip-dot { width:.3125rem; height:.3125rem; border-radius:50%; background:var(--olive); }
     .avail { color:var(--olive); }
     .avail-pulse {
-      width:6px; height:6px; border-radius:50%; background:var(--olive);
+      width:.375rem; height:.375rem; border-radius:50%; background:var(--olive);
       animation: pulse 2.5s ease-in-out infinite;
     }
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
@@ -415,7 +424,7 @@
     .proj-card:hover {
       border-color: rgba(218,217,119,.28);
       transform: translateY(-5px);
-      box-shadow: 0 20px 48px rgba(0,0,0,.3);
+      box-shadow: 0 1.25rem 3rem rgba(0,0,0,.3);
     }
 
     .proj-thumb {
@@ -523,7 +532,7 @@
       animation: spin .7s linear infinite;
     }
     .pdf-page-canvas {
-      width: min(100%, 1100px);
+      width: min(100%, 68.75rem);
       box-shadow: 0 4px 32px rgba(0,0,0,.15);
       border-radius:4px;
       display:block;
@@ -605,7 +614,7 @@
       justify-content: center;
     }
     .si {
-      width: clamp(150px, 18vw, 230px);
+      width: clamp(9.375rem, 18vw, 14.375rem);
       object-fit: contain;
       mix-blend-mode: multiply;
       opacity: 0;
@@ -628,7 +637,7 @@
     #about .sec-heading em { color: rgba(10,51,35,.45); font-style:italic; }
 
     .about-header {
-      max-width: 1240px;
+      max-width: 77.5rem;
       margin: 0 auto 1.75rem;
     }
 
@@ -636,12 +645,12 @@
       display: flex;
       align-items: center;
       gap: 4.5rem;
-      max-width: 1240px;
+      max-width: 77.5rem;
       margin: 0 auto;
     }
     .about-text {
       flex: 1 1 0;
-      max-width: 620px;
+      max-width: 38.75rem;
     }
 
     .about-body {
@@ -660,12 +669,12 @@
       margin-left: auto;
     }
     .about-photo {
-      width: min(340px, 30vw);
+      width: min(21.25rem, 30vw);
       border-radius: 1.4rem;
       overflow: hidden;
       aspect-ratio: 3/4;
       background: rgba(10,51,35,.1);
-      border: 1.5px dashed rgba(10,51,35,.2);
+      border: .09375rem dashed rgba(10,51,35,.2);
     }
     .about-photo img {
       width: 100%;
@@ -681,14 +690,12 @@
       z-index: 25;
       height: 22vw;
       min-height: 260px;
-      max-height: 360px;
-      /* Width was unbounded (100% of viewport) while height caps at 360px past
-         ~1636px wide - past that point the fixed 4:1 viewBox (preserveAspectRatio:
-         none) got stretched horizontally, flattening the S-curve and squeezing the
-         icon spacing. Capping width at 1440 (360*4, the viewBox's own ratio) freezes
-         the ribbon at its standard-desktop size instead of letting it distort further. */
-      max-width: 1440px;
-      margin: -70px auto -180px;
+      /* Cap and overlap margins in rem, not px: with the root em scaling past
+         1440w, the 22vw height stays below a proportionally-growing cap, so the
+         full-bleed ribbon keeps the exact 1440 aspect (no flattening) instead of
+         freezing at 360px tall while the viewport keeps widening. */
+      max-height: 22.5rem;
+      margin: -4.375rem 0 -11.25rem;
       pointer-events: none;
       overflow: hidden;
       /* color split now lives in the SVG fills (.mz-fill-top / .mz-fill-bottom), traced along the same curve as the band itself */
@@ -762,7 +769,7 @@
       white-space: nowrap;
       padding: .4rem .8rem;
       border-radius: .5rem;
-      box-shadow: 0 10px 22px -8px rgba(10,51,35,.4), 0 2px 8px -2px rgba(10,51,35,.25);
+      box-shadow: 0 .625rem 1.375rem -.5rem rgba(10,51,35,.4), 0 .125rem .5rem -.125rem rgba(10,51,35,.25);
       opacity: 0;
       pointer-events: none;
       z-index: 30;
@@ -773,7 +780,7 @@
       position: absolute;
       top: 100%; left: 50%;
       transform: translateX(-50%);
-      border: 5px solid transparent;
+      border: .3125rem solid transparent;
       border-top-color: var(--forest);
     }
     .mz-tooltip.show {
@@ -854,11 +861,12 @@
     }
     .ft-content {
       position:absolute; left:0; right:0; bottom:0; z-index:2;
-      /* Was unbounded (5vw padding only) - email/socials/nav drifted further apart
-         toward the true viewport edges as the window widened past standard desktop.
-         max-width + auto side margins freezes the same standard-desktop layout,
-         matching .work-inner/.play-inner. */
-      max-width:1320px;
+      /* 90rem = the full 1440 design box (this element is absolutely positioned,
+         so unlike .work-inner it has no 5vw section padding outside it - its own
+         padding provides the inset). On 16:9 the cap scales in step with 100vw
+         and never binds; on ultrawide it stops the email/socials drifting toward
+         the true viewport edges. */
+      max-width:90rem;
       margin-left:auto; margin-right:auto;
       padding:2.4rem 5vw 1.8rem;
       display:flex; flex-direction:column; gap:1.6rem;
@@ -872,7 +880,7 @@
     .ft-email {
       font-family:'Lora',serif; font-style:italic;
       font-size:clamp(1.4rem,2.6vw,2rem); color:var(--mint);
-      border-bottom:2px solid rgba(230,241,226,.35);
+      border-bottom:.125rem solid rgba(230,241,226,.35);
       padding-bottom:.3rem; display:inline-block;
       transition: color .3s, border-color .3s;
     }
@@ -889,7 +897,7 @@
       display:flex; align-items:center; justify-content:space-between;
       flex-wrap:wrap; gap:1rem;
     }
-    footer .logo img { height:22px; }
+    footer .logo img { height:1.375rem; }
     .ft-nav { list-style:none; display:flex; gap:2rem; }
     .ft-nav a {
       font-family:'Sora',sans-serif; font-size:.68rem;
@@ -918,12 +926,9 @@
 
     /* ─── SECTION ENTRANCE TRANSITIONS ──────── */
     .work-inner {
-      /* .work-header and #proj-grid had no width cap - they stretched edge-to-edge
-         forever on wide monitors, blowing the 2-up project cards up to huge,
-         disproportionate sizes past standard desktop width. Capping the shared
-         wrapper freezes both at once, matching the treatment .about-cols/.play-cols
-         already had. */
-      max-width: 1320px;
+      /* rem cap (1320px at base): scales with the root em past 1440w, so the 2-up
+         cards grow proportionally on big monitors instead of stretching apart. */
+      max-width: 82.5rem;
       margin-left: auto;
       margin-right: auto;
       clip-path: inset(100% 0 0 0);
@@ -949,13 +954,9 @@
     #skills.sec-in .skills-inner { transform: translateX(0); opacity: 1; }
 
     .play-inner {
-      /* .play-cols (the game + text row) already capped itself at 1320px/auto
-         margins, but the section heading above it (an unclassed rv div, direct
-         child of .play-inner) didn't - it sat at the section's raw 5vw edge while
-         .play-cols centered independently, so past standard desktop width the
-         heading visibly drifted left of the content beneath it. Capping the shared
-         parent keeps both aligned to the same edge at any width. */
-      max-width: 1320px;
+      /* Shares the same rem cap as .work-inner so the Play heading and the
+         game/text row below it stay aligned to one edge at every width. */
+      max-width: 82.5rem;
       margin-left: auto;
       margin-right: auto;
       transform: translateY(-50px) scale(0.96);
@@ -973,13 +974,13 @@
       transition: transform 1.2s var(--ease-out);
     }
     .sec-divider-dot {
-      position: absolute; top: -3px; left: 5vw;
-      width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+      position: absolute; top: -.1875rem; left: 5vw;
+      width: .375rem; height: .375rem; border-radius: 50%; background: currentColor;
       transform: scale(0); opacity: 0.6;
       transition: transform 0.5s cubic-bezier(.34,1.56,.64,1) 0.9s, left 1.2s var(--ease-out);
     }
     .sec-divider.div-in .sec-divider-line { transform: scaleX(1); }
-    .sec-divider.div-in .sec-divider-dot { transform: scale(1); left: calc(95vw - 6px); }
+    .sec-divider.div-in .sec-divider-dot { transform: scale(1); left: calc(95vw - .375rem); }
     .div-work-about  { color: var(--olive); }
     .div-about-skills { color: rgba(10,51,35,0.25); }
     .div-skills-play  { color: var(--sage); }
@@ -987,7 +988,7 @@
     /* ─── WAVE DIVIDERS ──────────────────────── */
     .wave-div {
       position: relative;
-      height: 280px;
+      height: 17.5rem;
       overflow: hidden;
       z-index: 5;
       pointer-events: none;
@@ -1058,9 +1059,13 @@
       background: #06100D;
       border: 1px solid rgba(132,154,89,.2);
       border-radius: 4px;
-      box-shadow: 0 0 60px rgba(10,51,35,.5);
+      box-shadow: 0 0 3.75rem rgba(10,51,35,.5);
       font-family: 'GameFont';
+      /* fitGameArea() scales the fixed 640x360 game up on wide desktops (and down
+         on phones) - origin must match the JS-sized scaler wrapper's top-left */
+      transform-origin: top left;
     }
+    #gameArea-scaler { position: relative; }
     #gameArea canvas { font-family: 'GameFont'; }
     /* div keeps the `hidden` attribute until Play is clicked - without this,
        the ID rule above (higher specificity than the [hidden] UA rule) forced it
@@ -1105,7 +1110,7 @@
       align-items: stretch; /* text column stretches to match the game's height */
       gap: 4.5rem;
       margin-top: 3.5rem;
-      max-width: 1320px;
+      max-width: 82.5rem;
       margin-left: auto;
       margin-right: auto;
     }
@@ -1122,12 +1127,12 @@
     /* ─── PLAY COVER SCREEN ─────────────────────── */
     #play-cover {
       position: relative;
-      width: 640px; max-width: 100%;
+      width: 40rem; max-width: 100%;
       aspect-ratio: 640 / 360;
       background: #06100D;
       border: 1px solid rgba(132,154,89,.2);
       border-radius: 4px;
-      box-shadow: 0 0 60px rgba(10,51,35,.5);
+      box-shadow: 0 0 3.75rem rgba(10,51,35,.5);
       overflow: hidden;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
@@ -1138,8 +1143,8 @@
     #play-cover:hover { border-color: rgba(218,217,119,.4); }
     .pc-hud {
       position: absolute; top: 0; left: 0; right: 0;
-      height: 50px; background: #DAD977;
-      border-bottom: 2px solid #0A3323;
+      height: 3.125rem; background: #DAD977;
+      border-bottom: .125rem solid #0A3323;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 1.4rem;
     }
@@ -1169,7 +1174,7 @@
       border: none; cursor: pointer; margin-top: .5rem;
       transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s;
     }
-    #play-launch-btn:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(218,217,119,.25); }
+    #play-launch-btn:hover { transform:translateY(-3px); box-shadow:0 .75rem 2rem rgba(218,217,119,.25); }
     .pc-hint {
       font-family:'Sora',sans-serif; font-size:.58rem;
       color:#DAD977; letter-spacing:.1em; text-transform:uppercase;
@@ -1181,8 +1186,8 @@
       top: 5.8rem; left: 2rem;
       width: calc(100vw - 4rem);
       height: calc(100vh - 8rem);
-      border-radius: 20px;
-      box-shadow: 0 12px 56px rgba(10,51,35,.14);
+      border-radius: 1.25rem;
+      box-shadow: 0 .75rem 3.5rem rgba(10,51,35,.14);
       z-index: 0;
       display: block;
     }
@@ -1191,7 +1196,7 @@
       top: 5.8rem; left: 2rem;
       width: calc(100vw - 4rem);
       height: calc(100vh - 8rem);
-      border-radius: 20px;
+      border-radius: 1.25rem;
       z-index: 1;
       pointer-events: none;
       transition: opacity .15s ease;
@@ -1209,7 +1214,7 @@
     }
     #pcur {
       position: fixed;
-      width: 22px; height: 22px;
+      width: 1.375rem; height: 1.375rem;
       border: 1.5px solid var(--olive);
       border-radius: 50%;
       pointer-events: none;
@@ -1352,13 +1357,12 @@
          so it (and its HUD/level-select/end-screen overlays, all in the same coordinate
          space) shrink together to fit a phone's width instead of overflowing it. */
       #play-game-wrap { flex-direction: column; align-items: center; gap: 1.1rem; }
-      #gameArea-scaler { position: relative; }
       /* max-width:100% (set for desktop) would otherwise measure "100%" against this
          wrapper's own JS-sized (already-scaled-down) width, capping #gameArea's layout
          box a second time before transform:scale even runs - the wrapper below already
          reflects the true scaled footprint, so #gameArea itself must stay at its native
          640px layout size for scale() to be the only thing shrinking it. */
-      #gameArea { max-width: none; transform-origin: top left; }
+      #gameArea { max-width: none; }
       #touch-controls.tc-active {
         display: flex;
         align-items: center;
@@ -2171,6 +2175,7 @@ let rsTimer;
 window.addEventListener('resize', () => {
   clearTimeout(rsTimer);
   rsTimer = setTimeout(() => {
+    NAV_H = 72 * uiScale();
     resize(); resizeSC();
     // Setting canvas.width/height (inside resize()) clears the visible canvas's
     // pixels - on desktop the still-running RAF loop repaints it on the very next
@@ -2274,7 +2279,13 @@ function placeStamp(targetCtx, imgIndex, x, y, angle, targetWidth, color, alpha)
 function rand(a, b)    { return a + Math.random() * (b - a); }
 function randInt(a, b) { return Math.floor(rand(a, b + .99)); }
 
-const NAV_H = 72; // keep nav zone paint-free
+// Root em scale factor (1 at standard desktop, >1 on proportionally-scaled wide
+// viewports) - keeps the paint layer's px constants in step with the layout.
+function uiScale() {
+  return (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
+}
+
+let NAV_H = 72 * uiScale(); // keep nav zone paint-free (rescaled on resize)
 
 function inCenter(x, y, halfW = 0) {
   const halfH = halfW * .55;
@@ -2286,7 +2297,7 @@ function inCenter(x, y, halfW = 0) {
   const hero = document.querySelector('.hero-inner');
   if (hero) {
     const r = hero.getBoundingClientRect();
-    const pad = 40;
+    const pad = 40 * uiScale();
     if ((x + halfW) > r.left - pad && (x - halfW) < r.right + pad &&
         (y + halfH) > r.top - pad && (y - halfH) < r.bottom + pad) return true;
   }
@@ -2401,7 +2412,7 @@ function beginBrushStroke(x, y) {
   while (tries < 8 && (!elements[strokeElemIdx] || !elements[strokeElemIdx].naturalWidth));
   if (!elements[strokeElemIdx] || !elements[strokeElemIdx].naturalWidth) return;
   strokeColor  = pickColor();
-  strokeWidth  = rand(40, 110);
+  strokeWidth  = rand(40, 110) * uiScale();
   brushAlpha   = rand(0.22, 0.42);
   brushSpacing = Math.max(2, strokeWidth * 0.22);
   isStroking   = true;
@@ -2770,8 +2781,17 @@ window.__heroCanvasResume = () => {
   // so it doesn't leave a stale 360px-tall gap (or overflow) in the flex layout.
   function fitGameArea() {
     if (gameArea.hidden) return;
-    var maxW = scaler.parentElement.clientWidth;
-    var scale = Math.min(1, maxW / 640);
+    // Measure the capped .play-cols row, not the immediate flex-auto wrapper -
+    // that wrapper shrink-wraps to the game's own 640px layout box, which would
+    // read back the very size being set. On phones .play-cols is the full-width
+    // column stack, so this is the same available width as before.
+    var cols = scaler.closest('.play-cols');
+    var maxW = (cols || scaler.parentElement).clientWidth;
+    // Target width tracks the scaled root em (40rem = 640px at base 16), so on
+    // proportionally-scaled wide desktops the game grows with the layout just
+    // like the CSS-sized #play-cover it replaces; phones still shrink to fit.
+    var rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var scale = Math.min(40 * rootPx, maxW) / 640;
     gameArea.style.transform = 'scale(' + scale + ')';
     scaler.style.width = (640 * scale) + 'px';
     scaler.style.height = (360 * scale) + 'px';
@@ -2998,12 +3018,18 @@ window.__heroCanvasResume = () => {
 
   var hint = document.getElementById('hint');
 
+  // Root-em scale factor: 1 at standard desktop, >1 on proportionally-scaled
+  // wide viewports - keeps the clip radius, lift distance, and pin length in
+  // step with the enlarged layout so the exit reads identically at any size.
+  var K = (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
+  var R = (20 * K) + 'px';
+
   gsap.fromTo(
     ['#c', '#sc', '#hero-content'],
-    { clipPath: 'inset(0% 0% 0% 0% round 20px)', y: 0 },
+    { clipPath: 'inset(0% 0% 0% 0% round ' + R + ')', y: 0 },
     {
-      clipPath: 'inset(0% 0% 100% 0% round 20px)',
-      y: -160,
+      clipPath: 'inset(0% 0% 100% 0% round ' + R + ')',
+      y: -160 * K,
       ease: 'none',
       scrollTrigger: {
         trigger: '#home',
@@ -3014,7 +3040,7 @@ window.__heroCanvasResume = () => {
         // which could blow straight through a 700px pin range and interact
         // unpredictably with the onLeave/onEnterBack visibility toggling (the
         // reported "canvas disappears sometimes when scrolling back up").
-        end: isMobile ? '+=1100' : '+=700',
+        end: isMobile ? '+=1100' : '+=' + Math.round(700 * K),
         pin: true,
         scrub: isMobile ? 0.25 : 0.4,
         onLeave: function() {
@@ -3025,7 +3051,7 @@ window.__heroCanvasResume = () => {
         onEnterBack: function() {
           gsap.set(['#c', '#sc', '#hero-content'], {
             visibility: 'visible',
-            clipPath: 'inset(0% 0% 0% 0% round 20px)',
+            clipPath: 'inset(0% 0% 0% 0% round ' + R + ')',
             y: 0,
           });
           if (hint) hint.style.display = '';
@@ -3062,11 +3088,14 @@ window.__heroCanvasResume = () => {
 
   ScrollTrigger.matchMedia({
     '(min-width: 661px)': function () {
+      // Pin length scales with the root em so the hold/fade/sticker beats span
+      // the same relative scroll on proportionally-scaled wide viewports.
+      var K = (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
       var tl = gsap.timeline({
         scrollTrigger: {
           trigger: '#about',
           start: 'top top',
-          end: '+=950',
+          end: '+=' + Math.round(950 * K),
           pin: true,
           scrub: 1.4,
           anticipatePin: 1,
@@ -3085,9 +3114,9 @@ window.__heroCanvasResume = () => {
         .to('.about-inner', { opacity: 0, duration: 0.4 }, 1)
         // ...then, once it's gone (clean 0.3-unit gap with nothing happening), the
         // 4 stickers pop in together (slight stagger for life, not sequence)
-        .fromTo('.si', { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 1.7)
+        .fromTo('.si', { opacity: 0, y: 50 * K }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 1.7)
         // Hold at fully-shown, then fly away together for good (about content stays hidden)
-        .to('.si', { opacity: 0, y: -80, ease: 'power2.in', duration: 1, stagger: 0.08 }, 3.66);
+        .to('.si', { opacity: 0, y: -80 * K, ease: 'power2.in', duration: 1, stagger: 0.08 }, 3.66);
     },
 
     '(max-width: 660px)': function () {
