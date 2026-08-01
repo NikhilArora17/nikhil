@@ -727,6 +727,11 @@
       transform-origin: center;
       transform-box: fill-box;
       transition: opacity 1.1s var(--ease-out), transform 1.1s var(--ease-out);
+      /* Mirrors the icon's final (post-entrance) scale as a plain number, so JS can read the
+         real on-screen icon radius via getComputedStyle without waiting on the entrance
+         transition to finish or re-measuring layout - see the edge-fade comment near
+         #mz-path's positioning script for why that matters. */
+      --mz-icon-scale: 1;
     }
     .marquee-zone.mz-in .mz-icon {
       opacity: 1;
@@ -1420,7 +1425,7 @@
          (applied on top of, not instead of, the SVG's own viewBox scaling), so
          bumping it up here makes the icons themselves bigger without touching the
          band/path at all. */
-      .mz-icon { transform: scale(1.3); }
+      .mz-icon { transform: scale(1.3); --mz-icon-scale: 2.3; }
       .marquee-zone.mz-in .mz-icon { transform: scale(2.3); }
     }
   </style>
@@ -3321,20 +3326,42 @@ window.__heroCanvasResume = () => {
 
   var speed = 0.4; // fraction of the full path covered across the ribbon's whole scroll range - lower = slower
 
-  // #mz-path spans x=-80..1680 but the <svg> viewBox is 0 0 1600 400, so the root SVG's
-  // default clip cuts anything outside 0-1600 - fade icons out before they cross that
-  // boundary instead of letting them get hard-clipped mid-shape.
-  var VIEWBOX_WIDTH = 1600;
-  var EDGE_FADE_MARGIN = 90;
-  function edgeFade(x) {
-    if (x < EDGE_FADE_MARGIN) return Math.max(0, x / EDGE_FADE_MARGIN);
-    if (x > VIEWBOX_WIDTH - EDGE_FADE_MARGIN) return Math.max(0, (VIEWBOX_WIDTH - x) / EDGE_FADE_MARGIN);
-    return 1;
-  }
-
   var zoneEl = document.querySelector('.marquee-zone');
   var tooltip = document.getElementById('mzTooltip');
   var hovered = null; // currently-hovered icon element, or null
+
+  // #mz-path spans x=-80..1680 but the <svg> viewBox is 0 0 1600 400, so the root SVG's
+  // default clip cuts anything outside 0-1600. Two things that DIDN'T work first: (1) a
+  // fixed fade margin - mobile's .mz-icon transform:scale(2.3) makes each icon occupy far
+  // more path-space width than its intrinsic 40x40 geometry, so a margin sized for the
+  // small unscaled icon left the enlarged mobile ones still hard-clipped mid-fade; (2)
+  // measuring the rendered icon via getBoundingClientRect - that's a race against the
+  // entrance transition (icons pop from a smaller pre-entrance scale up to their final
+  // size over ~1.8s), so a one-off measurement could catch a mid-transition value and
+  // still undersize the fade. Reading --mz-icon-scale (a plain number mirroring each
+  // breakpoint's *final* scale, defined next to the transform: scale() it mirrors) sidesteps
+  // both: it's available the instant the media query matches, independent of any transition
+  // currently in flight.
+  var VIEWBOX_WIDTH = 1600;
+  var FADE_WIDTH = 60; // path-units the opacity ramp itself takes, once past the icon's own radius
+  var BASE_ICON_HALF_WIDTH = 20; // half of the <image>'s intrinsic 40x40 (x=-20..20)
+  var iconRadius = BASE_ICON_HALF_WIDTH;
+
+  function measureIconRadius() {
+    var scale = parseFloat(getComputedStyle(icons[0]).getPropertyValue('--mz-icon-scale'));
+    iconRadius = BASE_ICON_HALF_WIDTH * (isNaN(scale) ? 1 : scale);
+  }
+  measureIconRadius();
+  window.addEventListener('resize', measureIconRadius); // breakpoint change flips --mz-icon-scale
+
+  function edgeFade(x) {
+    var clipStart = VIEWBOX_WIDTH - iconRadius;
+    if (x >= clipStart) return 0;
+    if (x > clipStart - FADE_WIDTH) return (clipStart - x) / FADE_WIDTH;
+    if (x <= iconRadius) return 0;
+    if (x < iconRadius + FADE_WIDTH) return (x - iconRadius) / FADE_WIDTH;
+    return 1;
+  }
 
   function positionTooltip(icon) {
     var iconRect = icon.getBoundingClientRect();
