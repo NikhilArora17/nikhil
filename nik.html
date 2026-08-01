@@ -764,10 +764,15 @@
          side (needed so the band/fill curve stays full-bleed at odd container widths). The
          <svg> root clips to that viewBox by default, so as an icon's translate crosses x=0 or
          x=1600 it got sliced mid-shape instead of leaving the screen cleanly. JS fades this
-         opacity in/out over the last ~90 units before each edge so icons dissolve before they'd
-         hit the clip boundary - composes independently of .mz-icon's own entrance opacity/scale
-         transition since it's a separate nested SVG group (opacities multiply, not conflict). */
-      transition: opacity .15s linear;
+         group's opacity to 0 before the icon can reach the clip boundary - composes
+         independently of .mz-icon's own entrance opacity/scale transition since it's a
+         separate nested SVG group (opacities multiply, not conflict).
+         Deliberately NO transition on opacity here: icons only ever move while the user is
+         actively scrolling (position is scroll-scrubbed), so a time-based transition makes
+         rendered opacity lag ~a-transition-length behind the per-frame target - measured
+         mid-scroll, icons crossed the clip edge still at ~0.75 opacity and got visibly
+         sliced, which is exactly the bug the fade exists to prevent. The spatial ramp in
+         edgeFade() is what makes the dissolve smooth; opacity must snap to it per frame. */
     }
 
     /* Software name label, shown above whichever icon is hovered */
