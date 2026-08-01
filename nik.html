@@ -2196,6 +2196,13 @@ window.addEventListener('resize', () => {
     // sometimes when scrolling" - one extra frame() call here repaints it from the
     // (correctly preserved) offscreen buffer immediately after every such resize.
     if (IS_MOBILE) frame();
+    // Root em (K) changes with viewport size/shape (see the html font-size
+    // media query), and the hero/about pin distances below are computed from
+    // K - without a refresh here they stay frozen at whatever K was true at
+    // page-load, so resizing/maximizing into a much taller viewport (e.g. a
+    // 4K monitor) leaves the pin-spacer under-sized and the About section
+    // bleeds into the hero fold before any scrolling happens.
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
   }, 150);
 });
 resize();
@@ -3031,15 +3038,19 @@ window.__heroCanvasResume = () => {
   // Root-em scale factor: 1 at standard desktop, >1 on proportionally-scaled
   // wide viewports - keeps the clip radius, lift distance, and pin length in
   // step with the enlarged layout so the exit reads identically at any size.
-  var K = (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
-  var R = (20 * K) + 'px';
+  // Read live (not cached in a var) and re-run via invalidateOnRefresh so a
+  // resize into a very different viewport (e.g. maximizing onto a 4K
+  // monitor) doesn't leave the pin distance frozen at the load-time K - that
+  // mismatch is what let the About section bleed into the hero fold.
+  function K() { return (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16; }
+  function R() { return (20 * K()) + 'px'; }
 
   gsap.fromTo(
     ['#c', '#sc', '#hero-content'],
-    { clipPath: 'inset(0% 0% 0% 0% round ' + R + ')', y: 0 },
+    { clipPath: function() { return 'inset(0% 0% 0% 0% round ' + R() + ')'; }, y: 0 },
     {
-      clipPath: 'inset(0% 0% 100% 0% round ' + R + ')',
-      y: -160 * K,
+      clipPath: function() { return 'inset(0% 0% 100% 0% round ' + R() + ')'; },
+      y: function() { return -160 * K(); },
       ease: 'none',
       scrollTrigger: {
         trigger: '#home',
@@ -3050,9 +3061,10 @@ window.__heroCanvasResume = () => {
         // which could blow straight through a 700px pin range and interact
         // unpredictably with the onLeave/onEnterBack visibility toggling (the
         // reported "canvas disappears sometimes when scrolling back up").
-        end: isMobile ? '+=1100' : '+=' + Math.round(700 * K),
+        end: isMobile ? '+=1100' : function() { return '+=' + Math.round(700 * K()); },
         pin: true,
         scrub: isMobile ? 0.25 : 0.4,
+        invalidateOnRefresh: true,
         onLeave: function() {
           gsap.set(['#c', '#sc', '#hero-content'], { visibility: 'hidden' });
           if (hint) hint.style.display = 'none';
@@ -3061,7 +3073,7 @@ window.__heroCanvasResume = () => {
         onEnterBack: function() {
           gsap.set(['#c', '#sc', '#hero-content'], {
             visibility: 'visible',
-            clipPath: 'inset(0% 0% 0% 0% round ' + R + ')',
+            clipPath: 'inset(0% 0% 0% 0% round ' + R() + ')',
             y: 0,
           });
           if (hint) hint.style.display = '';
@@ -3100,15 +3112,18 @@ window.__heroCanvasResume = () => {
     '(min-width: 661px)': function () {
       // Pin length scales with the root em so the hold/fade/sticker beats span
       // the same relative scroll on proportionally-scaled wide viewports.
-      var K = (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
+      // Function-based (+ invalidateOnRefresh) so a resize onto a much larger
+      // monitor re-derives K instead of keeping the load-time value.
+      function K() { return (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16; }
       var tl = gsap.timeline({
         scrollTrigger: {
           trigger: '#about',
           start: 'top top',
-          end: '+=' + Math.round(950 * K),
+          end: function() { return '+=' + Math.round(950 * K()); },
           pin: true,
           scrub: 1.4,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
           snap: {
             snapTo: [0, 0.69, 1],
             duration: { min: 0.2, max: 0.5 },
@@ -3124,9 +3139,9 @@ window.__heroCanvasResume = () => {
         .to('.about-inner', { opacity: 0, duration: 0.4 }, 1)
         // ...then, once it's gone (clean 0.3-unit gap with nothing happening), the
         // 4 stickers pop in together (slight stagger for life, not sequence)
-        .fromTo('.si', { opacity: 0, y: 50 * K }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 1.7)
+        .fromTo('.si', { opacity: 0, y: function() { return 50 * K(); } }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 1.7)
         // Hold at fully-shown, then fly away together for good (about content stays hidden)
-        .to('.si', { opacity: 0, y: -80 * K, ease: 'power2.in', duration: 1, stagger: 0.08 }, 3.66);
+        .to('.si', { opacity: 0, y: function() { return -80 * K(); }, ease: 'power2.in', duration: 1, stagger: 0.08 }, 3.66);
     },
 
     '(max-width: 660px)': function () {
