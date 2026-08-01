@@ -1371,6 +1371,16 @@
          buys margin around the enlarged mobile icons without touching icon size or
          the path itself. */
       .mz-band { stroke-width: 190; }
+      /* The 190 stroke no longer fits the 400-unit viewBox everywhere: the path's
+         centerline reaches y=330 near the right end, so the band's lower edge lands at
+         330+95=425 and got clipped dead-flat along the right third of the screen (and
+         its top edge at -25 near the left end, same story). Let it paint past the box
+         instead - the overflow is only the band's own rounded edge drawing over the
+         neighbouring sections' solid fills (lime above, forest below), which is exactly
+         what the fills inside the SVG already blend into, so nothing foreign shows.
+         Painted SVG overflow is ink overflow: it can't create scrollbars or affect
+         layout. Desktop keeps the default hidden (its 130 stroke fits: 330+65=395). */
+      .marquee-zone, .mz-svg { overflow: visible; }
 
       /* Bounce: the game canvas is a fixed 640x360 pixel coordinate space (real Nokia
          engine internals, not reflowable) - #gameArea gets a JS-computed transform:scale
