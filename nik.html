@@ -753,7 +753,17 @@
 
     /* .marquee-zone disables pointer-events so the decorative band/fills never block clicks;
        re-enable it just on each icon's hit area so hover can be detected and isn't inherited as none. */
-    .mz-icon-pos { pointer-events: auto; }
+    .mz-icon-pos {
+      pointer-events: auto;
+      /* Icons travel along #mz-path, which bleeds ~80 units past the 0-1600 viewBox on each
+         side (needed so the band/fill curve stays full-bleed at odd container widths). The
+         <svg> root clips to that viewBox by default, so as an icon's translate crosses x=0 or
+         x=1600 it got sliced mid-shape instead of leaving the screen cleanly. JS fades this
+         opacity in/out over the last ~90 units before each edge so icons dissolve before they'd
+         hit the clip boundary - composes independently of .mz-icon's own entrance opacity/scale
+         transition since it's a separate nested SVG group (opacities multiply, not conflict). */
+      transition: opacity .15s linear;
+    }
 
     /* Software name label, shown above whichever icon is hovered */
     .mz-tooltip {
@@ -3296,6 +3306,17 @@ window.__heroCanvasResume = () => {
 
   var speed = 0.4; // fraction of the full path covered across the ribbon's whole scroll range - lower = slower
 
+  // #mz-path spans x=-80..1680 but the <svg> viewBox is 0 0 1600 400, so the root SVG's
+  // default clip cuts anything outside 0-1600 - fade icons out before they cross that
+  // boundary instead of letting them get hard-clipped mid-shape.
+  var VIEWBOX_WIDTH = 1600;
+  var EDGE_FADE_MARGIN = 90;
+  function edgeFade(x) {
+    if (x < EDGE_FADE_MARGIN) return Math.max(0, x / EDGE_FADE_MARGIN);
+    if (x > VIEWBOX_WIDTH - EDGE_FADE_MARGIN) return Math.max(0, (VIEWBOX_WIDTH - x) / EDGE_FADE_MARGIN);
+    return 1;
+  }
+
   var zoneEl = document.querySelector('.marquee-zone');
   var tooltip = document.getElementById('mzTooltip');
   var hovered = null; // currently-hovered icon element, or null
@@ -3312,6 +3333,7 @@ window.__heroCanvasResume = () => {
       var t = (progress * speed + i / count) % 1;
       var pt = path.getPointAtLength(t * totalLength);
       icon.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ')');
+      icon.style.opacity = edgeFade(pt.x);
     });
     // Keep the tooltip glued to its icon if the user scrolls mid-hover
     if (hovered) positionTooltip(hovered);
