@@ -1867,8 +1867,8 @@ Something with a little bounce.</p>
 <!-- ── FOOTER ─────────────────────────────────── -->
 <footer>
   <div class="ft-visual">
-    <img src="footer.png" alt="" class="ft-bg ft-bg-light" />
-    <img src="footer-dark.png" alt="" class="ft-bg ft-bg-dark" />
+    <img src="footer.png" alt="" class="ft-bg ft-bg-light" loading="lazy" />
+    <img src="footer-dark.png" alt="" class="ft-bg ft-bg-dark" loading="lazy" />
     <div class="ft-scrim"></div>
   </div>
   <div class="ft-content">
@@ -3221,7 +3221,19 @@ window.__heroCanvasResume = () => {
 (function () {
   gsap.registerPlugin(ScrollTrigger);
 
-  document.querySelectorAll('.wave-div').forEach(function (div) {
+  var waveDivs = Array.prototype.slice.call(document.querySelectorAll('.wave-div'));
+
+  /* Read every div's layout box before appending any canvases or writing
+     canvas.width/height - interleaving read (offsetWidth) and write
+     (canvas.width=) per element in a single loop forces a synchronous
+     layout recalc on each iteration (Lighthouse "Forced reflow"). .wave-div
+     has a fixed CSS height and its canvas child is absolutely positioned,
+     so pre-reading here is equivalent to reading inside the old loop. */
+  var waveDims = waveDivs.map(function (div) {
+    return { width: div.offsetWidth, height: div.offsetHeight };
+  });
+
+  waveDivs.forEach(function (div, i) {
     var canvas = document.createElement('canvas');
     div.appendChild(canvas);
     var ctx = canvas.getContext('2d');
@@ -3266,7 +3278,9 @@ window.__heroCanvasResume = () => {
       ctx.fill();
     }
 
-    resize();
+    canvas.width  = waveDims[i].width;
+    canvas.height = waveDims[i].height;
+    draw();
     window.addEventListener('resize', resize);
 
     ScrollTrigger.create({
