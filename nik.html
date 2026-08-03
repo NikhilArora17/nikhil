@@ -9,6 +9,43 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
+    /* Size-matched fallback for the font-swap window. Letter Swap Animation
+       wraps every heading character into its own inline-block span, which
+       turns an ordinary font-swap into a real, large layout shift once Sora
+       swaps in - Lighthouse's #1 remaining CLS culprit even after the
+       script-loading-order fixes (those addressed a real but separate
+       issue; this one is unrelated to load order entirely).
+
+       Values below came from directly parsing both fonts' actual glyph
+       tables (cmap+hmtx), summing real advance widths for this site's 3
+       heading strings ("Projects that made a mark.", "A bit about me.",
+       "Bounce lives."), normalized by each font's unitsPerEm - NOT from
+       on-screen pixel measurements (too noisy - mixes in letter-spacing
+       and whichever string you happened to test) and NOT from OS/2
+       xAvgCharWidth (checked and rejected: Sora=609/1000em vs Arimo=
+       1229/2048em implied a 138% adjustment that measured 20%+ too wide
+       in practice - that field isn't computed consistently enough between
+       font vendors to trust here).
+         Sora (wght 600 TTF, Google Fonts): unitsPerEm 1000, hhea ascent
+           970 / descent 290 / lineGap 0
+         Arimo (wght 600 TTF, Google Fonts - metric-compatible-by-design
+           Arial substitute): unitsPerEm 2048, ascent 1854 / descent 434 /
+           lineGap 67
+         Combined real advance width across the 3 headings: Sora 28.131em,
+         Arimo 25.808em -> ratio 1.0900
+       size-adjust      = 1.0900                =  109.00%
+       ascent-override  = (970/1000) / 1.0900   =   88.99%
+       descent-override = (290/1000) / 1.0900   =   26.60%
+       line-gap-override= (0/1000)   / 1.0900   =    0.00% */
+    @font-face {
+      font-family: 'Sora Fallback';
+      src: local('Arial'), local('Liberation Sans'), local('Arimo'),
+           local('Helvetica'), local('Roboto'), local('Segoe UI');
+      size-adjust: 109.00%;
+      ascent-override: 88.99%;
+      descent-override: 26.60%;
+      line-gap-override: 0%;
+    }
     /* ─── TOKENS ──────────────────────────────── */
     :root {
       --forest: #0A3323;
@@ -39,7 +76,7 @@
     }
     html::-webkit-scrollbar { display: none; } /* Chrome / Edge / Safari */
     body {
-      font-family: 'Sora', sans-serif;
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
       background: #A8AD98;   /* sage - card sits on this */
       color: var(--forest);
       -webkit-font-smoothing: antialiased;
@@ -149,7 +186,7 @@
     }
     .nav-mobile-menu.open { transform: translateY(0); }
     .nav-mobile-menu a {
-      font-family: 'Sora', sans-serif; font-size: 1.05rem; font-weight: 700;
+      font-family: 'Sora', 'Sora Fallback', sans-serif; font-size: 1.05rem; font-weight: 700;
       letter-spacing: .04em; text-transform: uppercase; color: var(--forest);
       padding: 1rem 0; border-bottom: 1px solid rgba(10,51,35,.12);
     }
@@ -203,7 +240,7 @@
 
 
     .hero-greeting {
-      font-family: 'Sora', sans-serif;
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
       font-size: .72rem; font-weight:700;
       letter-spacing: .22em; text-transform: uppercase;
       color: var(--forest);
@@ -214,7 +251,7 @@
 
     /* The name - Eat Hungry Tiger scale */
     .hero-name {
-      font-family: 'Sora', sans-serif;
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
       font-size: clamp(4.5rem, 9.5vw, 10.5rem);
       font-weight: 700;
       letter-spacing: -.04em;
@@ -224,7 +261,7 @@
     }
 
     .hero-role {
-      font-family: 'Sora', sans-serif;
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
       font-size: clamp(1.2rem, 2.4vw, 2.2rem);
       font-weight: 400;
       font-style: italic;
@@ -233,7 +270,7 @@
     }
 
     .hero-tagline {
-      font-family: 'Sora', sans-serif;
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
       font-size: clamp(.9rem, 1.1vw, 1.05rem);
       color: var(--forest);
       line-height: 1.75;
@@ -321,7 +358,7 @@
     .btn-dark {
       display: inline-flex; align-items:center; gap:.5rem;
       background: var(--forest); color: var(--mint);
-      font-family:'Sora',sans-serif; font-size:.78rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.78rem; font-weight:700;
       letter-spacing:.06em; padding:.85rem 2rem; border-radius:100px;
       transition: background .3s, transform .25s var(--ease-out), box-shadow .3s;
     }
@@ -329,7 +366,7 @@
 
     .btn-ghost-dark {
       display:inline-flex; align-items:center; gap:.5rem;
-      color:var(--forest); font-family:'Sora',sans-serif; font-size:.78rem;
+      color:var(--forest); font-family:'Sora','Sora Fallback',sans-serif; font-size:.78rem;
       font-weight:600; letter-spacing:.06em; padding:.85rem 2rem;
       border: .09375rem solid rgba(10,51,35,.3); border-radius:100px;
       transition: border-color .3s, transform .25s var(--ease-out);
@@ -342,7 +379,7 @@
       border-top: 1px solid rgba(10,51,35,.1);
       padding: .9rem 5vw;
       display: flex; align-items:center; gap:2rem;
-      font-family:'Sora',sans-serif; font-size:.65rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.65rem;
       font-weight:700; letter-spacing:.18em; text-transform:uppercase;
       color: rgba(10,51,35,.4);
     }
@@ -363,7 +400,7 @@
     footer { position: relative; z-index: 1; }
 
     .sec-label {
-      font-family:'Sora',sans-serif; font-size:.62rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.62rem; font-weight:700;
       letter-spacing:.24em; text-transform:uppercase;
       display:flex; align-items:center; gap:.7rem;
       margin-bottom:1.4rem;
@@ -371,7 +408,7 @@
     .sec-label::after { content:''; display:block; width:2rem; height:1px; background:currentColor; }
 
     .sec-heading {
-      font-family:'Sora',sans-serif;
+      font-family:'Sora','Sora Fallback',sans-serif;
       font-size: clamp(2.4rem, 4.5vw, 5rem);
       font-weight:600; letter-spacing:-.025em; line-height:1.1;
     }
@@ -397,7 +434,7 @@
       gap: 2rem; flex-wrap: wrap;
     }
     .work-all {
-      font-family:'Sora',sans-serif; font-size:.7rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.7rem; font-weight:700;
       letter-spacing:.12em; text-transform:uppercase;
       color:var(--sage); display:flex; align-items:center; gap:.5rem;
       transition: color .3s;
@@ -447,7 +484,7 @@
       display: flex; align-items: center; justify-content: center;
     }
     .proj-thumb-placeholder span {
-      font-family:'Sora',sans-serif; font-size:5rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:5rem; font-weight:700;
       letter-spacing:-.04em; color:rgba(255,255,255,.08);
     }
     .proj-thumb-loading {
@@ -498,7 +535,7 @@
       flex-shrink: 0;
     }
     #pdf-modal-title {
-      font-family:'Sora',sans-serif; font-size:.72rem; font-weight:600;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.72rem; font-weight:600;
       letter-spacing:.08em; text-transform:uppercase; color:var(--mint);
     }
     #pdf-modal-controls { display:flex; align-items:center; gap:.5rem; }
@@ -522,7 +559,7 @@
     #pdf-loading {
       display:flex; flex-direction:column; align-items:center;
       gap:1rem; color:var(--sage);
-      font-family:'Sora',sans-serif; font-size:.8rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.8rem;
       letter-spacing:.08em; text-transform:uppercase;
       padding:4rem;
     }
@@ -539,11 +576,11 @@
     }
 
     .pr-num {
-      font-family:'Sora',sans-serif; font-size:.65rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.65rem; font-weight:700;
       letter-spacing:.12em; color:var(--olive); padding-top:.2rem;
     }
     .pr-name {
-      font-family:'Sora',sans-serif;
+      font-family:'Sora','Sora Fallback',sans-serif;
       font-size: clamp(1.1rem, 1.6vw, 1.5rem);
       font-weight:600; letter-spacing:-.02em;
       color: var(--mint);
@@ -552,7 +589,7 @@
     }
     .project-row:hover .pr-name { color: var(--lime); }
     .pr-meta {
-      font-family:'Sora',sans-serif; font-size:.72rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.72rem;
       color:var(--sage); margin-top:.25rem;
       letter-spacing:.04em;
     }
@@ -561,7 +598,7 @@
       display:flex; align-items:center; gap:1rem; justify-content:flex-end;
     }
     .pr-tag {
-      font-family:'Sora',sans-serif; font-size:.6rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.6rem; font-weight:700;
       letter-spacing:.1em; text-transform:uppercase;
       color:var(--sage); border:1px solid rgba(132,154,89,.3);
       padding:.25rem .75rem; border-radius:100px;
@@ -662,7 +699,7 @@
     }
 
     .about-body {
-      font-family:'Sora',sans-serif; /* Brand spec: body at size 20 */
+      font-family:'Sora','Sora Fallback',sans-serif; /* Brand spec: body at size 20 */
       font-size: clamp(1.05rem, 1.3vw, 1.3rem);
       line-height: 1.85;
       color: rgba(10,51,35,.78);
@@ -790,7 +827,7 @@
       transform: translate(-50%, -120%) scale(.85);
       background: var(--forest);
       color: var(--mint);
-      font-family: 'Sora', sans-serif;
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
       font-size: .72rem;
       font-weight: 600;
       letter-spacing: .01em;
@@ -853,7 +890,7 @@
       filter: brightness(0) opacity(0.72);
     }
     .mq-item span {
-      font-family: 'Sora', sans-serif;
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
       font-size: .75rem;
       font-weight: 800;
       letter-spacing: .2em;
@@ -915,7 +952,7 @@
     .ft-email:hover { color:var(--lime); border-color:var(--lime); }
     .ft-socials { display:flex; gap:1.5rem; flex-wrap:wrap; }
     .ft-soc {
-      font-family:'Sora',sans-serif; font-size:.68rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem; font-weight:700;
       letter-spacing:.12em; text-transform:uppercase;
       color:rgba(230,241,226,.65); display:flex; align-items:center; gap:.35rem;
       transition: color .3s;
@@ -928,13 +965,13 @@
     footer .logo img { height:1.375rem; }
     .ft-nav { list-style:none; display:flex; gap:2rem; }
     .ft-nav a {
-      font-family:'Sora',sans-serif; font-size:.68rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem;
       font-weight:700; letter-spacing:.1em; text-transform:uppercase;
       color:var(--mint); transition:color .3s;
     }
     .ft-nav a:hover { color:var(--lime); }
     .ft-copy {
-      font-family:'Sora',sans-serif; font-size:.68rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem;
       color:rgba(230,241,226,.6); letter-spacing:.06em;
     }
 
@@ -1071,7 +1108,7 @@
     #play .sec-heading { color: var(--mint); }
     #play .sec-heading em { color: var(--lime); }
     .play-intro {
-      font-family: 'Sora', sans-serif; /* same as .about-body */
+      font-family: 'Sora', 'Sora Fallback', sans-serif; /* same as .about-body */
       font-size: clamp(1.05rem, 1.3vw, 1.3rem);
       line-height: 1.85;
       color: var(--sage);
@@ -1176,35 +1213,35 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 1.4rem;
     }
-    .pc-hud-lives { font-family:'Sora',sans-serif; font-size:.85rem; font-weight:700; letter-spacing:.08em; color:#0A3323; }
-    .pc-hud-score { font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:700; color:#0A3323; }
+    .pc-hud-lives { font-family:'Sora','Sora Fallback',sans-serif; font-size:.85rem; font-weight:700; letter-spacing:.08em; color:#0A3323; }
+    .pc-hud-score { font-family:'Sora','Sora Fallback',sans-serif; font-size:1.4rem; font-weight:700; color:#0A3323; }
     .pc-content {
       position: relative; z-index: 1;
       display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center;
     }
     .pc-label {
-      font-family:'Sora',sans-serif; font-size:.6rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.6rem; font-weight:700;
       letter-spacing:.22em; text-transform:uppercase; color:#DAD977;
     }
     .pc-title {
-      font-family:'Sora',sans-serif; font-size:clamp(2.5rem,6vw,4.5rem);
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:clamp(2.5rem,6vw,4.5rem);
       font-weight:700; letter-spacing:-.03em; color:#0A3323; line-height:1; margin:0;
     }
     .pc-sub {
-      font-family:'Sora',sans-serif; font-size:clamp(.7rem,.9vw,.88rem);
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:clamp(.7rem,.9vw,.88rem);
       color:#DAD977; letter-spacing:.1em; text-transform:uppercase;
     }
     #play-launch-btn {
       display: inline-flex; align-items: center; gap: .5rem;
       background: #0A3323; color: #DAD977;
-      font-family:'Sora',sans-serif; font-size:.85rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.85rem; font-weight:700;
       letter-spacing:.06em; padding:.85rem 2.5rem; border-radius:100px;
       border: none; cursor: pointer; margin-top: .5rem;
       transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s;
     }
     #play-launch-btn:hover { transform:translateY(-3px); box-shadow:0 .75rem 2rem rgba(218,217,119,.25); }
     .pc-hint {
-      font-family:'Sora',sans-serif; font-size:.58rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.58rem;
       color:#DAD977; letter-spacing:.1em; text-transform:uppercase;
     }
 
@@ -1262,7 +1299,7 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 6;
-      font-family: 'Sora', sans-serif;
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
       font-size: .72rem;
       font-weight: 500;
       letter-spacing: .14em;
