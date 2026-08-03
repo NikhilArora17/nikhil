@@ -1549,7 +1549,7 @@
     <li><a href="#" id="nav-resume-btn">Resume</a></li>
   </ul>
   <a href="#home" class="nav-logo">
-    <img src="nik.gif" alt="Nikhil" fetchpriority="low" />
+    <img src="nik.gif" alt="Nikhil" />
   </a>
   <ul class="nav-right">
     <li><a href="#play">Play</a></li>
@@ -1655,7 +1655,7 @@
 
       <div class="about-photo-wrap rv d4">
         <div class="about-photo">
-          <img src="A8503087-2 (1).webp" alt="Photo of Nikhil" fetchpriority="low" />
+          <img src="A8503087-2 (1).webp" alt="Photo of Nikhil" />
         </div>
       </div>
 
@@ -1680,10 +1680,10 @@
          the GSAP stagger explicitly set to 0 below, the 4 stickers' computed
          opacity read as 4 different values at the same scroll position. -->
     <div class="sticker-tray">
-      <img class="si si-1" src="gym.png"  alt="" fetchpriority="low">
-      <img class="si si-2" src="art.png"  alt="" fetchpriority="low">
-      <img class="si si-3" src="cook.png" alt="" fetchpriority="low">
-      <img class="si si-4" src="game.png" alt="" fetchpriority="low">
+      <img class="si si-1" src="gym.png"  alt="">
+      <img class="si si-2" src="art.png"  alt="">
+      <img class="si si-3" src="cook.png" alt="">
+      <img class="si si-4" src="game.png" alt="">
     </div>
   </div>
 
@@ -2057,7 +2057,6 @@ PROJECTS.forEach((p, i) => {
   thumb.className = 'proj-thumb';
   if (p.img) {
     const img = document.createElement('img');
-    img.fetchPriority = 'low';
     img.src = p.img;
     img.alt = p.name;
     thumb.appendChild(img);
@@ -2205,13 +2204,6 @@ const ELEMENT_IDS = [21,22,23,24,25,26,28,29,30,31,32,33,40,51,52,53,54,58,59,61
 function preload() {
   const promises = ELEMENT_IDS.map(id => {
     const img = new Image();
-    /* Low priority, not deferred: these 20 requests firing at once were
-       eating bandwidth that front.png (the LCP image) needed under
-       throttled mobile - fetchPriority only changes how the browser
-       arbitrates *concurrent* requests, not when this starts or what the
-       page looks like once everything's in, so the brush-stroke seeding
-       below still happens exactly as before. */
-    img.fetchPriority = 'low';
     img.src = `paintstrokes/PNG/Element%20${id}.png`;
     elements.push(img);
     return new Promise(res => { img.onload = res; img.onerror = res; });
