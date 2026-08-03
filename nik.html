@@ -621,6 +621,14 @@
       transform: translateY(50px);
       flex-shrink: 0;
     }
+    /* Reserve each sticker's real ratio - Lighthouse flagged img.si as an
+       "Unsized image element" (a real, separate CLS contributor from the
+       #proj-grid issue below - each has its own ratio so .si's shared width
+       alone can't reserve height). */
+    .si-1 { aspect-ratio: 673 / 772; }
+    .si-2 { aspect-ratio: 701 / 717; }
+    .si-3 { aspect-ratio: 578 / 715; }
+    .si-4 { aspect-ratio: 763 / 690; }
     /* About content (initially invisible - GSAP reveals) */
     .about-inner {
       /* Trimmed from 8rem/4.5rem after adding .about-header below pushed total
@@ -1528,7 +1536,7 @@
   <div class="hero-inner">
     <div class="hero-card rv" id="hero-flip">
       <div class="card-inner">
-        <div class="card-front"><img src="front.png" alt="Nikhil Arora" /></div>
+        <div class="card-front"><img src="front.png" alt="Nikhil Arora" fetchpriority="high" /></div>
         <div class="card-back">
           <img src="back.png" alt="Contact card" />
           <div class="paint-stroke stroke-hello" aria-hidden="true">
@@ -1914,12 +1922,6 @@ Something with a little bounce.</p>
 </div>
 
 <!-- ── SCRIPTS ────────────────────────────────── -->
-<!-- Moved from <head>: identical load order/eagerness, just placed after all
-     visible markup so the browser can parse+paint the page before fetching
-     these. Nothing above this point references pdfjsLib/gsap/ScrollTrigger. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous"></script>
 <script>
   /* Custom cursor */
   const dot = document.getElementById('cur-dot');
@@ -1980,10 +1982,13 @@ Something with a little bounce.</p>
 </script>
 
 <script>
-/* ── PROJECT CARDS + PDF VIEWER ───────────────── */
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
+/* ── PROJECT CARDS (pure DOM, no pdfjsLib/gsap dependency) ───────────────
+   Kept ahead of the pdf.js/gsap/ScrollTrigger <script> tags below on
+   purpose: #proj-grid is empty in the static HTML, and when this code was
+   gated behind those loading first, the grid rendered empty then popped in
+   once they finished - Lighthouse's #1 CLS culprit (0.800 of 0.878 on
+   mobile, 0.415 of 0.444 desktop). The pdfjsLib-dependent thumbnail
+   render + PDF viewer are in the later script, after pdf.js has loaded. */
 const PROJECTS = [
   { num:'01', name:'Studiobee', meta:'Agency Website · 2026',  tag:'UI / UX · Front-end', img:'studiobee/1.png', url:'studiobee.html' },
   { num:'02', name:'BeeNext',   meta:'Brand Identity · 2025',  tag:'Brand Identity',      pdf:'beenext case study.pdf',   url:'beenext.html'   },
@@ -2079,6 +2084,18 @@ PROJECTS.forEach((p, i) => {
 
 /* Scroll-reveal new cards */
 document.querySelectorAll('#proj-grid .rv').forEach(el => obs.observe(el));
+</script>
+
+<!-- Moved from <head>: identical load order/eagerness, just placed after all
+     visible markup (and after the pure-DOM project-card script above) so the
+     browser can parse+paint+build the project grid before fetching these. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous"></script>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 /* PDF cache - shared by thumbnail renderer and viewer */
 const pdfCache = {};
