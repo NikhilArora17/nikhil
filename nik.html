@@ -264,7 +264,10 @@
       -webkit-backface-visibility: hidden;
     }
     .card-front { display: block; width: 100%; }
-    .card-front img { display: block; width: 100%; height: auto; }
+    /* aspect-ratio matches front.png's native 2308x1504 so the card reserves
+       its final height before the image decodes - was the #1 CLS culprit
+       (0.415 of 0.461 total), collapsing to 0 height and popping in late. */
+    .card-front img { display: block; width: 100%; height: auto; aspect-ratio: 2308 / 1504; }
     .card-back {
       position: absolute;
       inset: 0;
