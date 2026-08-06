@@ -2894,13 +2894,25 @@ window.__heroCanvasResume = () => {
     var letters = [];
 
     function processChars(text, parent) {
+      var wordEl = null; /* groups a word's letter-spans so the line only
+                             breaks between words, never between letters -
+                             adjacent inline-block spans have an implicit
+                             break opportunity between them otherwise */
+
       for (var i = 0; i < text.length; i++) {
         var ch = text[i];
 
         /* Spaces: plain text node - never wrap them or word-spacing collapses */
         if (ch === ' ') {
           parent.appendChild(document.createTextNode(' '));
+          wordEl = null;
           continue;
+        }
+
+        if (!wordEl) {
+          wordEl = document.createElement('span');
+          wordEl.style.cssText = 'display:inline-block;white-space:nowrap;vertical-align:top;';
+          parent.appendChild(wordEl);
         }
 
         var w = document.createElement('span');
@@ -2919,7 +2931,7 @@ window.__heroCanvasResume = () => {
 
         w.appendChild(p);
         w.appendChild(s);
-        parent.appendChild(w);
+        wordEl.appendChild(w);
         letters.push({ p: p, s: s });
       }
     }
