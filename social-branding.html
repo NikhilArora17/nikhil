@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Media &amp; Branding &middot; Nikhil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --forest: #0A3323;
+      --olive:  #849A59;
+      --lime:   #DAD977;
+      --sage:   #A8AD9B;
+      --mint:   #B8D4B0;
+      --ease-out: cubic-bezier(.22,1,.36,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Sora', sans-serif;
+      background: var(--forest);
+      color: var(--mint);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img, video { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ─────────────────────────────── */
+    #cs-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 5vw;
+      background: rgba(10,51,35,.86);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(132,154,89,.16);
+    }
+    .nav-back {
+      font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      display: flex; align-items: center; gap: .5rem;
+      transition: opacity .25s;
+    }
+    .nav-back:hover { opacity: .6; }
+    .nav-back:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+    .nav-tag {
+      font-size: .62rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    /* ── HERO ────────────────────────────── */
+    .hero {
+      position: relative;
+      max-width: 75rem; margin: 0 auto;
+      padding: 9rem 5vw 4rem;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -12%; right: -8%;
+      width: 34rem; height: 34rem;
+      background: radial-gradient(circle, rgba(218,217,119,.14), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-label {
+      font-size: .62rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--olive); margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.3rem, 5.5vw, 4.75rem); font-weight: 700; letter-spacing: -.03em;
+      line-height: 1.04; color: var(--mint); margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: normal; color: var(--lime); }
+    .hero p {
+      font-size: clamp(.95rem, 1.2vw, 1.1rem); line-height: 1.7; color: var(--sage);
+      max-width: 42rem;
+    }
+
+    /* ── FEATURED REEL ───────────────────── */
+    .reel { max-width: 75rem; margin: 0 auto; padding: 0 5vw 5rem; }
+    .reel-frame {
+      position: relative; border-radius: 1rem; overflow: hidden;
+      border: 1px solid rgba(132,154,89,.2);
+      background: #000;
+      box-shadow:
+        0 1px 2px rgba(0,0,0,.2),
+        0 8px 24px rgba(0,0,0,.25),
+        0 24px 64px rgba(0,0,0,.3);
+    }
+    .reel-frame video { width: 100%; aspect-ratio: 16/9; object-fit: contain; background: #000; }
+    .reel-caption {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 1.1rem .25rem 0; gap: 1rem; flex-wrap: wrap;
+    }
+    .reel-caption h2 { font-size: 1.05rem; font-weight: 600; color: var(--mint); }
+    .reel-caption span {
+      font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    /* ── GALLERY ─────────────────────────── */
+    .gallery-head { max-width: 75rem; margin: 0 auto; padding: 0 5vw 2rem; }
+    .gallery-head h2 {
+      font-size: clamp(1.3rem, 2.2vw, 1.8rem); font-weight: 700; letter-spacing: -.02em; color: var(--mint);
+    }
+    .gallery {
+      max-width: 75rem; margin: 0 auto; padding: 0 5vw 7rem;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+    }
+    .g-card {
+      border-radius: .85rem; overflow: hidden;
+      border: 1px solid rgba(132,154,89,.16);
+      background: rgba(255,255,255,.02);
+      transition: border-color .35s, transform .35s var(--ease-out), box-shadow .35s;
+    }
+    .g-card:hover {
+      border-color: rgba(218,217,119,.3);
+      transform: translateY(-4px);
+      box-shadow: 0 1rem 2.5rem rgba(0,0,0,.28);
+    }
+    .g-card video { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: #000; }
+    .g-info { padding: 1.1rem 1.3rem; border-top: 1px solid rgba(132,154,89,.1); }
+    .g-title { font-size: .95rem; font-weight: 600; color: var(--mint); margin-bottom: .3rem; }
+    .g-meta {
+      font-size: .65rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    /* ── FOOTER CTA ──────────────────────── */
+    .cs-footer { max-width: 75rem; margin: 0 auto; padding: 0 5vw 7rem; text-align: center; }
+    .cs-footer p { color: var(--sage); font-size: .9rem; margin-bottom: 1.25rem; }
+    .btn-back {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: var(--lime); color: var(--forest);
+      font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: .85rem 1.75rem; border-radius: 100px;
+      transition: transform .25s var(--ease-out), box-shadow .25s;
+    }
+    .btn-back:hover { transform: translateY(-2px); box-shadow: 0 .5rem 1.5rem rgba(218,217,119,.25); }
+    .btn-back:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
+    .btn-back:active { transform: translateY(0); }
+
+    @media (max-width: 700px) {
+      .gallery { grid-template-columns: 1fr; }
+      .hero { padding-top: 7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="cs-nav">
+  <a href="nik.html" class="nav-back">&larr; Portfolio</a>
+  <span class="nav-tag">Motion &amp; Branding</span>
+</nav>
+
+<section class="hero">
+  <p class="hero-label">Selected Work</p>
+  <h1>Social media &amp; <em>branding.</em></h1>
+  <p>A running reel of motion graphics, logo animations and branding work made for social &mdash; built for the scroll-stopping second, not the sit-down watch.</p>
+</section>
+
+<section class="reel">
+  <div class="reel-frame">
+    <video controls preload="metadata" playsinline src="branding and videos/Reel 2.mp4"></video>
+  </div>
+  <div class="reel-caption">
+    <h2>Motion Reel</h2>
+    <span>Selected Cuts</span>
+  </div>
+</section>
+
+<section class="gallery-head">
+  <h2>Individual pieces.</h2>
+</section>
+
+<section class="gallery">
+  <div class="g-card">
+    <video controls preload="metadata" playsinline src="branding and videos/15 year logo animation final.mp4"></video>
+    <div class="g-info">
+      <div class="g-title">15-Year Anniversary &mdash; Logo Animation</div>
+      <div class="g-meta">Motion Graphics</div>
+    </div>
+  </div>
+  <div class="g-card">
+    <video controls preload="metadata" playsinline src="branding and videos/karray india final part 3.mp4"></video>
+    <div class="g-info">
+      <div class="g-title">Karray India &mdash; Brand Film</div>
+      <div class="g-meta">Motion Graphics</div>
+    </div>
+  </div>
+  <div class="g-card">
+    <video controls preload="metadata" playsinline src="branding and videos/logo animation.mp4"></video>
+    <div class="g-info">
+      <div class="g-title">Logo Animation</div>
+      <div class="g-meta">Motion Graphics</div>
+    </div>
+  </div>
+  <div class="g-card">
+    <video controls preload="metadata" playsinline src="branding and videos/mcbee christmas post_2.mp4"></video>
+    <div class="g-info">
+      <div class="g-title">McBee &mdash; Christmas Social Post</div>
+      <div class="g-meta">Social &middot; Branding</div>
+    </div>
+  </div>
+  <div class="g-card">
+    <video controls preload="metadata" playsinline src="branding and videos/mcbee new year final.mp4"></video>
+    <div class="g-info">
+      <div class="g-title">McBee &mdash; New Year Social Post</div>
+      <div class="g-meta">Social &middot; Branding</div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-footer">
+  <p>Want to see more of the branding work behind these?</p>
+  <a href="nik.html#contact" class="btn-back">Get in touch &rarr;</a>
+</section>
+
+</body>
+</html>
