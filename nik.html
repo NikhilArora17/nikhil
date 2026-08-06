@@ -235,6 +235,30 @@
       z-index: 1;
     }
 
+    /* Pre-reserves the hero pin's scroll distance (the scrollTrigger 'end', 700 *
+       K() px on desktop - a few hundred lines down) before ScrollTrigger ever
+       runs. pdf.js/gsap/ScrollTrigger load from a CDN at the very bottom of the
+       page on purpose (an earlier, separate CLS fix - see the comment above
+       their <script> tags), so by the time they've downloaded and the pin
+       actually gets created, the page has already painted without that
+       reserved space - everything after #home then jumps down by it in one
+       frame (this was Lighthouse's #1 flagged layout-shift culprit,
+       <section id="work">, CLS ~0.36-0.8).
+       Deliberately a separate element from #home, not a margin on #home itself:
+       GSAP snapshots #home's original inline styles at ScrollTrigger.create()
+       time to restore them later (on unpin), so anything added directly to
+       #home gets preserved and re-applied to its pin-spacer on top of the
+       spacer's own reservation - tried that first, it double-counts. This
+       div is untouched by GSAP, so collapsing it (see the scrollTrigger's
+       onRefreshInit) right as the real pin-spacer appears is a clean swap,
+       not a stack.
+       43.75rem === 700px at the default 16px root font-size, and (like K() in
+       JS) scales with it automatically via rem, so this stays in sync with the
+       pin distance on the proportionally-scaled wide/4K layouts too. */
+    #hero-pin-space {
+      height: 43.75rem;
+    }
+
     /* Hint only shows on hero - hidden via JS on leave */
     #hint { z-index: 5; }
 
@@ -1328,6 +1352,10 @@
       .about-photo { width: min(420px, 85vw); margin: 0 auto; }
     }
     @media (max-width:660px) {
+      /* Mobile's hero pin scroll distance is a flat 1100px (not K()-scaled -
+         see the isMobile branch of the same scrollTrigger), so the reserved
+         space must match that instead of the desktop 43.75rem above. */
+      #hero-pin-space { height: 1100px; }
       section { padding:5rem 6vw; }
       nav {
         padding: 1rem 6vw;
@@ -1599,6 +1627,11 @@
 
 <!-- Scroll spacer - drives the GSAP canvas exit animation -->
 <section id="home"></section>
+
+<!-- Pre-reserves the hero pin's scroll distance before ScrollTrigger creates
+     its own pin-spacer, to avoid a CLS jump - see the #hero-pin-space CSS
+     comment and the scrollTrigger's onRefreshInit for the full explanation. -->
+<div id="hero-pin-space"></div>
 
 <div class="wave-div" data-from="#A8AD98" data-to="#0A3323"></div>
 
@@ -3153,6 +3186,14 @@ document.addEventListener('keydown', e => {
         pin: true,
         scrub: isMobile ? 0.25 : 0.4,
         invalidateOnRefresh: true,
+        // #hero-pin-space pre-reserves this same distance so nothing shifts
+        // when the pin-spacer first appears (see its CSS comment). Collapse it
+        // right before ScrollTrigger measures/creates the spacer so the two
+        // reservations don't stack.
+        onRefreshInit: function() {
+          var ph = document.getElementById('hero-pin-space');
+          if (ph) ph.style.height = '0';
+        },
         onLeave: function() {
           gsap.set(['#c', '#sc', '#hero-content'], { visibility: 'hidden' });
           if (hint) hint.style.display = 'none';
