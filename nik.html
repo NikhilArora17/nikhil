@@ -1154,9 +1154,18 @@
          on phones) - origin must match the JS-sized scaler wrapper's top-left */
       transform-origin: top left;
     }
-    #gameArea-scaler { position: relative; }
+    /* Reserves the game's 640x360 box before bundle.js has loaded (see the
+       IntersectionObserver load trigger near the end of the file), so the section
+       doesn't jump/reflow once the canvas pops in. */
+    #gameArea-scaler {
+      position: relative;
+      width: 40rem; max-width: 100%;
+      aspect-ratio: 640 / 360;
+      background: #06100D;
+      border-radius: 4px;
+    }
     #gameArea canvas { font-family: 'GameFont'; }
-    /* div keeps the `hidden` attribute until Play is clicked - without this,
+    /* div keeps the `hidden` attribute until the game loads - without this,
        the ID rule above (higher specificity than the [hidden] UA rule) forced it
        to render at full size, doubling the section's height with an empty canvas */
     #gameArea[hidden] { display: none; }
@@ -1215,47 +1224,9 @@
       .play-cols { flex-direction: column; gap: 2.5rem; align-items: stretch; }
     }
 
-    /* ─── PLAY COVER SCREEN ─────────────────────── */
-    #play-cover {
-      position: relative;
-      width: 40rem; max-width: 100%;
-      aspect-ratio: 640 / 360;
-      background: #06100D;
-      border: 1px solid rgba(132,154,89,.2);
-      border-radius: 4px;
-      box-shadow: 0 0 3.75rem rgba(10,51,35,.5);
-      overflow: hidden;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 1.5rem;
-      cursor: pointer;
-      transition: border-color .35s;
-    }
-    #play-cover:hover { border-color: rgba(218,217,119,.4); }
-    .pc-hud {
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 3.125rem; background: #DAD977;
-      border-bottom: .125rem solid #0A3323;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 1.4rem;
-    }
-    .pc-hud-lives { font-family:'Sora','Sora Fallback',sans-serif; font-size:.85rem; font-weight:700; letter-spacing:.08em; color:#0A3323; }
-    .pc-hud-score { font-family:'Sora','Sora Fallback',sans-serif; font-size:1.4rem; font-weight:700; color:#0A3323; }
-    .pc-content {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center;
-    }
-    .pc-label {
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:.6rem; font-weight:700;
-      letter-spacing:.22em; text-transform:uppercase; color:#DAD977;
-    }
-    .pc-title {
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:clamp(2.5rem,6vw,4.5rem);
-      font-weight:700; letter-spacing:-.03em; color:#0A3323; line-height:1; margin:0;
-    }
     /* Persistent control legend - sits below the game area itself (a sibling of
-       #play-cover / #gameArea-scaler inside #play-game-wrap), so it never disappears
-       once Play is clicked, unlike the old in-cover instruction line it replaces. */
+       #gameArea-scaler inside #play-game-wrap), so it's visible before the game
+       loads and stays through its own menu/level-select/gameplay screens. */
     .play-keys {
       display: flex; align-items: center; justify-content: center;
       gap: 1.6rem;
@@ -1274,19 +1245,6 @@
     .key-label {
       font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem; font-weight:600;
       letter-spacing:.14em; text-transform:uppercase; color: var(--sage);
-    }
-    #play-launch-btn {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: #0A3323; color: #DAD977;
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:.85rem; font-weight:700;
-      letter-spacing:.06em; padding:.85rem 2.5rem; border-radius:100px;
-      border: none; cursor: pointer; margin-top: .5rem;
-      transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s;
-    }
-    #play-launch-btn:hover { transform:translateY(-3px); box-shadow:0 .75rem 2rem rgba(218,217,119,.25); }
-    .pc-hint {
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:.58rem;
-      color:#DAD977; letter-spacing:.1em; text-transform:uppercase;
     }
 
     /* ─── PAINTERLY CANVAS ──────────────────────── */
@@ -1866,56 +1824,10 @@
 
   <div id="play-game-wrap">
 
-    <!-- Static splash - shown until user clicks Play -->
-    <div id="play-cover">
-
-      <!-- Sparkle field -->
-      <svg style="position:absolute;inset:0;pointer-events:none;" viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="34"  cy="20"  r="1.2" fill="white" opacity=".5"/>
-        <circle cx="102" cy="14"  r=".8"  fill="white" opacity=".3"/>
-        <circle cx="172" cy="34"  r="1"   fill="white" opacity=".4"/>
-        <circle cx="248" cy="10"  r=".7"  fill="white" opacity=".3"/>
-        <circle cx="318" cy="26"  r="1.3" fill="white" opacity=".45"/>
-        <circle cx="382" cy="8"   r=".9"  fill="white" opacity=".35"/>
-        <circle cx="452" cy="22"  r=".7"  fill="white" opacity=".3"/>
-        <circle cx="514" cy="12"  r="1.1" fill="white" opacity=".45"/>
-        <circle cx="588" cy="30"  r=".8"  fill="white" opacity=".3"/>
-        <circle cx="60"  cy="70"  r=".9"  fill="white" opacity=".35"/>
-        <circle cx="134" cy="58"  r="1.2" fill="white" opacity=".45"/>
-        <circle cx="276" cy="76"  r=".7"  fill="white" opacity=".3"/>
-        <circle cx="408" cy="60"  r="1"   fill="white" opacity=".4"/>
-        <circle cx="478" cy="72"  r=".8"  fill="white" opacity=".3"/>
-        <circle cx="558" cy="66"  r="1.1" fill="white" opacity=".45"/>
-        <!-- Brighter accent sparkle -->
-        <circle cx="350" cy="110" r="1.8" fill="#DAD977" opacity=".16"/>
-        <circle cx="160" cy="190" r="1.5" fill="#DAD977" opacity=".13"/>
-        <circle cx="520" cy="170" r="1.6" fill="#DAD977" opacity=".15"/>
-      </svg>
-
-      <!-- Real in-game screenshot (level 2, the throne enemy) as backdrop, with a black layer on top for legibility -->
-      <img src="bounce-enemy.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;">
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,.6);pointer-events:none;"></div>
-
-      <!-- Depth glow behind the title -->
-      <div style="position:absolute;left:50%;top:54%;width:520px;height:320px;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center, rgba(218,217,119,.16), rgba(218,217,119,0) 70%);pointer-events:none;"></div>
-
-      <!-- HUD preview bar -->
-      <div class="pc-hud">
-        <span class="pc-hud-lives">♥ ♥ ♥</span>
-        <span class="pc-hud-score">0</span>
-      </div>
-
-      <!-- Centre content -->
-      <div class="pc-content">
-        <div class="pc-label">Nokia Classic - Rebuilt</div>
-        <h3 class="pc-title">Bounce</h3>
-        <button id="play-launch-btn">Play →</button>
-        <div class="pc-hint">Loads on demand</div>
-      </div>
-
-    </div>
-
-    <!-- Actual game - Bounce builds its own canvases inside this container when injected.
+    <!-- The game itself - Bounce builds its own canvases inside this container, including
+         its own menu/logo/play screen, so there's no separate splash cover to click through;
+         bundle.js loads (see the IntersectionObserver near the end of the file) once this
+         section is about to scroll into view, and that menu screen is what appears.
          The game's canvases are a fixed 640x360 pixel coordinate space (real Nokia engine,
          not reflowable) - on mobile #gameArea-scaler is sized to the scaled footprint in JS
          and #gameArea itself gets a matching CSS transform:scale so everything inside
@@ -2862,12 +2774,13 @@ window.__heroCanvasResume = () => {
 </script>
 
 
-<!-- ── BOUNCE - load on demand ────────────────── -->
+<!-- ── BOUNCE - load once the section is about to scroll into view ── -->
 <script>
 (function () {
   var scaler = document.getElementById('gameArea-scaler');
   var gameArea = document.getElementById('gameArea');
   var touchControls = document.getElementById('touch-controls');
+  var playSection = document.getElementById('play');
 
   // The game's canvases (main canvas, HUD bar, level-select, end screen) all share
   // one fixed 640x360 pixel coordinate space - scale #gameArea as a unit to fit
@@ -2883,7 +2796,7 @@ window.__heroCanvasResume = () => {
     var maxW = (cols || scaler.parentElement).clientWidth;
     // Target width tracks the scaled root em (40rem = 640px at base 16), so on
     // proportionally-scaled wide desktops the game grows with the layout just
-    // like the CSS-sized #play-cover it replaces; phones still shrink to fit.
+    // like the CSS-sized #gameArea-scaler placeholder it fills; phones still shrink to fit.
     var rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
     var scale = Math.min(40 * rootPx, maxW) / 640;
     gameArea.style.transform = 'scale(' + scale + ')';
@@ -2915,8 +2828,7 @@ window.__heroCanvasResume = () => {
     btn.addEventListener('mouseleave', fire('keyup'));
   }
 
-  document.getElementById('play-launch-btn').addEventListener('click', function () {
-    document.getElementById('play-cover').style.display = 'none';
+  function loadGame() {
     gameArea.removeAttribute('hidden');
     fitGameArea();
     if (touchControls) {
@@ -2929,7 +2841,23 @@ window.__heroCanvasResume = () => {
     var s = document.createElement('script');
     s.src = 'bounce/js/bundle.js';
     document.body.appendChild(s);
-  });
+  }
+
+  // The game draws its own menu/logo/play screen on its canvas - that screen IS
+  // the "before you play" splash now, so there's no separate HTML cover to click
+  // through. Load it a little before the section actually enters view (rather
+  // than eagerly on page load) to keep the initial page weight down.
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        observer.disconnect();
+        loadGame();
+      }
+    }, { rootMargin: '600px 0px' });
+    observer.observe(playSection);
+  } else {
+    loadGame();
+  }
 })();
 </script>
 
