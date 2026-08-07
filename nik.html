@@ -960,14 +960,23 @@
       padding:2.4rem 5vw 1.8rem;
       display:flex; flex-direction:column; gap:1.6rem;
     }
+    .ft-names {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      border-bottom:1px solid rgba(230,241,226,.15);
+      padding-bottom:1.6rem;
+    }
+    .ft-name-l, .ft-name-r {
+      font-family:'Sora','Sora Fallback',sans-serif; font-weight:700;
+      font-size: clamp(1.8rem, 4vw, 3.5rem); letter-spacing:-.02em;
+      color: var(--mint);
+    }
     .ft-email {
       font-family:'Lora',serif; font-style:italic;
-      font-size:clamp(1.4rem,2.6vw,2rem); color:var(--mint);
-      border-bottom:.125rem solid rgba(230,241,226,.35);
-      padding-bottom:.3rem; display:inline-block;
-      transition: color .3s, border-color .3s;
+      font-size:clamp(.85rem,1.2vw,1.1rem); color:var(--mint);
+      display:inline-block;
+      transition: color .3s;
     }
-    .ft-email:hover { color:var(--lime); border-color:var(--lime); }
+    .ft-email:hover { color:var(--lime); }
     .ft-socials { display:flex; gap:1.5rem; flex-wrap:wrap; }
     .ft-soc {
       font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem; font-weight:700;
@@ -1877,6 +1886,10 @@ Something with a little bounce.</p>
     <div class="ft-scrim"></div>
   </div>
   <div class="ft-content" id="contact">
+    <div class="ft-names">
+      <span class="ft-name-l">NIKHIL</span>
+      <span class="ft-name-r">ARORA</span>
+    </div>
     <div class="ft-bottom">
       <a href="mailto:nikhilmail2009@gmail.com" class="ft-email">
         nikhilmail2009@gmail.com
