@@ -1184,8 +1184,10 @@
     }
     #play-game-wrap {
       display: flex;
+      flex-direction: column;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center; /* centers the shorter keys/touch-controls row under the 640px game */
+      gap: 1.1rem;
       flex: 0 0 auto;
     }
     /* Mobile-only touch controls, hidden by default on every viewport - only the
@@ -1251,9 +1253,27 @@
       font-family:'Sora','Sora Fallback',sans-serif; font-size:clamp(2.5rem,6vw,4.5rem);
       font-weight:700; letter-spacing:-.03em; color:#0A3323; line-height:1; margin:0;
     }
-    .pc-sub {
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:clamp(.7rem,.9vw,.88rem);
-      color:#DAD977; letter-spacing:.1em; text-transform:uppercase;
+    /* Persistent control legend - sits below the game area itself (a sibling of
+       #play-cover / #gameArea-scaler inside #play-game-wrap), so it never disappears
+       once Play is clicked, unlike the old in-cover instruction line it replaces. */
+    .play-keys {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.6rem;
+    }
+    .key-group { display: flex; align-items: center; gap: .55rem; }
+    .keycap {
+      width: 1.9rem; height: 1.9rem;
+      display: flex; align-items: center; justify-content: center;
+      background: #0d3a28; /* one step lighter than --forest, for depth against the section bg */
+      border: 1px solid rgba(218,217,119,.28);
+      border-radius: .375rem;
+      color: var(--lime);
+      /* bottom-edge ridge + soft drop shadow read as a physical, slightly-raised key */
+      box-shadow: 0 .16rem 0 rgba(0,0,0,.4), 0 .3rem .6rem rgba(0,0,0,.22);
+    }
+    .key-label {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem; font-weight:600;
+      letter-spacing:.14em; text-transform:uppercase; color: var(--sage);
     }
     #play-launch-btn {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -1458,14 +1478,16 @@
       /* Bounce: the game canvas is a fixed 640x360 pixel coordinate space (real Nokia
          engine internals, not reflowable) - #gameArea gets a JS-computed transform:scale
          so it (and its HUD/level-select/end-screen overlays, all in the same coordinate
-         space) shrink together to fit a phone's width instead of overflowing it. */
-      #play-game-wrap { flex-direction: column; align-items: center; gap: 1.1rem; }
-      /* max-width:100% (set for desktop) would otherwise measure "100%" against this
+         space) shrink together to fit a phone's width instead of overflowing it.
+         max-width:100% (set for desktop) would otherwise measure "100%" against this
          wrapper's own JS-sized (already-scaled-down) width, capping #gameArea's layout
          box a second time before transform:scale even runs - the wrapper below already
          reflects the true scaled footprint, so #gameArea itself must stay at its native
          640px layout size for scale() to be the only thing shrinking it. */
       #gameArea { max-width: none; }
+      /* The keyboard-key legend is desktop-only wording ("keys") - phones get the
+         touch buttons below instead, so hide the redundant text row here. */
+      .play-keys { display: none; }
       #touch-controls.tc-active {
         display: flex;
         align-items: center;
@@ -1643,7 +1665,6 @@
 
   <div class="work-header parallax-el" data-parallax="0.15">
     <div>
-      <div class="sec-label rv">Selected Work</div>
       <h2 class="sec-heading rv d1">Projects that made a <em>mark.</em></h2>
     </div>
     <a href="#contact" class="work-all rv d2">
@@ -1669,7 +1690,6 @@
   <!-- ① Actual about content - visible as soon as the section is scrolled into view -->
   <div class="about-inner">
     <div class="about-header rv">
-      <div class="sec-label">About</div>
       <h2 class="sec-heading rv d1">A bit about <em>me.</em></h2>
     </div>
     <div class="about-cols">
@@ -1727,7 +1747,6 @@
 <div class="skills-inner">
 
   <div class="skills-header rv">
-    <div class="sec-label">Software I Know</div>
   </div>
 
   <div class="marquee-ribbon">
@@ -1840,7 +1859,6 @@
 <div class="play-inner">
 
   <div class="rv">
-    <div class="sec-label">Take a Break</div>
     <h2 class="sec-heading rv d1">Bounce <em>lives.</em></h2>
   </div>
 
@@ -1891,7 +1909,6 @@
       <div class="pc-content">
         <div class="pc-label">Nokia Classic - Rebuilt</div>
         <h3 class="pc-title">Bounce</h3>
-        <p class="pc-sub">← → move &nbsp;·&nbsp; ↑ jump</p>
         <button id="play-launch-btn">Play →</button>
         <div class="pc-hint">Loads on demand</div>
       </div>
@@ -1918,6 +1935,20 @@
       <button type="button" id="tc-right" class="tc-btn" aria-label="Move right">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
+    </div>
+
+    <!-- Desktop-only key legend - a sibling of the cover/game canvas (not inside either),
+         so it stays put across the splash, level-select, and gameplay states. -->
+    <div class="play-keys" aria-hidden="true">
+      <span class="key-group">
+        <span class="keycap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="keycap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="key-label">Move</span>
+      </span>
+      <span class="key-group">
+        <span class="keycap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 15l7-7 7 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="key-label">Jump</span>
+      </span>
     </div>
 
   </div>
@@ -2174,7 +2205,7 @@ const IS_MOBILE = window.matchMedia('(max-width: 660px)').matches;
 const canvas = document.getElementById('c');
 const ctx    = canvas.getContext('2d');
 const offC   = document.createElement('canvas');
-const offX   = offC.getContext('2d');
+const offX   = offC.getContext('2d', { willReadFrequently: true });
 
 let W = 0, H = 0;
 
@@ -2629,13 +2660,16 @@ window.addEventListener('scroll', () => {
   /* opacity fade removed - canvas exits via GSAP scale/translate only */
 }, { passive: true });
 
-function sampleLum(data, r) {
-  const sx = Math.max(0, Math.floor(r.left)),  sy = Math.max(0, Math.floor(r.top));
-  const ex = Math.min(W - 1, Math.ceil(r.right)), ey = Math.min(H - 1, Math.ceil(r.bottom));
+// data/regionW/regionH are a getImageData() readback cropped to just the
+// union of text/button rects (see updateTextColor) - r is still in full-canvas
+// viewport coords, so it's offset by (ox, oy) before indexing into that crop.
+function sampleLum(data, r, ox, oy, regionW, regionH) {
+  const sx = Math.max(0, Math.floor(r.left - ox)),  sy = Math.max(0, Math.floor(r.top - oy));
+  const ex = Math.min(regionW - 1, Math.ceil(r.right - ox)), ey = Math.min(regionH - 1, Math.ceil(r.bottom - oy));
   if (sx >= ex || sy >= ey) return null;
   let total = 0, count = 0;
   for (let py = sy; py <= ey; py += 3) for (let px = sx; px <= ex; px += 3) {
-    const i = (py * W + px) * 4;
+    const i = (py * regionW + px) * 4;
     total += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]; count++;
   }
   return count ? total / count : null;
@@ -2643,16 +2677,38 @@ function sampleLum(data, r) {
 
 function updateTextColor() {
   if (wipeInProgress) return;
-  const data  = offX.getImageData(0, 0, W, H).data;
   const spans = [...document.querySelectorAll('#hero-content .ch')];
+  const btns  = [...document.querySelectorAll('#hero-content .hero-actions a')];
+  const all   = [...spans, ...btns];
+  if (!all.length) return;
+
+  // getImageData on the full W×H buffer (up to 3840x2160 on a 4K display) forced
+  // an 8-20ms synchronous GPU readback every 45 frames, stalling the RAF loop
+  // periodically ("lagging at times", worst on high-res monitors). Only the
+  // small union of text/button rects is ever sampled, so crop the readback to
+  // just that region instead of the whole canvas.
+  let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;
+  for (const el of all) {
+    const r = el.getBoundingClientRect();
+    if (r.width <= 0 || r.height <= 0) continue;
+    left = Math.min(left, r.left); top = Math.min(top, r.top);
+    right = Math.max(right, r.right); bottom = Math.max(bottom, r.bottom);
+  }
+  if (!isFinite(left)) return;
+
+  const ox = Math.max(0, Math.floor(left)), oy = Math.max(0, Math.floor(top));
+  const regionW = Math.min(W, Math.ceil(right))  - ox;
+  const regionH = Math.min(H, Math.ceil(bottom)) - oy;
+  if (regionW <= 0 || regionH <= 0) return;
+  const data = offX.getImageData(ox, oy, regionW, regionH).data;
+
   spans.forEach(span => {
-    const lum = sampleLum(data, span.getBoundingClientRect());
+    const lum = sampleLum(data, span.getBoundingClientRect(), ox, oy, regionW, regionH);
     if (lum === null) return;
     if (lum < 130) span.classList.add('light'); else if (lum > 158) span.classList.remove('light');
   });
-  const btns = [...document.querySelectorAll('#hero-content .hero-actions a')];
   btns.forEach(btn => {
-    const lum = sampleLum(data, btn.getBoundingClientRect());
+    const lum = sampleLum(data, btn.getBoundingClientRect(), ox, oy, regionW, regionH);
     if (lum === null) return;
     if (lum < 130) btn.classList.add('btn-light'); else if (lum > 158) btn.classList.remove('btn-light');
   });

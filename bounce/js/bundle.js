@@ -1060,8 +1060,7 @@ class Entity {
 		this.gameData = this.readGameData();
 		this.bg = new Image();
 		this.bg.src = 'bounce/assets/bg/level-select.png';
-		this.startCanvas;
-		this.start();
+		this.levelSelect();
 	}
 
 	loop() {
@@ -1155,56 +1154,13 @@ class Entity {
 		this.level = new Level(this, n);
 	}
 
-	start() {
-		const self = this;
-		self.startCanvas = document.createElement('canvas');
-		const startCanvas = self.startCanvas;
-		const startCtx = startCanvas.getContext('2d');
-		const playBtn = new Image();
-		playBtn.src = 'bounce/assets/tile/menu_button_play.png';
-		const logo = new Image();
-		logo.src = 'bounce/assets/tile/menu_logo.png';
-		const ball = new Image();
-		ball.src = 'bounce/assets/tile/ball_small.png';
-		const container = document.getElementById(self.containerId);
-		container.appendChild(startCanvas);
-
-		startCanvas.width = 640;
-		startCanvas.height = 360;
-
-		setInterval(drawStartScreen, 500);
-		window.addEventListener('click', startScreenEventHandler);
-
-		function drawStartScreen() {
-			startCtx.drawImage(self.bg, 0, 0, 640, 360);
-			startCtx.drawImage(playBtn, 380, 220, 178, 50);
-			startCtx.drawImage(logo, 40, 115, 250, 112);
-			startCtx.drawImage(ball, 132, 254, 45, 45);		
-		}
-
-		function startScreenEventHandler(e) {
-			let rect = startCanvas.getBoundingClientRect();
-			// Scale click coords back into the canvas's native pixel space - on mobile
-			// #gameArea is shrunk via CSS transform:scale, so rect.width no longer
-			// equals startCanvas.width and a raw clientX-rect.left would read far too
-			// small to ever cross the hardcoded hit-box thresholds below.
-			let xVal = (e.clientX - rect.left) * (startCanvas.width / rect.width);
-			let yVal = (e.clientY - rect.top) * (startCanvas.height / rect.height);
-
-			if (xVal > 380 && xVal < 558 && yVal > 220 && yVal < 270) {
-				window.removeEventListener('click', startScreenEventHandler);
-				self.levelSelect();
-			}
-		}
-	}
-
 	levelSelect() {
 		this.currentLevel = 0;
 		const self = this;
 		const container = document.getElementById(self.containerId);
 		const levelCanvas = document.createElement('canvas');
 		const levelCtx = levelCanvas.getContext('2d');
-		self.startCanvas.insertAdjacentElement('afterend', levelCanvas);
+		container.appendChild(levelCanvas);
 		levelCanvas.classList.add('level-menu');
 		const levelUnlocked = new Image();
 		levelUnlocked.src = 'bounce/assets/tile/lselect_level.png';
@@ -1254,8 +1210,10 @@ class Entity {
 
 		function levelEventHandler(e) {
 			let rect = levelCanvas.getBoundingClientRect();
-			// Scale click coords back into the canvas's native pixel space (see the
-			// matching comment in startScreenEventHandler above).
+			// Scale click coords back into the canvas's native pixel space - on mobile
+			// #gameArea is shrunk via CSS transform:scale, so rect.width no longer
+			// equals the canvas's own width and a raw clientX-rect.left would read far
+			// too small to ever cross the hardcoded hit-box thresholds below.
 			let xVal = (e.clientX - rect.left) * (levelCanvas.width / rect.width);
 			let yVal = (e.clientY - rect.top) * (levelCanvas.height / rect.height);
 			if (xVal > 120 && xVal < 220 && yVal > 100 && yVal < 200) {
@@ -1264,7 +1222,6 @@ class Entity {
 						self.score = 0;
 						self.lives = 3;
 						container.removeChild(levelCanvas);
-						container.removeChild(self.startCanvas);
 						self.initGameObjects(0);
 						self.loop();
 						window.removeEventListener('click', levelEventHandler);
@@ -1277,7 +1234,6 @@ class Entity {
 						self.score = 0;
 						self.lives = 3;
 						container.removeChild(levelCanvas);
-						container.removeChild(self.startCanvas);
 						self.initGameObjects(1);
 						self.loop();
 						window.removeEventListener('click', levelEventHandler);
@@ -1290,7 +1246,6 @@ class Entity {
 						self.score = 0;
 						self.lives = 3;
 						container.removeChild(levelCanvas);
-						container.removeChild(self.startCanvas);
 						self.initGameObjects(2);
 						self.loop();
 						window.removeEventListener('click', levelEventHandler);
@@ -1303,7 +1258,6 @@ class Entity {
 						self.score = 0;
 						self.lives = 3;
 						container.removeChild(levelCanvas);
-						container.removeChild(self.startCanvas);
 						self.initGameObjects(3);
 						self.loop();
 						window.removeEventListener('click', levelEventHandler);
@@ -1397,8 +1351,10 @@ class Entity {
 
 		function endScreenEventHandler(e) {
 			let rect = endCanvas.getBoundingClientRect();
-			// Scale click coords back into the canvas's native pixel space (see the
-			// matching comment in startScreenEventHandler above).
+			// Scale click coords back into the canvas's native pixel space - on mobile
+			// #gameArea is shrunk via CSS transform:scale, so rect.width no longer
+			// equals the canvas's own width and a raw clientX-rect.left would read far
+			// too small to ever cross the hardcoded hit-box thresholds below.
 			let xVal = (e.clientX - rect.left) * (endCanvas.width / rect.width);
 			let yVal = (e.clientY - rect.top) * (endCanvas.height / rect.height);
 
@@ -1413,7 +1369,7 @@ class Entity {
 						container.removeChild(self.canvas.canvas);
 						container.removeChild(self.canvas.gbarCanvas);
 						window.removeEventListener('click', endScreenEventHandler);
-						self.start();
+						self.levelSelect();
 					} else {
 						self.nextLevel = true;
 						self.levelComplete = false;
@@ -1440,7 +1396,7 @@ class Entity {
 					container.removeChild(self.canvas.canvas);
 					container.removeChild(self.canvas.gbarCanvas);
 					window.removeEventListener('click', endScreenEventHandler);
-					self.start();
+					self.levelSelect();
 				}
 			} else {
 				if (xVal > 277 && xVal < 425 && yVal > 185 && yVal < 235) {
@@ -1457,7 +1413,7 @@ class Entity {
 					container.removeChild(self.canvas.canvas);
 					container.removeChild(self.canvas.gbarCanvas);
 					window.removeEventListener('click', endScreenEventHandler);
-					self.start();
+					self.levelSelect();
 				}
 			}
 		}

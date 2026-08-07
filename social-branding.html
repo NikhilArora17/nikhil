@@ -77,7 +77,7 @@
     }
 
     /* ── FEATURED REEL ───────────────────── */
-    .reel { max-width: 75rem; margin: 0 auto; padding: 0 5vw 5rem; }
+    .reel { max-width: 22rem; margin: 0 auto; padding: 0 5vw 5rem; }
     .reel-frame {
       position: relative; border-radius: 1rem; overflow: hidden;
       border: 1px solid rgba(132,154,89,.2);
@@ -87,7 +87,7 @@
         0 8px 24px rgba(0,0,0,.25),
         0 24px 64px rgba(0,0,0,.3);
     }
-    .reel-frame video { width: 100%; aspect-ratio: 16/9; object-fit: contain; background: #000; }
+    .reel-frame video { width: 100%; aspect-ratio: 9/16; object-fit: contain; background: #000; }
     .reel-caption {
       display: flex; justify-content: space-between; align-items: baseline;
       padding: 1.1rem .25rem 0; gap: 1rem; flex-wrap: wrap;
@@ -105,9 +105,16 @@
     }
     .gallery {
       max-width: 75rem; margin: 0 auto; padding: 0 5vw 7rem;
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+      display: flex; gap: 1.5rem;
+      overflow-x: auto; scroll-snap-type: x proximity;
+      scrollbar-color: rgba(132,154,89,.4) transparent; scrollbar-width: thin;
     }
+    .gallery::-webkit-scrollbar { height: 6px; }
+    .gallery::-webkit-scrollbar-track { background: transparent; }
+    .gallery::-webkit-scrollbar-thumb { background: rgba(132,154,89,.4); border-radius: 100px; }
     .g-card {
+      flex: 0 0 clamp(10.5rem, 18vw, 14rem);
+      scroll-snap-align: start;
       border-radius: .85rem; overflow: hidden;
       border: 1px solid rgba(132,154,89,.16);
       background: rgba(255,255,255,.02);
@@ -118,7 +125,7 @@
       transform: translateY(-4px);
       box-shadow: 0 1rem 2.5rem rgba(0,0,0,.28);
     }
-    .g-card video { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: #000; }
+    .g-card video { width: 100%; aspect-ratio: 9/16; object-fit: contain; background: #000; }
     .g-info { padding: 1.1rem 1.3rem; border-top: 1px solid rgba(132,154,89,.1); }
     .g-title { font-size: .95rem; font-weight: 600; color: var(--mint); margin-bottom: .3rem; }
     .g-meta {
@@ -141,7 +148,7 @@
     .btn-back:active { transform: translateY(0); }
 
     @media (max-width: 700px) {
-      .gallery { grid-template-columns: 1fr; }
+      .g-card { flex-basis: 8.5rem; }
       .hero { padding-top: 7rem; }
     }
   </style>
