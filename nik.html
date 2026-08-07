@@ -967,8 +967,17 @@
     }
     .ft-name-l, .ft-name-r {
       font-family:'Sora','Sora Fallback',sans-serif; font-weight:700;
-      font-size: clamp(1.8rem, 4vw, 3.5rem); letter-spacing:-.02em;
+      font-size: clamp(3.5rem, 11vw, 10rem); letter-spacing:-.03em; line-height:1;
       color: var(--mint);
+      opacity: 0;
+      transition: opacity .9s var(--ease-out), transform .9s var(--ease-out);
+    }
+    .ft-name-l { transform: translate(-60px, 0); }
+    .ft-name-r { transform: translate(60px, 0); }
+    .ft-names.ft-names-in .ft-name-l,
+    .ft-names.ft-names-in .ft-name-r {
+      opacity: 1;
+      transform: translate(0, 0);
     }
     .ft-email {
       font-family:'Lora',serif; font-style:italic;
@@ -1346,6 +1355,8 @@
       .pr-tag { display:none; }
       .ft-visual { min-height:400px; }
       .ft-content { gap:1.2rem; }
+      .ft-names { flex-direction:column; align-items:flex-start; gap:.2rem; }
+      .ft-name-r { align-self:flex-end; }
       .ft-bottom { flex-direction:column; align-items:flex-start; gap:.8rem; }
 
       /* Hero painting canvas: static decorative backdrop, no cursor/paint UI */
@@ -1950,6 +1961,17 @@ Something with a little bounce.</p>
       entries.forEach(e => nav.classList.toggle('nav-hidden', e.isIntersecting));
     }, { threshold: 0, rootMargin: '0px' });
     navFooterObs.observe(footerEl);
+  }
+
+  /* NIKHIL / ARORA footer names - animate in on entry, back out on exit
+     (toggles every crossing rather than firing once, unlike the .rv reveal
+     system below, so it replays if the user scrolls back up past it) */
+  const ftNames = document.querySelector('.ft-names');
+  if (ftNames) {
+    const ftNamesObs = new IntersectionObserver(entries => {
+      entries.forEach(e => ftNames.classList.toggle('ft-names-in', e.isIntersecting));
+    }, { threshold: 0.15 });
+    ftNamesObs.observe(ftNames);
   }
 
   /* Scroll reveal - Gourou fade-in-up style */
