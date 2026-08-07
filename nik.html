@@ -3088,12 +3088,20 @@ window.__heroCanvasResume = () => {
     ticking = true;
     requestAnimationFrame(function () {
       var sy = window.scrollY, vh = window.innerHeight;
+      /* Offset amplitude is capped to the site's own 800h baseline (see the root
+         font-size comment above, "2vh term (16px at 800h)") instead of scaling
+         with the raw viewport height like the rest of this formula does. Nav
+         height and section padding are both rem-based and capped the same way,
+         but this used uncapped window.innerHeight - on a 4K monitor (vh 2160)
+         that pushed the offset to -166px, enough to drag work-header's heading
+         entirely behind the fixed nav while scrolling through the section. */
+      var ampVh = Math.min(vh, 800);
       pEls.forEach(function (el) {
         var top  = getTop(el);
         var rate = parseFloat(el.dataset.parallax) || 0.1;
         var dist = top - sy;
         if (dist > -vh && dist < vh * 2) {
-          el.style.transform = 'translateY(' + (-(sy - top + vh) * rate * 0.5).toFixed(2) + 'px)';
+          el.style.transform = 'translateY(' + (-(sy - top + ampVh) * rate * 0.5).toFixed(2) + 'px)';
         }
       });
       ticking = false;
