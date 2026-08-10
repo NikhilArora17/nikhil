@@ -1027,6 +1027,16 @@
       transform: translateY(40px);
       opacity: 0;
       transition: clip-path 1.1s var(--ease-out), transform 1.1s var(--ease-out), opacity 0.6s var(--ease-out);
+      /* Without this, Chrome sometimes drops the element's compositor layer
+         mid-transition (since nothing else here signals "this will animate"
+         until the transition is already running), then has to re-promote it
+         the instant the .proj-card children start their own nested opacity/
+         transform reveal a beat later - that promotion hitch is what read as
+         a project card flashing in and vanishing right as the section
+         scrolled into view. #work is the only section wrapper animating
+         clip-path (About/Skills/Play only use transform+opacity), which is
+         why only this section showed it. */
+      will-change: clip-path, transform, opacity;
     }
     #work.sec-in .work-inner { clip-path: inset(0% 0 0 0); transform: translateY(0); opacity: 1; }
 
@@ -3345,7 +3355,14 @@ document.addEventListener('keydown', e => {
     var ctx = canvas.getContext('2d');
     var fromColor = div.dataset.from;
     var toColor   = div.dataset.to;
-    var progress  = 0;
+    // targetProgress is whatever ScrollTrigger says right now; renderedProgress
+    // eases toward it every tick instead of jumping straight there. A single
+    // wheel notch can cover this whole ~280-373px strip in one scroll event, so
+    // drawing targetProgress directly made the arch teleport between shapes -
+    // reading as a flat rectangle snapping into/out of the curve instead of a
+    // continuous wipe. Easing spreads that jump back across a few frames.
+    var targetProgress   = 0;
+    var renderedProgress = 0;
 
     function resize() {
       canvas.width  = div.offsetWidth;
@@ -3361,7 +3378,7 @@ document.addEventListener('keydown', e => {
 
       var midY = H * 0.5;
       // control point travels far outside canvas bounds for dramatic arch
-      var cy = H * (-0.8 + progress * 2.6);
+      var cy = H * (-0.8 + renderedProgress * 2.6);
 
       // top fill - from-color
       ctx.fillStyle = fromColor;
@@ -3394,9 +3411,18 @@ document.addEventListener('keydown', e => {
       start: 'top bottom',
       end: 'bottom top',
       onUpdate: function (self) {
-        progress = self.progress;
-        draw();
+        targetProgress = self.progress;
       }
+    });
+
+    gsap.ticker.add(function () {
+      var diff = targetProgress - renderedProgress;
+      if (Math.abs(diff) < 0.0008) {
+        if (renderedProgress !== targetProgress) { renderedProgress = targetProgress; draw(); }
+        return;
+      }
+      renderedProgress += diff * 0.18;
+      draw();
     });
   });
 })();
