@@ -2767,12 +2767,16 @@ function frame() {
 frame();
 
 hueOsc = new SineWave({ phase: Math.random() * Math.PI * 2, amplitude: 30, frequency: 0.0015, offset: 100 });
-renderSpring();
 
+// Started once assets are ready instead of immediately at page load, so the
+// trail doesn't come to life mid-jank while the paint-stroke images and rest
+// of the hero are still loading in - it just isn't running yet during that
+// window, so it's not what a laggy first second would be blamed on.
 preload().then(() => {
   ghostElemIdx = randInt(0, elements.length - 1);
   seedPainting();
   if (IS_MOBILE) { frame(); updateTextColor(); }
+  else renderSpring();
 });
 
 ['.hero-greeting', '.hero-name', '.hero-role', '.hero-tagline'].forEach(sel => {
