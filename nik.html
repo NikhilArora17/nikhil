@@ -2449,10 +2449,26 @@ function startWipe() {
 const sc   = document.getElementById('sc');
 const sCtx = sc.getContext('2d');
 
-function resizeSC() { sc.width = window.innerWidth; sc.height = window.innerHeight; }
+// Backing store is rendered at SC_SCALE and stretched to full size by the #sc
+// CSS box (already smaller than the canvas's raw viewport dimensions, so this
+// is just leaning further into scaling that was already happening). The trail
+// is soft/blurred via low-opacity 'lighter' strokes, so the softer resolution
+// is not visible - but it cuts per-frame fill-rate work quadratically, which
+// is what was spiking (50 blended strokes redrawn full-viewport-size every
+// frame, at 4K, made the cost scale with how far the cursor swept per frame).
+const SC_SCALE = 0.6;
+function resizeSC() {
+  sc.width = window.innerWidth * SC_SCALE;
+  sc.height = window.innerHeight * SC_SCALE;
+  sCtx.setTransform(SC_SCALE, 0, 0, SC_SCALE, 0, 0);
+}
 resizeSC();
 
-const SP = { friction: 0.5, trails: 50, size: 50, dampening: 0.025, tension: 0.99 };
+// trails dropped from 50 to 20 (the count in the reference "spring" trail
+// implementation this was built from) - halves-plus the number of stroke()
+// calls and the total path length rasterized every frame, the other main
+// driver of the same fill-rate cost.
+const SP = { friction: 0.5, trails: 20, size: 50, dampening: 0.025, tension: 0.99 };
 
 function SineWave(opts) {
   this.phase = opts.phase || 0; this.offset = opts.offset || 0;
@@ -2525,7 +2541,12 @@ let heroActive = true;
 function renderSpring() {
   if (!heroActive || IS_MOBILE) return;
   sCtx.globalCompositeOperation = 'source-over';
-  sCtx.clearRect(0, 0, sc.width, sc.height);
+  // clearRect runs through the same SC_SCALE transform as everything else
+  // drawn here, so the rect has to be specified in pre-transform (CSS pixel)
+  // units - sc.width/height are already post-scale device pixels and would
+  // only clear the top-left SC_SCALE fraction of the canvas, leaving stale
+  // trail pixels behind everywhere else.
+  sCtx.clearRect(0, 0, sc.width / SC_SCALE, sc.height / SC_SCALE);
   sCtx.globalCompositeOperation = 'lighter';
   sCtx.strokeStyle = `hsla(${Math.round(hueOsc.update())}, 55%, 45%, 0.025)`;
   sCtx.lineWidth   = 4;
@@ -3376,9 +3397,19 @@ document.addEventListener('keydown', e => {
       if (!W || !H) return;
       ctx.clearRect(0, 0, W, H);
 
-      var midY = H * 0.5;
-      // control point travels far outside canvas bounds for dramatic arch
-      var cy = H * (-0.8 + renderedProgress * 2.6);
+      // The from/to split at the strip's left/right edges always sits at
+      // midY, regardless of progress - only the curve's belly moves. Biasing
+      // that anchor down (rather than dead-center) keeps more of the curve's
+      // travel in the lower two-thirds of the strip, clear of the fixed nav
+      // (this strip's top few rows sit right under it) and clear of the
+      // viewport's own top/bottom edge while the strip is scrolling in or
+      // out - both of which read as a flat edge slicing into the arch when
+      // the interesting part of the curve happens to land right on them.
+      var midY = H * 0.58;
+      // Control point travels far outside canvas bounds for a dramatic arch.
+      // Capped on the upward side so very early progress still shows visible
+      // curve motion instead of sitting fully saturated at fromColor's limit.
+      var cy = H * Math.max(-0.5, -0.8 + renderedProgress * 2.6);
 
       // top fill - from-color
       ctx.fillStyle = fromColor;
