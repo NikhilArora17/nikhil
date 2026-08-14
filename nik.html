@@ -599,6 +599,191 @@
       display:block;
     }
 
+    /* ─── RESUME MODAL ──────────────────────────
+       The resume as a site section, not a scanned document: forest
+       header quoting the #work type scheme (mint name, lime em), body on
+       the light-mint paper the nav already uses, tag pills and round
+       controls borrowed from the project cards. */
+    #resume-modal {
+      position: fixed; inset: 0; z-index: 900;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2.5rem 1.5rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    #resume-modal.open { opacity: 1; pointer-events: all; }
+    #resume-scrim {
+      position: absolute; inset: 0;
+      background: rgba(10,51,35,.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .rm-sheet {
+      position: relative;
+      width: min(50rem, 100%);
+      max-height: min(88vh, 60rem);
+      display: flex; flex-direction: column;
+      background: #E6F1E2; color: var(--forest);
+      border-radius: 1rem; overflow: hidden;
+      box-shadow: 0 2.5rem 5rem rgba(4,20,13,.45), 0 .5rem 1.5rem rgba(4,20,13,.3);
+      opacity: 0;
+      transform: translateY(1.75rem) scale(.98);
+      transition: transform .55s var(--ease-out), opacity .35s;
+    }
+    #resume-modal.open .rm-sheet { opacity: 1; transform: translateY(0) scale(1); }
+
+    .rm-head {
+      background: var(--forest);
+      padding: 1.5rem 2rem 1.6rem;
+      flex-shrink: 0;
+    }
+    .rm-head-top {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; margin-bottom: 1.1rem;
+    }
+    .rm-eyebrow {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.62rem; font-weight:700;
+      letter-spacing:.24em; text-transform:uppercase; color:var(--olive);
+      display:flex; align-items:center; gap:.7rem;
+    }
+    .rm-eyebrow::after { content:''; display:block; width:2rem; height:1px; background:currentColor; }
+    .rm-controls { display:flex; align-items:center; gap:.6rem; }
+    .rm-dl {
+      display:inline-flex; align-items:center; gap:.45rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem; font-weight:700;
+      letter-spacing:.1em; text-transform:uppercase;
+      background:var(--lime); color:var(--forest);
+      padding:.55rem 1.1rem; border-radius:100px;
+      white-space:nowrap;
+      transition: background .3s, transform .25s var(--ease-out);
+    }
+    .rm-dl:hover { background:#E6E58F; transform: translateY(-2px); }
+    .rm-dl:active { transform: translateY(0) scale(.97); }
+    .rm-dl svg { transition: transform .3s var(--ease-out); }
+    .rm-dl:hover svg { transform: translateY(2px); }
+    .rm-name {
+      font-family:'Sora','Sora Fallback',sans-serif;
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+      font-weight:600; letter-spacing:-.025em; line-height:1.05;
+      color: var(--mint);
+    }
+    .rm-role {
+      font-family:'Sora','Sora Fallback',sans-serif;
+      font-size:.92rem; letter-spacing:.02em;
+      color: var(--sage); margin-top:.45rem;
+    }
+    .rm-role em { font-style:italic; color: var(--lime); }
+    .rm-meta {
+      display:flex; flex-wrap:wrap; align-items:center; gap:.4rem .9rem;
+      margin-top:.85rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.72rem;
+      color: rgba(230,241,226,.65); letter-spacing:.04em;
+    }
+    .rm-meta a { transition: color .3s; }
+    .rm-meta a:hover { color: var(--lime); }
+    .rm-meta .rm-dot {
+      width:.25rem; height:.25rem; border-radius:50%; background:var(--olive);
+    }
+
+    .rm-body {
+      overflow-y:auto; overflow-x:hidden;
+      padding: 2rem 2rem 2.4rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(10,51,35,.35) transparent;
+    }
+    .rm-body::-webkit-scrollbar { width:.4rem; }
+    .rm-body::-webkit-scrollbar-thumb { background:rgba(10,51,35,.3); border-radius:100px; }
+    .rm-sec + .rm-sec { margin-top:2.3rem; }
+    .rm-label {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.62rem; font-weight:700;
+      letter-spacing:.24em; text-transform:uppercase;
+      color: rgba(10,51,35,.5);
+      display:flex; align-items:center; gap:.7rem;
+      margin-bottom:1.1rem;
+    }
+    .rm-label::after { content:''; display:block; width:2rem; height:1px; background:rgba(10,51,35,.4); }
+    .rm-sum { font-size:.95rem; line-height:1.8; color:rgba(10,51,35,.78); }
+
+    /* Experience timeline: spine + olive nodes (chronology as structure) */
+    .rm-tl { position:relative; }
+    .rm-tl::before {
+      content:''; position:absolute; top:.4rem; bottom:.35rem; left:.28rem;
+      width:1px; background:rgba(10,51,35,.18);
+    }
+    .rm-job { position:relative; padding-left:1.7rem; }
+    .rm-job + .rm-job { margin-top:1.9rem; }
+    .rm-job::before {
+      content:''; position:absolute; left:0; top:.32rem;
+      width:.6rem; height:.6rem; border-radius:50%;
+      background:var(--olive);
+      box-shadow: 0 0 0 .22rem #E6F1E2;
+    }
+    .rm-job-head {
+      display:flex; align-items:baseline; justify-content:space-between;
+      gap:.4rem .8rem; flex-wrap:wrap;
+    }
+    .rm-job-role { font-size:1.02rem; font-weight:600; letter-spacing:-.01em; }
+    .rm-job-co { font-size:.78rem; color:rgba(10,51,35,.6); letter-spacing:.04em; margin-top:.2rem; }
+    .rm-date {
+      font-family:'Sora','Sora Fallback',sans-serif;
+      font-size:.6rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      color:rgba(10,51,35,.6); border:1px solid rgba(10,51,35,.25);
+      padding:.25rem .75rem; border-radius:100px; white-space:nowrap;
+      flex-shrink:0;
+    }
+    .rm-job-note { font-size:.8rem; font-style:italic; color:rgba(10,51,35,.55); margin-top:.55rem; }
+    .rm-job ul { list-style:none; margin-top:.8rem; }
+    .rm-job li {
+      position:relative; padding-left:1.05rem;
+      font-size:.86rem; line-height:1.65; color:rgba(10,51,35,.75);
+    }
+    .rm-job li + li { margin-top:.5rem; }
+    .rm-job li::before {
+      content:''; position:absolute; left:0; top:.58rem;
+      width:.32rem; height:.32rem; background:var(--olive); border-radius:1px;
+    }
+
+    .rm-chips { display:flex; flex-wrap:wrap; gap:.45rem; }
+    .rm-chip {
+      font-family:'Sora','Sora Fallback',sans-serif;
+      font-size:.6rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      color:rgba(10,51,35,.72); border:1px solid rgba(10,51,35,.22);
+      padding:.32rem .8rem; border-radius:100px; white-space:nowrap;
+    }
+    .rm-skill-group + .rm-skill-group { margin-top:1.15rem; }
+    .rm-skill-name {
+      font-family:'Sora','Sora Fallback',sans-serif;
+      font-size:.68rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      color:var(--forest); margin-bottom:.55rem;
+    }
+
+    .rm-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:2.3rem; }
+    .rm-school + .rm-school { margin-top:1.4rem; }
+    .rm-school-name { font-size:.95rem; font-weight:600; letter-spacing:-.01em; }
+    .rm-row {
+      display:flex; justify-content:space-between; align-items:baseline;
+      gap:.8rem; margin-top:.5rem;
+    }
+    .rm-row-name { font-size:.84rem; color:rgba(10,51,35,.75); line-height:1.5; }
+
+    #resume-modal a:focus-visible, #resume-modal button:focus-visible {
+      outline:2px solid var(--forest); outline-offset:2px;
+    }
+    .rm-head a:focus-visible, .rm-head button:focus-visible { outline-color:var(--lime); }
+
+    @media (prefers-reduced-motion: reduce) {
+      #resume-modal, .rm-sheet { transition:none; }
+    }
+    @media (max-width: 660px) {
+      #resume-modal { padding:0; }
+      .rm-sheet { width:100%; height:100%; max-height:none; border-radius:0; }
+      .rm-head { padding:1.1rem 1.2rem 1.3rem; }
+      .rm-head-top { margin-bottom:.9rem; }
+      .rm-body { padding:1.5rem 1.2rem 2rem; }
+      .rm-grid2 { grid-template-columns:1fr; }
+      .rm-job-head { flex-direction:column; align-items:flex-start; }
+    }
+
     .pr-num {
       font-family:'Sora','Sora Fallback',sans-serif; font-size:.65rem; font-weight:700;
       letter-spacing:.12em; color:var(--olive); padding-top:.2rem;
@@ -1519,12 +1704,12 @@
     var btn = document.getElementById('nav-resume-btn');
     if (btn) btn.addEventListener('click', function(e) {
       e.preventDefault();
-      if (typeof openViewer === 'function') openViewer('resume.pdf', 'Resume');
+      if (typeof openResumeModal === 'function') openResumeModal();
     });
     var btnMobile = document.getElementById('nav-resume-btn-mobile');
     if (btnMobile) btnMobile.addEventListener('click', function(e) {
       e.preventDefault();
-      if (typeof openViewer === 'function') openViewer('resume.pdf', 'Resume');
+      if (typeof openResumeModal === 'function') openResumeModal();
     });
   });
 </script>
@@ -1935,6 +2120,150 @@ Something with a little bounce.</p>
     </div>
     <div id="pdf-modal-viewport">
       <div id="pdf-loading">Loading</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RESUME MODAL ───────────────────────────── -->
+<div id="resume-modal">
+  <div id="resume-scrim"></div>
+  <div class="rm-sheet" role="dialog" aria-modal="true" aria-labelledby="rm-name">
+    <div class="rm-head">
+      <div class="rm-head-top">
+        <span class="rm-eyebrow">Resume</span>
+        <div class="rm-controls">
+          <a class="rm-dl" href="resume.pdf" download="Nikhil-Arora-Resume.pdf">
+            PDF
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1v7.5M6 8.5L2.5 5M6 8.5L9.5 5M1.5 10.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <button class="pdf-btn" id="resume-close" title="Close (Esc)">&#10005;</button>
+        </div>
+      </div>
+      <h2 class="rm-name" id="rm-name">Nikhil Arora</h2>
+      <p class="rm-role">UX/UI &amp; <em>Visual Designer</em></p>
+      <div class="rm-meta">
+        <span>Sultanpur, Delhi</span>
+        <span class="rm-dot"></span>
+        <a href="mailto:nikhilmail2009@gmail.com">nikhilmail2009@gmail.com</a>
+      </div>
+    </div>
+
+    <div class="rm-body">
+
+      <div class="rm-sec">
+        <div class="rm-label">Summary</div>
+        <p class="rm-sum">UX/UI and Visual Designer with a background in Game Arts and Information Technology, combining visual design, user-centered design, digital product design, and web development. Experience designing websites, internal business applications, CRM systems, dashboards, brand assets, and digital experiences across multiple businesses.</p>
+      </div>
+
+      <div class="rm-sec">
+        <div class="rm-label">Experience</div>
+        <div class="rm-tl">
+          <div class="rm-job">
+            <div class="rm-job-head">
+              <div>
+                <div class="rm-job-role">Visual Designer, MCBEE Pvt. Ltd.</div>
+                <div class="rm-job-co">Sultanpur, Delhi &middot; Working within StudioBee across the MCBEE group</div>
+              </div>
+              <span class="rm-date">Jul 2025 &ndash; Present</span>
+            </div>
+            <ul>
+              <li>Work across UX/UI design, visual design, web development, branding, digital products, and creative production for MCBEE and its sister companies, StudioBee, BEENEXT, and ISD (Italian Sound Design).</li>
+              <li>Designed and developed websites for StudioBee and BEENEXT, and contributed to the design implementation, functionality, and technical development of MCBEE's previous website in collaboration with the CEO.</li>
+              <li>Currently contributing to the design and development of the ISD website.</li>
+              <li>Designed and developed CRM systems for MCBEE, BEENEXT, and StudioBee to support internal workflows and business operations.</li>
+              <li>Designed and developed My.StudioBee, an internal business management application covering client and project management, quoting, billing, time tracking, equipment management, cost modelling, invoicing, reporting, and profitability tracking.</li>
+              <li>Designed information architecture, user flows, dashboards, navigation, and interfaces for internal business applications and operational tools.</li>
+              <li>Created Zoho email and PDF templates in RTF for MCBEE, BEENEXT, and StudioBee.</li>
+              <li>Designed social media content, motion graphics, portfolios, presentation materials, and design guidelines across the three companies.</li>
+              <li>Worked across AI-assisted development and automation to improve digital workflows and internal business processes.</li>
+            </ul>
+          </div>
+          <div class="rm-job">
+            <div class="rm-job-head">
+              <div>
+                <div class="rm-job-role">Graphic Designer Intern, CamCann Smart Systems</div>
+                <div class="rm-job-co">India</div>
+              </div>
+              <span class="rm-date">May 2019 &ndash; Nov 2019</span>
+            </div>
+            <ul>
+              <li>Designed logos, posters, banners, and other visual communication assets.</li>
+              <li>Developed visual materials aligned with company branding and communication requirements.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="rm-sec">
+        <div class="rm-label">Selected Projects</div>
+        <div class="rm-skill-group">
+          <div class="rm-skill-name">3D &amp; Game Art</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Dark Signal</span>
+            <span class="rm-chip">Sunburst Express</span>
+            <span class="rm-chip">Morphing Along</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rm-sec">
+        <div class="rm-grid2">
+          <div>
+            <div class="rm-label">Education</div>
+            <div class="rm-school">
+              <div class="rm-school-name">University of the Arts London, London College of Communication</div>
+              <div class="rm-row"><span class="rm-row-name">BA Animation, Specialization in Game Arts</span><span class="rm-date">2021&ndash;2024</span></div>
+              <div class="rm-row"><span class="rm-row-name">Foundation in Design, Media, and Screen</span><span class="rm-date">2020&ndash;2021</span></div>
+            </div>
+            <div class="rm-school">
+              <div class="rm-school-name">Vellore Institute of Technology</div>
+              <div class="rm-row"><span class="rm-row-name">BTech Information Technology</span><span class="rm-date">2017&ndash;2020</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="rm-label">Certifications</div>
+            <div class="rm-school">
+              <div class="rm-row"><span class="rm-row-name">AI-Assisted Coding for Designers</span><span class="rm-date">2025</span></div>
+              <div class="rm-row"><span class="rm-row-name">Google UX Design Professional Certificate</span><span class="rm-date">2025</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rm-sec">
+        <div class="rm-label">Skills</div>
+        <div class="rm-skill-group">
+          <div class="rm-skill-name">UX/UI &amp; Product Design</div>
+          <div class="rm-chips">
+            <span class="rm-chip">User-Centered Design</span><span class="rm-chip">User Research</span><span class="rm-chip">User Flows</span><span class="rm-chip">Information Architecture</span><span class="rm-chip">Wireframing</span><span class="rm-chip">Prototyping</span><span class="rm-chip">Usability Testing</span><span class="rm-chip">UI Design</span><span class="rm-chip">Dashboard Design</span><span class="rm-chip">Web Design</span><span class="rm-chip">Mobile Design</span><span class="rm-chip">Design Systems</span><span class="rm-chip">Style Guides</span>
+          </div>
+        </div>
+        <div class="rm-skill-group">
+          <div class="rm-skill-name">Visual Design</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Branding</span><span class="rm-chip">Graphic Design</span><span class="rm-chip">Layout</span><span class="rm-chip">Typography</span><span class="rm-chip">Digital Design</span><span class="rm-chip">Art Direction</span><span class="rm-chip">Motion Graphics</span>
+          </div>
+        </div>
+        <div class="rm-skill-group">
+          <div class="rm-skill-name">Web &amp; Development</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Frontend Development</span><span class="rm-chip">Responsive Design</span><span class="rm-chip">CMS</span><span class="rm-chip">AI-Assisted Development</span><span class="rm-chip">Automation</span>
+          </div>
+        </div>
+        <div class="rm-skill-group">
+          <div class="rm-skill-name">Design &amp; 3D Tools</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Figma</span><span class="rm-chip">Adobe XD</span><span class="rm-chip">Photoshop</span><span class="rm-chip">Illustrator</span><span class="rm-chip">Maya</span><span class="rm-chip">ZBrush</span><span class="rm-chip">Substance Painter</span><span class="rm-chip">Substance Designer</span><span class="rm-chip">Unreal Engine</span>
+          </div>
+        </div>
+        <div class="rm-skill-group">
+          <div class="rm-skill-name">AI &amp; Development Tools</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Lovable</span><span class="rm-chip">Cursor</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -3171,6 +3500,26 @@ function closeViewer() {
 closeBtn.addEventListener('click', closeViewer);
 document.addEventListener('keydown', e => {
   if (modal.classList.contains('open') && e.key === 'Escape') closeViewer();
+});
+
+/* ── RESUME MODAL ── */
+const resumeModal = document.getElementById('resume-modal');
+const resumeClose  = document.getElementById('resume-close');
+const resumeScrim  = document.getElementById('resume-scrim');
+
+function openResumeModal() {
+  resumeModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  resumeModal.querySelector('.rm-body').scrollTop = 0;
+}
+function closeResumeModal() {
+  resumeModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+resumeClose.addEventListener('click', closeResumeModal);
+resumeScrim.addEventListener('click', closeResumeModal);
+document.addEventListener('keydown', e => {
+  if (resumeModal.classList.contains('open') && e.key === 'Escape') closeResumeModal();
 });
 </script>
 
