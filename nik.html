@@ -600,14 +600,17 @@
     }
 
     /* ─── RESUME MODAL ──────────────────────────
-       The resume as a site section, not a scanned document: forest
-       header quoting the #work type scheme (mint name, lime em), body on
-       the light-mint paper the nav already uses, tag pills and round
-       controls borrowed from the project cards. */
+       A single fixed-size page (real US-letter width, ~50rem @96dpi),
+       not a scrolling list - reads like an actual one-page resume, just
+       in the site's forest/mint/olive/lime palette instead of Arial-on-
+       white. Content is deliberately condensed (trimmed bullets, skills
+       as comma lines rather than pill grids) so it fits the fixed height
+       without ever needing rm-body's overflow - that's kept only as a
+       safety net for extreme text-zoom/short-viewport edge cases. */
     #resume-modal {
       position: fixed; inset: 0; z-index: 900;
       display: flex; align-items: center; justify-content: center;
-      padding: 2.5rem 1.5rem;
+      padding: 2rem 1.5rem;
       opacity: 0; pointer-events: none;
       transition: opacity .3s;
     }
@@ -620,11 +623,11 @@
     }
     .rm-sheet {
       position: relative;
-      width: min(50rem, 100%);
-      max-height: min(88vh, 60rem);
+      width: min(50rem, 92vw);
+      height: min(92vh, 60rem);
       display: flex; flex-direction: column;
       background: #E6F1E2; color: var(--forest);
-      border-radius: 1rem; overflow: hidden;
+      border-radius: .75rem; overflow: hidden;
       box-shadow: 0 2.5rem 5rem rgba(4,20,13,.45), 0 .5rem 1.5rem rgba(4,20,13,.3);
       opacity: 0;
       transform: translateY(1.75rem) scale(.98);
@@ -634,26 +637,26 @@
 
     .rm-head {
       background: var(--forest);
-      padding: 1.5rem 2rem 1.6rem;
+      padding: 1.1rem 1.75rem 1.15rem;
       flex-shrink: 0;
     }
     .rm-head-top {
       display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem; margin-bottom: 1.1rem;
+      gap: 1rem; margin-bottom: .55rem;
     }
     .rm-eyebrow {
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:.62rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.58rem; font-weight:700;
       letter-spacing:.24em; text-transform:uppercase; color:var(--olive);
-      display:flex; align-items:center; gap:.7rem;
+      display:flex; align-items:center; gap:.6rem;
     }
-    .rm-eyebrow::after { content:''; display:block; width:2rem; height:1px; background:currentColor; }
-    .rm-controls { display:flex; align-items:center; gap:.6rem; }
+    .rm-eyebrow::after { content:''; display:block; width:1.5rem; height:1px; background:currentColor; }
+    .rm-controls { display:flex; align-items:center; gap:.5rem; }
     .rm-dl {
-      display:inline-flex; align-items:center; gap:.45rem;
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem; font-weight:700;
+      display:inline-flex; align-items:center; gap:.4rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.62rem; font-weight:700;
       letter-spacing:.1em; text-transform:uppercase;
       background:var(--lime); color:var(--forest);
-      padding:.55rem 1.1rem; border-radius:100px;
+      padding:.4rem .85rem; border-radius:100px;
       white-space:nowrap;
       transition: background .3s, transform .25s var(--ease-out);
     }
@@ -661,110 +664,108 @@
     .rm-dl:active { transform: translateY(0) scale(.97); }
     .rm-dl svg { transition: transform .3s var(--ease-out); }
     .rm-dl:hover svg { transform: translateY(2px); }
+    .pdf-btn.rm-x { width:1.7rem; height:1.7rem; font-size:.7rem; }
     .rm-name {
       font-family:'Sora','Sora Fallback',sans-serif;
-      font-size: clamp(1.8rem, 3.2vw, 2.5rem);
-      font-weight:600; letter-spacing:-.025em; line-height:1.05;
+      font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+      font-weight:600; letter-spacing:-.02em; line-height:1;
       color: var(--mint);
     }
     .rm-role {
       font-family:'Sora','Sora Fallback',sans-serif;
-      font-size:.92rem; letter-spacing:.02em;
-      color: var(--sage); margin-top:.45rem;
+      font-size:.74rem; letter-spacing:.02em;
+      color: var(--sage); margin-top:.3rem;
     }
     .rm-role em { font-style:italic; color: var(--lime); }
     .rm-meta {
-      display:flex; flex-wrap:wrap; align-items:center; gap:.4rem .9rem;
-      margin-top:.85rem;
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:.72rem;
-      color: rgba(230,241,226,.65); letter-spacing:.04em;
+      display:flex; flex-wrap:wrap; align-items:center; gap:.35rem .7rem;
+      margin-top:.5rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.62rem;
+      color: rgba(230,241,226,.65); letter-spacing:.03em;
     }
     .rm-meta a { transition: color .3s; }
     .rm-meta a:hover { color: var(--lime); }
     .rm-meta .rm-dot {
-      width:.25rem; height:.25rem; border-radius:50%; background:var(--olive);
+      width:.2rem; height:.2rem; border-radius:50%; background:var(--olive);
     }
 
     .rm-body {
+      flex: 1;
       overflow-y:auto; overflow-x:hidden;
-      padding: 2rem 2rem 2.4rem;
+      padding: 1rem 1.75rem 1rem;
       scrollbar-width: thin;
       scrollbar-color: rgba(10,51,35,.35) transparent;
     }
     .rm-body::-webkit-scrollbar { width:.4rem; }
     .rm-body::-webkit-scrollbar-thumb { background:rgba(10,51,35,.3); border-radius:100px; }
-    .rm-sec + .rm-sec { margin-top:2.3rem; }
+    .rm-sec + .rm-sec { margin-top:.7rem; }
     .rm-label {
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:.62rem; font-weight:700;
-      letter-spacing:.24em; text-transform:uppercase;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.56rem; font-weight:700;
+      letter-spacing:.2em; text-transform:uppercase;
       color: rgba(10,51,35,.5);
-      display:flex; align-items:center; gap:.7rem;
-      margin-bottom:1.1rem;
+      display:flex; align-items:center; gap:.6rem;
+      margin-bottom:.5rem;
     }
-    .rm-label::after { content:''; display:block; width:2rem; height:1px; background:rgba(10,51,35,.4); }
-    .rm-sum { font-size:.95rem; line-height:1.8; color:rgba(10,51,35,.78); }
+    .rm-label::after { content:''; display:block; width:1.5rem; height:1px; background:rgba(10,51,35,.4); }
+    .rm-sum { font-size:.74rem; line-height:1.5; color:rgba(10,51,35,.78); }
 
     /* Experience timeline: spine + olive nodes (chronology as structure) */
     .rm-tl { position:relative; }
     .rm-tl::before {
-      content:''; position:absolute; top:.4rem; bottom:.35rem; left:.28rem;
+      content:''; position:absolute; top:.32rem; bottom:.3rem; left:.22rem;
       width:1px; background:rgba(10,51,35,.18);
     }
-    .rm-job { position:relative; padding-left:1.7rem; }
-    .rm-job + .rm-job { margin-top:1.9rem; }
+    .rm-job { position:relative; padding-left:1.3rem; }
+    .rm-job + .rm-job { margin-top:.7rem; }
     .rm-job::before {
-      content:''; position:absolute; left:0; top:.32rem;
-      width:.6rem; height:.6rem; border-radius:50%;
+      content:''; position:absolute; left:0; top:.26rem;
+      width:.48rem; height:.48rem; border-radius:50%;
       background:var(--olive);
-      box-shadow: 0 0 0 .22rem #E6F1E2;
+      box-shadow: 0 0 0 .18rem #E6F1E2;
     }
     .rm-job-head {
       display:flex; align-items:baseline; justify-content:space-between;
       gap:.4rem .8rem; flex-wrap:wrap;
     }
-    .rm-job-role { font-size:1.02rem; font-weight:600; letter-spacing:-.01em; }
-    .rm-job-co { font-size:.78rem; color:rgba(10,51,35,.6); letter-spacing:.04em; margin-top:.2rem; }
+    .rm-job-role { font-size:.82rem; font-weight:600; letter-spacing:-.01em; }
+    .rm-job-co { font-size:.64rem; color:rgba(10,51,35,.6); letter-spacing:.03em; margin-top:.1rem; }
     .rm-date {
       font-family:'Sora','Sora Fallback',sans-serif;
-      font-size:.6rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      font-size:.54rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
       color:rgba(10,51,35,.6); border:1px solid rgba(10,51,35,.25);
-      padding:.25rem .75rem; border-radius:100px; white-space:nowrap;
+      padding:.18rem .6rem; border-radius:100px; white-space:nowrap;
       flex-shrink:0;
     }
-    .rm-job-note { font-size:.8rem; font-style:italic; color:rgba(10,51,35,.55); margin-top:.55rem; }
-    .rm-job ul { list-style:none; margin-top:.8rem; }
+    .rm-job ul { list-style:none; margin-top:.35rem; }
     .rm-job li {
-      position:relative; padding-left:1.05rem;
-      font-size:.86rem; line-height:1.65; color:rgba(10,51,35,.75);
+      position:relative; padding-left:.9rem;
+      font-size:.68rem; line-height:1.45; color:rgba(10,51,35,.75);
     }
-    .rm-job li + li { margin-top:.5rem; }
+    .rm-job li + li { margin-top:.22rem; }
     .rm-job li::before {
-      content:''; position:absolute; left:0; top:.58rem;
-      width:.32rem; height:.32rem; background:var(--olive); border-radius:1px;
+      content:''; position:absolute; left:0; top:.5rem;
+      width:.28rem; height:.28rem; background:var(--olive); border-radius:1px;
     }
 
-    .rm-chips { display:flex; flex-wrap:wrap; gap:.45rem; }
-    .rm-chip {
-      font-family:'Sora','Sora Fallback',sans-serif;
-      font-size:.6rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
-      color:rgba(10,51,35,.72); border:1px solid rgba(10,51,35,.22);
-      padding:.32rem .8rem; border-radius:100px; white-space:nowrap;
-    }
-    .rm-skill-group + .rm-skill-group { margin-top:1.15rem; }
+    /* Skills + selected projects: label-run-in comma lines, not pill
+       grids - matches the source resume's own density and is far more
+       vertical-space-efficient than wrapped badges at this page height. */
+    .rm-skill-line { font-size:.68rem; line-height:1.55; }
+    .rm-skill-line + .rm-skill-line { margin-top:.3rem; }
     .rm-skill-name {
       font-family:'Sora','Sora Fallback',sans-serif;
-      font-size:.68rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
-      color:var(--forest); margin-bottom:.55rem;
+      font-weight:700; color:var(--forest); margin-right:.3rem;
     }
+    .rm-skill-list { color:rgba(10,51,35,.72); }
 
-    .rm-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:2.3rem; }
-    .rm-school + .rm-school { margin-top:1.4rem; }
-    .rm-school-name { font-size:.95rem; font-weight:600; letter-spacing:-.01em; }
+    .rm-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+    .rm-school + .rm-school { margin-top:.55rem; }
+    .rm-school-name { font-size:.72rem; font-weight:600; letter-spacing:-.005em; line-height:1.3; }
     .rm-row {
       display:flex; justify-content:space-between; align-items:baseline;
-      gap:.8rem; margin-top:.5rem;
+      gap:.6rem; margin-top:.25rem;
     }
-    .rm-row-name { font-size:.84rem; color:rgba(10,51,35,.75); line-height:1.5; }
+    .rm-row-name { font-size:.66rem; color:rgba(10,51,35,.75); line-height:1.4; }
 
     #resume-modal a:focus-visible, #resume-modal button:focus-visible {
       outline:2px solid var(--forest); outline-offset:2px;
@@ -776,12 +777,14 @@
     }
     @media (max-width: 660px) {
       #resume-modal { padding:0; }
-      .rm-sheet { width:100%; height:100%; max-height:none; border-radius:0; }
-      .rm-head { padding:1.1rem 1.2rem 1.3rem; }
-      .rm-head-top { margin-bottom:.9rem; }
-      .rm-body { padding:1.5rem 1.2rem 2rem; }
+      .rm-sheet { width:100%; height:100%; border-radius:0; }
+      .rm-head { padding:1rem 1.1rem 1.1rem; }
+      .rm-body { padding:1.1rem 1.1rem 1.75rem; }
       .rm-grid2 { grid-template-columns:1fr; }
       .rm-job-head { flex-direction:column; align-items:flex-start; }
+      /* A page this dense genuinely cannot fit one small phone screen at
+         readable size - mobile keeps the scroll the desktop page avoids. */
+      .rm-sum, .rm-job li, .rm-skill-line { font-size:.76rem; line-height:1.6; }
     }
 
     .pr-num {
@@ -2136,7 +2139,7 @@ Something with a little bounce.</p>
             PDF
             <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1v7.5M6 8.5L2.5 5M6 8.5L9.5 5M1.5 10.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="pdf-btn" id="resume-close" title="Close (Esc)">&#10005;</button>
+          <button class="pdf-btn rm-x" id="resume-close" title="Close (Esc)">&#10005;</button>
         </div>
       </div>
       <h2 class="rm-name" id="rm-name">Nikhil Arora</h2>
@@ -2152,7 +2155,7 @@ Something with a little bounce.</p>
 
       <div class="rm-sec">
         <div class="rm-label">Summary</div>
-        <p class="rm-sum">UX/UI and Visual Designer with a background in Game Arts and Information Technology, combining visual design, user-centered design, digital product design, and web development. Experience designing websites, internal business applications, CRM systems, dashboards, brand assets, and digital experiences across multiple businesses.</p>
+        <p class="rm-sum">UX/UI and Visual Designer with a background in Game Arts and Information Technology, combining visual design, user-centered design, digital product design, and web development across websites, internal business applications, CRM systems, dashboards, and brand assets.</p>
       </div>
 
       <div class="rm-sec">
@@ -2162,20 +2165,17 @@ Something with a little bounce.</p>
             <div class="rm-job-head">
               <div>
                 <div class="rm-job-role">Visual Designer, MCBEE Pvt. Ltd.</div>
-                <div class="rm-job-co">Sultanpur, Delhi &middot; Working within StudioBee across the MCBEE group</div>
+                <div class="rm-job-co">Sultanpur, Delhi &middot; within StudioBee across the MCBEE group</div>
               </div>
               <span class="rm-date">Jul 2025 &ndash; Present</span>
             </div>
             <ul>
-              <li>Work across UX/UI design, visual design, web development, branding, digital products, and creative production for MCBEE and its sister companies, StudioBee, BEENEXT, and ISD (Italian Sound Design).</li>
-              <li>Designed and developed websites for StudioBee and BEENEXT, and contributed to the design implementation, functionality, and technical development of MCBEE's previous website in collaboration with the CEO.</li>
-              <li>Currently contributing to the design and development of the ISD website.</li>
-              <li>Designed and developed CRM systems for MCBEE, BEENEXT, and StudioBee to support internal workflows and business operations.</li>
-              <li>Designed and developed My.StudioBee, an internal business management application covering client and project management, quoting, billing, time tracking, equipment management, cost modelling, invoicing, reporting, and profitability tracking.</li>
-              <li>Designed information architecture, user flows, dashboards, navigation, and interfaces for internal business applications and operational tools.</li>
-              <li>Created Zoho email and PDF templates in RTF for MCBEE, BEENEXT, and StudioBee.</li>
-              <li>Designed social media content, motion graphics, portfolios, presentation materials, and design guidelines across the three companies.</li>
-              <li>Worked across AI-assisted development and automation to improve digital workflows and internal business processes.</li>
+              <li>Work across UX/UI, visual design, web development, branding, and creative production for MCBEE, StudioBee, BEENEXT, and ISD (Italian Sound Design).</li>
+              <li>Designed and developed websites for StudioBee and BEENEXT; contributed to MCBEE's previous site with the CEO, and currently building the ISD website.</li>
+              <li>Designed and developed CRM systems and My.StudioBee &mdash; an internal app covering project management, quoting, billing, time tracking, and profitability tracking.</li>
+              <li>Designed information architecture, user flows, dashboards, and interfaces for internal business tools.</li>
+              <li>Designed social media content, motion graphics, portfolios, and design guidelines across all three companies.</li>
+              <li>Worked across AI-assisted development and automation to improve internal workflows.</li>
             </ul>
           </div>
           <div class="rm-job">
@@ -2187,21 +2187,8 @@ Something with a little bounce.</p>
               <span class="rm-date">May 2019 &ndash; Nov 2019</span>
             </div>
             <ul>
-              <li>Designed logos, posters, banners, and other visual communication assets.</li>
-              <li>Developed visual materials aligned with company branding and communication requirements.</li>
+              <li>Designed logos, posters, banners, and other visual materials aligned with company branding.</li>
             </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="rm-sec">
-        <div class="rm-label">Selected Projects</div>
-        <div class="rm-skill-group">
-          <div class="rm-skill-name">3D &amp; Game Art</div>
-          <div class="rm-chips">
-            <span class="rm-chip">Dark Signal</span>
-            <span class="rm-chip">Sunburst Express</span>
-            <span class="rm-chip">Morphing Along</span>
           </div>
         </div>
       </div>
@@ -2211,20 +2198,20 @@ Something with a little bounce.</p>
           <div>
             <div class="rm-label">Education</div>
             <div class="rm-school">
-              <div class="rm-school-name">University of the Arts London, London College of Communication</div>
-              <div class="rm-row"><span class="rm-row-name">BA Animation, Specialization in Game Arts</span><span class="rm-date">2021&ndash;2024</span></div>
-              <div class="rm-row"><span class="rm-row-name">Foundation in Design, Media, and Screen</span><span class="rm-date">2020&ndash;2021</span></div>
+              <div class="rm-school-name">University of the Arts London, LCC</div>
+              <div class="rm-row"><span class="rm-row-name">BA Animation, Game Arts</span><span class="rm-date">2021&ndash;24</span></div>
+              <div class="rm-row"><span class="rm-row-name">Foundation, Design &amp; Media</span><span class="rm-date">2020&ndash;21</span></div>
             </div>
             <div class="rm-school">
               <div class="rm-school-name">Vellore Institute of Technology</div>
-              <div class="rm-row"><span class="rm-row-name">BTech Information Technology</span><span class="rm-date">2017&ndash;2020</span></div>
+              <div class="rm-row"><span class="rm-row-name">BTech Information Technology</span><span class="rm-date">2017&ndash;20</span></div>
             </div>
           </div>
           <div>
             <div class="rm-label">Certifications</div>
             <div class="rm-school">
               <div class="rm-row"><span class="rm-row-name">AI-Assisted Coding for Designers</span><span class="rm-date">2025</span></div>
-              <div class="rm-row"><span class="rm-row-name">Google UX Design Professional Certificate</span><span class="rm-date">2025</span></div>
+              <div class="rm-row"><span class="rm-row-name">Google UX Design Professional Cert.</span><span class="rm-date">2025</span></div>
             </div>
           </div>
         </div>
@@ -2232,36 +2219,11 @@ Something with a little bounce.</p>
 
       <div class="rm-sec">
         <div class="rm-label">Skills</div>
-        <div class="rm-skill-group">
-          <div class="rm-skill-name">UX/UI &amp; Product Design</div>
-          <div class="rm-chips">
-            <span class="rm-chip">User-Centered Design</span><span class="rm-chip">User Research</span><span class="rm-chip">User Flows</span><span class="rm-chip">Information Architecture</span><span class="rm-chip">Wireframing</span><span class="rm-chip">Prototyping</span><span class="rm-chip">Usability Testing</span><span class="rm-chip">UI Design</span><span class="rm-chip">Dashboard Design</span><span class="rm-chip">Web Design</span><span class="rm-chip">Mobile Design</span><span class="rm-chip">Design Systems</span><span class="rm-chip">Style Guides</span>
-          </div>
-        </div>
-        <div class="rm-skill-group">
-          <div class="rm-skill-name">Visual Design</div>
-          <div class="rm-chips">
-            <span class="rm-chip">Branding</span><span class="rm-chip">Graphic Design</span><span class="rm-chip">Layout</span><span class="rm-chip">Typography</span><span class="rm-chip">Digital Design</span><span class="rm-chip">Art Direction</span><span class="rm-chip">Motion Graphics</span>
-          </div>
-        </div>
-        <div class="rm-skill-group">
-          <div class="rm-skill-name">Web &amp; Development</div>
-          <div class="rm-chips">
-            <span class="rm-chip">Frontend Development</span><span class="rm-chip">Responsive Design</span><span class="rm-chip">CMS</span><span class="rm-chip">AI-Assisted Development</span><span class="rm-chip">Automation</span>
-          </div>
-        </div>
-        <div class="rm-skill-group">
-          <div class="rm-skill-name">Design &amp; 3D Tools</div>
-          <div class="rm-chips">
-            <span class="rm-chip">Figma</span><span class="rm-chip">Adobe XD</span><span class="rm-chip">Photoshop</span><span class="rm-chip">Illustrator</span><span class="rm-chip">Maya</span><span class="rm-chip">ZBrush</span><span class="rm-chip">Substance Painter</span><span class="rm-chip">Substance Designer</span><span class="rm-chip">Unreal Engine</span>
-          </div>
-        </div>
-        <div class="rm-skill-group">
-          <div class="rm-skill-name">AI &amp; Development Tools</div>
-          <div class="rm-chips">
-            <span class="rm-chip">Lovable</span><span class="rm-chip">Cursor</span>
-          </div>
-        </div>
+        <p class="rm-skill-line"><span class="rm-skill-name">UX/UI &amp; Product Design</span><span class="rm-skill-list">User-Centered Design, User Research, User Flows, Information Architecture, Wireframing, Prototyping, Usability Testing, UI Design, Dashboard Design, Web &amp; Mobile Design, Design Systems, Style Guides</span></p>
+        <p class="rm-skill-line"><span class="rm-skill-name">Visual Design</span><span class="rm-skill-list">Branding, Graphic Design, Layout, Typography, Digital Design, Art Direction, Motion Graphics</span></p>
+        <p class="rm-skill-line"><span class="rm-skill-name">Web, Dev &amp; AI Tools</span><span class="rm-skill-list">Frontend Development, Responsive Design, CMS, AI-Assisted Development, Automation, Lovable, Cursor</span></p>
+        <p class="rm-skill-line"><span class="rm-skill-name">Design &amp; 3D Tools</span><span class="rm-skill-list">Figma, Adobe XD, Photoshop, Illustrator, Maya, ZBrush, Substance Painter, Substance Designer, Unreal Engine</span></p>
+        <p class="rm-skill-line"><span class="rm-skill-name">Selected Projects</span><span class="rm-skill-list">Dark Signal, Sunburst Express, Morphing Along (3D &amp; Game Art)</span></p>
       </div>
 
     </div>
