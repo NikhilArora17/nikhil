@@ -133,6 +133,40 @@
       color: var(--sage);
     }
 
+    /* ── LOOKBOOKS ───────────────────────── */
+    .lookbooks { max-width: 75rem; margin: 0 auto; padding: 0 5vw 7rem; display: flex; flex-direction: column; gap: 1rem; }
+    .lb-card {
+      display: flex; align-items: center; gap: 1.25rem;
+      padding: 1.25rem 1.5rem;
+      border-radius: .85rem;
+      border: 1px solid rgba(132,154,89,.16);
+      background: rgba(255,255,255,.02);
+      transition: border-color .35s, transform .35s var(--ease-out), box-shadow .35s;
+    }
+    .lb-card:hover {
+      border-color: rgba(218,217,119,.3);
+      transform: translateY(-3px);
+      box-shadow: 0 1rem 2.5rem rgba(0,0,0,.28);
+    }
+    .lb-card:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+    .lb-card:active { transform: translateY(0); }
+    .lb-icon {
+      flex: 0 0 auto;
+      width: 2.75rem; height: 2.75rem;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: .6rem;
+      background: rgba(218,217,119,.1);
+      color: var(--lime);
+    }
+    .lb-body { flex: 1 1 auto; min-width: 0; }
+    .lb-title { font-size: 1rem; font-weight: 600; color: var(--mint); margin-bottom: .25rem; }
+    .lb-meta {
+      font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--sage);
+    }
+    .lb-arrow { flex: 0 0 auto; font-size: 1.1rem; color: var(--olive); transition: transform .35s var(--ease-out), color .35s; }
+    .lb-card:hover .lb-arrow { transform: translate(3px, -3px); color: var(--lime); }
+
     /* ── FOOTER CTA ──────────────────────── */
     .cs-footer { max-width: 75rem; margin: 0 auto; padding: 0 5vw 7rem; text-align: center; }
     .cs-footer p { color: var(--sage); font-size: .9rem; margin-bottom: 1.25rem; }
@@ -150,6 +184,8 @@
     @media (max-width: 700px) {
       .g-card { flex-basis: 8.5rem; }
       .hero { padding-top: 7rem; }
+      .lb-card { padding: 1.1rem 1.1rem; gap: 1rem; }
+      .lb-title { font-size: .9rem; }
     }
   </style>
 </head>
@@ -216,6 +252,41 @@
       <div class="g-meta">Social &middot; Branding</div>
     </div>
   </div>
+</section>
+
+<section class="gallery-head">
+  <h2>Full lookbooks.</h2>
+</section>
+
+<section class="lookbooks">
+  <a class="lb-card" href="branding and videos/mcbee-lookbook-1.pdf" target="_blank" rel="noopener">
+    <span class="lb-icon" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+        <rect x="5" y="2" width="12" height="15" rx="1.5" stroke="currentColor" stroke-opacity=".35" stroke-width="1.1"/>
+        <rect x="3" y="4" width="12" height="15" rx="1.5" stroke="currentColor" stroke-opacity=".6" stroke-width="1.1"/>
+        <rect x="1" y="6" width="12" height="15" rx="1.5" fill="#0A3323" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+    </span>
+    <span class="lb-body">
+      <span class="lb-title">McBee &mdash; Rough Book Vol. 1</span>
+      <span class="lb-meta">PDF &middot; 23 Pages &middot; 7 MB</span>
+    </span>
+    <span class="lb-arrow" aria-hidden="true">&#8599;</span>
+  </a>
+  <a class="lb-card" href="branding and videos/mcbee-lookbook-2.pdf" target="_blank" rel="noopener">
+    <span class="lb-icon" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+        <rect x="5" y="2" width="12" height="15" rx="1.5" stroke="currentColor" stroke-opacity=".35" stroke-width="1.1"/>
+        <rect x="3" y="4" width="12" height="15" rx="1.5" stroke="currentColor" stroke-opacity=".6" stroke-width="1.1"/>
+        <rect x="1" y="6" width="12" height="15" rx="1.5" fill="#0A3323" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+    </span>
+    <span class="lb-body">
+      <span class="lb-title">McBee &mdash; Rough Book Vol. 2</span>
+      <span class="lb-meta">PDF &middot; 42 Pages &middot; 15 MB</span>
+    </span>
+    <span class="lb-arrow" aria-hidden="true">&#8599;</span>
+  </a>
 </section>
 
 <section class="cs-footer">

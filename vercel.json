@@ -1,5 +1,19 @@
 {
   "rewrites": [
     { "source": "/", "destination": "/nik.html" }
+  ],
+  "headers": [
+    {
+      "source": "/branding and videos/mcbee-lookbook-1.pdf",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=2592000" }
+      ]
+    },
+    {
+      "source": "/branding and videos/mcbee-lookbook-2.pdf",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=2592000" }
+      ]
+    }
   ]
 }
