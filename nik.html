@@ -625,7 +625,7 @@
     }
     .rm-sheet {
       position: relative;
-      width: min(44rem, 90vw);
+      width: min(56rem, 90vw);
       aspect-ratio: 210 / 297;
       max-height: 94vh;
       display: flex; flex-direction: column;
@@ -704,7 +704,7 @@
     .rm-page {
       position:absolute; inset:0;
       overflow-y:auto; overflow-x:hidden;
-      padding: 1.4rem 2rem .95rem;
+      padding: 1.75rem 2.5rem 1.5rem;
       opacity:0; pointer-events:none;
       transform: translateX(1rem);
       transition: opacity .4s var(--ease-out), transform .4s var(--ease-out);
@@ -712,13 +712,13 @@
     .rm-page.active { opacity:1; pointer-events:auto; transform:translateX(0); }
     .rm-page.exit-left { transform: translateX(-1rem); }
 
-    .rm-sec + .rm-sec { margin-top:.9rem; }
+    .rm-sec + .rm-sec { margin-top:1.15rem; }
     .rm-label {
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:.6rem; font-weight:700;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.62rem; font-weight:700;
       letter-spacing:.2em; text-transform:uppercase;
       color: rgba(10,51,35,.5);
       display:flex; align-items:center; gap:.7rem;
-      margin-bottom:.75rem;
+      margin-bottom:.8rem;
     }
     .rm-label::after { content:''; display:block; width:1.75rem; height:1px; background:rgba(10,51,35,.4); }
     .rm-sum { font-size:.84rem; line-height:1.75; color:rgba(10,51,35,.78); }
@@ -763,24 +763,23 @@
 
     /* Skills + selected projects: pill chips, like the rest of the site's
        tag language (.pr-tag) - page 2 has the room for it. */
-    .rm-chips { display:flex; flex-wrap:wrap; gap:.28rem; }
+    .rm-chips { display:flex; flex-wrap:wrap; gap:.32rem; }
     .rm-chip {
       font-family:'Sora','Sora Fallback',sans-serif;
-      font-size:.58rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+      font-size:.6rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
       color:rgba(10,51,35,.72); border:1px solid rgba(10,51,35,.22);
-      padding:.2rem .58rem; border-radius:100px; white-space:nowrap;
+      padding:.26rem .7rem; border-radius:100px; white-space:nowrap;
     }
-    .rm-skills-grid { display:grid; grid-template-columns:1fr 1fr; gap:.65rem 2rem; }
-    .rm-skill-group + .rm-skill-group { margin-top:.8rem; }
+    .rm-skills-grid { display:grid; grid-template-columns:1fr 1fr; gap:.85rem 2.5rem; }
     .rm-skill-name {
       font-family:'Sora','Sora Fallback',sans-serif;
-      font-size:.66rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
-      color:var(--forest); margin-bottom:.35rem;
+      font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+      color:var(--forest); margin-bottom:.4rem;
     }
 
-    .rm-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
-    .rm-school + .rm-school { margin-top:.55rem; }
-    .rm-school-name { font-size:.82rem; font-weight:600; letter-spacing:-.008em; line-height:1.35; }
+    .rm-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:2.25rem; }
+    .rm-school + .rm-school { margin-top:.6rem; }
+    .rm-school-name { font-size:.86rem; font-weight:600; letter-spacing:-.008em; line-height:1.35; }
     .rm-row {
       display:flex; justify-content:space-between; align-items:baseline;
       gap:.6rem; margin-top:.3rem;
