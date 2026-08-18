@@ -563,15 +563,24 @@
       </p>
 
       <!-- 3 hero screenshots: early &rarr; mid &rarr; final -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
-        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
-          <img src="beenext/hero-early.png" alt="Hero - initial load, motion competing with headline" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-bottom:1.4rem;">
+        <div>
+          <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:4/3;">
+            <img src="beenext/hero-early.png" alt="Hero - initial load, motion competing with headline" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.4);margin-top:0.55rem;">01 &mdash; Initial Load</p>
         </div>
-        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
-          <img src="beenext/hero-a.png" alt="Hero - hex mesh mid-state" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        <div>
+          <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:4/3;">
+            <img src="beenext/hero-a.png" alt="Hero - mid iteration, calmer motion" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.4);margin-top:0.55rem;">02 &mdash; Mid Iteration</p>
         </div>
-        <div style="border-radius:0;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
-          <img src="beenext/1.png" alt="Hero - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        <div>
+          <div style="border-radius:0;overflow:hidden;border:2px solid var(--blue);aspect-ratio:4/3;">
+            <img src="beenext/1.png" alt="Hero - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:var(--blue);margin-top:0.55rem;">03 &mdash; Final Shipped</p>
         </div>
       </div>
 
@@ -584,10 +593,9 @@
   </div>
 </section>
 
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     6b. DESIGNING FOR CONSTRAINTSLAYOUT ITERATION
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════════════════════════════════════
+     6c. DESIGNING FOR CONSTRAINTSCASE STUDIES
+═══════════════════════════════════════════ -->
 <section class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Designing for Constraints &middot; 02</span>
@@ -595,68 +603,11 @@
 
   <div class="panel-body panel-body-top">
     <div class="inner">
-      <p class="sec-label sl-blue">Brand Marquee</p>
-      <h2 class="h2">Effortless, not heavy <br>the hover pause took five passes.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        An infinite strip of nine brand logos sounds simple. It has to move at a pace people can actually read, pause the instant a CI hovers a name, and never feel like it's fighting the visitor for control - details most visitors never consciously notice, but would notice the absence of.
-      </p>
-
-      <!-- 3 screenshots: marquee scroll pace, hover pause, final shipped -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
-        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
-          <img src="beenext/testi-a.png" alt="Brand marquee - scroll pace test" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
-          <img src="beenext/testi-b.png" alt="Brand marquee - hover pause state" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
-          <img src="beenext/testi-c.png" alt="Brand marquee - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-      </div>
-
-      <!-- annotation -->
-      <div class="annot-card">
-        <p class="annot-label">Brand Marquee Craft</p>
-        <p class="annot-body">Speed, hover pause, and infinite-loop seams all needed several passes to feel invisible. The version that shipped moves at a readable pace, pauses cleanly on hover with zero lag, and never feels like it's fighting the visitor for control.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     6c. DESIGNING FOR CONSTRAINTSCASE STUDIES
-═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 03</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
-      <p class="sec-label sl-blue">Stats Section</p>
+      <p class="sec-label sl-blue">Restraint, Elsewhere Too</p>
       <h2 class="h2">The number is the design.<br>Nothing else competes.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        Icons, charts and ornamentation would have been easy to add and easy to justify. But the research was clear: what actually convinces a Custom Integrator is the number itself - large, confident, in gold, with nothing competing for attention. Restraint was the harder decision to commit to.
+        Icons, charts and ornamentation would have been easy to add and easy to justify. But the research was clear: what actually convinces a Custom Integrator is the number itself - large, confident, in gold, with nothing competing for attention. Restraint was the harder decision to commit to. The same instinct - move slowly, cut what doesn't earn its place - shaped how the marquee's pacing and hover behaviour were tuned, and carried into the tools BEENEXT uses to run the site day to day.
       </p>
-
-      <!-- 3 screenshots: stats section iterations -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
-        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
-          <img src="beenext/cs-a.png" alt="Stats section - decorated draft" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:16/9;">
-          <img src="beenext/cs-b.png" alt="Stats section - icon test" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
-          <img src="beenext/cs-c.png" alt="Stats section - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-      </div>
-
-      <!-- annotation -->
-      <div class="annot-card">
-        <p class="annot-label">Stats Section Restraint</p>
-        <p class="annot-body">Every decorative option - icons, charts, dividers - was tested and cut. The numbers alone, set large and in gold, tested better than any version with added ornamentation.</p>
-      </div>
 
       <!-- content panel: a fourth constraint, usability for a non-technical editor -->
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
