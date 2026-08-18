@@ -210,39 +210,42 @@
 <!-- ═══════════════════════════════════════════
      1. COVER
 ═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light"
-  style="background: radial-gradient(ellipse 75% 85% at 105% 0%, #B8C4F2 0%, #D8DFFA 35%, #EEF1FD 58%, #fff 72%);
+<section class="stack-panel" data-theme="dark"
+  style="background:
+           radial-gradient(ellipse 70% 60% at 100% 0%, rgba(47,72,223,0.35) 0%, transparent 60%),
+           radial-gradient(ellipse 55% 50% at 0% 100%, rgba(47,72,223,0.16) 0%, transparent 65%),
+           var(--black);
          justify-content: space-between; padding-top: 5rem;">
 
   <!-- top label -->
   <div style="padding: 1.5rem 5vw 0;">
-    <p style="font-size:0.55rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,0,0,0.35);">PRODUCT / OPS TOOL | INTERNAL</p>
+    <p style="font-size:0.55rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.4);">PRODUCT / OPS TOOL | INTERNAL</p>
   </div>
 
   <!-- main title block -->
   <div style="padding: 0 5vw;">
     <h1 style="font-size:clamp(3.2rem,8vw,8.5rem);font-weight:700;letter-spacing:-0.04em;line-height:0.9;margin-bottom:0.3rem;" class="fu d1">
-      <span style="color:var(--blue);font-weight:300;">my</span><span style="color:var(--blue);font-weight:700;">studiobee</span>
+      <span style="color:var(--blue);font-weight:300;">my</span><span style="color:var(--white);font-weight:700;">studiobee</span>
     </h1>
-    <p style="font-size:clamp(1.8rem,4vw,4rem);font-weight:600;letter-spacing:-0.03em;color:var(--black);margin-bottom:1.25rem;" class="fu d2">case study</p>
-    <div style="width:clamp(6rem,20vw,16rem);height:1.5px;background:rgba(0,0,0,0.14);margin-bottom:1.25rem;"></div>
-    <p style="font-size:clamp(0.9rem,1.3vw,1.1rem);color:rgba(0,0,0,0.5);line-height:1.65;max-width:56ch;" class="fu d3">
+    <p style="font-size:clamp(1.8rem,4vw,4rem);font-weight:600;letter-spacing:-0.03em;color:var(--white);margin-bottom:1.25rem;" class="fu d2">case study</p>
+    <div style="width:clamp(6rem,20vw,16rem);height:1.5px;background:rgba(255,255,255,0.16);margin-bottom:1.25rem;"></div>
+    <p style="font-size:clamp(0.9rem,1.3vw,1.1rem);color:rgba(255,255,255,0.55);line-height:1.65;max-width:56ch;" class="fu d3">
       Turning quotes, invoices, and studio ops into one system the team actually opens every day &mdash; instead of spreadsheets, WhatsApp, and a shared notebook.
     </p>
   </div>
 
   <!-- metadata footer bar -->
-  <div style="border-top:1px solid rgba(0,0,0,0.09);padding:1.25rem 5vw;display:flex;gap:3rem;flex-wrap:wrap;" class="fu d4">
+  <div style="border-top:1px solid rgba(255,255,255,0.1);padding:1.25rem 5vw;display:flex;gap:3rem;flex-wrap:wrap;color:var(--white);" class="fu d4">
     <div>
-      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.3rem;">Role</p>
+      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem;">Role</p>
       <p style="font-size:0.82rem;font-weight:600;">Product Designer &amp; Full-Stack Builder</p>
     </div>
     <div>
-      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.3rem;">Year</p>
+      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem;">Year</p>
       <p style="font-size:0.82rem;font-weight:600;">2026 &middot; in active use</p>
     </div>
     <div>
-      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.3rem;">Deliverables</p>
+      <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem;">Deliverables</p>
       <p style="font-size:0.82rem;font-weight:600;">Billing engine &middot; CRM &middot; Cost &amp; profit model &middot; Supabase backend</p>
     </div>
   </div>
@@ -486,12 +489,11 @@
         <!-- sitemap -->
         <div>
           <div class="sm-item sm-on">Dashboard</div>
-          <div class="sm-item sm-off">CRM &middot; Clients</div>
-          <div class="sm-item sm-on">Projects &middot; Tasks &middot; Time</div>
+          <div class="sm-item sm-off">Work &middot; Clients, Projects, Tasks</div>
+          <div class="sm-item sm-on">Time &amp; Performance &middot; Clock In, Performance</div>
           <div class="sm-item sm-off">Billing &middot; Quotes → Proformas → Invoices → Receipts</div>
-          <div class="sm-item sm-on">Admin &middot; Team, Services, Cost Model, Profit Split, Equipment, Vendors, Hires</div>
+          <div class="sm-item sm-on">Admin &middot; Team, Services, Cost Model, Equipment, Vendors, Hires, Bin</div>
           <div class="sm-item sm-off">Insights &middot; Reports, Time Log</div>
-          <div class="sm-item sm-fixed">Bin &mdash; owner/admin only, kept separate</div>
         </div>
 
         <!-- annotation cards -->
@@ -504,12 +506,12 @@
           <div class="card card-blue">
             <p class="c-label">Why Admin Is Pushed Down</p>
             <p class="c-title">Configuration, not daily use</p>
-            <p class="c-body">Team, cost model, profit split, equipment, vendor and hire ratings are set-and-forget. Keeping them out of the primary flow means the daily-use items never compete for attention.</p>
+            <p class="c-body">Team, cost model, equipment, vendor and hire ratings are set-and-forget. Keeping them out of the primary flow means the daily-use items never compete for attention.</p>
           </div>
           <div class="card card-blue">
-            <p class="c-label">Why Bin Sits Alone</p>
-            <p class="c-title">A safety net, not a workflow</p>
-            <p class="c-body">Deliberately separated from every other group, owner/admin only, and visually distinct &mdash; you should only ever land here on purpose, after a mistake, not while browsing.</p>
+            <p class="c-label">Why Bin Lives Inside Admin Now</p>
+            <p class="c-title">A safety net, folded in &mdash; not removed</p>
+            <p class="c-body">Bin started as its own standalone sidebar link. Once the nav consolidated from ten groups to six, it became the last tab inside Admin instead &mdash; still admin-tier only, just no longer a full top-level link for a page you should rarely open. See Designing for Constraints &middot; 05.</p>
           </div>
           <div class="card card-blue">
             <p class="c-label">Primary Path</p>
@@ -653,6 +655,243 @@
         <div class="card card-blue">
           <p class="c-label">Owner/Admin Only</p>
           <p class="c-body">The Bin itself is restricted and kept out of the everyday sidebar groups, so recovering a mistake is deliberate, not a click away by accident.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     6d. DESIGNING FOR CONSTRAINTS · SECURITY HARDENING
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 04</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Security Hardening</p>
+      <h2 class="h2">One RPC call, no login required,<br>could delete a client forever.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        The ask was to make the database &ldquo;squeaky clean, OCD level.&rdquo; It wasn't a formality &mdash; a full Supabase audit turned up a genuinely exploitable, unauthenticated data-deletion path already live in production, plus a handful of quieter leaks found the same way in the days after.
+      </p>
+
+      <!-- before / after code diff -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.1rem;" class="two-col">
+        <div style="background:#0f0f0f;border-radius:0.6rem;padding:0.85rem 1rem;border-left:3px solid #E05050;">
+          <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#e78888;margin-bottom:0.55rem;">Before &middot; live in production</p>
+          <pre style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.64rem;line-height:1.6;color:rgba(255,255,255,0.7);white-space:pre-wrap;margin:0;overflow-x:auto;">create function purge_client(client_id uuid)
+returns void security definer as $$
+begin
+  if not is_owner_or_admin() then
+    raise exception 'forbidden';
+  end if;
+  delete from clients where id = client_id;
+  -- + every project, invoice, receipt under it
+end; $$;
+
+-- anon inherits EXECUTE by default</pre>
+        </div>
+        <div style="background:#0f0f0f;border-radius:0.6rem;padding:0.85rem 1rem;border-left:3px solid var(--blue);">
+          <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#8fa0f5;margin-bottom:0.55rem;">After &middot; 0027_security_hardening.sql</p>
+          <pre style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.64rem;line-height:1.6;color:rgba(255,255,255,0.7);white-space:pre-wrap;margin:0;overflow-x:auto;">if not coalesce(is_owner_or_admin(), false) then
+  raise exception 'insufficient privilege';
+end if;
+perform _purge_client_data(client_id);
+-- delete logic moved to a private fn,
+-- zero grants to anyone
+
+revoke all on function purge_client
+  from public, anon;
+grant execute on function purge_client
+  to authenticated, service_role;</pre>
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">The Null Trap</p>
+        <p class="annot-body"><code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">auth.uid()</code> is NULL for an anonymous request, so <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">is_owner_or_admin()</code> also returns NULL &mdash; and in Postgres, <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">NOT NULL</code> evaluates to NULL, not TRUE. A bare <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">if not is_owner_or_admin()</code> guard silently never raised for an anon caller. Wrapping every <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">security definer</code> check in <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">coalesce(&hellip;, false)</code> was the one-line difference between &ldquo;requires login&rdquo; and &ldquo;accidentally requires nothing.&rdquo;</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">Unauthenticated Delete RPC</p>
+          <p class="c-body"><code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">purge_client(uuid)</code> ran as <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">security definer</code> with a check that never fired, and <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">anon</code> held EXECUTE &mdash; anyone with the project's public API key could wipe any client.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Permissive RLS Override</p>
+          <p class="c-body">Three tables carried a leftover <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">USING(true)</code> policy stacked on the correct role-gated one. Permissive policies OR together, so <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">true</code> silently won &mdash; unauthenticated read/write/delete on real project data.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Anon Table Grants</p>
+          <p class="c-body"><code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">anon</code> held raw INSERT/SELECT/UPDATE/DELETE on 18 internal CRM tables. Mostly caught by RLS, but that made RLS the only line of defense &mdash; revoked outright, since this app has no anon-facing flows.</p>
+        </div>
+      </div>
+
+      <div class="div-line div-dark"></div>
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.7rem;">Further Hardening &middot; Same Week</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.55rem;" class="four-col">
+        <div class="card card-blue">
+          <p class="c-label">Fail-Open Cron Secret</p>
+          <p class="c-body">An unset <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">CRON_SECRET</code> made the check compare against the literal string <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">"Bearer undefined"</code> &mdash; anyone sending that exact header passed. Now the secret's presence is checked first.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Cost Breakdown Leak</p>
+          <p class="c-body">Pricing a line item returned the raw hourly-rate/overhead breakdown to every billing-role caller, including managers who should only see description, rate, and amount. Now gated by the same role check as the read path.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Filename-Derived Extension</p>
+          <p class="c-body">Avatar uploads picked their storage extension from <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">file.name</code> &mdash; attacker-controlled, easy to spoof. Now derived from the validated MIME type instead.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Cron Hit the Login Gate</p>
+          <p class="c-body">Session middleware ran on <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">/api/cron/*</code> too, redirecting Vercel Cron's bearer-only requests to <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">/login</code> before the route's own secret check ever ran.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     6e. DESIGNING FOR CONSTRAINTS · NAV, ROUND TWO
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 05</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Navigation, Revisited</p>
+      <h2 class="h2">Ten sidebar groups covering eighteen<br>pages became six links covering five.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        The IA in the section above shipped clean, but real use grew it sideways: six single-item groups (Dashboard aside, then Clients, Projects, Tasks, Clock, Performance) each rendered their own section header for exactly one link. The fix was two changes at once &mdash; merge same-workflow groups in the sidebar, then merge the pages they pointed to into tabs on one route each, reusing the shadcn Tabs pattern already proven on Equipment.
+      </p>
+
+      <!-- before / after sitemap comparison -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-bottom:1.1rem;" class="two-col">
+        <div>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,0,0,0.32);margin-bottom:0.5rem;">Before &middot; 10 groups</p>
+          <div class="sm-item sm-off">Dashboard</div>
+          <div class="sm-item sm-fixed">Clients</div>
+          <div class="sm-item sm-fixed">Projects</div>
+          <div class="sm-item sm-fixed">Tasks</div>
+          <div class="sm-item sm-fixed">Clock In</div>
+          <div class="sm-item sm-fixed">Performance</div>
+          <div class="sm-item sm-off">Billing</div>
+          <div class="sm-item sm-off">Admin</div>
+          <div class="sm-item sm-off">Insights</div>
+          <div class="sm-item sm-fixed">Bin</div>
+        </div>
+        <div>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem;">After &middot; 6 links, 5 tabbed hubs</p>
+          <div class="sm-item sm-on">Dashboard</div>
+          <div class="sm-item sm-on">Work &middot; 3 tabs</div>
+          <div class="sm-item sm-on">Time &amp; Performance &middot; 2 tabs</div>
+          <div class="sm-item sm-on">Billing &middot; 4 tabs</div>
+          <div class="sm-item sm-on">Admin &middot; 7 tabs</div>
+          <div class="sm-item sm-on">Insights &middot; 2 tabs</div>
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">A Gating Bug Found Along the Way</p>
+        <p class="annot-body">Managers could open Time Log directly by URL but had no nav path to it &mdash; it lived under an admin-tier-only Insights link they couldn't see. Folding Time Log into <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">/reports</code> and relaxing that page's gate from admin-tier to billing-role fixed access and visibility in the same change.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">One Real Page Per Hub</p>
+          <p class="c-body">Detail and create routes (<code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">/clients/[id]</code>, <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">/quotes/new</code>) stayed untouched &mdash; only the index/list pages merged into tabs on a shared route.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">The Toggle Button, Twice Wrong</p>
+          <p class="c-body">Shipped as <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">text-white/40</code> on a dark sidebar &mdash; nearly invisible at rest. Fixed with a permanent pill background, then found duplicated: a second control inside the sidebar itself, unreachable once collapsed.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">~12 Files, Quietly</p>
+          <p class="c-body">The nav component was the easy part. The real surface area was every <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">revalidatePath()</code> target, the middleware route allowlist, and every dashboard/back-button link still pointing at an old route.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     6f. DESIGNING FOR CONSTRAINTS · ROLE TIERS & PERFORMANCE
+═══════════════════════════════════════════ -->
+<section class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints &middot; 06</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Roles, Once More</p>
+      <h2 class="h2">A fourth tier meant admin<br>could no longer out-rank admin.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        The role model had to shrink before it could grow. Owner and admin turned out to have identical permissions everywhere &mdash; any admin could already demote or delete an owner &mdash; so they collapsed into one admin role first. Then a genuinely new capability arrived (scoring performance, controlling profit-split), which needed a tier above admin: <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">super_admin</code>. That's when a security review found the new tier wasn't actually protected from the level below it.
+      </p>
+
+      <!-- before / after code diff -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.1rem;" class="two-col">
+        <div style="background:#0f0f0f;border-radius:0.6rem;padding:0.85rem 1rem;border-left:3px solid #E05050;">
+          <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#e78888;margin-bottom:0.55rem;">Before &middot; team.ts</p>
+          <pre style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.64rem;line-height:1.6;color:rgba(255,255,255,0.7);white-space:pre-wrap;margin:0;overflow-x:auto;">export async function updateEmployeeRole(
+  id: string, role: Role
+) {
+  await requireAdminTier();
+  // any admin can set role to/from
+  // super_admin &mdash; including their own
+  // colleagues, or an existing super_admin
+  await supabase.from("profiles")
+    .update({ role }).eq("id", id);
+}</pre>
+        </div>
+        <div style="background:#0f0f0f;border-radius:0.6rem;padding:0.85rem 1rem;border-left:3px solid var(--blue);">
+          <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#8fa0f5;margin-bottom:0.55rem;">After &middot; team.ts + migration 0034</p>
+          <pre style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.64rem;line-height:1.6;color:rgba(255,255,255,0.7);white-space:pre-wrap;margin:0;overflow-x:auto;">const profile = await requireAdminTier();
+await requireSuperAdminIfTargetIs
+  OrBecomesSuperAdmin(profile.role, id, role);
+await supabase.from("profiles")
+  .update({ role }).eq("id", id);
+
+-- + matching USING/WITH CHECK on the
+-- profiles RLS policy, so direct API
+-- access is bound by the same rule</pre>
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">The Tier Below Wasn't Actually Protected</p>
+        <p class="annot-body"><code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">requireAdminTier()</code> checked the caller's role but never the target's &mdash; so any plain admin could promote a colleague to <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">super_admin</code>, demote or delete an existing one, or invite a new user directly into the top tier. Fixed at both layers: an app-side guard that compares caller against target, and a matching RLS restriction so the rule holds even against direct API calls, not just the app's own UI.</p>
+      </div>
+
+      <div class="div-line div-dark"></div>
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.7rem;">Further Changes &middot; Same Sprint</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.55rem;" class="four-col">
+        <div class="card card-blue">
+          <p class="c-label">A Build-Only Bug</p>
+          <p class="c-body">Importing the value <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">isAdminTier</code> from <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">profile.ts</code> into a client component dragged <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">next/headers</code> into the browser bundle. <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">tsc</code> stayed clean &mdash; only <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">next build</code> caught it. Pure helpers split into a zero-dependency <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">lib/role.ts</code>.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Clock-Out Raced the Prompt</p>
+          <p class="c-body">Geolocation's timeout started counting the moment it was called &mdash; including the time spent on a first-time permission prompt. An 8s timer plus a slow &ldquo;Allow&rdquo; click read as denial and blocked clock-out. Bumped to 30s.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Clock-In Now Needs a Selfie</p>
+          <p class="c-body">Clock-in requires a live selfie and blocks entirely on camera/location denial, since this is the PWA's attendance record, not a bare toggle. Time entries moved to the app's existing 30-day soft-delete pattern; selfies auto-purge on the same cron used for the delete RPCs above.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Employees Get a Real Dashboard</p>
+          <p class="c-body">Employees were redirected straight to Work with nothing tailored to them. Now they land on the Dashboard with a clock widget and their own task counts &mdash; every billing-sensitive section (finance snapshot, quotes, margin) hidden by role.</p>
         </div>
       </div>
     </div>
@@ -881,11 +1120,11 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
         <div style="background:var(--black);border-radius:0.75rem;padding:0.9rem;">
           <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.35rem;">What Worked</p>
-          <p style="font-size:0.7rem;color:rgba(255,255,255,0.55);line-height:1.55;">Per-document line-item views &middot; soft-delete-everywhere pattern &middot; shared QuoteEditor across all four document types &middot; single profile-level star ratings</p>
+          <p style="font-size:0.7rem;color:rgba(255,255,255,0.55);line-height:1.55;">Per-document line-item views &middot; soft-delete-everywhere pattern &middot; shared QuoteEditor across all four document types &middot; single profile-level star ratings &middot; one shadcn Tabs pattern reused for every consolidated hub page</p>
         </div>
         <div style="background:rgba(0,0,0,0.05);border-radius:0.75rem;padding:0.9rem;">
           <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.35rem;">What I'd Revisit</p>
-          <p style="font-size:0.7rem;color:rgba(0,0,0,0.45);line-height:1.55;">A tracked migration history from day one &middot; billing-period awareness designed in from the start, not bolted on &middot; earlier security pass on admin-only RPCs</p>
+          <p style="font-size:0.7rem;color:rgba(0,0,0,0.45);line-height:1.55;">A tracked migration history from day one &middot; billing-period awareness designed in from the start, not bolted on &middot; a role model with its final tier count decided up front, instead of merge-then-split &middot; run <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">next build</code> (not just <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">tsc</code>) before calling a change done</p>
         </div>
       </div>
     </div>
@@ -897,12 +1136,15 @@
      FOOTER CTA
 ═══════════════════════════════════════════ -->
 <section class="stack-panel" data-theme="dark"
-  style="background:var(--blue);justify-content:center;align-items:center;text-align:center;padding:3rem 5vw;">
+  style="background:
+           radial-gradient(ellipse 60% 80% at 50% 100%, rgba(47,72,223,0.28) 0%, transparent 65%),
+           var(--black);
+         justify-content:center;align-items:center;text-align:center;padding:3rem 5vw;">
   <div class="inner">
     <p style="font-size:0.58rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:1rem;">Up Next</p>
     <h2 style="font-size:clamp(2rem,5vw,4rem);font-weight:700;letter-spacing:-0.03em;color:white;margin-bottom:2rem;">See more work &rarr;</h2>
     <a href="nik.html"
-      style="display:inline-flex;align-items:center;gap:0.75rem;background:white;color:var(--blue);font-size:0.76rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.9rem 2.25rem;border-radius:100px;text-decoration:none;transition:transform 0.25s cubic-bezier(0.16,1,0.3,1),box-shadow 0.25s;"
+      style="display:inline-flex;align-items:center;gap:0.75rem;background:var(--blue);color:white;font-size:0.76rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.9rem 2.25rem;border-radius:100px;text-decoration:none;transition:transform 0.25s cubic-bezier(0.16,1,0.3,1),box-shadow 0.25s;"
       onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 12px 32px rgba(0,0,0,0.18)'"
       onmouseout="this.style.transform='scale(1)';this.style.boxShadow='none'">
       &larr; Back to Portfolio
