@@ -133,6 +133,141 @@
       color: var(--sage);
     }
 
+    /* ── SOCIAL POSTS (grouped by brand, each links out to that brand's IG) ── */
+    .social-posts { max-width: 75rem; margin: 0 auto; padding: 0 5vw 7rem; display: flex; flex-direction: column; gap: 2.75rem; }
+    .sp-brand {
+      font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--olive); margin-bottom: 1rem;
+    }
+    .sp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .sp-card {
+      display: block; border-radius: .85rem; overflow: hidden;
+      border: 1px solid rgba(132,154,89,.16);
+      background: rgba(255,255,255,.02);
+      transition: border-color .35s, transform .35s var(--ease-out), box-shadow .35s;
+    }
+    .sp-card:hover {
+      border-color: rgba(218,217,119,.3);
+      transform: translateY(-4px);
+      box-shadow: 0 1rem 2.5rem rgba(0,0,0,.28);
+    }
+    .sp-card:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+    .sp-card img {
+      width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block;
+      transition: transform .6s var(--ease-out);
+    }
+    .sp-card:hover img { transform: scale(1.03); }
+    .sp-info { display: block; padding: 1rem 1.2rem; border-top: 1px solid rgba(132,154,89,.1); }
+    .sp-title { display: block; font-size: .88rem; font-weight: 600; color: var(--mint); margin-bottom: .3rem; }
+    .sp-handle {
+      display: block; font-size: .65rem; font-weight: 600; letter-spacing: .06em;
+      color: var(--sage); transition: color .3s;
+    }
+    .sp-card:hover .sp-handle { color: var(--lime); }
+
+    /* ── LOOKBOOKS (view-only PDF viewer, matches homepage #proj-grid cards) ── */
+    .lookbooks {
+      max-width: 75rem; margin: 0 auto; padding: 0 5vw 7rem;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;
+    }
+    .proj-card {
+      border-radius: .75rem; overflow: hidden;
+      border: 1px solid rgba(132,154,89,.14);
+      background: rgba(255,255,255,.02);
+      cursor: pointer;
+      transition: border-color .35s, transform .35s var(--ease-out), box-shadow .35s;
+    }
+    .proj-card:hover {
+      border-color: rgba(218,217,119,.28);
+      transform: translateY(-5px);
+      box-shadow: 0 1.25rem 3rem rgba(0,0,0,.3);
+    }
+    .proj-card:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+    .proj-thumb {
+      width: 100%; aspect-ratio: 16 / 10; overflow: hidden; position: relative;
+      background: rgba(0,0,0,.25);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .proj-thumb img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top;
+      display: block; transition: transform .6s var(--ease-out);
+    }
+    .proj-card:hover .proj-thumb img { transform: scale(1.03); }
+    .proj-thumb-loading {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(10,51,35,.5);
+    }
+    .proj-thumb-loading::after {
+      content: ''; width: 1.5rem; height: 1.5rem; border-radius: 50%;
+      border: 2px solid rgba(132,154,89,.3); border-top-color: var(--olive);
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .proj-info {
+      display: grid; grid-template-columns: 3ch 1fr auto auto; align-items: center; gap: 1rem;
+      padding: 1.1rem 1.4rem;
+      border-top: 1px solid rgba(132,154,89,.1);
+    }
+    .pr-num { font-size: .65rem; font-weight: 700; letter-spacing: .12em; color: var(--olive); padding-top: .2rem; }
+    .pr-name { font-size: clamp(.92rem, 1.4vw, 1.05rem); font-weight: 600; letter-spacing: -.02em; color: var(--mint); transition: color .3s; line-height: 1.15; }
+    .pr-meta { font-size: .68rem; color: var(--sage); margin-top: .25rem; letter-spacing: .04em; }
+    .pr-tag {
+      font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--sage); border: 1px solid rgba(132,154,89,.3);
+      padding: .25rem .75rem; border-radius: 100px;
+      transition: border-color .3s, color .3s; white-space: nowrap;
+    }
+    .pr-arr {
+      width: 2.2rem; height: 2.2rem; border-radius: 50%;
+      border: 1px solid rgba(132,154,89,.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--sage); flex-shrink: 0;
+      transition: background .3s, border-color .3s, color .3s, transform .4s var(--ease-out);
+    }
+    .proj-card:hover .pr-name { color: var(--lime); }
+    .proj-card:hover .pr-tag  { border-color: rgba(218,217,119,.3); color: var(--lime); }
+    .proj-card:hover .pr-arr  { background: var(--lime); border-color: var(--lime); color: var(--forest); transform: rotate(45deg); }
+
+    /* ─── PDF MODAL (canvas-rendered, view-only - no downloadable file link) ── */
+    #pdf-modal { position: fixed; inset: 0; z-index: 900; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    #pdf-modal.open { opacity: 1; pointer-events: all; }
+    #pdf-modal-inner { position: absolute; inset: 0; display: flex; flex-direction: column; background: #ECEAE4; }
+    #pdf-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .85rem 1.5rem;
+      background: var(--forest);
+      border-bottom: 1px solid rgba(132,154,89,.15);
+      flex-shrink: 0;
+    }
+    #pdf-modal-title { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mint); }
+    .pdf-btn {
+      width: 2rem; height: 2rem; border-radius: 50%;
+      border: 1px solid rgba(132,154,89,.3);
+      background: transparent; color: var(--mint);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: .85rem;
+      transition: background .2s, border-color .2s, color .2s, transform .25s var(--ease-out);
+    }
+    .pdf-btn:hover { background: var(--lime); border-color: var(--lime); color: var(--forest); }
+    .pdf-btn:active { transform: scale(.92); }
+    #pdf-modal-viewport {
+      flex: 1; overflow-y: auto; overflow-x: hidden;
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+      padding: 2.5rem 2rem;
+    }
+    #pdf-loading {
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      color: var(--sage); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
+      padding: 4rem;
+    }
+    #pdf-loading::before {
+      content: ''; width: 2rem; height: 2rem; border-radius: 50%;
+      border: 2px solid rgba(132,154,89,.3); border-top-color: var(--olive);
+      animation: spin .7s linear infinite;
+    }
+    .pdf-page-canvas { width: min(100%, 68.75rem); box-shadow: 0 4px 32px rgba(0,0,0,.15); border-radius: 4px; display: block; }
+
     /* ── FOOTER CTA ──────────────────────── */
     .cs-footer { max-width: 75rem; margin: 0 auto; padding: 0 5vw 7rem; text-align: center; }
     .cs-footer p { color: var(--sage); font-size: .9rem; margin-bottom: 1.25rem; }
@@ -150,6 +285,9 @@
     @media (max-width: 700px) {
       .g-card { flex-basis: 8.5rem; }
       .hero { padding-top: 7rem; }
+      .lookbooks { grid-template-columns: 1fr; }
+      .pr-tag { display: none; }
+      .sp-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -218,10 +356,263 @@
   </div>
 </section>
 
+<section class="gallery-head">
+  <h2>From the feed.</h2>
+</section>
+
+<section class="social-posts">
+  <div class="sp-group">
+    <div class="sp-brand">K-Array India</div>
+    <div class="sp-grid">
+      <a class="sp-card" href="https://www.instagram.com/karray_india/" target="_blank" rel="noopener">
+        <img src="Social media/web/karray-dragon-kxt18p.jpg" alt="K-Array Dragon-KXT18P Instagram post" loading="lazy" />
+        <span class="sp-info">
+          <span class="sp-title">Dragon-KXT18P</span>
+          <span class="sp-handle">@karray_india &#8599;</span>
+        </span>
+      </a>
+      <a class="sp-card" href="https://www.instagram.com/karray_india/" target="_blank" rel="noopener">
+        <img src="Social media/web/karray-firenze-kh7p.jpg" alt="K-Array Firenze-KH7P I Instagram post" loading="lazy" />
+        <span class="sp-info">
+          <span class="sp-title">Firenze-KH7P I</span>
+          <span class="sp-handle">@karray_india &#8599;</span>
+        </span>
+      </a>
+      <a class="sp-card" href="https://www.instagram.com/karray_india/" target="_blank" rel="noopener">
+        <img src="Social media/web/karray-kgear-gt8.jpg" alt="KGEAR GT8 Instagram post" loading="lazy" />
+        <span class="sp-info">
+          <span class="sp-title">KGEAR GT8</span>
+          <span class="sp-handle">@karray_india &#8599;</span>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div class="sp-group">
+    <div class="sp-brand">BeeNext</div>
+    <div class="sp-grid">
+      <a class="sp-card" href="https://www.instagram.com/beenext.co.in/" target="_blank" rel="noopener">
+        <img src="Social media/web/beenext-8k-gaming.jpg" alt="BeeNext 8K Gaming Instagram post" loading="lazy" />
+        <span class="sp-info">
+          <span class="sp-title">8K Gaming, Up To 300m</span>
+          <span class="sp-handle">@beenext.co.in &#8599;</span>
+        </span>
+      </a>
+      <a class="sp-card" href="https://www.instagram.com/beenext.co.in/" target="_blank" rel="noopener">
+        <img src="Social media/web/beenext-av-over-ip.jpg" alt="BeeNext AV over IP Instagram post" loading="lazy" />
+        <span class="sp-info">
+          <span class="sp-title">Bring Your Home To Life</span>
+          <span class="sp-handle">@beenext.co.in &#8599;</span>
+        </span>
+      </a>
+      <a class="sp-card" href="https://www.instagram.com/beenext.co.in/" target="_blank" rel="noopener">
+        <img src="Social media/web/beenext-avpro-edge.jpg" alt="BeeNext AVPro Edge Solutions Instagram post" loading="lazy" />
+        <span class="sp-info">
+          <span class="sp-title">AVPro Edge Solutions</span>
+          <span class="sp-handle">@beenext.co.in &#8599;</span>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div class="sp-group">
+    <div class="sp-brand">McBee</div>
+    <div class="sp-grid">
+      <a class="sp-card" href="https://www.instagram.com/mcbee.in/" target="_blank" rel="noopener">
+        <img src="Social media/web/mcbee-hiring-visual-designer.jpg" alt="McBee hiring Visual Designer Instagram post" loading="lazy" />
+        <span class="sp-info">
+          <span class="sp-title">We&rsquo;re Hiring &mdash; Visual Designer</span>
+          <span class="sp-handle">@mcbee.in &#8599;</span>
+        </span>
+      </a>
+      <a class="sp-card" href="https://www.instagram.com/mcbee.in/" target="_blank" rel="noopener">
+        <img src="Social media/web/mcbee-care-behind-scene.jpg" alt="McBee Care Behind the Scene Instagram post" loading="lazy" />
+        <span class="sp-info">
+          <span class="sp-title">Care Behind The Scene</span>
+          <span class="sp-handle">@mcbee.in &#8599;</span>
+        </span>
+      </a>
+      <a class="sp-card" href="https://www.instagram.com/mcbee.in/" target="_blank" rel="noopener">
+        <img src="Social media/web/mcbee-planning-phase.jpg" alt="McBee Planning Phase diagram Instagram post" loading="lazy" />
+        <span class="sp-info">
+          <span class="sp-title">Planning Phase</span>
+          <span class="sp-handle">@mcbee.in &#8599;</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-head">
+  <h2>Full lookbooks.</h2>
+</section>
+
+<div class="lookbooks" id="lb-grid">
+  <div class="proj-card" data-pdf="branding and videos/mcbee-lookbook-1.pdf" data-title="McBee &mdash; Rough Book Vol. 1" tabindex="0" role="button">
+    <div class="proj-thumb">
+      <img class="pdf-thumb-img" data-pdf="branding and videos/mcbee-lookbook-1.pdf" alt="McBee &mdash; Rough Book Vol. 1 preview" />
+      <div class="proj-thumb-loading"></div>
+    </div>
+    <div class="proj-info">
+      <span class="pr-num">01</span>
+      <div class="pr-main">
+        <div class="pr-name">Rough Book Vol. 1</div>
+        <div class="pr-meta">23 Pages</div>
+      </div>
+      <span class="pr-tag">Lookbook</span>
+      <div class="pr-arr">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="proj-card" data-pdf="branding and videos/mcbee-lookbook-2.pdf" data-title="McBee &mdash; Rough Book Vol. 2" tabindex="0" role="button">
+    <div class="proj-thumb">
+      <img class="pdf-thumb-img" data-pdf="branding and videos/mcbee-lookbook-2.pdf" alt="McBee &mdash; Rough Book Vol. 2 preview" />
+      <div class="proj-thumb-loading"></div>
+    </div>
+    <div class="proj-info">
+      <span class="pr-num">02</span>
+      <div class="pr-main">
+        <div class="pr-name">Rough Book Vol. 2</div>
+        <div class="pr-meta">42 Pages</div>
+      </div>
+      <span class="pr-tag">Lookbook</span>
+      <div class="pr-arr">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
 <section class="cs-footer">
   <p>Want to see more of the branding work behind these?</p>
   <a href="nik.html#contact" class="btn-back">Get in touch &rarr;</a>
 </section>
+
+<!-- ── PDF MODAL (view-only) ──────────────────── -->
+<div id="pdf-modal">
+  <div id="pdf-modal-inner">
+    <div id="pdf-modal-header">
+      <span id="pdf-modal-title"></span>
+      <button class="pdf-btn" id="pdf-close" title="Close (Esc)">&#10005;</button>
+    </div>
+    <div id="pdf-modal-viewport">
+      <div id="pdf-loading">Loading</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+/* PDF cache - shared by thumbnail renderer and viewer, so opening a
+   lookbook after its thumbnail has already loaded reuses that fetch
+   instead of downloading the file twice. */
+const pdfCache = {};
+async function getDoc(pdfPath) {
+  if (!pdfCache[pdfPath]) pdfCache[pdfPath] = pdfjsLib.getDocument(pdfPath).promise;
+  return pdfCache[pdfPath];
+}
+
+/* Thumbnails: render page 1 of each lookbook to a small canvas, once it
+   scrolls into view - keeps the initial page load from fetching either
+   PDF until a visitor actually reaches this section. */
+const thumbObserver = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    obs.unobserve(entry.target);
+    renderThumb(entry.target);
+  });
+}, { rootMargin: '200px' });
+
+async function renderThumb(img) {
+  const loader  = img.nextElementSibling;
+  const pdfPath = img.dataset.pdf;
+  try {
+    const pdf    = await getDoc(pdfPath);
+    const page   = await pdf.getPage(1);
+    const vp     = page.getViewport({ scale: 1 });
+    const scale  = (Math.min(img.parentElement.offsetWidth || 600, 800) * 2) / vp.width;
+    const scaled = page.getViewport({ scale });
+    const cvs    = document.createElement('canvas');
+    cvs.width    = scaled.width;
+    cvs.height   = scaled.height;
+    await page.render({ canvasContext: cvs.getContext('2d'), viewport: scaled }).promise;
+    img.src = cvs.toDataURL('image/jpeg', 0.88);
+    img.onload = () => { if (loader) loader.remove(); };
+  } catch (e) {
+    if (loader) loader.remove();
+    img.parentElement.style.background = 'rgba(10,51,35,0.6)';
+  }
+}
+document.querySelectorAll('.pdf-thumb-img').forEach(img => thumbObserver.observe(img));
+
+/* ── PDF VIEWER ──
+   Renders every page to its own canvas inside the modal - the lookbook
+   itself is never linked to as a downloadable file, only ever drawn to
+   screen page by page. */
+const modal     = document.getElementById('pdf-modal');
+const titleEl   = document.getElementById('pdf-modal-title');
+const viewport  = document.getElementById('pdf-modal-viewport');
+const loadingEl = document.getElementById('pdf-loading');
+const closeBtn  = document.getElementById('pdf-close');
+
+async function openViewer(pdfPath, title) {
+  titleEl.textContent = title;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  viewport.scrollTop = 0;
+
+  while (viewport.firstChild) viewport.removeChild(viewport.firstChild);
+  viewport.appendChild(loadingEl);
+
+  const doc  = await getDoc(pdfPath);
+  const maxW = Math.min(viewport.offsetWidth - 80, 1100);
+  const dpr  = window.devicePixelRatio || 1;
+
+  if (loadingEl.parentNode) viewport.removeChild(loadingEl);
+
+  for (let i = 1; i <= doc.numPages; i++) {
+    const page   = await doc.getPage(i);
+    const vp     = page.getViewport({ scale: 1 });
+    const scale  = (maxW / vp.width) * dpr;
+    const scaled = page.getViewport({ scale });
+
+    const canvas        = document.createElement('canvas');
+    canvas.className    = 'pdf-page-canvas';
+    canvas.width         = scaled.width;
+    canvas.height        = scaled.height;
+    canvas.style.width  = (scaled.width  / dpr) + 'px';
+    canvas.style.height = (scaled.height / dpr) + 'px';
+    viewport.appendChild(canvas);
+
+    await page.render({ canvasContext: canvas.getContext('2d'), viewport: scaled }).promise;
+  }
+}
+
+function closeViewer() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.proj-card[data-pdf]').forEach(card => {
+  const open = () => openViewer(card.dataset.pdf, card.dataset.title);
+  card.addEventListener('click', open);
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+  });
+});
+closeBtn.addEventListener('click', closeViewer);
+document.addEventListener('keydown', e => {
+  if (modal.classList.contains('open') && e.key === 'Escape') closeViewer();
+});
+</script>
 
 </body>
 </html>

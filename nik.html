@@ -1513,22 +1513,6 @@
 </head>
 <body>
 
-<!-- Resume nav link wired after PDF viewer initializes -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var btn = document.getElementById('nav-resume-btn');
-    if (btn) btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (typeof openViewer === 'function') openViewer('resume.pdf', 'Resume');
-    });
-    var btnMobile = document.getElementById('nav-resume-btn-mobile');
-    if (btnMobile) btnMobile.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (typeof openViewer === 'function') openViewer('resume.pdf', 'Resume');
-    });
-  });
-</script>
-
 <!-- Mobile nav hamburger: two-line icon animates into an X, toggles a dropdown menu -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -1567,7 +1551,7 @@
 <nav id="nav">
   <ul class="nav-left">
     <li><a href="#work">Case Studies</a></li>
-    <li><a href="#" id="nav-resume-btn">Resume</a></li>
+    <li><a href="resume.pdf" download="Nikhil-Arora-Resume.pdf">Resume</a></li>
   </ul>
   <a href="#home" class="nav-logo">
     <img src="nik.gif" alt="Nikhil" />
@@ -1583,7 +1567,7 @@
 
 <div id="nav-mobile-menu" class="nav-mobile-menu">
   <a href="#work">Case Studies</a>
-  <a href="#" id="nav-resume-btn-mobile">Resume</a>
+  <a href="resume.pdf" download="Nikhil-Arora-Resume.pdf">Resume</a>
   <a href="#play">Play</a>
   <a href="#contact" class="nav-hire">Hire Me</a>
 </div>
@@ -2022,7 +2006,7 @@ Something with a little bounce.</p>
 const PROJECTS = [
   { num:'01', name:'Studiobee', meta:'Agency Website · 2026',  tag:'UI / UX · Front-end', img:'studiobee/1.png', url:'studiobee.html' },
   { num:'02', name:'BeeNext',   meta:'Brand Identity · 2025',  tag:'Brand Identity',      img:'case studies/beenext-thumb.jpg', url:'beenext.html'   },
-  { num:'03', name:'Social Media & Branding', meta:'Motion & Branding · 2025', tag:'Motion Graphics · Branding', bg:'linear-gradient(135deg, rgba(132,154,89,.22), rgba(218,217,119,.1))', url:'social-branding.html' },
+  { num:'03', name:'Social Media & Branding', meta:'Motion & Branding · 2025', tag:'Motion Graphics · Branding', img:'Social media/web/beenext-8k-gaming.jpg', url:'social-branding.html' },
   { num:'04', name:'MyStudioBee', meta:'Internal Ops Tool · 2026', tag:'Product Design · Full-Stack', bg:'linear-gradient(135deg, rgba(47,72,223,.35), rgba(10,10,10,.9))', url:'mystudiobee.html' },
 ];
 
