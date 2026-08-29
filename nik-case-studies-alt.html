@@ -1,0 +1,4028 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[ALT] Nikhil - Brand &amp; Visual Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Size-matched fallback for the font-swap window. Letter Swap Animation
+       wraps every heading character into its own inline-block span, which
+       turns an ordinary font-swap into a real, large layout shift once Sora
+       swaps in - Lighthouse's #1 remaining CLS culprit even after the
+       script-loading-order fixes (those addressed a real but separate
+       issue; this one is unrelated to load order entirely).
+
+       Values below came from directly parsing both fonts' actual glyph
+       tables (cmap+hmtx), summing real advance widths for this site's 3
+       heading strings ("Projects that made a mark.", "A bit about me.",
+       "Bounce lives."), normalized by each font's unitsPerEm - NOT from
+       on-screen pixel measurements (too noisy - mixes in letter-spacing
+       and whichever string you happened to test) and NOT from OS/2
+       xAvgCharWidth (checked and rejected: Sora=609/1000em vs Arimo=
+       1229/2048em implied a 138% adjustment that measured 20%+ too wide
+       in practice - that field isn't computed consistently enough between
+       font vendors to trust here).
+         Sora (wght 600 TTF, Google Fonts): unitsPerEm 1000, hhea ascent
+           970 / descent 290 / lineGap 0
+         Arimo (wght 600 TTF, Google Fonts - metric-compatible-by-design
+           Arial substitute): unitsPerEm 2048, ascent 1854 / descent 434 /
+           lineGap 67
+         Combined real advance width across the 3 headings: Sora 28.131em,
+         Arimo 25.808em -> ratio 1.0900
+       size-adjust      = 1.0900                =  109.00%
+       ascent-override  = (970/1000) / 1.0900   =   88.99%
+       descent-override = (290/1000) / 1.0900   =   26.60%
+       line-gap-override= (0/1000)   / 1.0900   =    0.00% */
+    @font-face {
+      font-family: 'Sora Fallback';
+      src: local('Arial'), local('Liberation Sans'), local('Arimo'),
+           local('Helvetica'), local('Roboto'), local('Segoe UI');
+      size-adjust: 109.00%;
+      ascent-override: 88.99%;
+      descent-override: 26.60%;
+      line-gap-override: 0%;
+    }
+    /* ─── TOKENS ──────────────────────────────── */
+    :root {
+      --forest: #0A3323;
+      --olive:  #849A59;
+      --lime:   #DAD977;
+      --sage:   #A8AD9B;
+      --mint:   #B8D4B0;
+
+      --ease-out: cubic-bezier(.22,1,.36,1);
+      --ease-in-out: cubic-bezier(.65,0,.35,1);
+    }
+
+    /* ─── RESET ───────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      scrollbar-width: none;        /* Firefox */
+    }
+    /* Past standard desktop the whole design scales proportionally instead of
+       stretching: every layout cap below is in rem, so growing the root em grows
+       the entire composition like a zoom. 1.1111vw = 16px at exactly 1440w (a
+       seamless handoff); the 2vh term (16px at 800h) keeps the vh-pinned About
+       section - 732px of content at 1440x900 - from ever outgrowing its 100vh pin
+       viewport on ultrawide (21:9) monitors, where width alone would over-scale. */
+    @media (min-width: 1441px) {
+      html { font-size: max(16px, min(1.1111vw, 2vh)); }
+    }
+    html::-webkit-scrollbar { display: none; } /* Chrome / Edge / Safari */
+    body {
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
+      background: #A8AD98;   /* sage - card sits on this */
+      color: var(--forest);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── CURSOR ──────────────────────────────── */
+    #cur-dot, #cur-ring {
+      position: fixed; border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    #cur-dot  { width:.5rem; height:.5rem; background:var(--forest); transition: background .3s; }
+    #cur-ring { width:2rem; height:2rem; border:1.5px solid rgba(10,51,35,.35);
+                transition: width .3s var(--ease-out), height .3s var(--ease-out), border-color .3s; }
+    body.hov #cur-dot  { background: var(--lime); }
+    body.hov #cur-ring { width:3rem; height:3rem; border-color: var(--forest); }
+
+    /* ─── NAV ─────────────────────────────────── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:300;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 1.3rem 2.8vw;
+      background: transparent;
+      overflow: hidden; /* clips the sliding bg rect */
+      transition: transform .45s var(--ease-out);
+    }
+    /* Footer is a full-bleed illustrated close - nav steps aside rather than floating over it */
+    nav.nav-hidden { transform: translateY(-110%); }
+    /* Rectangle that slides in from above on scroll */
+    nav::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(230, 241, 226, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transform: translateY(-105%);
+      transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+      z-index: -1;
+    }
+    nav.scrolled::before { transform: translateY(0); }
+    .nav-logo img { height: 3.25rem; display:block; }
+    .nav-logo { justify-self: center; }
+    .nav-left, .nav-right {
+      display: flex; align-items: center;
+      gap: 2.2rem; list-style: none;
+    }
+    .nav-left  { justify-content: flex-start; }
+    .nav-right { justify-content: flex-end; }
+    .nav-left a, .nav-right a {
+      font-size: .7rem; font-weight:700; letter-spacing:.12em;
+      text-transform: uppercase; color: var(--forest);
+      position:relative;
+    }
+    .nav-left a::after, .nav-right a::after {
+      content:''; position:absolute; bottom:-2px; left:0;
+      width:0; height:1px; background:var(--forest);
+      transition: width .35s var(--ease-out);
+    }
+    .nav-left a:hover::after, .nav-right a:hover::after { width:100%; }
+    .nav-hire {
+      background: var(--forest); color: var(--mint) !important;
+      padding: .45rem 1.3rem; border-radius: 100px;
+      transition: background .3s, transform .25s var(--ease-out) !important;
+    }
+    .nav-hire::after { display:none !important; }
+    .nav-hire:hover { background: #0d4530 !important; transform: translateY(-2px) !important; }
+
+    /* ─── NAV: MOBILE HAMBURGER ───────────────── */
+    .nav-burger {
+      display: none;
+      width: 44px; height: 44px;
+      align-items: center; justify-content: center;
+      background: transparent; border: none; padding: 0;
+      cursor: pointer; position: relative; z-index: 310;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-burger span {
+      position: absolute; left: 50%; top: 50%;
+      width: 24px; height: 2px; border-radius: 2px;
+      background: var(--forest);
+      transform-origin: center;
+      transition: transform .35s var(--ease-out), opacity .2s;
+    }
+    .nav-burger span:nth-child(1) { transform: translate(-50%, -50%) translateY(-4.5px); }
+    .nav-burger span:nth-child(2) { transform: translate(-50%, -50%) translateY(4.5px); }
+    .nav-burger.open span:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { transform: translate(-50%, -50%) rotate(-45deg); }
+
+    /* ─── NAV: MOBILE DROPDOWN MENU ────────────── */
+    .nav-mobile-menu {
+      position: fixed; inset: 0; z-index: 290;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 6.4rem 8vw 2.4rem;
+      background: rgba(230, 241, 226, .97);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transform: translateY(-100%);
+      transition: transform .5s var(--ease-out);
+    }
+    .nav-mobile-menu.open { transform: translateY(0); }
+    .nav-mobile-menu a {
+      font-family: 'Sora', 'Sora Fallback', sans-serif; font-size: 1.05rem; font-weight: 700;
+      letter-spacing: .04em; text-transform: uppercase; color: var(--forest);
+      padding: 1rem 0; border-bottom: 1px solid rgba(10,51,35,.12);
+    }
+    .nav-mobile-menu .nav-hire {
+      background: var(--forest); color: var(--mint) !important;
+      text-align: center; border-radius: 100px; border-bottom: none;
+      padding: 1rem; margin-top: 1rem;
+    }
+
+    /* ─── HERO ────────────────────────────────── */
+    /*
+      Aryan Tripathi structure: greeting → name → role → tagline → CTAs
+      Eat Hungry Tiger scale: the name IS the hero - huge, bold, commanding
+      Gourou color: mint (#E6F1E2) section - clean, warm, not white
+    */
+    /* Fixed overlay - positions text over the canvas card, scales with it */
+    #hero-content {
+      position: fixed;
+      top: 5.8rem; left: 2rem;
+      width: calc(100vw - 4rem);
+      height: calc(100vh - 8rem);
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      border-radius: 1.25rem;
+    }
+    .hero-inner {
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 6vw;
+    }
+
+    /* #home is the GSAP pin trigger; canvas is fixed so no natural height needed */
+    #home {
+      height: 20vh;
+      min-height: 0;
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Pre-reserves the hero pin's scroll distance (the scrollTrigger 'end', 700 *
+       K() px on desktop - a few hundred lines down) before ScrollTrigger ever
+       runs. pdf.js/gsap/ScrollTrigger load from a CDN at the very bottom of the
+       page on purpose (an earlier, separate CLS fix - see the comment above
+       their <script> tags), so by the time they've downloaded and the pin
+       actually gets created, the page has already painted without that
+       reserved space - everything after #home then jumps down by it in one
+       frame (this was Lighthouse's #1 flagged layout-shift culprit,
+       <section id="work">, CLS ~0.36-0.8).
+       Deliberately a separate element from #home, not a margin on #home itself:
+       GSAP snapshots #home's original inline styles at ScrollTrigger.create()
+       time to restore them later (on unpin), so anything added directly to
+       #home gets preserved and re-applied to its pin-spacer on top of the
+       spacer's own reservation - tried that first, it double-counts. This
+       div is untouched by GSAP, so collapsing it (see the scrollTrigger's
+       onRefreshInit) right as the real pin-spacer appears is a clean swap,
+       not a stack.
+       43.75rem === 700px at the default 16px root font-size, and (like K() in
+       JS) scales with it automatically via rem, so this stays in sync with the
+       pin distance on the proportionally-scaled wide/4K layouts too. */
+    #hero-pin-space {
+      height: 43.75rem;
+    }
+
+    /* Hint only shows on hero - hidden via JS on leave */
+    #hint { z-index: 5; }
+
+
+    .hero-greeting {
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
+      font-size: .72rem; font-weight:700;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--forest);
+      margin-bottom: 1rem;
+      display: flex; align-items:center; gap:.7rem;
+    }
+    .hero-greeting::before { display:none; }
+
+    /* The name - Eat Hungry Tiger scale */
+    .hero-name {
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
+      font-size: clamp(4.5rem, 9.5vw, 10.5rem);
+      font-weight: 700;
+      letter-spacing: -.04em;
+      line-height: .95;
+      color: var(--forest);
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-role {
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
+      font-size: clamp(1.2rem, 2.4vw, 2.2rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--forest);
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-tagline {
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
+      font-size: clamp(.9rem, 1.1vw, 1.05rem);
+      color: var(--forest);
+      line-height: 1.75;
+      max-width: 44ch;
+      margin-bottom: 2.8rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── FLIP CARD ─────────────────────────────── */
+    .hero-card {
+      width: clamp(18rem, 30vw, 27rem);
+      max-width: 76vw;
+      margin-bottom: 2.5rem;
+      perspective: 62.5rem;
+      cursor: pointer;
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform .65s cubic-bezier(.4,0,.2,1);
+    }
+    .card-inner.flipped { transform: rotateY(180deg); }
+    .card-front,
+    .card-back {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .card-front { display: block; width: 100%; }
+    /* aspect-ratio matches front.png's native 2308x1504 so the card reserves
+       its final height before the image decodes - was the #1 CLS culprit
+       (0.415 of 0.461 total), collapsing to 0 height and popping in late. */
+    .card-front img { display: block; width: 100%; height: auto; aspect-ratio: 2308 / 1504; }
+    .card-back {
+      position: absolute;
+      inset: 0;
+      transform: rotateY(180deg);
+    }
+    .card-back img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* Real paint stroke PNGs - squished thin, flipped to arc under text */
+    .paint-stroke {
+      position: absolute;
+      pointer-events: none;
+      transform: scaleY(-1);
+    }
+    .stroke-hello  { width: 56%; left: 22%; top: 25%; }
+    .stroke-nikhil { width: 44%; left: 28%; top: 47%; }
+    .paint-stroke img {
+      display: block;
+      width: 100%;
+      height: 1.375rem;    /* enough height for visible arc curvature */
+      object-fit: fill;
+      filter: grayscale(1) sepia(1) hue-rotate(90deg) saturate(2) brightness(0.45);
+      opacity: 0.42;
+      transform: scaleX(0);
+      transform-origin: left center;
+    }
+    .card-inner.flipped .stroke-hello img {
+      animation: brushIn 1.1s cubic-bezier(.4,0,.2,1) 0.72s forwards;
+    }
+    .card-inner.flipped .stroke-nikhil img {
+      animation: brushIn 1.1s cubic-bezier(.4,0,.2,1) 1.0s forwards;
+    }
+    @keyframes brushIn { to { transform: scaleX(1); } }
+
+    /* Scale-in + drop entrance with squash on landing */
+    .hero-card.rv {
+      opacity: 0;
+      transform: translateY(-18px) scale(1.08);
+    }
+    .hero-card.rv.vis {
+      animation: stickerDrop .5s var(--ease-out) forwards;
+    }
+    @keyframes stickerDrop {
+      0%   { opacity: 0; transform: translateY(-18px) scale(1.08, 1.08); }
+      60%  { opacity: 1; transform: translateY(0)     scale(1, 1); }
+      75%  {              transform: translateY(0)     scale(1.05, .95); }
+      100% { opacity: 1; transform: translateY(0)     scale(1, 1); }
+    }
+
+    .hero-actions { display:flex; gap:1rem; align-items:center; flex-wrap:wrap; justify-content:center; }
+
+    .btn-dark {
+      display: inline-flex; align-items:center; gap:.5rem;
+      background: var(--forest); color: var(--mint);
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.78rem; font-weight:700;
+      letter-spacing:.06em; padding:.85rem 2rem; border-radius:100px;
+      transition: background .3s, transform .25s var(--ease-out), box-shadow .3s;
+    }
+    .btn-dark:hover { background:#0d4530; transform:translateY(-3px); box-shadow:0 .75rem 2rem rgba(10,51,35,.2); }
+
+    .btn-ghost-dark {
+      display:inline-flex; align-items:center; gap:.5rem;
+      color:var(--forest); font-family:'Sora','Sora Fallback',sans-serif; font-size:.78rem;
+      font-weight:600; letter-spacing:.06em; padding:.85rem 2rem;
+      border: .09375rem solid rgba(10,51,35,.3); border-radius:100px;
+      transition: border-color .3s, transform .25s var(--ease-out);
+    }
+    .btn-ghost-dark:hover { border-color:var(--forest); transform:translateY(-3px); }
+
+    /* Bottom info strip */
+    .hero-strip {
+      position: absolute; bottom:0; left:0; right:0;
+      border-top: 1px solid rgba(10,51,35,.1);
+      padding: .9rem 5vw;
+      display: flex; align-items:center; gap:2rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.65rem;
+      font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+      color: rgba(10,51,35,.4);
+    }
+    .strip-dot { width:.3125rem; height:.3125rem; border-radius:50%; background:var(--olive); }
+    .avail { color:var(--olive); }
+    .avail-pulse {
+      width:.375rem; height:.375rem; border-radius:50%; background:var(--olive);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+    /* ─── SECTION BASE ────────────────────────── */
+    section {
+      padding: 7rem 5vw;
+      position: relative;
+      z-index: 1;
+    }
+    footer { position: relative; z-index: 1; }
+
+    .sec-label {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.62rem; font-weight:700;
+      letter-spacing:.24em; text-transform:uppercase;
+      display:flex; align-items:center; gap:.7rem;
+      margin-bottom:1.4rem;
+    }
+    .sec-label::after { content:''; display:block; width:2rem; height:1px; background:currentColor; }
+
+    .sec-heading {
+      font-family:'Sora','Sora Fallback',sans-serif;
+      font-size: clamp(2.4rem, 4.5vw, 5rem);
+      font-weight:600; letter-spacing:-.025em; line-height:1.1;
+    }
+    .sec-heading em { font-style:italic; }
+
+    /* ─── WORK SECTION ────────────────────────── */
+    /*
+      Dark forest green - Gourou contrast section.
+      Project rows: clean, Aryan Tripathi simplicity.
+    */
+    #work {
+      background: var(--forest);
+      color: var(--mint);
+    }
+    #work .sec-label { color: var(--olive); }
+    #work .sec-heading { color: var(--mint); }
+    #work .sec-heading em { color: var(--lime); }
+
+    .work-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+      gap: 2rem; flex-wrap: wrap;
+    }
+    .work-all {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.7rem; font-weight:700;
+      letter-spacing:.12em; text-transform:uppercase;
+      color:var(--sage); display:flex; align-items:center; gap:.5rem;
+      transition: color .3s;
+    }
+    .work-all:hover { color:var(--lime); }
+    .work-all svg { transition: transform .3s var(--ease-out); }
+    .work-all:hover svg { transform:translate(4px,-4px); }
+
+    /* Case-study blocks - stacked, real device-framed screens */
+    .cs-block + .cs-block {
+      margin-top: 3.5rem;
+      padding-top: 3.5rem;
+      border-top: 1px solid rgba(132,154,89,.14);
+    }
+
+    .cs-head {
+      display: grid;
+      grid-template-columns: 3ch 1fr auto;
+      gap: 1.25rem 2rem;
+      align-items: start;
+      margin-bottom: 2.75rem;
+    }
+    .cs-name {
+      font-family:'Sora','Sora Fallback',sans-serif;
+      font-size: clamp(1.7rem, 2.8vw, 2.5rem);
+      font-weight: 600; letter-spacing: -.02em;
+      color: var(--mint); line-height: 1.1;
+    }
+    .cs-desc {
+      max-width: 38rem; margin-top: 1rem;
+      font-size: .92rem; line-height: 1.7;
+      color: rgba(230,241,226,.68);
+    }
+    .cs-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.1rem; }
+
+    .cs-link {
+      display: flex; align-items: center; gap: .75rem;
+      justify-self: end; align-self: center;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size: .7rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--sage); white-space: nowrap;
+      transition: color .3s;
+    }
+    .cs-link:hover { color: var(--lime); }
+    .cs-link:hover .pr-arr {
+      background: var(--lime); border-color: var(--lime);
+      color: var(--forest); transform: rotate(45deg);
+    }
+    .cs-link:focus-visible {
+      outline: 2px solid var(--lime); outline-offset: 4px; border-radius: 4px;
+    }
+
+    /* Plain static row - for galleries short enough they don't need the
+       auto-scroll marquee (e.g. the branding block's 3 frames). */
+    .frame-row { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 1.75rem; }
+
+    /* Device frame gallery - auto-scrolling marquee of real screens.
+       Track's content is duplicated in the markup (second copy is
+       aria-hidden) so translateX(-50%) loops seamlessly back to start. */
+    .frame-scroll {
+      overflow: hidden;
+      padding: .25rem 0 1.25rem;
+      mask-image: linear-gradient(to right, transparent 0, black 3rem, black calc(100% - 3rem), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, black 3rem, black calc(100% - 3rem), transparent 100%);
+    }
+    .frame-scroll-track {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.75rem;
+      width: max-content;
+      animation: cs-marquee linear infinite;
+      animation-duration: var(--marquee-dur, 36s);
+    }
+    .frame-scroll:hover .frame-scroll-track,
+    .frame-scroll:focus-within .frame-scroll-track {
+      animation-play-state: paused;
+    }
+    @keyframes cs-marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .frame-scroll-track { animation: none; }
+    }
+    .frame-scroll .frame-desktop {
+      flex-shrink: 0;
+      width: clamp(22rem, 46vw, 36rem);
+    }
+    .frame-scroll .frame-phone { flex-shrink: 0; }
+
+    /* Desktop browser-chrome frame */
+    .frame-desktop {
+      border-radius: .9rem;
+      overflow: hidden;
+      background: #1b1d1a;
+      box-shadow: 0 1.5rem 4rem rgba(0,0,0,.4), 0 .25rem .75rem rgba(0,0,0,.3), inset 0 0 0 1px rgba(255,255,255,.04);
+      transition: transform .5s var(--ease-out), box-shadow .5s;
+    }
+    .frame-desktop:hover { transform: translateY(-6px); box-shadow: 0 2rem 5rem rgba(0,0,0,.45), 0 .25rem .75rem rgba(0,0,0,.35); }
+    .frame-desktop-chrome { display: flex; align-items: center; gap: .4rem; padding: .65rem .9rem; }
+    .fdc-dot { width: .5rem; height: .5rem; border-radius: 50%; background: rgba(255,255,255,.14); }
+    .fdc-dot:nth-child(1) { background: #ff5f57; opacity: .55; }
+    .fdc-dot:nth-child(2) { background: #febc2e; opacity: .55; }
+    .fdc-dot:nth-child(3) { background: #28c840; opacity: .55; }
+    .fdc-url {
+      flex: 1; margin-left: .5rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size: .62rem; letter-spacing: .03em;
+      color: rgba(255,255,255,.35);
+      background: rgba(255,255,255,.05);
+      border-radius: 100px; padding: .3rem .9rem;
+      text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .frame-desktop-screen {
+      aspect-ratio: 16 / 10;
+      overflow: hidden; position: relative;
+      background: rgba(0,0,0,.3);
+    }
+    .frame-desktop-screen img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top;
+      display: block; transition: transform .7s var(--ease-out);
+    }
+    .frame-desktop:hover .frame-desktop-screen img { transform: scale(1.02); }
+    .frame-desktop--pdf { cursor: pointer; }
+
+    /* Phone frame */
+    .frame-phone {
+      width: 14.5rem; flex-shrink: 0;
+      border-radius: 2.1rem;
+      background: #1b1d1a;
+      padding: .6rem;
+      position: relative;
+      box-shadow: 0 1.25rem 3rem rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.05);
+      transition: transform .5s var(--ease-out), box-shadow .5s;
+    }
+    .frame-phone:hover { transform: translateY(-6px); }
+    .frame-phone-notch {
+      position: absolute; top: .95rem; left: 50%; transform: translateX(-50%);
+      width: 2.1rem; height: .38rem; border-radius: .3rem; background: #000; z-index: 2;
+    }
+    .frame-phone-screen {
+      aspect-ratio: 9 / 19.5;
+      border-radius: 1.6rem;
+      overflow: hidden; position: relative;
+      background: rgba(0,0,0,.35);
+    }
+    .frame-phone-screen img, .frame-phone-screen video {
+      width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;
+    }
+    .frame-phone-home {
+      position: absolute; bottom: .55rem; left: 50%; transform: translateX(-50%);
+      width: 2.5rem; height: .2rem; border-radius: 100px; background: rgba(255,255,255,.3);
+    }
+    .frame-phone-screen--empty {
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      border: 1px dashed rgba(230,241,226,.22);
+    }
+    .frame-phone-screen--empty span {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size: .64rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase; color: rgba(230,241,226,.38);
+      padding: 0 1rem;
+    }
+
+    .reel-play {
+      position: absolute; inset: 0; margin: auto;
+      width: 2.6rem; height: 2.6rem; border-radius: 50%;
+      border: none; cursor: pointer;
+      background: rgba(230,241,226,.92); color: var(--forest);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .25s, transform .25s var(--ease-out), opacity .25s;
+    }
+    .reel-play:hover { background: var(--lime); transform: scale(1.08); }
+    .reel-play:active { transform: scale(.94); }
+    .reel-play:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+    .reel-play.is-hidden { opacity: 0; pointer-events: none; }
+
+    .frame-loading {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(10,51,35,.5);
+    }
+    .frame-loading::after {
+      content: ''; width: 1.5rem; height: 1.5rem; border-radius: 50%;
+      border: 2px solid rgba(132,154,89,.3); border-top-color: var(--olive);
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .branding-strip-label {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size: .62rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--olive);
+      margin-top: 2.5rem; margin-bottom: .9rem;
+    }
+    .branding-strip {
+      display: flex; gap: 1rem; overflow-x: auto; padding-bottom: .5rem;
+      scrollbar-width: none;
+    }
+    .branding-strip::-webkit-scrollbar { display: none; }
+    .branding-strip img {
+      height: 9rem; width: auto; flex-shrink: 0;
+      border-radius: .6rem; object-fit: cover;
+      box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.25);
+      transition: transform .4s var(--ease-out);
+    }
+    .branding-strip img:hover { transform: translateY(-4px) scale(1.02); }
+
+    @media (max-width: 660px) {
+      .cs-head { grid-template-columns: 1fr; }
+      .cs-link { justify-self: start; margin-top: 1.25rem; }
+      .frame-phone { width: 11.5rem; }
+    }
+
+    /* ─── PDF MODAL ─────────────────────────────── */
+    #pdf-modal {
+      position: fixed; inset: 0; z-index: 900;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    #pdf-modal.open { opacity: 1; pointer-events: all; }
+    #pdf-modal-bg { display: none; }
+    #pdf-modal-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      background: #ECEAE4;
+    }
+    #pdf-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .85rem 1.5rem;
+      background: var(--forest);
+      border-bottom: 1px solid rgba(132,154,89,.15);
+      flex-shrink: 0;
+    }
+    #pdf-modal-title {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.72rem; font-weight:600;
+      letter-spacing:.08em; text-transform:uppercase; color:var(--mint);
+    }
+    #pdf-modal-controls { display:flex; align-items:center; gap:.5rem; }
+    .pdf-btn {
+      width:2rem; height:2rem; border-radius:50%;
+      border:1px solid rgba(132,154,89,.3);
+      background:transparent; color:var(--mint);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; font-size:.85rem;
+      transition: background .2s, border-color .2s, color .2s, transform .25s var(--ease-out);
+    }
+    .pdf-btn:hover { background:var(--lime); border-color:var(--lime); color:var(--forest); }
+    .pdf-btn:active { transform: scale(.92); }
+    #pdf-modal-viewport {
+      flex:1; overflow-y:auto; overflow-x:hidden;
+      display:flex; flex-direction:column;
+      align-items:center;
+      gap:1.5rem;
+      padding:2.5rem 2rem;
+    }
+    #pdf-loading {
+      display:flex; flex-direction:column; align-items:center;
+      gap:1rem; color:var(--sage);
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.8rem;
+      letter-spacing:.08em; text-transform:uppercase;
+      padding:4rem;
+    }
+    #pdf-loading::before {
+      content:''; width:2rem; height:2rem; border-radius:50%;
+      border:2px solid rgba(132,154,89,.3); border-top-color:var(--olive);
+      animation: spin .7s linear infinite;
+    }
+    .pdf-page-canvas {
+      width: min(100%, 68.75rem);
+      box-shadow: 0 4px 32px rgba(0,0,0,.15);
+      border-radius:4px;
+      display:block;
+    }
+
+    .pr-num {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.65rem; font-weight:700;
+      letter-spacing:.12em; color:var(--olive); padding-top:.2rem;
+    }
+    .pr-name {
+      font-family:'Sora','Sora Fallback',sans-serif;
+      font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+      font-weight:600; letter-spacing:-.02em;
+      color: var(--mint);
+      transition: color .3s;
+      line-height:1.15;
+    }
+    .project-row:hover .pr-name { color: var(--lime); }
+    .pr-meta {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.72rem;
+      color:var(--sage); margin-top:.25rem;
+      letter-spacing:.04em;
+    }
+
+    .pr-right {
+      display:flex; align-items:center; gap:1rem; justify-content:flex-end;
+    }
+    .pr-tag {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.6rem; font-weight:700;
+      letter-spacing:.1em; text-transform:uppercase;
+      color:var(--sage); border:1px solid rgba(132,154,89,.3);
+      padding:.25rem .75rem; border-radius:100px;
+      transition: border-color .3s, color .3s;
+      white-space: nowrap;
+    }
+    .project-row:hover .pr-tag { border-color:rgba(218,217,119,.3); color:var(--lime); }
+    .pr-arr {
+      width:2.2rem; height:2.2rem; border-radius:50%;
+      border:1px solid rgba(132,154,89,.3);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--sage); flex-shrink:0;
+      transition: background .3s, border-color .3s, color .3s, transform .4s var(--ease-out);
+    }
+    .project-row:hover .pr-arr {
+      background:var(--lime); border-color:var(--lime);
+      color:var(--forest); transform:rotate(45deg);
+    }
+
+    /* ─── ABOUT SECTION ───────────────────────── */
+    /* GSAP wraps #about in a .pin-spacer for the sticker animation; fill it lime
+       so the body-bg sage doesn't bleed through during the 1200px scroll distance */
+    .pin-spacer:has(> #about) {
+      background: var(--lime);
+    }
+    #about {
+      background: var(--lime);
+      color: var(--forest);
+      padding: 0;           /* override section base - inner handles padding */
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    /* Sticker loading screen */
+    .sticker-seq {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .sticker-tray {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.5rem, 4vw, 4rem);
+      padding: 0 5vw;
+      width: 100%;
+      justify-content: center;
+    }
+    .si {
+      width: clamp(9.375rem, 18vw, 14.375rem);
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transform: translateY(50px);
+      flex-shrink: 0;
+    }
+    /* Reserve each sticker's real ratio - Lighthouse flagged img.si as an
+       "Unsized image element" (a real, separate CLS contributor from the
+       #proj-grid issue below - each has its own ratio so .si's shared width
+       alone can't reserve height). */
+    .si-1 { aspect-ratio: 673 / 772; }
+    .si-2 { aspect-ratio: 701 / 717; }
+    .si-3 { aspect-ratio: 578 / 715; }
+    .si-4 { aspect-ratio: 763 / 690; }
+    /* About content (initially invisible - GSAP reveals) */
+    .about-inner {
+      /* Trimmed from 8rem/4.5rem after adding .about-header below pushed total
+         height past common desktop viewport heights (measured 947px tall at
+         1440x900 with the old padding - taller than the 900px pin viewport
+         itself, cutting the photo off at the bottom since desktop's pin engages
+         immediately with no scroll-to-reveal buffer the way mobile's does). */
+      padding: 4rem 5vw 2.5rem;
+      opacity: 0;
+    }
+    #about .sec-label { color: rgba(10,51,35,.5); }
+    #about .sec-label::after { background: rgba(10,51,35,.4); }
+    #about .sec-heading { color: var(--forest); }
+    #about .sec-heading em { color: rgba(10,51,35,.45); font-style:italic; }
+
+    .about-header {
+      max-width: 77.5rem;
+      margin: 0 auto 1.75rem;
+    }
+
+    .about-cols {
+      display: flex;
+      align-items: center;
+      gap: 4.5rem;
+      max-width: 77.5rem;
+      margin: 0 auto;
+    }
+    .about-text {
+      flex: 1 1 0;
+      max-width: 38.75rem;
+    }
+
+    .about-body {
+      font-family:'Sora','Sora Fallback',sans-serif; /* Brand spec: body at size 20 */
+      font-size: clamp(1.05rem, 1.3vw, 1.3rem);
+      line-height: 1.85;
+      color: rgba(10,51,35,.78);
+    }
+    .about-body + .about-body { margin-top:1.4rem; }
+
+    /* sticker + about-inner styles now in ABOUT SECTION block above */
+
+    /* ─── ABOUT PHOTO ─────────────────────────── */
+    .about-photo-wrap {
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
+    .about-photo {
+      width: min(21.25rem, 30vw);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: rgba(10,51,35,.1);
+      border: .09375rem dashed rgba(10,51,35,.2);
+    }
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 25% center;
+      display: block;
+    }
+
+    /* ─── MARQUEE ZONE - diagonal zigzag ribbon straddling About / Play seam ─── */
+    .marquee-zone {
+      position: relative;
+      z-index: 25;
+      height: 22vw;
+      min-height: 260px;
+      /* Cap and overlap margins in rem, not px: with the root em scaling past
+         1440w, the 22vw height stays below a proportionally-growing cap, so the
+         full-bleed ribbon keeps the exact 1440 aspect (no flattening) instead of
+         freezing at 360px tall while the viewport keeps widening. */
+      max-height: 22.5rem;
+      margin: -4.375rem 0 -11.25rem;
+      pointer-events: none;
+      overflow: hidden;
+      /* color split now lives in the SVG fills (.mz-fill-top / .mz-fill-bottom), traced along the same curve as the band itself */
+      background: var(--lime);
+    }
+    .mz-fill-top { fill: var(--lime); }
+    .mz-fill-bottom { fill: var(--forest); }
+    .mz-svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .mz-band {
+      fill: none;
+      stroke: var(--mint);   /* light green - reads against both the lime About surface and the dark Play surface */
+      stroke-width: 130;
+      stroke-linecap: round;
+      stroke-dasharray: 2400;
+      stroke-dashoffset: 2400;
+      transition: stroke-dashoffset 2.8s cubic-bezier(.16,1,.3,1);
+    }
+    .marquee-zone.mz-in .mz-band {
+      stroke-dashoffset: 0;
+    }
+    /* Logos hold until the band has fully drawn itself in (5.6s), then pop in one by one */
+    .mz-icon {
+      opacity: 0;
+      transform: scale(.6);
+      transform-origin: center;
+      transform-box: fill-box;
+      transition: opacity 1.1s var(--ease-out), transform 1.1s var(--ease-out);
+      /* Mirrors the icon's final (post-entrance) scale as a plain number, so JS can read the
+         real on-screen icon radius via getComputedStyle without waiting on the entrance
+         transition to finish or re-measuring layout - see the edge-fade comment near
+         #mz-path's positioning script for why that matters. */
+      --mz-icon-scale: 1;
+    }
+    .marquee-zone.mz-in .mz-icon {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .mz-icon:nth-of-type(1)  { transition-delay: 0.60s; }
+    .mz-icon:nth-of-type(2)  { transition-delay: 0.62s; }
+    .mz-icon:nth-of-type(3)  { transition-delay: 0.64s; }
+    .mz-icon:nth-of-type(4)  { transition-delay: 0.66s; }
+    .mz-icon:nth-of-type(5)  { transition-delay: 0.68s; }
+    .mz-icon:nth-of-type(6)  { transition-delay: 0.7s; }
+    .mz-icon:nth-of-type(7)  { transition-delay: 0.72s; }
+    .mz-icon:nth-of-type(8)  { transition-delay: 0.74s; }
+    .mz-icon:nth-of-type(9)  { transition-delay: 0.76s; }
+    .mz-icon:nth-of-type(10) { transition-delay: 0.78s; }
+    .mz-icon:nth-of-type(11) { transition-delay: 0.80s; }
+    /* Every logo retinted into our dark forest-green. grayscale+contrast first compresses each
+       mark's source luminance toward one common mid-tone (so pale brand colors and dark ones
+       land in the same range), then sepia/hue-rotate/saturate/brightness pulls that uniform base
+       down into the same deep shade as --forest (#0A3323). */
+    .mz-icon image {
+      filter: grayscale(1) contrast(.4) brightness(1.05) sepia(1) hue-rotate(88deg) saturate(2.6) brightness(.5);
+    }
+
+    /* .marquee-zone disables pointer-events so the decorative band/fills never block clicks;
+       re-enable it just on each icon's hit area so hover can be detected and isn't inherited as none. */
+    .mz-icon-pos {
+      pointer-events: auto;
+      /* Icons travel along #mz-path, which bleeds ~80 units past the 0-1600 viewBox on each
+         side (needed so the band/fill curve stays full-bleed at odd container widths). The
+         <svg> root clips to that viewBox by default, so as an icon's translate crosses x=0 or
+         x=1600 it got sliced mid-shape instead of leaving the screen cleanly. JS fades this
+         group's opacity to 0 before the icon can reach the clip boundary - composes
+         independently of .mz-icon's own entrance opacity/scale transition since it's a
+         separate nested SVG group (opacities multiply, not conflict).
+         Deliberately NO transition on opacity here: icons only ever move while the user is
+         actively scrolling (position is scroll-scrubbed), so a time-based transition makes
+         rendered opacity lag ~a-transition-length behind the per-frame target - measured
+         mid-scroll, icons crossed the clip edge still at ~0.75 opacity and got visibly
+         sliced, which is exactly the bug the fade exists to prevent. The spatial ramp in
+         edgeFade() is what makes the dissolve smooth; opacity must snap to it per frame. */
+    }
+
+    /* Software name label, shown above whichever icon is hovered */
+    .mz-tooltip {
+      position: absolute;
+      top: 0; left: 0;
+      transform: translate(-50%, -120%) scale(.85);
+      background: var(--forest);
+      color: var(--mint);
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      padding: .4rem .8rem;
+      border-radius: .5rem;
+      box-shadow: 0 .625rem 1.375rem -.5rem rgba(10,51,35,.4), 0 .125rem .5rem -.125rem rgba(10,51,35,.25);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 30;
+      transition: opacity .22s var(--ease-out), transform .22s var(--ease-out);
+    }
+    .mz-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: .3125rem solid transparent;
+      border-top-color: var(--forest);
+    }
+    .mz-tooltip.show {
+      opacity: 1;
+      transform: translate(-50%, -145%) scale(1);
+    }
+
+    /* ─── SKILLS MARQUEE (now unused as section; mz-ribbon uses same track CSS) ── */
+    #skills {
+      display: none; /* skills section replaced by marquee-zone */
+    }
+    .marquee-ribbon {
+      background: var(--lime);
+      transform: rotate(-2deg);
+      margin: 0 -6%;
+      width: 112%;
+      overflow: hidden;
+      padding: 1.6rem 0;
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      align-items: center;
+      animation: mq-scroll 42s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes mq-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .mq-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0 2.8rem;
+      flex-shrink: 0;
+    }
+    .mq-item img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      filter: brightness(0) opacity(0.72);
+    }
+    .mq-item span {
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--forest);
+      white-space: nowrap;
+    }
+    .mq-sep {
+      font-size: 1rem;
+      color: var(--forest);
+      opacity: 0.28;
+      flex-shrink: 0;
+    }
+
+    /* ─── FOOTER ──────────────────────────────── */
+    footer {
+      background:var(--forest);
+      overflow:hidden;
+    }
+    .ft-visual {
+      position:relative; width:100%;
+      aspect-ratio:1440/800; min-height:300px;
+    }
+    .ft-bg {
+      position:absolute; inset:0;
+      width:100%; height:100%; object-fit:cover;
+      display:block;
+    }
+    .ft-bg-dark { opacity:0; }
+    .ft-scrim {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(6,18,13,.92) 0%, rgba(6,18,13,.55) 32%, rgba(6,18,13,0) 64%);
+    }
+    .ft-content {
+      position:absolute; left:0; right:0; bottom:0; z-index:2;
+      /* 90rem = the full 1440 design box (this element is absolutely positioned,
+         so unlike .work-inner it has no 5vw section padding outside it - its own
+         padding provides the inset). On 16:9 the cap scales in step with 100vw
+         and never binds; on ultrawide it stops the email/socials drifting toward
+         the true viewport edges. */
+      max-width:90rem;
+      margin-left:auto; margin-right:auto;
+      padding:2.4rem 5vw 1.8rem;
+      display:flex; flex-direction:column; gap:1.6rem;
+    }
+    .ft-names {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      border-bottom:1px solid rgba(230,241,226,.15);
+      padding-bottom:1.6rem;
+    }
+    .ft-name-l, .ft-name-r {
+      font-family:'Sora','Sora Fallback',sans-serif; font-weight:600;
+      font-size: clamp(3rem, 9.5vw, 8.5rem); letter-spacing:-.03em; line-height:1;
+      color: var(--mint);
+      opacity: 0;
+      transition: opacity .9s var(--ease-out), transform .9s var(--ease-out);
+    }
+    .ft-name-l, .ft-name-r { transform: translate(0, 70px); }
+    .ft-names.ft-names-in .ft-name-l,
+    .ft-names.ft-names-in .ft-name-r {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+    .ft-email {
+      font-family:'Lora',serif; font-style:italic;
+      font-size:clamp(.85rem,1.2vw,1.1rem); color:var(--mint);
+      display:inline-block;
+      transition: color .3s;
+    }
+    .ft-email:hover { color:var(--lime); }
+    .ft-socials { display:flex; gap:1.5rem; flex-wrap:wrap; }
+    .ft-soc {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem; font-weight:700;
+      letter-spacing:.12em; text-transform:uppercase;
+      color:rgba(230,241,226,.65); display:flex; align-items:center; gap:.35rem;
+      transition: color .3s;
+    }
+    .ft-soc:hover { color:var(--lime); }
+    .ft-bottom {
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:1rem;
+    }
+    .ft-copy {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem;
+      color:rgba(230,241,226,.6); letter-spacing:.06em;
+    }
+
+    /* ─── REVEAL ANIMATIONS ───────────────────── */
+    /* Gourou-style: clean fade-in + lift on scroll */
+    .rv {
+      opacity:0;
+      transform: translateY(36px);
+      transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
+    }
+    .rv.vis { opacity:1; transform:translateY(0); }
+    .d1 { transition-delay:.08s }
+    .d2 { transition-delay:.16s }
+    .d3 { transition-delay:.24s }
+    .d4 { transition-delay:.32s }
+    .d5 { transition-delay:.40s }
+
+    /* ─── SECTION ENTRANCE TRANSITIONS ──────── */
+    .work-inner {
+      /* rem cap (1320px at base): scales with the root em past 1440w, so the 2-up
+         cards grow proportionally on big monitors instead of stretching apart. */
+      max-width: 82.5rem;
+      margin-left: auto;
+      margin-right: auto;
+      clip-path: inset(100% 0 0 0);
+      transform: translateY(40px);
+      opacity: 0;
+      transition: clip-path 1.1s var(--ease-out), transform 1.1s var(--ease-out), opacity 0.6s var(--ease-out);
+      /* Without this, Chrome sometimes drops the element's compositor layer
+         mid-transition (since nothing else here signals "this will animate"
+         until the transition is already running), then has to re-promote it
+         the instant the .proj-card children start their own nested opacity/
+         transform reveal a beat later - that promotion hitch is what read as
+         a project card flashing in and vanishing right as the section
+         scrolled into view. #work is the only section wrapper animating
+         clip-path (About/Skills/Play only use transform+opacity), which is
+         why only this section showed it. */
+      will-change: clip-path, transform, opacity;
+    }
+    #work.sec-in .work-inner { clip-path: inset(0% 0 0 0); transform: translateY(0); opacity: 1; }
+
+    .about-inner {
+      transform: rotate(-2.5deg) translateY(60px) scale(0.97);
+      opacity: 0;
+      transform-origin: center bottom;
+      transition: transform 0.9s cubic-bezier(.34,1.56,.64,1), opacity 0.5s var(--ease-out);
+    }
+    #about.sec-in .about-inner { transform: rotate(0deg) translateY(0) scale(1); opacity: 1; }
+
+    .skills-inner {
+      transform: translateX(-80px);
+      opacity: 0;
+      transition: transform 1.0s var(--ease-out), opacity 0.7s var(--ease-out);
+    }
+    #skills.sec-in .skills-inner { transform: translateX(0); opacity: 1; }
+
+    .play-inner {
+      /* Shares the same rem cap as .work-inner so the Play heading and the
+         game/text row below it stay aligned to one edge at every width. */
+      max-width: 82.5rem;
+      margin-left: auto;
+      margin-right: auto;
+      transform: translateY(-50px) scale(0.96);
+      opacity: 0;
+      transition: transform 0.85s cubic-bezier(.34,1.56,.64,1), opacity 0.4s var(--ease-out);
+    }
+    #play.sec-in .play-inner { transform: translateY(0) scale(1); opacity: 1; }
+
+    /* ─── SECTION DIVIDERS ───────────────────── */
+    .sec-divider { position: relative; height: 0; overflow: visible; z-index: 3; pointer-events: none; }
+    .sec-divider-line {
+      position: absolute; left: 5vw; right: 5vw; top: 0; height: 1px;
+      background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 1.2s var(--ease-out);
+    }
+    .sec-divider-dot {
+      position: absolute; top: -.1875rem; left: 5vw;
+      width: .375rem; height: .375rem; border-radius: 50%; background: currentColor;
+      transform: scale(0); opacity: 0.6;
+      transition: transform 0.5s cubic-bezier(.34,1.56,.64,1) 0.9s, left 1.2s var(--ease-out);
+    }
+    .sec-divider.div-in .sec-divider-line { transform: scaleX(1); }
+    .sec-divider.div-in .sec-divider-dot { transform: scale(1); left: calc(95vw - .375rem); }
+    .div-work-about  { color: var(--olive); }
+    .div-about-skills { color: rgba(10,51,35,0.25); }
+    .div-skills-play  { color: var(--sage); }
+
+    /* ─── WAVE DIVIDERS ──────────────────────── */
+    .wave-div {
+      position: relative;
+      height: 17.5rem;
+      overflow: hidden;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .wave-div canvas {
+      display: block;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ─── PARALLAX ───────────────────────────── */
+    .parallax-el { will-change: transform; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .work-inner, .about-inner, .skills-inner, .play-inner {
+        clip-path: none !important; transform: translateY(20px) !important;
+        transition: transform 0.5s var(--ease-out), opacity 0.5s var(--ease-out) !important;
+      }
+    }
+    @media (max-width: 660px) {
+      /* This !important previously had no counterpart resetting it once #about.sec-in
+         fires - #about.sec-in .about-inner's reset rule (further up) has higher
+         specificity but no !important, so !important always won and .about-inner sat
+         permanently translateY(60px) even after reveal. That static, never-cleared
+         transform on the very element GSAP later pins/triggers off of ('.about-inner',
+         start:'bottom bottom') is exactly the anti-pattern GSAP's own docs warn about
+         (don't apply a CSS transform to a pinned/trigger element) - confirmed via a real
+         scroll trace that the pin-engage instant produced a ~60-70px backward jump in
+         .about-inner's on-screen position, i.e. the reported "jitters and gets pulled
+         back down". Adding the matching reset here means by the time the user has
+         scrolled far enough for the pin to engage, .sec-in has long since fired (12%
+         IntersectionObserver threshold, near the top of the section) and .about-inner
+         is already sitting at an identity transform - nothing left for the pin math to
+         fight with. */
+      .about-inner { transform: translateY(60px) !important; }
+      #about.sec-in .about-inner { transform: translateY(0) !important; }
+    }
+
+    /* ─── BOUNCE SECTION ─────────────────────── */
+    @font-face {
+      font-family: 'GameFont';
+      src: url('bounce/assets/fonts/YanoneKaffeesatz-Bold.ttf');
+    }
+    #play {
+      background: var(--forest);
+      color: var(--mint);
+      padding-top: 10rem;   /* clears the ribbon's lowest curve point with a clean gap - text sits fully below it instead of straddling the seam */
+    }
+    #play .sec-label { color: var(--olive); }
+    #play .sec-heading { color: var(--mint); }
+    #play .sec-heading em { color: var(--lime); }
+    .play-intro {
+      font-family: 'Sora', 'Sora Fallback', sans-serif; /* same as .about-body */
+      font-size: clamp(1.05rem, 1.3vw, 1.3rem);
+      line-height: 1.85;
+      color: var(--sage);
+      text-align: right;
+    }
+
+    #gameArea {
+      display: block;
+      width: 640px;
+      height: 360px;
+      max-width: 100%;
+      position: relative;
+      background: #06100D;
+      border: 1px solid rgba(132,154,89,.2);
+      border-radius: 4px;
+      box-shadow: 0 0 3.75rem rgba(10,51,35,.5);
+      font-family: 'GameFont';
+      /* fitGameArea() scales the fixed 640x360 game up on wide desktops (and down
+         on phones) - origin must match the JS-sized scaler wrapper's top-left */
+      transform-origin: top left;
+    }
+    /* Reserves the game's 640x360 box before bundle.js has loaded (see the
+       IntersectionObserver load trigger near the end of the file), so the section
+       doesn't jump/reflow once the canvas pops in. */
+    #gameArea-scaler {
+      position: relative;
+      width: 40rem; max-width: 100%;
+      aspect-ratio: 640 / 360;
+      background: #06100D;
+      border-radius: 4px;
+    }
+    #gameArea canvas { font-family: 'GameFont'; }
+    /* div keeps the `hidden` attribute until the game loads - without this,
+       the ID rule above (higher specificity than the [hidden] UA rule) forced it
+       to render at full size, doubling the section's height with an empty canvas */
+    #gameArea[hidden] { display: none; }
+    .gbar {
+      width: 630px;
+      height: 40px;
+      position: absolute;
+      top: 5px;
+      left: 5px;
+    }
+    .level-menu {
+      width: 640px;
+      height: 360px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .game-finished {
+      width: 480px;
+      height: 270px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #play-game-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; /* centers the shorter keys/touch-controls row under the 640px game */
+      gap: 1.1rem;
+      flex: 0 0 auto;
+    }
+    /* Mobile-only touch controls, hidden by default on every viewport - only the
+       mobile media query's #touch-controls.tc-active override ever shows them.
+       Without this base rule a bare <div> falls back to display:block, so once JS
+       adds .tc-active (it does unconditionally, regardless of device) they'd show
+       up stacked next to the game on desktop too, where a keyboard already works. */
+    #touch-controls { display: none; }
+    .play-cols {
+      display: flex;
+      align-items: stretch; /* text column stretches to match the game's height */
+      gap: 4.5rem;
+      margin-top: 3.5rem;
+      max-width: 82.5rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .play-text {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* centers the paragraph within the matched height */
+    }
+    @media (max-width: 900px) {
+      .play-cols { flex-direction: column; gap: 2.5rem; align-items: stretch; }
+    }
+
+    /* Persistent control legend - sits below the game area itself (a sibling of
+       #gameArea-scaler inside #play-game-wrap), so it's visible before the game
+       loads and stays through its own menu/level-select/gameplay screens. */
+    .play-keys {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.6rem;
+    }
+    .key-group { display: flex; align-items: center; gap: .55rem; }
+    .keycap {
+      width: 1.9rem; height: 1.9rem;
+      display: flex; align-items: center; justify-content: center;
+      background: #0d3a28; /* one step lighter than --forest, for depth against the section bg */
+      border: 1px solid rgba(218,217,119,.28);
+      border-radius: .375rem;
+      color: var(--lime);
+      /* bottom-edge ridge + soft drop shadow read as a physical, slightly-raised key */
+      box-shadow: 0 .16rem 0 rgba(0,0,0,.4), 0 .3rem .6rem rgba(0,0,0,.22);
+    }
+    .key-label {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size:.68rem; font-weight:600;
+      letter-spacing:.14em; text-transform:uppercase; color: var(--sage);
+    }
+
+    /* ─── PAINTERLY CANVAS ──────────────────────── */
+    #c {
+      position: fixed;
+      top: 5.8rem; left: 2rem;
+      width: calc(100vw - 4rem);
+      height: calc(100vh - 8rem);
+      border-radius: 1.25rem;
+      box-shadow: 0 .75rem 3.5rem rgba(10,51,35,.14);
+      z-index: 0;
+      display: block;
+    }
+    #sc {
+      position: fixed;
+      top: 5.8rem; left: 2rem;
+      width: calc(100vw - 4rem);
+      height: calc(100vh - 8rem);
+      border-radius: 1.25rem;
+      z-index: 1;
+      pointer-events: none;
+      transition: opacity .15s ease;
+    }
+    #work, #about, #skills, #play, footer {
+      position: relative;
+      z-index: 2;
+    }
+    /* #play must not trap its own stacking context, so its heading can be promoted above the ribbon (z-index 25) without the section's opaque background also jumping in front of the ribbon graphic */
+    #play { z-index: auto; }
+    #play .sec-label,
+    #play .sec-heading {
+      position: relative;
+      z-index: 30;
+    }
+    #pcur {
+      position: fixed;
+      width: 1.375rem; height: 1.375rem;
+      border: 1.5px solid var(--olive);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity .2s, transform .1s, background .15s;
+    }
+    #pcur.active {
+      background: rgba(132,154,89,.2);
+      transform: translate(-50%,-50%) scale(1.6);
+    }
+    #pcur.painting { border-color: var(--forest); border-width: 2px; }
+    #hint {
+      position: absolute;   /* inside #hero-content, scales with card */
+      bottom: 1.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 6;
+      font-family: 'Sora', 'Sora Fallback', sans-serif;
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--forest);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .6s var(--ease-out);
+      white-space: nowrap;
+    }
+    #hint.vis { opacity: 1; }
+    .hero-name .ch.light,
+    .hero-greeting .ch.light,
+    .hero-role .ch.light,
+    .hero-tagline .ch.light { color: rgba(255,255,255,0.92) !important; }
+    .btn-dark.btn-light { background: var(--lime) !important; color: var(--forest) !important; }
+    .btn-ghost-dark.btn-light { color: var(--lime) !important; border-color: rgba(218,217,119,0.75) !important; }
+    .btn-ghost-dark.btn-light:hover { background: rgba(218,217,119,0.15) !important; }
+    .hero-greeting, .hero-name, .hero-role, .hero-tagline { user-select: none; -webkit-user-select: none; }
+    .ch { display: inline; transition: color .6s ease; }
+
+    /* ─── RESPONSIVE ──────────────────────────── */
+    @media (max-width:900px) {
+      .about-cols { flex-direction: column; align-items: stretch; gap: 2.5rem; }
+      .about-text { max-width: none; }
+      .about-photo { width: min(420px, 85vw); margin: 0 auto; }
+    }
+    @media (max-width:660px) {
+      /* Mobile's hero pin scroll distance is a flat 1100px (not K()-scaled -
+         see the isMobile branch of the same scrollTrigger), so the reserved
+         space must match that instead of the desktop 43.75rem above. */
+      #hero-pin-space { height: 1100px; }
+      section { padding:5rem 6vw; }
+      nav {
+        padding: 1rem 6vw;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-logo { justify-self: unset; }
+      .nav-logo img { height: 42px; }
+      .nav-left, .nav-right { display: none; }
+      .nav-burger { display: flex; }
+      .hero-strip span:not(.avail):not(.avail-pulse) { display:none; }
+      .project-row { grid-template-columns:3ch 1fr 2.2rem; }
+      .pr-tag { display:none; }
+      .ft-visual { min-height:400px; }
+      .ft-content { gap:1.2rem; }
+      .ft-names { flex-direction:column; align-items:flex-start; gap:.2rem; }
+      .ft-bottom { flex-direction:column; align-items:flex-start; gap:.8rem; }
+
+      /* Hero painting canvas: static decorative backdrop, no cursor/paint UI */
+      #pcur, #cur-dot, #cur-ring, #hint { display: none !important; }
+      #c, #sc, #hero-content {
+        top: 5rem; left: 1rem;
+        width: calc(100vw - 2rem);
+        height: 68vh;
+      }
+      .hero-card {
+        width: min(90vw, 26rem);
+        max-width: 90vw;
+        margin-bottom: 1.8rem;
+      }
+      .hero-actions { gap: .9rem; }
+      .btn-dark, .btn-ghost-dark {
+        padding: 1.05rem 2.3rem;
+        font-size: .88rem;
+      }
+
+      /* About: the pin/crossfade is still GSAP-driven on mobile (see the matching
+         JS matchMedia split) so the sticker hand-off still reads as a transition
+         like desktop, just triggered later - once natural scroll has already
+         brought the photo fully into view, not the instant #about's top hits the
+         viewport. .about-inner gets pinned mid-document (not at its own natural
+         top), so anchoring .sticker-seq relative to any ancestor's box via
+         top/bottom math would depend on exactly how tall the scrolled-past content
+         was - fragile. Using position:fixed directly instead sidesteps that
+         entirely: a fixed box is always viewport-relative, so it trivially lines
+         up with whatever's currently pinned on screen, no coordinate math needed. */
+      .about-inner { padding: 6.5rem 6vw 3rem; }
+      .sticker-seq { position: fixed; top: 0; bottom: 0; height: auto; }
+      .sticker-tray {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+        width: 86%;
+        max-width: 420px;
+        padding: 0;
+      }
+      .si {
+        width: 100%;
+        max-width: none;
+      }
+
+      /* Software arc: the SVG viewBox is 1600x400 (4:1) with preserveAspectRatio="none",
+         so it stretches to whatever box height it's given. 25vw exactly matches that
+         native ratio (zero distortion), but once the icons were enlarged (below) that
+         read as too thin/cramped a strip to comfortably hold them - 30vw trades a mild,
+         intentional stretch (the curve reads slightly taller/steeper) for real breathing
+         room, and as a side effect a taller curve has more total arc length, which
+         naturally spaces the evenly-distributed icons further apart too. Margins scaled
+         proportionally with the height increase to keep the same relative overlap into
+         About/Play. */
+      .marquee-zone {
+        height: 30vw;
+        min-height: 0;
+        max-height: none;
+        margin: -34px 0 -67px;
+      }
+      /* Mobile-only: icons sit centered on the path's centerline, but since they're
+         upright (not rotated to the local tangent), the band's diagonal cross-section
+         reads thinner than its true stroke-width wherever the curve slopes steeply
+         (the transition sides of each hump, not the flat peaks/troughs) - a badge
+         could visually touch or overflow the band edge there even though it's
+         centered along the path. Widening just here (desktop stays at the base 130)
+         buys margin around the enlarged mobile icons without touching icon size or
+         the path itself. */
+      .mz-band { stroke-width: 190; }
+      /* The 190 stroke no longer fits the 400-unit viewBox everywhere: the path's
+         centerline reaches y=330 near the right end, so the band's lower edge lands at
+         330+95=425 and got clipped dead-flat along the right third of the screen (and
+         its top edge at -25 near the left end, same story). Let it paint past the box
+         instead - the overflow is only the band's own rounded edge drawing over the
+         neighbouring sections' solid fills (lime above, forest below), which is exactly
+         what the fills inside the SVG already blend into, so nothing foreign shows.
+         Painted SVG overflow is ink overflow: it can't create scrollbars or affect
+         layout. Desktop keeps the default hidden (its 130 stroke fits: 330+65=395). */
+      .marquee-zone, .mz-svg { overflow: visible; }
+
+      /* Bounce: the game canvas is a fixed 640x360 pixel coordinate space (real Nokia
+         engine internals, not reflowable) - #gameArea gets a JS-computed transform:scale
+         so it (and its HUD/level-select/end-screen overlays, all in the same coordinate
+         space) shrink together to fit a phone's width instead of overflowing it.
+         max-width:100% (set for desktop) would otherwise measure "100%" against this
+         wrapper's own JS-sized (already-scaled-down) width, capping #gameArea's layout
+         box a second time before transform:scale even runs - the wrapper below already
+         reflects the true scaled footprint, so #gameArea itself must stay at its native
+         640px layout size for scale() to be the only thing shrinking it. */
+      #gameArea { max-width: none; }
+      /* The keyboard-key legend is desktop-only wording ("keys") - phones get the
+         touch buttons below instead, so hide the redundant text row here. */
+      .play-keys { display: none; }
+      #touch-controls.tc-active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.1rem;
+      }
+      .tc-btn {
+        width: 60px; height: 60px;
+        border-radius: 50%;
+        border: none;
+        background: var(--forest);
+        color: var(--lime);
+        display: flex; align-items: center; justify-content: center;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        transition: transform .15s var(--ease-out), background .15s;
+      }
+      .tc-btn:active { transform: scale(.92); background: #0d4530; }
+      .tc-jump {
+        width: 68px; height: 68px;
+        background: var(--lime);
+        color: var(--forest);
+      }
+      .tc-jump:active { background: #c7c65f; }
+
+      /* Footer: full-bleed illustration reflows to a taller, portrait-friendly crop
+         instead of the desktop 16:9 landscape frame. */
+      .ft-visual { aspect-ratio: auto; min-height: 100vh; }
+
+      /* GSAP explicitly warns that ScrollTrigger.normalizeScroll() (enabled for
+         mobile - see the hero-canvas-exit script) conflicts with CSS
+         scroll-behavior:smooth: the browser's own smooth-scroll easing fights the
+         synthetic positioning normalizeScroll uses internally to regularize touch
+         input for pinned/scrubbed sections, which is very plausibly why the About
+         pin/sticker handoff was still inconsistent even after normalizeScroll was
+         added. Desktop keeps smooth scroll (nav anchor links); mobile does not. */
+      html { scroll-behavior: auto; }
+
+      /* Software arc: fixing the squish (matching container height to the SVG's
+         native 4:1 ratio) made the whole ribbon - icons included, since they share
+         its one coordinate space - shrink to roughly a quarter of desktop's size,
+         reading as barely-visible specks on a phone. The curve's shape itself must
+         stay undistorted, but each icon can be enlarged independently: .mz-icon's
+         CSS transform:scale is a local scale around that icon's own center only
+         (applied on top of, not instead of, the SVG's own viewBox scaling), so
+         bumping it up here makes the icons themselves bigger without touching the
+         band/path at all. */
+      .mz-icon { transform: scale(1.3); --mz-icon-scale: 2.3; }
+      .marquee-zone.mz-in .mz-icon { transform: scale(2.3); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mobile nav hamburger: two-line icon animates into an X, toggles a dropdown menu -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var burger = document.getElementById('nav-burger');
+    var menu = document.getElementById('nav-mobile-menu');
+    if (!burger || !menu) return;
+
+    function setOpen(open) {
+      burger.classList.toggle('open', open);
+      menu.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    burger.addEventListener('click', function() {
+      setOpen(!burger.classList.contains('open'));
+    });
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { setOpen(false); });
+    });
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 660) setOpen(false);
+    });
+  });
+</script>
+
+<!-- ── PAINTERLY BACKDROP ────────────────────────── -->
+<canvas id="c"></canvas>
+<canvas id="sc"></canvas>
+<div id="pcur"></div>
+<!-- ── CURSOR ───────────────────────────────────── -->
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+
+<!-- ── NAV ──────────────────────────────────────── -->
+<nav id="nav">
+  <ul class="nav-left">
+    <li><a href="#work">Case Studies</a></li>
+    <li><a href="resume.pdf" download="Nikhil-Arora-Resume.pdf">Resume</a></li>
+  </ul>
+  <a href="#home" class="nav-logo">
+    <img src="nik.gif" alt="Nikhil" />
+  </a>
+  <ul class="nav-right">
+    <li><a href="#play">Play</a></li>
+    <li><a href="#contact" class="nav-hire">Hire Me</a></li>
+  </ul>
+  <button id="nav-burger" class="nav-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav-mobile-menu">
+    <span></span><span></span>
+  </button>
+</nav>
+
+<div id="nav-mobile-menu" class="nav-mobile-menu">
+  <a href="#work">Case Studies</a>
+  <a href="resume.pdf" download="Nikhil-Arora-Resume.pdf">Resume</a>
+  <a href="#play">Play</a>
+  <a href="#contact" class="nav-hire">Hire Me</a>
+</div>
+
+<!-- Hero content fixed overlay - scales with canvas as one unit -->
+<div id="hero-content">
+  <p id="hint">Click to paint, click again to stop</p>
+  <div class="hero-inner">
+    <div class="hero-card rv" id="hero-flip">
+      <div class="card-inner">
+        <div class="card-front"><img src="front.png" alt="Nikhil Arora" fetchpriority="high" /></div>
+        <div class="card-back">
+          <img src="back.png" alt="Contact card" />
+          <div class="paint-stroke stroke-hello" aria-hidden="true">
+            <img src="paintstrokes/PNG/Element 59.png" />
+          </div>
+          <div class="paint-stroke stroke-nikhil" aria-hidden="true">
+            <img src="paintstrokes/PNG/Element 59.png" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-actions rv d4">
+      <a href="#work" class="btn-dark">
+        View Work
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2.5 7h9M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#about" class="btn-ghost-dark">About Me</a>
+    </div>
+  </div>
+</div>
+
+<!-- Scroll spacer - drives the GSAP canvas exit animation -->
+<section id="home"></section>
+
+<!-- Pre-reserves the hero pin's scroll distance before ScrollTrigger creates
+     its own pin-spacer, to avoid a CLS jump - see the #hero-pin-space CSS
+     comment and the scrollTrigger's onRefreshInit for the full explanation. -->
+<div id="hero-pin-space"></div>
+
+<div class="wave-div" data-from="#A8AD98" data-to="#0A3323"></div>
+
+<!-- ══════════════════════════════════════════════
+     WORK - dark forest, Gourou contrast section
+══════════════════════════════════════════════ -->
+<section id="work">
+<div class="work-inner">
+
+  <div class="work-header">
+    <div>
+      <h2 class="sec-heading rv d1">Projects that made a <em>mark.</em></h2>
+    </div>
+    <a href="#contact" class="work-all rv d2">
+      Start a project
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="cs-stack rv">
+
+    <!-- 01 · Studiobee -->
+    <div class="cs-block">
+      <div class="cs-head">
+        <span class="pr-num">01</span>
+        <div>
+          <h3 class="cs-name">Studiobee</h3>
+          <div class="pr-meta">Agency Website · 2026</div>
+          <p class="cs-desc">A full agency website built end-to-end — information architecture, motion, and front-end, shipped to production for a real client rather than a redesign concept.</p>
+          <div class="cs-tags">
+            <span class="pr-tag">UI / UX</span>
+            <span class="pr-tag">Front-end</span>
+          </div>
+        </div>
+        <a href="studiobee.html" target="_blank" rel="noopener" class="cs-link">
+          <span>View full case study</span>
+          <span class="pr-arr">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <div class="frame-scroll">
+        <div class="frame-scroll-track" style="--marquee-dur: 30s">
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">studiobee.com</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img src="studiobee/1.png" alt="Studiobee homepage hero" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">studiobee.com/#work</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img src="studiobee/3.png" alt="Studiobee selected work section" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">studiobee.com/#testimonials</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img src="studiobee/7.png" alt="Studiobee testimonials section" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-phone">
+            <div class="frame-phone-notch"></div>
+            <div class="frame-phone-screen frame-phone-screen--empty">
+              <span>Mobile capture<br>pending</span>
+            </div>
+            <div class="frame-phone-home"></div>
+          </div>
+          <div aria-hidden="true" style="display:contents">
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">studiobee.com</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img src="studiobee/1.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">studiobee.com/#work</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img src="studiobee/3.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">studiobee.com/#testimonials</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img src="studiobee/7.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="frame-phone">
+              <div class="frame-phone-notch"></div>
+              <div class="frame-phone-screen frame-phone-screen--empty">
+                <span>Mobile capture<br>pending</span>
+              </div>
+              <div class="frame-phone-home"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 · BeeNext -->
+    <div class="cs-block">
+      <div class="cs-head">
+        <span class="pr-num">02</span>
+        <div>
+          <h3 class="cs-name">BeeNext</h3>
+          <div class="pr-meta">Brand Identity · 2025</div>
+          <p class="cs-desc">Brand identity and marketing site for an AV/IT distribution company — logo system, visual language, and a responsive site built to carry it across every screen.</p>
+          <div class="cs-tags">
+            <span class="pr-tag">Brand Identity</span>
+            <span class="pr-tag">Web Design</span>
+          </div>
+        </div>
+        <a href="beenext.html" target="_blank" rel="noopener" class="cs-link">
+          <span>View full case study</span>
+          <span class="pr-arr">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <div class="frame-scroll">
+        <div class="frame-scroll-track" style="--marquee-dur: 34s">
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">beenext.com</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img src="bn ss/desktop-1440-hero.png" alt="BeeNext homepage hero" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">beenext.com/about-us</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img src="bn ss/desktop-1440-about.png" alt="BeeNext about section" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">beenext.com/#industries</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img src="bn ss/desktop-1440-industries.png" alt="BeeNext industries section" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-phone">
+            <div class="frame-phone-notch"></div>
+            <div class="frame-phone-screen">
+              <img src="bn ss/test-screenshots/mobile-375-hero.png" alt="BeeNext mobile homepage" loading="lazy">
+            </div>
+            <div class="frame-phone-home"></div>
+          </div>
+          <div class="frame-phone">
+            <div class="frame-phone-notch"></div>
+            <div class="frame-phone-screen">
+              <img src="bn ss/test-screenshots/mobile-375-stats.png" alt="BeeNext mobile stats section" loading="lazy">
+            </div>
+            <div class="frame-phone-home"></div>
+          </div>
+          <div aria-hidden="true" style="display:contents">
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">beenext.com</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img src="bn ss/desktop-1440-hero.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">beenext.com/about-us</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img src="bn ss/desktop-1440-about.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">beenext.com/#industries</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img src="bn ss/desktop-1440-industries.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="frame-phone">
+              <div class="frame-phone-notch"></div>
+              <div class="frame-phone-screen">
+                <img src="bn ss/test-screenshots/mobile-375-hero.png" alt="" loading="lazy">
+              </div>
+              <div class="frame-phone-home"></div>
+            </div>
+            <div class="frame-phone">
+              <div class="frame-phone-notch"></div>
+              <div class="frame-phone-screen">
+                <img src="bn ss/test-screenshots/mobile-375-stats.png" alt="" loading="lazy">
+              </div>
+              <div class="frame-phone-home"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 · MyStudioBee -->
+    <div class="cs-block">
+      <div class="cs-head">
+        <span class="pr-num">03</span>
+        <div>
+          <h3 class="cs-name">MyStudioBee</h3>
+          <div class="pr-meta">Internal Ops Tool · 2026</div>
+          <p class="cs-desc">An internal ops dashboard for quoting, costing, and vendor management — designed to replace a spreadsheet-driven workflow with something the team actually wants to open.</p>
+          <div class="cs-tags">
+            <span class="pr-tag">Product Design</span>
+            <span class="pr-tag">Full-Stack</span>
+          </div>
+        </div>
+        <a href="mystudiobee.html" target="_blank" rel="noopener" class="cs-link">
+          <span>View full case study</span>
+          <span class="pr-arr">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <div class="frame-scroll">
+        <div class="frame-scroll-track" style="--marquee-dur: 26s">
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">app.mystudiobee.com/dashboard</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img src="mystudiobee/dashboard.png" alt="MyStudioBee dashboard screen" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">app.mystudiobee.com/equipment</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img src="mystudiobee/equipment.png" alt="MyStudioBee equipment inventory screen" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">app.mystudiobee.com/quotes/SB-Q-026</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img src="mystudiobee/quote-summary.png" alt="MyStudioBee quote summary screen" loading="lazy">
+            </div>
+          </div>
+          <div aria-hidden="true" style="display:contents">
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">app.mystudiobee.com/dashboard</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img src="mystudiobee/dashboard.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">app.mystudiobee.com/equipment</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img src="mystudiobee/equipment.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">app.mystudiobee.com/quotes/SB-Q-026</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img src="mystudiobee/quote-summary.png" alt="" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 · Social Media & Branding -->
+    <div class="cs-block">
+      <div class="cs-head">
+        <span class="pr-num">04</span>
+        <div>
+          <h3 class="cs-name">Social Media &amp; Branding</h3>
+          <div class="pr-meta">Motion &amp; Branding · 2025</div>
+          <p class="cs-desc">Motion graphics, logo animation, and social campaign design across multiple client accounts — reels, lookbooks, and recurring content built for platforms, not just a portfolio.</p>
+          <div class="cs-tags">
+            <span class="pr-tag">Motion Graphics</span>
+            <span class="pr-tag">Branding</span>
+          </div>
+        </div>
+        <a href="social-branding.html" target="_blank" rel="noopener" class="cs-link">
+          <span>View full case study</span>
+          <span class="pr-arr">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <div class="frame-row">
+        <div class="frame-phone">
+          <div class="frame-phone-notch"></div>
+          <div class="frame-phone-screen">
+            <video class="reel-video" playsinline muted loop preload="metadata" poster="Social media/web/beenext-8k-gaming.jpg">
+              <source src="branding and videos/Reel 2.mp4" type="video/mp4">
+            </video>
+            <button class="reel-play" type="button" aria-label="Play showreel">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l10-5.5-10-5.5z"/></svg>
+            </button>
+          </div>
+          <div class="frame-phone-home"></div>
+        </div>
+        <div class="frame-phone">
+          <div class="frame-phone-notch"></div>
+          <div class="frame-phone-screen">
+            <video class="reel-video" playsinline muted loop preload="metadata" poster="Social media/web/mcbee-planning-phase.jpg">
+              <source src="branding and videos/15 year logo animation final.mp4" type="video/mp4">
+            </video>
+            <button class="reel-play" type="button" aria-label="Play logo animation reel">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l10-5.5-10-5.5z"/></svg>
+            </button>
+          </div>
+          <div class="frame-phone-home"></div>
+        </div>
+        <div class="frame-desktop frame-desktop--pdf" data-pdf="branding and videos/mcbee-lookbook-1.pdf" data-pdf-title="McBee Lookbook" role="button" tabindex="0" aria-label="Open McBee lookbook PDF">
+          <div class="frame-desktop-chrome">
+            <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+            <div class="fdc-url">mcbee-lookbook.pdf</div>
+          </div>
+          <div class="frame-desktop-screen">
+            <img class="pdf-thumb-img" data-pdf="branding and videos/mcbee-lookbook-1.pdf" alt="McBee lookbook cover">
+            <div class="frame-loading"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="branding-strip-label">Branding &amp; campaign work</div>
+      <div class="branding-strip">
+        <img src="Social media/web/beenext-av-over-ip.jpg" alt="BeeNext AV over IP campaign visual" loading="lazy">
+        <img src="Social media/web/beenext-avpro-edge.jpg" alt="BeeNext AVPro Edge campaign visual" loading="lazy">
+        <img src="Social media/web/karray-dragon-kxt18p.jpg" alt="Karray Dragon campaign visual" loading="lazy">
+        <img src="Social media/web/karray-firenze-kh7p.jpg" alt="Karray Firenze campaign visual" loading="lazy">
+        <img src="Social media/web/mcbee-hiring-visual-designer.jpg" alt="McBee hiring campaign visual" loading="lazy">
+        <img src="Social media/web/mcbee-care-behind-scene.jpg" alt="McBee behind the scenes campaign visual" loading="lazy">
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<div class="wave-div" data-from="#0A3323" data-to="#DAD977"></div>
+
+<!-- ══════════════════════════════════════════════
+     ABOUT - lime #DAD977, Gourou bold color block
+══════════════════════════════════════════════ -->
+<section id="about">
+
+  <!-- ① Actual about content - visible as soon as the section is scrolled into view -->
+  <div class="about-inner">
+    <div class="about-header rv">
+      <h2 class="sec-heading rv d1">A bit about <em>me.</em></h2>
+    </div>
+    <div class="about-cols">
+
+      <div class="about-text">
+        <p class="about-body rv d1">
+          I'm a UX/UI Designer with a background in Game Arts, bringing together visual thinking, creativity, and problem-solving to design intuitive and engaging digital experiences.
+        </p>
+        <p class="about-body rv d2">
+          My background in design has taught me to think about both how something looks and, more importantly, how it works and feels for the people using it. I enjoy understanding problems, exploring ideas, and turning them into clear, thoughtful interfaces.
+        </p>
+        <p class="about-body rv d3">
+          I'm naturally curious, always learning, and excited by opportunities to create meaningful products while growing as a UX/UI Designer.
+        </p>
+      </div>
+
+      <div class="about-photo-wrap rv d4">
+        <div class="about-photo">
+          <img src="A8503087-2 (1).webp" alt="Photo of Nikhil" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ② Sticker pop-up - pinned overlay that plays after the about content is visible:
+       one scroll snap brings the stickers up, the next sends them away, then the section
+       unpins. Kept as a sibling of .about-inner (not nested inside it) deliberately -
+       .about-inner is the element GSAP fades to opacity:0 during the handoff, and CSS
+       opacity always compounds onto descendants, so nesting the stickers inside it would
+       make them inherit that fade-to-invisible no matter what their own tween did. -->
+  <div class="sticker-seq">
+    <!-- No .rv/.d1-d3 classes here (there used to be) - GSAP's scrub timeline fully
+         owns these 4 opacity/y via inline styles every frame, but .rv declares its
+         own `transition: opacity .8s ...` with a per-class delay. A CSS transition
+         fires on ANY change to a transitioning property's computed value, inline or
+         not - so every GSAP scrub tick was retriggering each sticker's own .8s
+         catch-up animation (staggered further by d1/d2/d3's own delays), fighting
+         the scrub frame by frame. That's what actually produced the "come in/go
+         away one by one, with delay and jitter" symptom - confirmed live: even with
+         the GSAP stagger explicitly set to 0 below, the 4 stickers' computed
+         opacity read as 4 different values at the same scroll position. -->
+    <div class="sticker-tray">
+      <img class="si si-1" src="gym.png"  alt="">
+      <img class="si si-2" src="art.png"  alt="">
+      <img class="si si-3" src="cook.png" alt="">
+      <img class="si si-4" src="game.png" alt="">
+    </div>
+  </div>
+
+</section>
+
+<!-- Preserved (hidden) skills section so wave data-to is still correct -->
+<section id="skills">
+<div class="skills-inner">
+
+  <div class="skills-header rv">
+  </div>
+
+  <div class="marquee-ribbon">
+    <div class="marquee-track">
+      <!-- set 1 -->
+      <div class="mq-item"><img src="adobe-photoshop-svgrepo-com.svg" alt="Photoshop" loading="lazy"><span>Photoshop</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-illustrator-svgrepo-com.svg" alt="Illustrator" loading="lazy"><span>Illustrator</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-after-effects-svgrepo-com.svg" alt="After Effects" loading="lazy"><span>After Effects</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/figma" alt="Figma" loading="lazy"><span>Figma</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-premiere-svgrepo-com.svg" alt="Premiere Pro" loading="lazy"><span>Premiere Pro</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="claude-ai-icon.svg" alt="Claude" loading="lazy"><span>Claude</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/cursor" alt="Cursor" loading="lazy"><span>Cursor</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/wix" alt="Wix" loading="lazy"><span>Wix</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/framer" alt="Framer" loading="lazy"><span>Framer</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/vercel" alt="Vercel" loading="lazy"><span>Vercel</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-xd-svgrepo-com.svg" alt="Adobe XD" loading="lazy"><span>Adobe XD</span></div>
+      <span class="mq-sep">✦</span>
+      <!-- set 2 - duplicate for seamless loop -->
+      <div class="mq-item"><img src="adobe-photoshop-svgrepo-com.svg" alt="Photoshop" loading="lazy"><span>Photoshop</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-illustrator-svgrepo-com.svg" alt="Illustrator" loading="lazy"><span>Illustrator</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-after-effects-svgrepo-com.svg" alt="After Effects" loading="lazy"><span>After Effects</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/figma" alt="Figma" loading="lazy"><span>Figma</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-premiere-svgrepo-com.svg" alt="Premiere Pro" loading="lazy"><span>Premiere Pro</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="claude-ai-icon.svg" alt="Claude" loading="lazy"><span>Claude</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/cursor" alt="Cursor" loading="lazy"><span>Cursor</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/wix" alt="Wix" loading="lazy"><span>Wix</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/framer" alt="Framer" loading="lazy"><span>Framer</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="https://cdn.simpleicons.org/vercel" alt="Vercel" loading="lazy"><span>Vercel</span></div>
+      <span class="mq-sep">✦</span>
+      <div class="mq-item"><img src="adobe-xd-svgrepo-com.svg" alt="Adobe XD" loading="lazy"><span>Adobe XD</span></div>
+      <span class="mq-sep">✦</span>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- Diagonal zigzag ribbon - straddles the About → Play seam, logos flow along the band -->
+<div class="marquee-zone">
+  <svg class="mz-svg" viewBox="0 0 1600 400" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <path id="mz-path" d="M -80 70 C 60 70 140 130 250 130 C 360 130 440 120 550 120 C 660 120 740 250 850 250 C 960 250 1040 180 1150 180 C 1260 180 1340 330 1450 330 C 1560 330 1620 310 1680 310" />
+    </defs>
+    <!-- Fills trace the exact same curve as the band, so the ribbon itself reads as the seam between the two section colors -->
+    <!-- overdrawn 12px past the viewBox edges so sub-pixel scaling can never expose the wrong color through a hairline gap -->
+    <path class="mz-fill-top" d="M -80 70 C 60 70 140 130 250 130 C 360 130 440 120 550 120 C 660 120 740 250 850 250 C 960 250 1040 180 1150 180 C 1260 180 1340 330 1450 330 C 1560 330 1620 310 1680 310 L 1680 -12 L -80 -12 Z" />
+    <path class="mz-fill-bottom" d="M -80 70 C 60 70 140 130 250 130 C 360 130 440 120 550 120 C 660 120 740 250 850 250 C 960 250 1040 180 1150 180 C 1260 180 1340 330 1450 330 C 1560 330 1620 310 1680 310 L 1680 412 L -80 412 Z" />
+    <path class="mz-band" d="M -80 70 C 60 70 140 130 250 130 C 360 130 440 120 550 120 C 660 120 740 250 850 250 C 960 250 1040 180 1150 180 C 1260 180 1340 330 1450 330 C 1560 330 1620 310 1680 310" />
+
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Photoshop">
+      <image href="adobe-photoshop-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Illustrator">
+      <image href="adobe-illustrator-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="After Effects">
+      <image href="adobe-after-effects-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Figma">
+      <image href="https://cdn.simpleicons.org/figma" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Premiere Pro">
+      <image href="adobe-premiere-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Claude">
+      <image href="claude-ai-icon.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Cursor">
+      <image href="https://cdn.simpleicons.org/cursor" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Wix">
+      <image href="https://cdn.simpleicons.org/wix" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Framer">
+      <image href="https://cdn.simpleicons.org/framer" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Vercel">
+      <image href="https://cdn.simpleicons.org/vercel" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+    <g class="mz-icon"><g class="mz-icon-pos" data-name="Adobe XD">
+      <image href="adobe-xd-svgrepo-com.svg" x="-20" y="-20" width="40" height="40"/>
+    </g></g>
+  </svg>
+  <div class="mz-tooltip" id="mzTooltip"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     BOUNCE
+══════════════════════════════════════════════ -->
+<section id="play">
+<div class="play-inner">
+
+  <div class="rv">
+    <h2 class="sec-heading rv d1">Bounce <em>lives.</em></h2>
+  </div>
+
+  <div class="play-cols">
+
+  <div id="play-game-wrap">
+
+    <!-- The game itself - Bounce builds its own canvases inside this container, including
+         its own menu/logo/play screen, so there's no separate splash cover to click through;
+         bundle.js loads (see the IntersectionObserver near the end of the file) once this
+         section is about to scroll into view, and that menu screen is what appears.
+         The game's canvases are a fixed 640x360 pixel coordinate space (real Nokia engine,
+         not reflowable) - on mobile #gameArea-scaler is sized to the scaled footprint in JS
+         and #gameArea itself gets a matching CSS transform:scale so everything inside
+         (game canvas, HUD bar, level-select, end screen) shrinks together as one unit. -->
+    <div id="gameArea-scaler">
+      <div id="gameArea" hidden></div>
+    </div>
+
+    <!-- Mobile-only on-screen controls - the real game only reads keyboard arrow/space input -->
+    <div id="touch-controls" aria-hidden="true">
+      <button type="button" id="tc-left" class="tc-btn" aria-label="Move left">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" id="tc-jump" class="tc-btn tc-jump" aria-label="Jump">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 15l7-7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" id="tc-right" class="tc-btn" aria-label="Move right">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Desktop-only key legend - a sibling of the cover/game canvas (not inside either),
+         so it stays put across the splash, level-select, and gameplay states. -->
+    <div class="play-keys" aria-hidden="true">
+      <span class="key-group">
+        <span class="keycap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="keycap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="key-label">Move</span>
+      </span>
+      <span class="key-group">
+        <span class="keycap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 15l7-7 7 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="key-label">Jump</span>
+      </span>
+    </div>
+
+  </div>
+
+  <div class="play-text">
+    <p class="play-intro">I know it's a lot.<br>
+
+After hours of scrolling through portfolios,
+<br>even recruiters and curious visitors deserve a breather.<br>
+
+So before you move on, take a tiny detour <br> into something a little more playful.<br>
+
+A small splash of nostalgia, tucked between <br> all the case studies and pixels.<br>
+
+Something familiar.  Something fun.<br>
+
+Something with a little bounce.</p>
+  </div>
+
+  </div>
+
+</div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────── -->
+<footer>
+  <div class="ft-visual">
+    <img src="footer.png" alt="" class="ft-bg ft-bg-light" loading="lazy" />
+    <img src="footer-dark.png" alt="" class="ft-bg ft-bg-dark" loading="lazy" />
+    <div class="ft-scrim"></div>
+  </div>
+  <div class="ft-content" id="contact">
+    <div class="ft-names">
+      <span class="ft-name-l">NIKHIL</span>
+      <span class="ft-name-r">ARORA</span>
+    </div>
+    <div class="ft-bottom">
+      <a href="mailto:nikhilmail2009@gmail.com" class="ft-email">
+        nikhilmail2009@gmail.com
+      </a>
+      <div class="ft-socials">
+        <a href="#" class="ft-soc">Instagram ↗</a>
+        <a href="#" class="ft-soc">LinkedIn ↗</a>
+      </div>
+      <span class="ft-copy">© 2024 Nikhil. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── PDF MODAL ──────────────────────────────── -->
+<div id="pdf-modal">
+  <div id="pdf-modal-bg"></div>
+  <div id="pdf-modal-inner">
+    <div id="pdf-modal-header">
+      <span id="pdf-modal-title"></span>
+      <div id="pdf-modal-controls">
+        <button class="pdf-btn" id="pdf-close" title="Close (Esc)">&#10005;</button>
+      </div>
+    </div>
+    <div id="pdf-modal-viewport">
+      <div id="pdf-loading">Loading</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCRIPTS ────────────────────────────────── -->
+<script>
+  /* Custom cursor */
+  const dot = document.getElementById('cur-dot');
+  const ring = document.getElementById('cur-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx+'px'; dot.style.top = my+'px';
+  });
+  (function tick() {
+    rx += (mx-rx)*.1; ry += (my-ry)*.1;
+    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    requestAnimationFrame(tick);
+  })();
+  document.querySelectorAll('a,button,.project-row').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+  });
+
+  /* Nav scroll */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60), {passive:true});
+
+  /* Nav hides once the full-bleed footer comes into view */
+  const footerEl = document.querySelector('footer');
+  if (footerEl) {
+    const navFooterObs = new IntersectionObserver(entries => {
+      entries.forEach(e => nav.classList.toggle('nav-hidden', e.isIntersecting));
+    }, { threshold: 0, rootMargin: '0px' });
+    navFooterObs.observe(footerEl);
+  }
+
+  /* NIKHIL / ARORA footer names - animate in on entry, back out on exit
+     (toggles every crossing rather than firing once, unlike the .rv reveal
+     system below, so it replays if the user scrolls back up past it) */
+  const ftNames = document.querySelector('.ft-names');
+  if (ftNames) {
+    const ftNamesObs = new IntersectionObserver(entries => {
+      entries.forEach(e => ftNames.classList.toggle('ft-names-in', e.isIntersecting));
+    }, { threshold: 0.15 });
+    ftNamesObs.observe(ftNames);
+  }
+
+  /* Scroll reveal - Gourou fade-in-up style */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.rv').forEach(el => {
+    /* Hero fires immediately */
+    if (el.closest('#home, #hero-content')) {
+      const delay = parseFloat(getComputedStyle(el).transitionDelay || 0) * 1000;
+      setTimeout(() => el.classList.add('vis'), 100 + delay);
+    } else {
+      obs.observe(el);
+    }
+  });
+
+  /* Ribbon entrance - band draws in left → right, logos fade/scale in along it */
+  const mz = document.querySelector('.marquee-zone');
+  if (mz) {
+    const mzObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('mz-in'); mzObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.25 });
+    mzObs.observe(mz);
+  }
+</script>
+
+<script>
+/* ── CASE-STUDY BLOCKS (static markup - just interactivity) ─────────────
+   Markup for all four blocks is static HTML in #work now (not DOM-built
+   from a data array like the old compact grid), so this script only has
+   to wire up: reel play/pause, the lookbook desktop-frame's PDF viewer
+   (openViewer is defined later, once pdf.js loads - safe to reference
+   here since it's only called from a click handler, by which time every
+   script on the page has already run), and the custom cursor's hover
+   state on the new interactive elements. */
+
+document.querySelectorAll('.reel-play').forEach(btn => {
+  const video = btn.previousElementSibling;
+  btn.addEventListener('click', () => {
+    video.controls = true;
+    video.play();
+    btn.classList.add('is-hidden');
+  });
+  video.addEventListener('pause', () => btn.classList.remove('is-hidden'));
+});
+
+const pdfFrame = document.querySelector('.frame-desktop--pdf');
+if (pdfFrame) {
+  const openLookbook = () => openViewer(pdfFrame.dataset.pdf, pdfFrame.dataset.pdfTitle);
+  pdfFrame.addEventListener('click', openLookbook);
+  pdfFrame.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLookbook(); }
+  });
+}
+
+document.querySelectorAll('.cs-link, .reel-play, .frame-desktop--pdf, .frame-desktop, .frame-phone').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+});
+
+/* Screen strips auto-scroll via the CSS marquee animation on
+   .frame-scroll-track (paused on hover/focus - see the stylesheet) -
+   nothing to wire up here for that. */
+</script>
+
+<!-- ── PAINTERLY HERO BACKDROP ───────────────── -->
+<script>
+(function(){
+'use strict';
+
+// Mobile: canvas stays a single static decorative painting - no drag-to-paint,
+// no cursor trail, no inactivity-triggered eraser sweep, no continuous RAF loop.
+const IS_MOBILE = window.matchMedia('(max-width: 660px)').matches;
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Canvas setup + accumulation buffer
+// ─────────────────────────────────────────────────────────────────────────────
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+const offC   = document.createElement('canvas');
+const offX   = offC.getContext('2d', { willReadFrequently: true });
+
+let W = 0, H = 0;
+
+function resize() {
+  W = window.innerWidth;
+  H = window.innerHeight;
+
+  let saved = null;
+  if (offC.width > 0 && offC.height > 0) {
+    const tmp   = document.createElement('canvas');
+    tmp.width   = offC.width;
+    tmp.height  = offC.height;
+    tmp.getContext('2d').drawImage(offC, 0, 0);
+    saved = { img: tmp, w: offC.width, h: offC.height };
+  }
+
+  canvas.width  = W;
+  canvas.height = H;
+  offC.width    = W;
+  offC.height   = H;
+
+  offX.fillStyle = '#B8D4B0';
+  offX.fillRect(0, 0, W, H);
+
+  if (saved) offX.drawImage(saved.img, 0, 0, saved.w, saved.h, 0, 0, W, H);
+}
+
+let rsTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(rsTimer);
+  rsTimer = setTimeout(() => {
+    NAV_H = 72 * uiScale();
+    resize(); resizeSC();
+    // Setting canvas.width/height (inside resize()) clears the visible canvas's
+    // pixels - on desktop the still-running RAF loop repaints it on the very next
+    // tick, but on mobile that loop is intentionally stopped once static (see the
+    // IS_MOBILE guards in frame()/renderSpring() below), so nothing would ever
+    // redraw it again. Mobile browsers fire resize constantly mid-scroll as the
+    // address bar shows/hides, which is exactly what made the canvas "disappear
+    // sometimes when scrolling" - one extra frame() call here repaints it from the
+    // (correctly preserved) offscreen buffer immediately after every such resize.
+    if (IS_MOBILE) frame();
+    // Root em (K) changes with viewport size/shape (see the html font-size
+    // media query), and the hero/about pin distances below are computed from
+    // K - without a refresh here they stay frozen at whatever K was true at
+    // page-load, so resizing/maximizing into a much taller viewport (e.g. a
+    // 4K monitor) leaves the pin-spacer under-sized and the About section
+    // bleeds into the hero fold before any scrolling happens.
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
+  }, 150);
+});
+resize();
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Image preloading - brush element PNGs
+// ─────────────────────────────────────────────────────────────────────────────
+
+const elements = [];
+const ELEMENT_IDS = [21,22,23,24,25,26,28,29,30,31,32,33,40,51,52,53,54,58,59,61];
+
+function preload() {
+  const promises = ELEMENT_IDS.map(id => {
+    const img = new Image();
+    img.src = `paintstrokes/PNG/Element%20${id}.png`;
+    elements.push(img);
+    return new Promise(res => { img.onload = res; img.onerror = res; });
+  });
+  return Promise.all(promises);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Colour palette
+// ─────────────────────────────────────────────────────────────────────────────
+
+const PALETTE = [
+  [125, 27, 74, 20, '#B8D4B0'],
+  [ 98,  9, 62, 18, '#A8AD9B'],
+  [ 58, 65, 64, 26, '#DAD977'],
+  [ 84, 30, 46, 22, '#849A59'],
+  [155, 68, 17, 14, '#0A3323'],
+];
+const TOTAL_W = PALETTE.reduce((s, c) => s + c[3], 0);
+
+function pickColor() {
+  let r = Math.random() * TOTAL_W;
+  for (const [h, s, l, w] of PALETTE) {
+    r -= w;
+    if (r <= 0) {
+      const hv = h + (Math.random() - .5) * 14;
+      const sv = Math.max(5,  s + (Math.random() - .5) * 16);
+      const lv = Math.max(10, Math.min(88, l + (Math.random() - .5) * 11));
+      return `hsl(${hv},${sv}%,${lv}%)`;
+    }
+  }
+  return 'hsl(125,27%,74%)';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Stamp colorizer + cache
+// ─────────────────────────────────────────────────────────────────────────────
+
+const stampCache = new Map();
+
+function getColoredStamp(imgIndex, color) {
+  const key = `${imgIndex}|${color}`;
+  if (stampCache.has(key)) return stampCache.get(key);
+  const img = elements[imgIndex];
+  if (!img || !img.naturalWidth) return null;
+  const tmp  = document.createElement('canvas');
+  tmp.width  = img.naturalWidth;
+  tmp.height = img.naturalHeight;
+  const tCtx = tmp.getContext('2d');
+  tCtx.drawImage(img, 0, 0);
+  tCtx.globalCompositeOperation = 'source-in';
+  tCtx.fillStyle = color;
+  tCtx.fillRect(0, 0, tmp.width, tmp.height);
+  stampCache.set(key, tmp);
+  return tmp;
+}
+
+function placeStamp(targetCtx, imgIndex, x, y, angle, targetWidth, color, alpha) {
+  const stamp = getColoredStamp(imgIndex, color);
+  if (!stamp) return;
+  const scale = targetWidth / stamp.width;
+  const w     = stamp.width  * scale;
+  const h     = stamp.height * scale;
+  targetCtx.save();
+  targetCtx.globalCompositeOperation = 'multiply';
+  targetCtx.globalAlpha = alpha;
+  targetCtx.translate(x, y);
+  targetCtx.rotate(angle);
+  targetCtx.drawImage(stamp, -w / 2, -h / 2, w, h);
+  targetCtx.restore();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Helpers + zone picker
+// ─────────────────────────────────────────────────────────────────────────────
+
+function rand(a, b)    { return a + Math.random() * (b - a); }
+function randInt(a, b) { return Math.floor(rand(a, b + .99)); }
+
+// Root em scale factor (1 at standard desktop, >1 on proportionally-scaled wide
+// viewports) - keeps the paint layer's px constants in step with the layout.
+function uiScale() {
+  return (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
+}
+
+let NAV_H = 72 * uiScale(); // keep nav zone paint-free (rescaled on resize)
+
+function inCenter(x, y, halfW = 0) {
+  const halfH = halfW * .55;
+  if (y - halfH < NAV_H) return true; // nav zone - exclude
+  if ((x + halfW) > W * .22 && (x - halfW) < W * .78 &&
+      (y + halfH) > H * .18 && (y - halfH) < H * .82) return true;
+
+  // Keep strokes off the hero card + CTAs, whatever size/position they end up at
+  const hero = document.querySelector('.hero-inner');
+  if (hero) {
+    const r = hero.getBoundingClientRect();
+    const pad = 40 * uiScale();
+    if ((x + halfW) > r.left - pad && (x - halfW) < r.right + pad &&
+        (y + halfH) > r.top - pad && (y - halfH) < r.bottom + pad) return true;
+  }
+  return false;
+}
+
+function pickAngle() {
+  const r = Math.random();
+  let base;
+  if      (r < .40) base = rand(-Math.PI * .18, Math.PI * .18);
+  else if (r < .70) base = rand( Math.PI * .22, Math.PI * .45);
+  else if (r < .90) base = rand(-Math.PI * .45, -Math.PI * .22);
+  else              base = rand( Math.PI * .40,  Math.PI * .60);
+  return base + (Math.random() > .5 ? 0 : Math.PI);
+}
+
+function pickZone() {
+  const r = Math.random();
+  if      (r < .18) return { x: rand(0, W * .28),     y: rand(NAV_H, H) };
+  else if (r < .36) return { x: rand(W * .72, W),     y: rand(NAV_H, H) };
+  else if (r < .50) return { x: rand(0, W),            y: rand(NAV_H, H * .22) };
+  else if (r < .64) return { x: rand(0, W),            y: rand(H * .78, H) };
+  else if (r < .80) return { x: rand(W*.05, W*.40),   y: rand(H*.25, H*.75) };
+  else              return { x: rand(W*.60, W*.95),   y: rand(H*.25, H*.75) };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Ambient painter
+// ─────────────────────────────────────────────────────────────────────────────
+
+function spawnAmbient(attempt = 0) {
+  if (attempt > 6) return;
+  const { x, y }   = pickZone();
+  const targetWidth = rand(W * .08, W * .40);
+  if (inCenter(x, y, targetWidth / 2)) { spawnAmbient(attempt + 1); return; }
+  const imgIdx = randInt(0, elements.length - 1);
+  if (!elements[imgIdx] || !elements[imgIdx].naturalWidth) { spawnAmbient(attempt + 1); return; }
+  placeStamp(offX, imgIdx, x, y, pickAngle(), targetWidth, pickColor(), rand(0.20, 0.52));
+}
+
+function spawnLarge() {
+  const { x, y }   = pickZone();
+  const targetWidth = rand(W * .25, W * .52);
+  if (inCenter(x, y, targetWidth / 2)) return;
+  const imgIdx = randInt(0, elements.length - 1);
+  if (!elements[imgIdx] || !elements[imgIdx].naturalWidth) return;
+  placeStamp(offX, imgIdx, x, y, pickAngle(), targetWidth, pickColor(), rand(.12, .26));
+}
+
+function spawnCorner(cx, cy) {
+  if (cy < NAV_H) return; // skip top corners that overlap nav
+  const imgIdx = randInt(0, elements.length - 1);
+  if (!elements[imgIdx] || !elements[imgIdx].naturalWidth) return;
+  placeStamp(offX, imgIdx, cx, cy, pickAngle(), rand(W * .08, W * .20), '#0A3323', rand(.25, .48));
+}
+
+function drawVignette() {
+  const grd = offX.createRadialGradient(W*.5, H*.5, H*.05, W*.5, H*.5, H*.82);
+  grd.addColorStop(0, 'rgba(200,210,190,0)');
+  grd.addColorStop(1, 'rgba(175,190,168,.30)');
+  offX.globalCompositeOperation = 'multiply';
+  offX.fillStyle = grd;
+  offX.fillRect(0, 0, W, H);
+  offX.globalCompositeOperation = 'source-over';
+}
+
+function seedPainting() {
+  for (let i = 0; i < 6;  i++) spawnLarge();
+  for (let i = 0; i < 18; i++) spawnAmbient();
+  spawnCorner(rand(W*.02, W*.14), rand(H*.02, H*.14));
+  spawnCorner(rand(W*.86, W*.98), rand(H*.02, H*.14));
+  spawnCorner(rand(W*.02, W*.14), rand(H*.86, H*.98));
+  spawnCorner(rand(W*.86, W*.98), rand(H*.86, H*.98));
+  drawVignette();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Mouse painter
+// ─────────────────────────────────────────────────────────────────────────────
+
+let isStroking = false, isPainting = false;
+let strokeElemIdx = -1, strokeColor = null, strokeWidth = 0;
+let brushAlpha = 0, brushSpacing = 0;
+let lastStampPos = null, lastPos = null, endTimer = null;
+let ghostElemIdx = 0, ghostAngle = 0;
+let cursorX = 0, cursorY = 0, isOverCanvas = false;
+let frameCount = 0, wipeInProgress = false, wipeProgress = 0, hasPainted = false;
+let inactivityTimer = null;
+
+const pcur = document.getElementById('pcur');
+const hint = document.getElementById('hint');
+const V_MIN = 3, INACTIVITY_MS = 3000;
+
+function _stampPNG(x, y, angle) {
+  const stamp = getColoredStamp(strokeElemIdx, strokeColor);
+  if (!stamp) return;
+  const scale = strokeWidth / stamp.width;
+  const w = stamp.width * scale, h = stamp.height * scale;
+  offX.save();
+  offX.globalCompositeOperation = 'multiply';
+  offX.globalAlpha = brushAlpha;
+  offX.translate(x, y);
+  offX.rotate(angle);
+  offX.drawImage(stamp, -w / 2, -h / 2, w, h);
+  offX.restore();
+  hasPainted = true;
+}
+
+function beginBrushStroke(x, y) {
+  let tries = 0;
+  do { strokeElemIdx = randInt(0, elements.length - 1); tries++; }
+  while (tries < 8 && (!elements[strokeElemIdx] || !elements[strokeElemIdx].naturalWidth));
+  if (!elements[strokeElemIdx] || !elements[strokeElemIdx].naturalWidth) return;
+  strokeColor  = pickColor();
+  strokeWidth  = rand(40, 110) * uiScale();
+  brushAlpha   = rand(0.22, 0.42);
+  brushSpacing = Math.max(2, strokeWidth * 0.22);
+  isStroking   = true;
+  lastStampPos = { x, y };
+  _stampPNG(x, y, 0);
+}
+
+function continueBrushStroke(x, y) {
+  if (!isStroking || !lastStampPos) return;
+  const dx = x - lastStampPos.x, dy = y - lastStampPos.y;
+  const d  = Math.sqrt(dx * dx + dy * dy);
+  if (d < brushSpacing) return;
+  const angle = Math.atan2(dy, dx);
+  const steps = Math.floor(d / brushSpacing);
+  for (let i = 1; i <= steps; i++) {
+    const t = (i * brushSpacing) / d;
+    _stampPNG(lastStampPos.x + dx * t, lastStampPos.y + dy * t, angle);
+  }
+  const moved = steps * brushSpacing;
+  lastStampPos = { x: lastStampPos.x + dx * (moved / d), y: lastStampPos.y + dy * (moved / d) };
+}
+
+function endBrushStroke() {
+  isStroking = false; lastStampPos = null;
+  if (pcur) pcur.classList.remove('active');
+}
+
+function startWipe() {
+  if (wipeInProgress || isStroking || !hasPainted) return;
+  wipeInProgress = true; wipeProgress = 0;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Spring cursor trail
+// ─────────────────────────────────────────────────────────────────────────────
+
+const sc   = document.getElementById('sc');
+const sCtx = sc.getContext('2d');
+
+// Backing store is rendered at SC_SCALE and stretched to full size by the #sc
+// CSS box (already smaller than the canvas's raw viewport dimensions, so this
+// is just leaning further into scaling that was already happening). The trail
+// is soft/blurred via low-opacity 'lighter' strokes, so the softer resolution
+// is not visible - but it cuts per-frame fill-rate work quadratically, which
+// is what was spiking (50 blended strokes redrawn full-viewport-size every
+// frame, at 4K, made the cost scale with how far the cursor swept per frame).
+const SC_SCALE = 0.6;
+function resizeSC() {
+  sc.width = window.innerWidth * SC_SCALE;
+  sc.height = window.innerHeight * SC_SCALE;
+  sCtx.setTransform(SC_SCALE, 0, 0, SC_SCALE, 0, 0);
+}
+resizeSC();
+
+// trails dropped from 50 to 20 (the count in the reference "spring" trail
+// implementation this was built from) - halves-plus the number of stroke()
+// calls and the total path length rasterized every frame, the other main
+// driver of the same fill-rate cost.
+const SP = { friction: 0.5, trails: 20, size: 50, dampening: 0.025, tension: 0.99 };
+
+function SineWave(opts) {
+  this.phase = opts.phase || 0; this.offset = opts.offset || 0;
+  this.frequency = opts.frequency || 0.001; this.amplitude = opts.amplitude || 1;
+}
+SineWave.prototype.update = function () {
+  this.phase += this.frequency;
+  return this.offset + Math.sin(this.phase) * this.amplitude;
+};
+
+function SNode() { this.x = 0; this.y = 0; this.vx = 0; this.vy = 0; }
+
+function SLine(spring) {
+  this.spring   = spring + 0.1 * Math.random() - 0.05;
+  this.friction = SP.friction + 0.01 * Math.random() - 0.005;
+  this.nodes    = [];
+  for (let i = 0; i < SP.size; i++) {
+    const nd = new SNode(); nd.x = cursorX; nd.y = cursorY; this.nodes.push(nd);
+  }
+}
+SLine.prototype.update = function () {
+  let k = this.spring, t = this.nodes[0];
+  t.vx += (cursorX - t.x) * k; t.vy += (cursorY - t.y) * k;
+  for (let i = 0, a = this.nodes.length; i < a; i++) {
+    t = this.nodes[i];
+    if (i > 0) {
+      const prev = this.nodes[i - 1];
+      t.vx += (prev.x - t.x) * k; t.vy += (prev.y - t.y) * k;
+      t.vx += prev.vx * SP.dampening; t.vy += prev.vy * SP.dampening;
+    }
+    t.vx *= this.friction; t.vy *= this.friction;
+    t.x  += t.vx; t.y  += t.vy; k *= SP.tension;
+  }
+};
+SLine.prototype.draw = function () {
+  let nx = this.nodes[0].x, ny = this.nodes[0].y;
+  sCtx.beginPath(); sCtx.moveTo(nx, ny);
+  let a, en, en1;
+  for (a = 1; a < this.nodes.length - 2; a++) {
+    en = this.nodes[a]; en1 = this.nodes[a + 1];
+    nx = 0.5 * (en.x + en1.x); ny = 0.5 * (en.y + en1.y);
+    sCtx.quadraticCurveTo(en.x, en.y, nx, ny);
+  }
+  en = this.nodes[a]; en1 = this.nodes[a + 1];
+  sCtx.quadraticCurveTo(en.x, en.y, en1.x, en1.y);
+  sCtx.stroke(); sCtx.closePath();
+};
+
+let springLines = [], springInitialized = false, hueOsc, isOverUI = false;
+
+document.addEventListener('mouseover', e => {
+  if (IS_MOBILE) return;
+  isOverUI = !!e.target.closest('a, button, [role="button"]');
+  sc.style.opacity = isOverUI ? '0' : '1';
+});
+
+function initSpring() {
+  springLines = [];
+  for (let i = 0; i < SP.trails; i++) springLines.push(new SLine(0.45 + (i / SP.trails) * 0.025));
+}
+
+// Hero RAF loops (frame/renderSpring) only need to run while the hero canvas
+// is actually on screen. GSAP's ScrollTrigger onLeave/onEnterBack (below)
+// flips this flag in lockstep with the same visibility:hidden toggle it
+// already applies, so the loops pause the instant the canvas is hidden and
+// pick back up exactly where they left off when it reappears - no visible
+// change while the hero is in view.
+let heroActive = true;
+
+function renderSpring() {
+  if (!heroActive || IS_MOBILE) return;
+  sCtx.globalCompositeOperation = 'source-over';
+  // clearRect runs through the same SC_SCALE transform as everything else
+  // drawn here, so the rect has to be specified in pre-transform (CSS pixel)
+  // units - sc.width/height are already post-scale device pixels and would
+  // only clear the top-left SC_SCALE fraction of the canvas, leaving stale
+  // trail pixels behind everywhere else.
+  sCtx.clearRect(0, 0, sc.width / SC_SCALE, sc.height / SC_SCALE);
+  sCtx.globalCompositeOperation = 'lighter';
+  sCtx.strokeStyle = `hsla(${Math.round(hueOsc.update())}, 55%, 45%, 0.025)`;
+  sCtx.lineWidth   = 4;
+  for (const line of springLines) { line.update(); line.draw(); }
+  requestAnimationFrame(renderSpring);
+}
+
+document.addEventListener('mousemove', e => {
+  if (IS_MOBILE) return;
+  const mx = e.clientX, my = e.clientY;
+  cursorX = mx; cursorY = my; isOverCanvas = true;
+
+  if (pcur) { pcur.style.left = mx + 'px'; pcur.style.top = my + 'px'; pcur.style.opacity = (isOverUI || my < NAV_H) ? '0' : '1'; }
+
+  if (!springInitialized) { initSpring(); springInitialized = true; }
+
+  if (lastPos) {
+    const dx = mx - lastPos.x, dy = my - lastPos.y;
+    const v  = Math.sqrt(dx * dx + dy * dy);
+    if (v > V_MIN) {
+      ghostAngle = Math.atan2(dy, dx);
+      if (isPainting && my > NAV_H) {
+        if (pcur) pcur.classList.add('active');
+        if (!isStroking) beginBrushStroke(mx, my); else continueBrushStroke(mx, my);
+        clearTimeout(endTimer); endTimer = setTimeout(endBrushStroke, 260);
+      }
+    }
+  }
+
+  // Always restart inactivity timer on any mouse movement
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(startWipe, INACTIVITY_MS);
+
+  lastPos = { x: mx, y: my };
+});
+
+document.addEventListener('mouseleave', () => {
+  isOverCanvas = false; if (pcur) pcur.style.opacity = '0'; endBrushStroke();
+});
+
+document.addEventListener('click', e => {
+  if (IS_MOBILE) return;
+  if (e.target.closest('.hero-actions, nav, #hero-flip')) return;
+  isPainting = !isPainting;
+  if (isPainting) {
+    if (pcur) pcur.classList.add('painting');
+    if (hint) hint.classList.remove('vis');
+  } else {
+    endBrushStroke(); clearTimeout(inactivityTimer);
+    if (pcur) pcur.classList.remove('painting', 'active');
+    if (hint) { hint.textContent = 'Click to paint, click again to stop'; hint.classList.add('vis'); setTimeout(() => hint.classList.remove('vis'), 2500); }
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Scroll + render loop
+// ─────────────────────────────────────────────────────────────────────────────
+
+window.addEventListener('scroll', () => {
+  /* opacity fade removed - canvas exits via GSAP scale/translate only */
+}, { passive: true });
+
+// data/regionW/regionH are a getImageData() readback cropped to just the
+// union of text/button rects (see updateTextColor) - r is still in full-canvas
+// viewport coords, so it's offset by (ox, oy) before indexing into that crop.
+function sampleLum(data, r, ox, oy, regionW, regionH) {
+  const sx = Math.max(0, Math.floor(r.left - ox)),  sy = Math.max(0, Math.floor(r.top - oy));
+  const ex = Math.min(regionW - 1, Math.ceil(r.right - ox)), ey = Math.min(regionH - 1, Math.ceil(r.bottom - oy));
+  if (sx >= ex || sy >= ey) return null;
+  let total = 0, count = 0;
+  for (let py = sy; py <= ey; py += 3) for (let px = sx; px <= ex; px += 3) {
+    const i = (py * regionW + px) * 4;
+    total += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]; count++;
+  }
+  return count ? total / count : null;
+}
+
+function updateTextColor() {
+  if (wipeInProgress) return;
+  const spans = [...document.querySelectorAll('#hero-content .ch')];
+  const btns  = [...document.querySelectorAll('#hero-content .hero-actions a')];
+  const all   = [...spans, ...btns];
+  if (!all.length) return;
+
+  // getImageData on the full W×H buffer (up to 3840x2160 on a 4K display) forced
+  // an 8-20ms synchronous GPU readback every 45 frames, stalling the RAF loop
+  // periodically ("lagging at times", worst on high-res monitors). Only the
+  // small union of text/button rects is ever sampled, so crop the readback to
+  // just that region instead of the whole canvas.
+  let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;
+  for (const el of all) {
+    const r = el.getBoundingClientRect();
+    if (r.width <= 0 || r.height <= 0) continue;
+    left = Math.min(left, r.left); top = Math.min(top, r.top);
+    right = Math.max(right, r.right); bottom = Math.max(bottom, r.bottom);
+  }
+  if (!isFinite(left)) return;
+
+  const ox = Math.max(0, Math.floor(left)), oy = Math.max(0, Math.floor(top));
+  const regionW = Math.min(W, Math.ceil(right))  - ox;
+  const regionH = Math.min(H, Math.ceil(bottom)) - oy;
+  if (regionW <= 0 || regionH <= 0) return;
+  const data = offX.getImageData(ox, oy, regionW, regionH).data;
+
+  spans.forEach(span => {
+    const lum = sampleLum(data, span.getBoundingClientRect(), ox, oy, regionW, regionH);
+    if (lum === null) return;
+    if (lum < 130) span.classList.add('light'); else if (lum > 158) span.classList.remove('light');
+  });
+  btns.forEach(btn => {
+    const lum = sampleLum(data, btn.getBoundingClientRect(), ox, oy, regionW, regionH);
+    if (lum === null) return;
+    if (lum < 130) btn.classList.add('btn-light'); else if (lum > 158) btn.classList.remove('btn-light');
+  });
+}
+
+function frame() {
+  if (!heroActive) return;
+  if (wipeInProgress) {
+    // Sequential zig-zag blackboard eraser: each band sweeps one at a time,
+    // alternating L→R and R→L, like a real eraser dragged across a chalkboard.
+    // Total duration ~3s at 60fps (1/180 per frame).
+    wipeProgress = Math.min(1, wipeProgress + 1 / 360);
+
+    const BANDS    = 14;
+    const FEATHER  = 50;
+    // Each band occupies BAND_DUR of [0,1]; bands start staggered so they
+    // begin just as the previous one finishes (~10% overlap for fluidity).
+    const BAND_DUR = 0.22;
+    const OVERLAP  = 0.04;
+    const step     = (1 - BAND_DUR) / (BANDS - 1);
+    const bH       = H / BANDS;
+
+    offX.save();
+    offX.globalCompositeOperation = 'source-over';
+
+    for (let b = 0; b < BANDS; b++) {
+      const bandStart = b * step;
+      const rawBp     = (wipeProgress - bandStart) / BAND_DUR;
+      const bp        = Math.max(0, Math.min(1, rawBp + OVERLAP));
+      if (bp <= 0) continue;
+
+      // Smooth ease-in-out (smoothstep) for a weighty eraser feel
+      const eased  = bp * bp * (3 - 2 * bp);
+      const goRight = (b % 2 === 0);
+
+      const y0 = Math.floor(b * bH);
+      const y1 = Math.ceil(y0 + bH + 1);
+
+      if (goRight) {
+        // Tip travels left→right
+        const tipX  = eased * (W + FEATHER);
+        const solidW = Math.min(Math.max(0, tipX - FEATHER), W);
+        if (solidW > 0) {
+          offX.fillStyle = '#B8D4B0';
+          offX.fillRect(0, y0, solidW, y1 - y0);
+        }
+        const gx0 = Math.max(0, tipX - FEATHER);
+        const gx1 = Math.min(W, tipX);
+        if (gx1 > gx0) {
+          const grad = offX.createLinearGradient(gx0, 0, gx1, 0);
+          grad.addColorStop(0, 'rgba(184,212,176,1)');
+          grad.addColorStop(1, 'rgba(184,212,176,0)');
+          offX.fillStyle = grad;
+          offX.fillRect(gx0, y0, gx1 - gx0, y1 - y0);
+        }
+      } else {
+        // Tip travels right→left
+        const tipX  = W - eased * (W + FEATHER);
+        const solidX = Math.max(0, tipX + FEATHER);
+        if (solidX < W) {
+          offX.fillStyle = '#B8D4B0';
+          offX.fillRect(solidX, y0, W - solidX, y1 - y0);
+        }
+        const gx0 = Math.max(0, tipX);
+        const gx1 = Math.min(W, tipX + FEATHER);
+        if (gx1 > gx0) {
+          const grad = offX.createLinearGradient(gx0, 0, gx1, 0);
+          grad.addColorStop(0, 'rgba(184,212,176,0)');
+          grad.addColorStop(1, 'rgba(184,212,176,1)');
+          offX.fillStyle = grad;
+          offX.fillRect(gx0, y0, gx1 - gx0, y1 - y0);
+        }
+      }
+    }
+
+    offX.restore();
+
+    if (wipeProgress >= 1) {
+      offX.globalCompositeOperation = 'source-over';
+      offX.fillStyle = '#B8D4B0';
+      offX.fillRect(0, 0, W, H);
+      wipeInProgress = false; wipeProgress = 0; hasPainted = false;
+      ghostElemIdx = randInt(0, elements.length - 1); seedPainting();
+    }
+  }
+
+  ctx.clearRect(0, 0, W, H); ctx.drawImage(offC, 0, 0);
+
+  if (isOverCanvas && !isStroking && !wipeInProgress) {
+    const stamp = getColoredStamp(ghostElemIdx, '#A8AD9B');
+    if (stamp) {
+      const targetW = 80, scale = targetW / stamp.width;
+      const w = stamp.width * scale, h = stamp.height * scale;
+      ctx.save(); ctx.globalAlpha = 0.15; ctx.globalCompositeOperation = 'multiply';
+      ctx.translate(cursorX, cursorY); ctx.rotate(ghostAngle);
+      ctx.drawImage(stamp, -w / 2, -h / 2, w, h); ctx.restore();
+    }
+  }
+
+  if (++frameCount % 45 === 0) updateTextColor();
+  // Mobile: canvas is a single static painting, not an animation - draw once
+  // per call (still needed after seedPainting resolves below) and stop, rather
+  // than perpetuating requestAnimationFrame forever for a picture that never changes.
+  if (IS_MOBILE) return;
+  requestAnimationFrame(frame);
+}
+frame();
+
+hueOsc = new SineWave({ phase: Math.random() * Math.PI * 2, amplitude: 30, frequency: 0.0015, offset: 100 });
+
+// Started once assets are ready instead of immediately at page load, so the
+// trail doesn't come to life mid-jank while the paint-stroke images and rest
+// of the hero are still loading in - it just isn't running yet during that
+// window, so it's not what a laggy first second would be blamed on.
+preload().then(() => {
+  ghostElemIdx = randInt(0, elements.length - 1);
+  seedPainting();
+  if (IS_MOBILE) { frame(); updateTextColor(); }
+  else renderSpring();
+});
+
+['.hero-greeting', '.hero-name', '.hero-role', '.hero-tagline'].forEach(sel => {
+  const el = document.querySelector(sel);
+  if (!el) return;
+  const chars = [...el.textContent];
+  el.textContent = '';
+  chars.forEach(ch => {
+    const span = document.createElement('span');
+    span.className = 'ch'; span.textContent = ch; el.appendChild(span);
+  });
+});
+
+setTimeout(() => { if (hint) { hint.textContent = 'Click to paint, click again to stop'; hint.classList.add('vis'); } }, 900);
+
+// Card flip: click to toggle, auto-flips every 5s
+const flipInner = document.querySelector('#hero-flip .card-inner');
+if (flipInner) {
+  document.getElementById('hero-flip').addEventListener('click', () => {
+    flipInner.classList.toggle('flipped');
+  });
+  setInterval(() => flipInner.classList.toggle('flipped'), 15000);
+}
+
+// Exposed so the ScrollTrigger onLeave/onEnterBack below (same trigger that
+// hides/shows these canvases) can pause and resume the RAF loops in step.
+window.__heroCanvasPause = () => { heroActive = false; };
+window.__heroCanvasResume = () => {
+  if (heroActive) return;
+  heroActive = true;
+  frame();
+  renderSpring();
+};
+
+})();
+</script>
+
+
+<!-- ── BOUNCE - load once the section is about to scroll into view ── -->
+<script>
+(function () {
+  var scaler = document.getElementById('gameArea-scaler');
+  var gameArea = document.getElementById('gameArea');
+  var touchControls = document.getElementById('touch-controls');
+  var playSection = document.getElementById('play');
+
+  // The game's canvases (main canvas, HUD bar, level-select, end screen) all share
+  // one fixed 640x360 pixel coordinate space - scale #gameArea as a unit to fit
+  // whatever width is actually available on a phone, and size the wrapper to match
+  // so it doesn't leave a stale 360px-tall gap (or overflow) in the flex layout.
+  function fitGameArea() {
+    if (gameArea.hidden) return;
+    // Measure the capped .play-cols row, not the immediate flex-auto wrapper -
+    // that wrapper shrink-wraps to the game's own 640px layout box, which would
+    // read back the very size being set. On phones .play-cols is the full-width
+    // column stack, so this is the same available width as before.
+    var cols = scaler.closest('.play-cols');
+    var maxW = (cols || scaler.parentElement).clientWidth;
+    // Target width tracks the scaled root em (40rem = 640px at base 16), so on
+    // proportionally-scaled wide desktops the game grows with the layout just
+    // like the CSS-sized #gameArea-scaler placeholder it fills; phones still shrink to fit.
+    var rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var scale = Math.min(40 * rootPx, maxW) / 640;
+    gameArea.style.transform = 'scale(' + scale + ')';
+    scaler.style.width = (640 * scale) + 'px';
+    scaler.style.height = (360 * scale) + 'px';
+  }
+  window.addEventListener('resize', fitGameArea);
+
+  // Drive the real Input class the exact same way a keyboard would (it only ever
+  // listens for window keydown/keyup and reads e.which against its keymap:
+  // left=37, up=38, right=39) rather than reaching for bundle.js's `game` variable
+  // directly - that avoids depending on cross-script `let` scoping, and it keeps
+  // working automatically across a game-over replay, since main.js swaps in a new
+  // Game/Input instance internally and this never has to know about it.
+  function bindTouchButton(btn, keyCode) {
+    if (!btn) return;
+    var fire = function (type) {
+      return function (e) {
+        e.preventDefault();
+        window.dispatchEvent(new KeyboardEvent(type, { keyCode: keyCode, which: keyCode, bubbles: true }));
+      };
+    };
+    btn.addEventListener('touchstart', fire('keydown'), { passive: false });
+    btn.addEventListener('touchend', fire('keyup'), { passive: false });
+    btn.addEventListener('touchcancel', fire('keyup'), { passive: false });
+    // Also mouse events, so the controls are testable with a mouse/trackpad too
+    btn.addEventListener('mousedown', fire('keydown'));
+    btn.addEventListener('mouseup', fire('keyup'));
+    btn.addEventListener('mouseleave', fire('keyup'));
+  }
+
+  function loadGame() {
+    gameArea.removeAttribute('hidden');
+    fitGameArea();
+    if (touchControls) {
+      touchControls.classList.add('tc-active');
+      bindTouchButton(document.getElementById('tc-left'), 37);
+      bindTouchButton(document.getElementById('tc-jump'), 38);
+      bindTouchButton(document.getElementById('tc-right'), 39);
+    }
+
+    var s = document.createElement('script');
+    s.src = 'bounce/js/bundle.js';
+    document.body.appendChild(s);
+  }
+
+  // The game draws its own menu/logo/play screen on its canvas - that screen IS
+  // the "before you play" splash now, so there's no separate HTML cover to click
+  // through. Load it a little before the section actually enters view (rather
+  // than eagerly on page load) to keep the initial page weight down.
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        observer.disconnect();
+        loadGame();
+      }
+    }, { rootMargin: '600px 0px' });
+    observer.observe(playSection);
+  } else {
+    loadGame();
+  }
+})();
+</script>
+
+<!-- ── LETTER SWAP ANIMATION ──────────────────── -->
+<script>
+(function () {
+  'use strict';
+
+  var STAGGER = 22;   // ms between each shuffled letter
+  var DUR     = 700;  // ms per letter animation
+  var EASE    = 'cubic-bezier(0.34,1.56,0.64,1)'; // spring overshoot
+  var TICK    = 4000; // ms between auto-triggers
+
+  /* Build per-character DOM structure for one heading */
+  function wrap(h) {
+    var nodes = Array.prototype.slice.call(h.childNodes);
+    while (h.firstChild) h.removeChild(h.firstChild);
+    var letters = [];
+
+    function processChars(text, parent) {
+      var wordEl = null; /* groups a word's letter-spans so the line only
+                             breaks between words, never between letters -
+                             adjacent inline-block spans have an implicit
+                             break opportunity between them otherwise */
+
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i];
+
+        /* Spaces: plain text node - never wrap them or word-spacing collapses */
+        if (ch === ' ') {
+          parent.appendChild(document.createTextNode(' '));
+          wordEl = null;
+          continue;
+        }
+
+        if (!wordEl) {
+          wordEl = document.createElement('span');
+          wordEl.style.cssText = 'display:inline-block;white-space:nowrap;vertical-align:top;';
+          parent.appendChild(wordEl);
+        }
+
+        var w = document.createElement('span');
+        /* overflow:hidden clips the animation; vertical-align:top
+           avoids the inline-block baseline-shift that overflow:hidden triggers */
+        w.style.cssText = 'display:inline-block;clip-path:inset(-0.15em -4px);position:relative;vertical-align:top;line-height:inherit;';
+
+        var p = document.createElement('span');
+        p.style.cssText = 'display:inline-block;';
+        p.textContent   = ch;
+
+        var s = document.createElement('span');
+        s.setAttribute('aria-hidden', 'true');
+        s.style.cssText = 'display:inline-block;position:absolute;left:0;top:0;width:100%;transform:translateY(-110%);';
+        s.textContent   = ch;
+
+        w.appendChild(p);
+        w.appendChild(s);
+        wordEl.appendChild(w);
+        letters.push({ p: p, s: s });
+      }
+    }
+
+    nodes.forEach(function (n) {
+      if (n.nodeType === 3) {           /* plain text node */
+        processChars(n.textContent, h);
+      } else if (n.nodeName === 'EM') { /* preserve italic colour rules */
+        var em = document.createElement('em');
+        processChars(n.textContent, em);
+        h.appendChild(em);
+      } else {
+        h.appendChild(n.cloneNode(true));
+      }
+    });
+
+    h._ls      = letters;
+    h._lsBlock = false;
+    h._lsVis   = false;
+  }
+
+  /* Fire one shuffle-and-return cycle */
+  function play(h) {
+    if (h._lsBlock || !h._lsVis) return;
+    h._lsBlock = true;
+
+    var order = h._ls.slice().sort(function () { return Math.random() - 0.5; });
+
+    order.forEach(function (letter, i) {
+      var d = i * STAGGER;
+      var p = letter.p;
+      var s = letter.s;
+
+      /* OUT phase - primary falls down, secondary rises in from above */
+      setTimeout(function () {
+        p.style.transition = 'transform ' + DUR + 'ms ' + EASE;
+        p.style.transform  = 'translateY(110%)';
+        s.style.transition = 'transform ' + DUR + 'ms ' + EASE;
+        s.style.transform  = 'translateY(0)';
+      }, d);
+
+      /* RESET - snap both back to start positions instantly */
+      setTimeout(function () {
+        p.style.transition = 'none';
+        p.style.transform  = '';
+        s.style.transition = 'none';
+        s.style.transform  = 'translateY(-110%)';
+        if (i === order.length - 1) h._lsBlock = false;
+      }, d + DUR + 80);
+    });
+  }
+
+  /* Track visibility so off-screen headings stay quiet */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { e.target._lsVis = e.isIntersecting; });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.sec-heading').forEach(function (h) {
+    wrap(h);
+    io.observe(h);
+  });
+
+  setInterval(function () {
+    document.querySelectorAll('.sec-heading').forEach(play);
+  }, TICK);
+})();
+</script>
+
+<script>
+/* ─── SECTION ENTRANCE OBSERVER + PARALLAX ─── */
+(function () {
+  'use strict';
+
+  /* Section entrance observer - fires sec-in class at 12% visibility */
+  var secObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('sec-in'); secObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  ['#work','#about','#skills','#play'].forEach(function (s) {
+    var el = document.querySelector(s); if (el) secObs.observe(el);
+  });
+
+  /* Divider draw-line observer - fires at 50% visibility */
+  var divObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('div-in'); divObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.sec-divider').forEach(function (el) { divObs.observe(el); });
+
+  /* Parallax scroll handler - rAF-throttled */
+  var pEls = Array.from(document.querySelectorAll('.parallax-el[data-parallax]'));
+  function getTop(el) { var t = 0; while (el) { t += el.offsetTop; el = el.offsetParent; } return t; }
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var sy = window.scrollY, vh = window.innerHeight;
+      pEls.forEach(function (el) {
+        var top  = getTop(el);
+        var rate = parseFloat(el.dataset.parallax) || 0.1;
+        var dist = top - sy;
+        if (dist > -vh && dist < vh * 2) {
+          el.style.transform = 'translateY(' + (-(sy - top + vh) * rate * 0.5).toFixed(2) + 'px)';
+        }
+      });
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+<!-- Moved from <head>: identical load order/eagerness, just placed after all
+     visible markup AND after every gsap/pdfjsLib-independent script above
+     (custom cursor, project cards, painterly hero backdrop, bounce loader,
+     letter-swap animation, section-entrance/parallax observer) - all of
+     that is pure DOM/vanilla JS with zero dependency on these libraries.
+     Letting it sit ahead of them (as it did when everything was blocking
+     in <head>) was the actual #1 CLS culprit Lighthouse kept flagging as
+     <section id="work"> (0.800): that text preview was the letter-swap
+     heading's doubled per-character spans, not the project grid - the
+     grid fix alone didn't move the number because this was the real cause. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous"></script>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+/* PDF cache - shared by thumbnail renderer and viewer */
+const pdfCache = {};
+async function getDoc(pdfPath) {
+  if (!pdfCache[pdfPath]) pdfCache[pdfPath] = pdfjsLib.getDocument(pdfPath).promise;
+  return pdfCache[pdfPath];
+}
+
+/* Render PDF thumbnails */
+document.querySelectorAll('.pdf-thumb-img').forEach(async img => {
+  const loader  = img.nextElementSibling;
+  const pdfPath = img.dataset.pdf;
+  try {
+    /* Cache the document now so the viewer opens instantly */
+    const pdf    = await getDoc(pdfPath);
+    const page   = await pdf.getPage(1);
+    const vp     = page.getViewport({ scale: 1 });
+    const scale  = (Math.min(img.parentElement.offsetWidth || 600, 800) * 2) / vp.width;
+    const scaled = page.getViewport({ scale });
+    const cvs    = document.createElement('canvas');
+    cvs.width    = scaled.width;
+    cvs.height   = scaled.height;
+    await page.render({ canvasContext: cvs.getContext('2d'), viewport: scaled }).promise;
+    img.src = cvs.toDataURL('image/jpeg', 0.88);
+    img.onload = () => { if (loader) loader.remove(); };
+  } catch(e) {
+    if (loader) loader.remove();
+    img.parentElement.style.background = 'rgba(10,51,35,0.6)';
+  }
+});
+
+/* ── PDF VIEWER ── */
+const modal     = document.getElementById('pdf-modal');
+const titleEl   = document.getElementById('pdf-modal-title');
+const viewport  = document.getElementById('pdf-modal-viewport');
+const loadingEl = document.getElementById('pdf-loading');
+const closeBtn  = document.getElementById('pdf-close');
+
+async function openViewer(pdfPath, title) {
+  titleEl.textContent = title;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  viewport.scrollTop = 0;
+
+  /* Clear old pages */
+  while (viewport.firstChild) viewport.removeChild(viewport.firstChild);
+  viewport.appendChild(loadingEl);
+
+  const doc  = await getDoc(pdfPath);
+  const maxW = Math.min(viewport.offsetWidth - 80, 1100);
+  const dpr  = window.devicePixelRatio || 1;
+
+  /* Remove loading indicator, render all pages */
+  if (loadingEl.parentNode) viewport.removeChild(loadingEl);
+
+  for (let i = 1; i <= doc.numPages; i++) {
+    const page   = await doc.getPage(i);
+    const vp     = page.getViewport({ scale: 1 });
+    const scale  = (maxW / vp.width) * dpr;
+    const scaled = page.getViewport({ scale });
+
+    const canvas       = document.createElement('canvas');
+    canvas.className   = 'pdf-page-canvas';
+    canvas.width       = scaled.width;
+    canvas.height      = scaled.height;
+    canvas.style.width  = (scaled.width  / dpr) + 'px';
+    canvas.style.height = (scaled.height / dpr) + 'px';
+    viewport.appendChild(canvas);
+
+    await page.render({ canvasContext: canvas.getContext('2d'), viewport: scaled }).promise;
+  }
+}
+
+function closeViewer() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+closeBtn.addEventListener('click', closeViewer);
+document.addEventListener('keydown', e => {
+  if (modal.classList.contains('open') && e.key === 'Escape') closeViewer();
+});
+</script>
+
+<script>
+/* ── Hero canvas card: scale + lift away on scroll ─────────────────── */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Mobile browsers resize the viewport as the address bar shows/hides mid-scroll,
+  // and momentum/inertial touch scrolling doesn't map to scroll position the same
+  // continuous way mouse-wheel does - both confuse pinned/scrubbed ScrollTriggers
+  // (the painterly hero canvas going blank on scroll-up, About's photo/sticker pin
+  // jittering or landing inconsistently). This is GSAP's own documented fix for
+  // exactly that class of bug: it takes over touch scroll handling so pins get a
+  // single normalized scroll value to work from instead of raw, erratic native
+  // events. Scoped to mobile only so desktop's mouse-wheel feel is untouched.
+  var isMobile = window.matchMedia('(max-width: 660px)').matches;
+  if (isMobile) {
+    ScrollTrigger.normalizeScroll(true);
+  }
+
+  var hint = document.getElementById('hint');
+
+  // Root-em scale factor: 1 at standard desktop, >1 on proportionally-scaled
+  // wide viewports - keeps the clip radius, lift distance, and pin length in
+  // step with the enlarged layout so the exit reads identically at any size.
+  // Read live (not cached in a var) and re-run via invalidateOnRefresh so a
+  // resize into a very different viewport (e.g. maximizing onto a 4K
+  // monitor) doesn't leave the pin distance frozen at the load-time K - that
+  // mismatch is what let the About section bleed into the hero fold.
+  function K() { return (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16; }
+  function R() { return (20 * K()) + 'px'; }
+
+  gsap.fromTo(
+    ['#c', '#sc', '#hero-content'],
+    { clipPath: function() { return 'inset(0% 0% 0% 0% round ' + R() + ')'; }, y: 0 },
+    {
+      clipPath: function() { return 'inset(0% 0% 100% 0% round ' + R() + ')'; },
+      y: function() { return -160 * K(); },
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#home',
+        start: 'top top',
+        // Mobile gets a longer pin distance and tighter scrub than desktop's
+        // original 700/0.4 - CDP-level touch-swipe testing against the live site
+        // showed a single real fast swipe can cover 600-900+px in one motion,
+        // which could blow straight through a 700px pin range and interact
+        // unpredictably with the onLeave/onEnterBack visibility toggling (the
+        // reported "canvas disappears sometimes when scrolling back up").
+        end: isMobile ? '+=1100' : function() { return '+=' + Math.round(700 * K()); },
+        pin: true,
+        scrub: isMobile ? 0.25 : 0.4,
+        invalidateOnRefresh: true,
+        // #hero-pin-space pre-reserves this same distance so nothing shifts
+        // when the pin-spacer first appears (see its CSS comment). Collapse it
+        // right before ScrollTrigger measures/creates the spacer so the two
+        // reservations don't stack.
+        onRefreshInit: function() {
+          var ph = document.getElementById('hero-pin-space');
+          if (ph) ph.style.height = '0';
+        },
+        onLeave: function() {
+          gsap.set(['#c', '#sc', '#hero-content'], { visibility: 'hidden' });
+          if (hint) hint.style.display = 'none';
+          if (window.__heroCanvasPause) window.__heroCanvasPause();
+        },
+        onEnterBack: function() {
+          gsap.set(['#c', '#sc', '#hero-content'], {
+            visibility: 'visible',
+            clipPath: 'inset(0% 0% 0% 0% round ' + R() + ')',
+            y: 0,
+          });
+          if (hint) hint.style.display = '';
+          if (window.__heroCanvasResume) window.__heroCanvasResume();
+        },
+      }
+    }
+  );
+})();
+
+/* ── Sticker pop-up for #about ─────────────────────────────────────
+   Desktop (min-width:661px): the about text/photo reveal on their own via
+   the standard .rv/sec-in scroll-reveal (no pin needed). Once the section
+   is pinned: the about content holds fully visible for a while first (so
+   it doesn't feel like it vanishes the instant you start scrolling), then
+   fades out, then - only once it's completely gone, with a clean gap so
+   the two never overlap - the 4 stickers pop in together as one snap
+   stop; the next snap stop sends the stickers away for good (about
+   content does not return), and the section unpins into normal scroll.
+
+   Mobile (max-width:660px): same crossfade *transition*, but the pin
+   can't engage at #about's own top like desktop does - on a narrow
+   column layout the text+photo stack is taller than the viewport, so
+   pinning immediately (before any of it has been seen) traps the photo
+   below the pinned fold, unreachable by scroll. Instead the pin's
+   ScrollTrigger start is tied to .about-inner's own *bottom* reaching the
+   viewport's bottom - the exact scroll position at which the full stack
+   (text, then photo) has just finished naturally scrolling into view.
+   From that frozen frame, the same fade-out/fade-in handoff as desktop
+   plays, just without desktop's initial "hold before fading" segment
+   (natural scroll already served as that hold). */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  ScrollTrigger.matchMedia({
+    '(min-width: 661px)': function () {
+      // Pin length scales with the root em so the hold/fade/sticker beats span
+      // the same relative scroll on proportionally-scaled wide viewports.
+      // Function-based (+ invalidateOnRefresh) so a resize onto a much larger
+      // monitor re-derives K instead of keeping the load-time value.
+      function K() { return (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16; }
+      var tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#about',
+          start: 'top top',
+          end: function() { return '+=' + Math.round(950 * K()); },
+          pin: true,
+          scrub: 1.4,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          snap: {
+            snapTo: [0, 0.69, 1],
+            duration: { min: 0.2, max: 0.5 },
+            ease: 'power2.inOut',
+          },
+        }
+      });
+
+      // About content holds visible, then fully fades out...
+      // (explicit fromTo, not to() - at build time .about-inner is still pre-reveal
+      // opacity:0, so a plain to() would capture that stale 0 as its start value)
+      tl.fromTo('.about-inner', { opacity: 1 }, { opacity: 1, duration: 1 }, 0)
+        .to('.about-inner', { opacity: 0, duration: 0.4 }, 1)
+        // ...then, once it's gone (clean 0.3-unit gap with nothing happening), the
+        // 4 stickers pop in together (slight stagger for life, not sequence)
+        .fromTo('.si', { opacity: 0, y: function() { return 50 * K(); } }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0.12 }, 1.7)
+        // Hold at fully-shown, then fly away together for good (about content stays hidden)
+        .to('.si', { opacity: 0, y: function() { return -80 * K(); }, ease: 'power2.in', duration: 1, stagger: 0.08 }, 3.66);
+    },
+
+    '(max-width: 660px)': function () {
+      var tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.about-inner',
+          start: 'bottom bottom',
+          // 650px was too short: a single real fast swipe on a phone easily covers
+          // 600-900+px in one motion (confirmed via CDP-level touch simulation
+          // against the live site, not just mouse-wheel ticks - a single swipe blew
+          // straight through 650px of pin range, taking progress from 0.23 to 1.0
+          // between two consecutive swipes). That read as a jarring snap instead of
+          // a transition, and combined with scrub's catch-up lag, could leave the
+          // fade-out tween still visually "in flight" after the pin had already
+          // released and scroll had moved into the next section underneath it -
+          // exactly the reported "stickers linger on the next section" symptom.
+          // 1300px gives real headroom against a single swipe fully consuming it.
+          end: '+=1300',
+          pin: true,
+          // Lower than desktop's 1.4 - less catch-up lag means the animation can
+          // never trail behind after the pin releases, which was the direct cause
+          // of the lingering-stickers symptom above.
+          scrub: 0.4,
+          anticipatePin: 1,
+          snap: {
+            snapTo: [0, 0.6, 1],
+            duration: { min: 0.2, max: 0.5 },
+            ease: 'power2.inOut',
+          },
+        }
+      });
+
+      // No initial hold segment here - by the time this pin engages, the user has
+      // already naturally scrolled through the full text+photo stack once, so
+      // fading straight out reads as "you've seen it, now the transition begins"
+      // rather than the content vanishing instantly (explicit fromTo for the same
+      // stale-opacity reason as the desktop branch above).
+      // Stickers pop in/out together (stagger:0) on mobile, not one-by-one -
+      // desktop's per-icon stagger is a nice detail at desktop's slower/finer
+      // scrub, but on a phone's shorter, punchier swipe-driven scrub it read as
+      // a laggy sequence rather than a single beat, per user feedback.
+      tl.fromTo('.about-inner', { opacity: 1 }, { opacity: 0, duration: 0.4 }, 0)
+        .fromTo('.si', { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'back.out(1.5)', duration: 1, stagger: 0 }, 0.7)
+        .to('.si', { opacity: 0, y: -80, ease: 'power2.in', duration: 1, stagger: 0 }, 2.66);
+    }
+  });
+})();
+</script>
+
+<script>
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var waveDivs = Array.prototype.slice.call(document.querySelectorAll('.wave-div'));
+
+  /* Read every div's layout box before appending any canvases or writing
+     canvas.width/height - interleaving read (offsetWidth) and write
+     (canvas.width=) per element in a single loop forces a synchronous
+     layout recalc on each iteration (Lighthouse "Forced reflow"). .wave-div
+     has a fixed CSS height and its canvas child is absolutely positioned,
+     so pre-reading here is equivalent to reading inside the old loop. */
+  var waveDims = waveDivs.map(function (div) {
+    return { width: div.offsetWidth, height: div.offsetHeight };
+  });
+
+  waveDivs.forEach(function (div, i) {
+    var canvas = document.createElement('canvas');
+    div.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+    var fromColor = div.dataset.from;
+    var toColor   = div.dataset.to;
+    // targetProgress is whatever ScrollTrigger says right now; renderedProgress
+    // eases toward it every tick instead of jumping straight there. A single
+    // wheel notch can cover this whole ~280-373px strip in one scroll event, so
+    // drawing targetProgress directly made the arch teleport between shapes -
+    // reading as a flat rectangle snapping into/out of the curve instead of a
+    // continuous wipe. Easing spreads that jump back across a few frames.
+    var targetProgress   = 0;
+    var renderedProgress = 0;
+
+    function resize() {
+      canvas.width  = div.offsetWidth;
+      canvas.height = div.offsetHeight;
+      draw();
+    }
+
+    function draw() {
+      var W = canvas.width;
+      var H = canvas.height;
+      if (!W || !H) return;
+      ctx.clearRect(0, 0, W, H);
+
+      // The from/to split at the strip's left/right edges always sits at
+      // midY, regardless of progress - only the curve's belly moves. Biasing
+      // that anchor down (rather than dead-center) keeps more of the curve's
+      // travel in the lower two-thirds of the strip, clear of the fixed nav
+      // (this strip's top few rows sit right under it) and clear of the
+      // viewport's own top/bottom edge while the strip is scrolling in or
+      // out - both of which read as a flat edge slicing into the arch when
+      // the interesting part of the curve happens to land right on them.
+      var midY = H * 0.58;
+      // Control point travels far outside canvas bounds for a dramatic arch.
+      // Capped on the upward side so very early progress still shows visible
+      // curve motion instead of sitting fully saturated at fromColor's limit.
+      var cy = H * Math.max(-0.5, -0.8 + renderedProgress * 2.6);
+
+      // top fill - from-color
+      ctx.fillStyle = fromColor;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(W, 0);
+      ctx.lineTo(W, midY);
+      ctx.quadraticCurveTo(W * 0.5, cy, 0, midY);
+      ctx.closePath();
+      ctx.fill();
+
+      // bottom fill - to-color
+      ctx.fillStyle = toColor;
+      ctx.beginPath();
+      ctx.moveTo(0, midY);
+      ctx.quadraticCurveTo(W * 0.5, cy, W, midY);
+      ctx.lineTo(W, H);
+      ctx.lineTo(0, H);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    canvas.width  = waveDims[i].width;
+    canvas.height = waveDims[i].height;
+    draw();
+    window.addEventListener('resize', resize);
+
+    ScrollTrigger.create({
+      trigger: div,
+      start: 'top bottom',
+      end: 'bottom top',
+      onUpdate: function (self) {
+        targetProgress = self.progress;
+      }
+    });
+
+    gsap.ticker.add(function () {
+      var diff = targetProgress - renderedProgress;
+      if (Math.abs(diff) < 0.0008) {
+        if (renderedProgress !== targetProgress) { renderedProgress = targetProgress; draw(); }
+        return;
+      }
+      renderedProgress += diff * 0.18;
+      draw();
+    });
+  });
+})();
+</script>
+
+<script>
+/* ── Footer: illustration arcs into view as the section scrolls in ── */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var ftVisual = document.querySelector('.ft-visual');
+  if (!ftVisual) return;
+
+  function setClip(progress) {
+    var W = ftVisual.offsetWidth;
+    var H = ftVisual.offsetHeight;
+    var edgeY = H * (1 - progress);
+    var bulge = H * 0.22 * Math.sin(progress * Math.PI);
+    var controlY = edgeY - bulge;
+    ftVisual.style.clipPath =
+      'path("M0,' + edgeY + ' Q' + (W / 2) + ',' + controlY + ' ' + W + ',' + edgeY +
+      ' L' + W + ',' + H + ' L0,' + H + ' Z")';
+  }
+
+  setClip(0);
+
+  var revealST = ScrollTrigger.create({
+    trigger: 'footer',
+    start: 'top bottom',
+    end: 'top center',
+    onUpdate: function (self) { setClip(self.progress); }
+  });
+
+  window.addEventListener('resize', function () { setClip(revealST.progress); });
+})();
+</script>
+
+<script>
+/* ── Footer: day → night crossfade as the illustration scrolls in ── */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var darkBg = document.querySelector('.ft-bg-dark');
+  if (!darkBg) return;
+
+  ScrollTrigger.create({
+    trigger: 'footer',
+    start: 'top bottom',
+    end: 'bottom bottom',
+    onUpdate: function (self) {
+      darkBg.style.opacity = self.progress;
+    }
+  });
+})();
+</script>
+
+<script>
+/* ── Software arc: logos advance along mz-path with scroll instead of on a timer ── */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var path = document.getElementById('mz-path');
+  var icons = document.querySelectorAll('.marquee-zone .mz-icon-pos');
+  if (!path || !icons.length) return;
+
+  var totalLength = path.getTotalLength();
+  var count = icons.length;
+
+  var speed = 0.4; // fraction of the full path covered across the ribbon's whole scroll range - lower = slower
+
+  var zoneEl = document.querySelector('.marquee-zone');
+  var tooltip = document.getElementById('mzTooltip');
+  var hovered = null; // currently-hovered icon element, or null
+
+  // #mz-path spans x=-80..1680 but the <svg> viewBox is 0 0 1600 400, so the root SVG's
+  // default clip cuts anything outside 0-1600. Two things that DIDN'T work first: (1) a
+  // fixed fade margin - mobile's .mz-icon transform:scale(2.3) makes each icon occupy far
+  // more path-space width than its intrinsic 40x40 geometry, so a margin sized for the
+  // small unscaled icon left the enlarged mobile ones still hard-clipped mid-fade; (2)
+  // measuring the rendered icon via getBoundingClientRect - that's a race against the
+  // entrance transition (icons pop from a smaller pre-entrance scale up to their final
+  // size over ~1.8s), so a one-off measurement could catch a mid-transition value and
+  // still undersize the fade. Reading --mz-icon-scale (a plain number mirroring each
+  // breakpoint's *final* scale, defined next to the transform: scale() it mirrors) sidesteps
+  // both: it's available the instant the media query matches, independent of any transition
+  // currently in flight.
+  var VIEWBOX_WIDTH = 1600;
+  var FADE_WIDTH = 60; // path-units the opacity ramp itself takes, once past the icon's own radius
+  var BASE_ICON_HALF_WIDTH = 20; // half of the <image>'s intrinsic 40x40 (x=-20..20)
+  var iconRadius = BASE_ICON_HALF_WIDTH;
+
+  function measureIconRadius() {
+    var scale = parseFloat(getComputedStyle(icons[0]).getPropertyValue('--mz-icon-scale'));
+    iconRadius = BASE_ICON_HALF_WIDTH * (isNaN(scale) ? 1 : scale);
+  }
+  measureIconRadius();
+  window.addEventListener('resize', measureIconRadius); // breakpoint change flips --mz-icon-scale
+
+  function edgeFade(x) {
+    var clipStart = VIEWBOX_WIDTH - iconRadius;
+    if (x >= clipStart) return 0;
+    if (x > clipStart - FADE_WIDTH) return (clipStart - x) / FADE_WIDTH;
+    if (x <= iconRadius) return 0;
+    if (x < iconRadius + FADE_WIDTH) return (x - iconRadius) / FADE_WIDTH;
+    return 1;
+  }
+
+  function positionTooltip(icon) {
+    var iconRect = icon.getBoundingClientRect();
+    var zoneRect = zoneEl.getBoundingClientRect();
+    tooltip.style.left = (iconRect.left + iconRect.width / 2 - zoneRect.left) + 'px';
+    tooltip.style.top = (iconRect.top - zoneRect.top) + 'px';
+  }
+
+  function setPositions(progress) {
+    icons.forEach(function (icon, i) {
+      var t = (progress * speed + i / count) % 1;
+      var pt = path.getPointAtLength(t * totalLength);
+      icon.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ')');
+      icon.style.opacity = edgeFade(pt.x);
+    });
+    // Keep the tooltip glued to its icon if the user scrolls mid-hover
+    if (hovered) positionTooltip(hovered);
+  }
+
+  setPositions(0);
+
+  ScrollTrigger.create({
+    trigger: '.marquee-zone',
+    start: 'top bottom',
+    end: 'bottom top',
+    onUpdate: function (self) { setPositions(self.progress); }
+  });
+
+  // Show the software's name above whichever icon is hovered
+  icons.forEach(function (icon) {
+    icon.addEventListener('pointerenter', function () {
+      hovered = icon;
+      tooltip.textContent = icon.dataset.name;
+      positionTooltip(icon);
+      tooltip.classList.add('show');
+    });
+    icon.addEventListener('pointerleave', function () {
+      hovered = null;
+      tooltip.classList.remove('show');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
