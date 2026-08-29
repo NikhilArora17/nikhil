@@ -549,6 +549,47 @@
     }
     .frame-scroll .frame-phone { flex-shrink: 0; }
 
+    /* Branding block's static row: lookbook reads as a real big desktop
+       screen, everything else stays phone/post sized next to it. */
+    .frame-row .frame-desktop--lookbook { width: clamp(24rem, 50vw, 40rem); }
+
+    /* Some of the captured screenshots (BeeNext) have a real browser
+       scrollbar baked into the right edge of the image itself - nudge the
+       img wider than its frame so overflow:hidden on the frame clips that
+       strip instead of showing it. */
+    .frame-desktop-screen img.crop-scrollbar { width: 101.5%; }
+    .frame-phone-screen img.crop-scrollbar { width: 103%; }
+
+    /* Instagram-post-shaped card (square, not a phone bezel) for the
+       auto-cycling social posts slideshow. */
+    .frame-post {
+      width: 16rem; flex-shrink: 0;
+      border-radius: .9rem;
+      overflow: hidden;
+      background: #1b1d1a;
+      box-shadow: 0 1.25rem 3rem rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.05);
+      transition: transform .5s var(--ease-out), box-shadow .5s;
+    }
+    .frame-post:hover { transform: translateY(-6px); }
+    .frame-post-head { display: flex; align-items: center; gap: .55rem; padding: .65rem .9rem; }
+    .fp-avatar {
+      width: 1.3rem; height: 1.3rem; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--olive), var(--lime));
+    }
+    .fp-handle {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size: .68rem; font-weight: 600;
+      color: rgba(255,255,255,.7);
+    }
+    .frame-post-screen {
+      aspect-ratio: 1 / 1;
+      position: relative;
+      overflow: hidden;
+      background: rgba(0,0,0,.35);
+    }
+    .frame-post-screen img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;
+    }
+
     /* Desktop browser-chrome frame */
     .frame-desktop {
       border-radius: .9rem;
@@ -581,7 +622,6 @@
       display: block; transition: transform .7s var(--ease-out);
     }
     .frame-desktop:hover .frame-desktop-screen img { transform: scale(1.02); }
-    .frame-desktop--pdf { cursor: pointer; }
 
     /* Phone frame */
     .frame-phone {
@@ -621,19 +661,6 @@
       padding: 0 1rem;
     }
 
-    .reel-play {
-      position: absolute; inset: 0; margin: auto;
-      width: 2.6rem; height: 2.6rem; border-radius: 50%;
-      border: none; cursor: pointer;
-      background: rgba(230,241,226,.92); color: var(--forest);
-      display: flex; align-items: center; justify-content: center;
-      transition: background .25s, transform .25s var(--ease-out), opacity .25s;
-    }
-    .reel-play:hover { background: var(--lime); transform: scale(1.08); }
-    .reel-play:active { transform: scale(.94); }
-    .reel-play:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
-    .reel-play.is-hidden { opacity: 0; pointer-events: none; }
-
     .frame-loading {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
@@ -646,28 +673,28 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .branding-strip-label {
-      font-family:'Sora','Sora Fallback',sans-serif; font-size: .62rem; font-weight: 700;
-      letter-spacing: .14em; text-transform: uppercase; color: var(--olive);
-      margin-top: 2.5rem; margin-bottom: .9rem;
+    /* Auto-cycling slideshow, shared by the lookbook desktop frame (pages
+       rendered at runtime) and the social-posts phone frame (static imgs) */
+    .cycle-slide {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover; object-position: top;
+      opacity: 0;
     }
-    .branding-strip {
-      display: flex; gap: 1rem; overflow-x: auto; padding-bottom: .5rem;
-      scrollbar-width: none;
+    .cycle-slide.is-active { opacity: 1; }
+    /* Beats .frame-desktop-screen img / .frame-phone-screen img's own
+       transform-transition on specificity, so the crossfade isn't dropped. */
+    .frame-desktop-screen img.cycle-slide,
+    .frame-phone-screen img.cycle-slide,
+    .frame-post-screen img.cycle-slide {
+      transition: opacity 1s var(--ease-out);
     }
-    .branding-strip::-webkit-scrollbar { display: none; }
-    .branding-strip img {
-      height: 9rem; width: auto; flex-shrink: 0;
-      border-radius: .6rem; object-fit: cover;
-      box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.25);
-      transition: transform .4s var(--ease-out);
-    }
-    .branding-strip img:hover { transform: translateY(-4px) scale(1.02); }
 
     @media (max-width: 660px) {
       .cs-head { grid-template-columns: 1fr; }
       .cs-link { justify-self: start; margin-top: 1.25rem; }
       .frame-phone { width: 11.5rem; }
+      .frame-post { width: 12rem; }
+      .frame-row .frame-desktop--lookbook { width: min(24rem, 88vw); }
     }
 
     /* ─── PDF MODAL ─────────────────────────────── */
@@ -1892,7 +1919,7 @@
               <div class="fdc-url">beenext.com</div>
             </div>
             <div class="frame-desktop-screen">
-              <img src="bn ss/desktop-1440-hero.png" alt="BeeNext homepage hero" loading="lazy">
+              <img class="crop-scrollbar" src="bn ss/desktop-1440-hero.png" alt="BeeNext homepage hero" loading="lazy">
             </div>
           </div>
           <div class="frame-desktop">
@@ -1901,7 +1928,7 @@
               <div class="fdc-url">beenext.com/about-us</div>
             </div>
             <div class="frame-desktop-screen">
-              <img src="bn ss/desktop-1440-about.png" alt="BeeNext about section" loading="lazy">
+              <img class="crop-scrollbar" src="bn ss/desktop-1440-about.png" alt="BeeNext about section" loading="lazy">
             </div>
           </div>
           <div class="frame-desktop">
@@ -1910,20 +1937,20 @@
               <div class="fdc-url">beenext.com/#industries</div>
             </div>
             <div class="frame-desktop-screen">
-              <img src="bn ss/desktop-1440-industries.png" alt="BeeNext industries section" loading="lazy">
+              <img class="crop-scrollbar" src="bn ss/desktop-1440-industries.png" alt="BeeNext industries section" loading="lazy">
             </div>
           </div>
           <div class="frame-phone">
             <div class="frame-phone-notch"></div>
             <div class="frame-phone-screen">
-              <img src="bn ss/test-screenshots/mobile-375-hero.png" alt="BeeNext mobile homepage" loading="lazy">
+              <img class="crop-scrollbar" src="bn ss/test-screenshots/mobile-375-hero.png" alt="BeeNext mobile homepage" loading="lazy">
             </div>
             <div class="frame-phone-home"></div>
           </div>
           <div class="frame-phone">
             <div class="frame-phone-notch"></div>
             <div class="frame-phone-screen">
-              <img src="bn ss/test-screenshots/mobile-375-stats.png" alt="BeeNext mobile stats section" loading="lazy">
+              <img class="crop-scrollbar" src="bn ss/test-screenshots/mobile-375-stats.png" alt="BeeNext mobile stats section" loading="lazy">
             </div>
             <div class="frame-phone-home"></div>
           </div>
@@ -1934,7 +1961,7 @@
                 <div class="fdc-url">beenext.com</div>
               </div>
               <div class="frame-desktop-screen">
-                <img src="bn ss/desktop-1440-hero.png" alt="" loading="lazy">
+                <img class="crop-scrollbar" src="bn ss/desktop-1440-hero.png" alt="" loading="lazy">
               </div>
             </div>
             <div class="frame-desktop">
@@ -1943,7 +1970,7 @@
                 <div class="fdc-url">beenext.com/about-us</div>
               </div>
               <div class="frame-desktop-screen">
-                <img src="bn ss/desktop-1440-about.png" alt="" loading="lazy">
+                <img class="crop-scrollbar" src="bn ss/desktop-1440-about.png" alt="" loading="lazy">
               </div>
             </div>
             <div class="frame-desktop">
@@ -1952,20 +1979,20 @@
                 <div class="fdc-url">beenext.com/#industries</div>
               </div>
               <div class="frame-desktop-screen">
-                <img src="bn ss/desktop-1440-industries.png" alt="" loading="lazy">
+                <img class="crop-scrollbar" src="bn ss/desktop-1440-industries.png" alt="" loading="lazy">
               </div>
             </div>
             <div class="frame-phone">
               <div class="frame-phone-notch"></div>
               <div class="frame-phone-screen">
-                <img src="bn ss/test-screenshots/mobile-375-hero.png" alt="" loading="lazy">
+                <img class="crop-scrollbar" src="bn ss/test-screenshots/mobile-375-hero.png" alt="" loading="lazy">
               </div>
               <div class="frame-phone-home"></div>
             </div>
             <div class="frame-phone">
               <div class="frame-phone-notch"></div>
               <div class="frame-phone-screen">
-                <img src="bn ss/test-screenshots/mobile-375-stats.png" alt="" loading="lazy">
+                <img class="crop-scrollbar" src="bn ss/test-screenshots/mobile-375-stats.png" alt="" loading="lazy">
               </div>
               <div class="frame-phone-home"></div>
             </div>
@@ -2083,50 +2110,56 @@
       </div>
 
       <div class="frame-row">
-        <div class="frame-phone">
-          <div class="frame-phone-notch"></div>
-          <div class="frame-phone-screen">
-            <video class="reel-video" playsinline muted loop preload="metadata" poster="Social media/web/beenext-8k-gaming.jpg">
-              <source src="branding and videos/Reel 2.mp4" type="video/mp4">
-            </video>
-            <button class="reel-play" type="button" aria-label="Play showreel">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l10-5.5-10-5.5z"/></svg>
-            </button>
-          </div>
-          <div class="frame-phone-home"></div>
-        </div>
-        <div class="frame-phone">
-          <div class="frame-phone-notch"></div>
-          <div class="frame-phone-screen">
-            <video class="reel-video" playsinline muted loop preload="metadata" poster="Social media/web/mcbee-planning-phase.jpg">
-              <source src="branding and videos/15 year logo animation final.mp4" type="video/mp4">
-            </video>
-            <button class="reel-play" type="button" aria-label="Play logo animation reel">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l10-5.5-10-5.5z"/></svg>
-            </button>
-          </div>
-          <div class="frame-phone-home"></div>
-        </div>
-        <div class="frame-desktop frame-desktop--pdf" data-pdf="branding and videos/mcbee-lookbook-1.pdf" data-pdf-title="McBee Lookbook" role="button" tabindex="0" aria-label="Open McBee lookbook PDF">
+        <div class="frame-desktop frame-desktop--lookbook">
           <div class="frame-desktop-chrome">
             <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
             <div class="fdc-url">mcbee-lookbook.pdf</div>
           </div>
-          <div class="frame-desktop-screen">
-            <img class="pdf-thumb-img" data-pdf="branding and videos/mcbee-lookbook-1.pdf" alt="McBee lookbook cover">
+          <div class="frame-desktop-screen cycle-screen" data-pdf="branding and videos/mcbee-lookbook-1.pdf" data-cycle-interval="3400">
             <div class="frame-loading"></div>
           </div>
         </div>
-      </div>
-
-      <div class="branding-strip-label">Branding &amp; campaign work</div>
-      <div class="branding-strip">
-        <img src="Social media/web/beenext-av-over-ip.jpg" alt="BeeNext AV over IP campaign visual" loading="lazy">
-        <img src="Social media/web/beenext-avpro-edge.jpg" alt="BeeNext AVPro Edge campaign visual" loading="lazy">
-        <img src="Social media/web/karray-dragon-kxt18p.jpg" alt="Karray Dragon campaign visual" loading="lazy">
-        <img src="Social media/web/karray-firenze-kh7p.jpg" alt="Karray Firenze campaign visual" loading="lazy">
-        <img src="Social media/web/mcbee-hiring-visual-designer.jpg" alt="McBee hiring campaign visual" loading="lazy">
-        <img src="Social media/web/mcbee-care-behind-scene.jpg" alt="McBee behind the scenes campaign visual" loading="lazy">
+        <div class="frame-post">
+          <div class="frame-post-head">
+            <span class="fp-avatar"></span>
+            <span class="fp-handle">beenext.official</span>
+          </div>
+          <div class="frame-post-screen cycle-screen" data-cycle-interval="2600">
+            <img class="cycle-slide is-active" src="Social media/web/beenext-av-over-ip.jpg" alt="BeeNext AV over IP campaign post">
+            <img class="cycle-slide" src="Social media/web/beenext-avpro-edge.jpg" alt="BeeNext AVPro Edge campaign post">
+            <img class="cycle-slide" src="Social media/web/karray-dragon-kxt18p.jpg" alt="Karray Dragon campaign post">
+            <img class="cycle-slide" src="Social media/web/karray-firenze-kh7p.jpg" alt="Karray Firenze campaign post">
+            <img class="cycle-slide" src="Social media/web/mcbee-hiring-visual-designer.jpg" alt="McBee hiring campaign post">
+            <img class="cycle-slide" src="Social media/web/mcbee-care-behind-scene.jpg" alt="McBee behind-the-scenes campaign post">
+          </div>
+        </div>
+        <div class="frame-phone">
+          <div class="frame-phone-notch"></div>
+          <div class="frame-phone-screen">
+            <video class="reel-video" autoplay playsinline muted loop preload="auto" poster="Social media/web/beenext-8k-gaming.jpg">
+              <source src="branding and videos/Reel 2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="frame-phone-home"></div>
+        </div>
+        <div class="frame-phone">
+          <div class="frame-phone-notch"></div>
+          <div class="frame-phone-screen">
+            <video class="reel-video" autoplay playsinline muted loop preload="auto" poster="Social media/web/mcbee-planning-phase.jpg">
+              <source src="branding and videos/15 year logo animation final.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="frame-phone-home"></div>
+        </div>
+        <div class="frame-phone">
+          <div class="frame-phone-notch"></div>
+          <div class="frame-phone-screen">
+            <video class="reel-video" autoplay playsinline muted loop preload="auto" poster="Social media/web/karray-kgear-gt8.jpg">
+              <source src="branding and videos/logo animation.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="frame-phone-home"></div>
+        </div>
       </div>
     </div>
 
@@ -2497,40 +2530,34 @@ Something with a little bounce.</p>
 <script>
 /* ── CASE-STUDY BLOCKS (static markup - just interactivity) ─────────────
    Markup for all four blocks is static HTML in #work now (not DOM-built
-   from a data array like the old compact grid), so this script only has
-   to wire up: reel play/pause, the lookbook desktop-frame's PDF viewer
-   (openViewer is defined later, once pdf.js loads - safe to reference
-   here since it's only called from a click handler, by which time every
-   script on the page has already run), and the custom cursor's hover
-   state on the new interactive elements. */
+   from a data array like the old compact grid). Everything here is
+   passive/automatic by design - reels autoplay (muted, so the browser
+   allows it without a user gesture), screen strips auto-scroll via the
+   CSS marquee on .frame-scroll-track, and .cycle-screen slideshows
+   auto-advance via startCycle() below. Nothing requires a click.
+   startCycle is a plain function (not IIFE-scoped) so the later
+   pdf.js-dependent script can also call it once it renders the
+   lookbook's pages. */
 
-document.querySelectorAll('.reel-play').forEach(btn => {
-  const video = btn.previousElementSibling;
-  btn.addEventListener('click', () => {
-    video.controls = true;
-    video.play();
-    btn.classList.add('is-hidden');
-  });
-  video.addEventListener('pause', () => btn.classList.remove('is-hidden'));
-});
-
-const pdfFrame = document.querySelector('.frame-desktop--pdf');
-if (pdfFrame) {
-  const openLookbook = () => openViewer(pdfFrame.dataset.pdf, pdfFrame.dataset.pdfTitle);
-  pdfFrame.addEventListener('click', openLookbook);
-  pdfFrame.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLookbook(); }
-  });
+function startCycle(screen, intervalMs) {
+  const slides = screen.querySelectorAll('.cycle-slide');
+  if (slides.length < 2) return;
+  let idx = Math.max(0, [...slides].findIndex(s => s.classList.contains('is-active')));
+  setInterval(() => {
+    slides[idx].classList.remove('is-active');
+    idx = (idx + 1) % slides.length;
+    slides[idx].classList.add('is-active');
+  }, intervalMs);
 }
 
-document.querySelectorAll('.cs-link, .reel-play, .frame-desktop--pdf, .frame-desktop, .frame-phone').forEach(el => {
+document.querySelectorAll('.cycle-screen[data-cycle-interval]:not([data-pdf])').forEach(screen => {
+  startCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 2800);
+});
+
+document.querySelectorAll('.cs-link, .frame-desktop, .frame-phone, .frame-post').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
 });
-
-/* Screen strips auto-scroll via the CSS marquee animation on
-   .frame-scroll-track (paused on hover/focus - see the stylesheet) -
-   nothing to wire up here for that. */
 </script>
 
 <!-- ── PAINTERLY HERO BACKDROP ───────────────── -->
@@ -3514,26 +3541,36 @@ async function getDoc(pdfPath) {
   return pdfCache[pdfPath];
 }
 
-/* Render PDF thumbnails */
-document.querySelectorAll('.pdf-thumb-img').forEach(async img => {
-  const loader  = img.nextElementSibling;
-  const pdfPath = img.dataset.pdf;
+/* Render the lookbook desktop frame's pages, then let startCycle()
+   (defined in the case-study-blocks script above) auto-advance through
+   them - same "keeps changing pages" treatment as the reels/social
+   posts, no click needed. */
+document.querySelectorAll('.cycle-screen[data-pdf]').forEach(async screen => {
+  const loader  = screen.querySelector('.frame-loading');
+  const pdfPath = screen.dataset.pdf;
   try {
-    /* Cache the document now so the viewer opens instantly */
-    const pdf    = await getDoc(pdfPath);
-    const page   = await pdf.getPage(1);
-    const vp     = page.getViewport({ scale: 1 });
-    const scale  = (Math.min(img.parentElement.offsetWidth || 600, 800) * 2) / vp.width;
-    const scaled = page.getViewport({ scale });
-    const cvs    = document.createElement('canvas');
-    cvs.width    = scaled.width;
-    cvs.height   = scaled.height;
-    await page.render({ canvasContext: cvs.getContext('2d'), viewport: scaled }).promise;
-    img.src = cvs.toDataURL('image/jpeg', 0.88);
-    img.onload = () => { if (loader) loader.remove(); };
+    const pdf   = await getDoc(pdfPath);
+    const pages = Math.min(pdf.numPages, 5);
+    for (let i = 1; i <= pages; i++) {
+      const page   = await pdf.getPage(i);
+      const vp     = page.getViewport({ scale: 1 });
+      const scale  = (Math.min(screen.offsetWidth || 600, 800) * 2) / vp.width;
+      const scaled = page.getViewport({ scale });
+      const cvs    = document.createElement('canvas');
+      cvs.width    = scaled.width;
+      cvs.height   = scaled.height;
+      await page.render({ canvasContext: cvs.getContext('2d'), viewport: scaled }).promise;
+      const img = document.createElement('img');
+      img.className = 'cycle-slide' + (i === 1 ? ' is-active' : '');
+      img.alt = 'McBee lookbook page ' + i;
+      img.src = cvs.toDataURL('image/jpeg', 0.85);
+      screen.appendChild(img);
+    }
+    if (loader) loader.remove();
+    startCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 3400);
   } catch(e) {
     if (loader) loader.remove();
-    img.parentElement.style.background = 'rgba(10,51,35,0.6)';
+    screen.style.background = 'rgba(10,51,35,0.6)';
   }
 });
 
