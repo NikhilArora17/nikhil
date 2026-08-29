@@ -563,7 +563,7 @@
     /* Instagram-post-shaped card (square, not a phone bezel) for the
        auto-cycling social posts slideshow. */
     .frame-post {
-      width: 16rem; flex-shrink: 0;
+      width: clamp(18rem, 34vw, 24rem); flex-shrink: 0;
       border-radius: .9rem;
       overflow: hidden;
       background: #1b1d1a;
@@ -685,15 +685,16 @@
        transform-transition on specificity, so the crossfade isn't dropped. */
     .frame-desktop-screen img.cycle-slide,
     .frame-phone-screen img.cycle-slide,
-    .frame-post-screen img.cycle-slide {
-      transition: opacity 1s var(--ease-out);
+    .frame-post-screen img.cycle-slide,
+    .frame-phone-screen video.cycle-slide {
+      transition: opacity .6s var(--ease-out);
     }
 
     @media (max-width: 660px) {
       .cs-head { grid-template-columns: 1fr; }
       .cs-link { justify-self: start; margin-top: 1.25rem; }
       .frame-phone { width: 11.5rem; }
-      .frame-post { width: 12rem; }
+      .frame-post { width: min(18rem, 78vw); }
       .frame-row .frame-desktop--lookbook { width: min(24rem, 88vw); }
     }
 
@@ -2135,26 +2136,14 @@
         </div>
         <div class="frame-phone">
           <div class="frame-phone-notch"></div>
-          <div class="frame-phone-screen">
-            <video class="reel-video" autoplay playsinline muted loop preload="auto" poster="Social media/web/beenext-8k-gaming.jpg">
+          <div class="frame-phone-screen cycle-screen reel-cycle" data-cycle-interval="4000">
+            <video class="cycle-slide is-active" autoplay playsinline muted loop preload="auto" poster="Social media/web/beenext-avpro-edge.jpg">
               <source src="branding and videos/Reel 2.mp4" type="video/mp4">
             </video>
-          </div>
-          <div class="frame-phone-home"></div>
-        </div>
-        <div class="frame-phone">
-          <div class="frame-phone-notch"></div>
-          <div class="frame-phone-screen">
-            <video class="reel-video" autoplay playsinline muted loop preload="auto" poster="Social media/web/mcbee-planning-phase.jpg">
+            <video class="cycle-slide" playsinline muted loop preload="metadata" poster="Social media/web/mcbee-planning-phase.jpg">
               <source src="branding and videos/15 year logo animation final.mp4" type="video/mp4">
             </video>
-          </div>
-          <div class="frame-phone-home"></div>
-        </div>
-        <div class="frame-phone">
-          <div class="frame-phone-notch"></div>
-          <div class="frame-phone-screen">
-            <video class="reel-video" autoplay playsinline muted loop preload="auto" poster="Social media/web/karray-kgear-gt8.jpg">
+            <video class="cycle-slide" playsinline muted loop preload="metadata" poster="Social media/web/karray-kgear-gt8.jpg">
               <source src="branding and videos/logo animation.mp4" type="video/mp4">
             </video>
           </div>
@@ -2550,8 +2539,30 @@ function startCycle(screen, intervalMs) {
   }, intervalMs);
 }
 
-document.querySelectorAll('.cycle-screen[data-cycle-interval]:not([data-pdf])').forEach(screen => {
+/* Same idea as startCycle, but for a stack of <video> elements: only the
+   active one is ever playing - the rest sit paused so they're not all
+   competing for bandwidth/CPU at once. */
+function startVideoCycle(screen, intervalMs) {
+  const videos = screen.querySelectorAll('video.cycle-slide');
+  if (videos.length < 2) return;
+  let idx = Math.max(0, [...videos].findIndex(v => v.classList.contains('is-active')));
+  setInterval(() => {
+    videos[idx].classList.remove('is-active');
+    videos[idx].pause();
+    idx = (idx + 1) % videos.length;
+    const next = videos[idx];
+    next.classList.add('is-active');
+    next.currentTime = 0;
+    next.play().catch(() => {});
+  }, intervalMs);
+}
+
+document.querySelectorAll('.cycle-screen[data-cycle-interval]:not([data-pdf]):not(.reel-cycle)').forEach(screen => {
   startCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 2800);
+});
+
+document.querySelectorAll('.reel-cycle[data-cycle-interval]').forEach(screen => {
+  startVideoCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 4000);
 });
 
 document.querySelectorAll('.cs-link, .frame-desktop, .frame-phone, .frame-post').forEach(el => {
