@@ -2578,20 +2578,36 @@ document.querySelectorAll('.cs-link, .frame-desktop, .frame-phone, .frame-post')
 });
 
 /* Marquee screen-strip videos (studiobee/beenext/mystudiobee frame-desktop
-   loops) - same muted/autoplay contract as the reels above, but some
-   browsers won't honor the autoplay attribute for elements that start out
-   translated off the initial viewport by the CSS marquee, so kick them
-   off explicitly instead of relying on the attribute alone. */
-document.querySelectorAll('.frame-desktop-screen video:not(.cycle-slide), .frame-phone-screen video:not(.cycle-slide)').forEach(v => {
-  v.play().catch(() => {});
+   loops) - 16 of them across the three strips (8 clips x 2 copies each,
+   the second copy being the aria-hidden clone the CSS marquee scrolls
+   through for a seamless loop). Playing all of them at once regardless of
+   visibility - as an earlier version of this code did - stacks that many
+   concurrent video-decode sessions on top of the page's other canvas/rAF/
+   PDF.js work, which is exactly the kind of load `startVideoCycle` above
+   exists to avoid for the reel stack. Instead, only decode a strip's
+   videos while that strip is actually on screen: paused (and reset to
+   frame 0) the rest of the time, same as `.in-view` gates the CSS scroll
+   itself just below. */
+document.querySelectorAll('.frame-scroll-track').forEach(track => {
+  track.querySelectorAll('video:not(.cycle-slide)').forEach(v => { v.pause(); });
 });
 
 /* Each strip's marquee starts paused (see .frame-scroll-track CSS) so it
    only begins scrolling once actually visible - otherwise it's already
-   cycled past the hero frame by the time someone scrolls down to it. */
+   cycled past the hero frame by the time someone scrolls down to it. The
+   same visibility signal also drives whether that strip's videos are
+   allowed to decode at all (see above). */
 const marqueeObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    entry.target.classList.toggle('in-view', entry.isIntersecting);
+    const track = entry.target;
+    track.classList.toggle('in-view', entry.isIntersecting);
+    track.querySelectorAll('video:not(.cycle-slide)').forEach(v => {
+      if (entry.isIntersecting) {
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
   });
 }, { threshold: 0.15 });
 document.querySelectorAll('.frame-scroll-track').forEach(track => marqueeObserver.observe(track));
