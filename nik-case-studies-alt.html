@@ -2581,33 +2581,39 @@ document.querySelectorAll('.cs-link, .frame-desktop, .frame-phone, .frame-post')
    loops) - 16 of them across the three strips (8 clips x 2 copies each,
    the second copy being the aria-hidden clone the CSS marquee scrolls
    through for a seamless loop). Playing all of them at once regardless of
-   visibility - as an earlier version of this code did - stacks that many
-   concurrent video-decode sessions on top of the page's other canvas/rAF/
-   PDF.js work, which is exactly the kind of load `startVideoCycle` above
-   exists to avoid for the reel stack. Instead, only decode a strip's
-   videos while that strip is actually on screen: paused (and reset to
-   frame 0) the rest of the time, same as `.in-view` gates the CSS scroll
-   itself just below. */
+   visibility stacks that many concurrent video-decode sessions on top of
+   the page's other canvas/rAF/PDF.js work - exactly what `startVideoCycle`
+   above exists to avoid for the reel stack - so gate on the section
+   actually being on screen (`root: scrollEl` looks tempting for finer
+   per-frame gating, but IntersectionObserver measures against that
+   element's own bounds regardless of whether the element itself is on
+   screen, so it does not work as a "is this visible on the page" check).
+   `rootMargin` starts the whole strip's videos decoding a bit before it
+   scrolls into view so playback is already warm by the time it's visible,
+   and staggering the individual .play() calls spreads the decoder
+   start-up cost across a few frames instead of one, to smooth out the
+   stutter right at the crossing point. */
 document.querySelectorAll('.frame-scroll-track').forEach(track => {
   track.querySelectorAll('video:not(.cycle-slide)').forEach(v => { v.pause(); });
 });
+const marqueeVideoObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    const videos = entry.target.querySelectorAll('video:not(.cycle-slide)');
+    if (entry.isIntersecting) {
+      videos.forEach((v, i) => setTimeout(() => v.play().catch(() => {}), i * 70));
+    } else {
+      videos.forEach(v => v.pause());
+    }
+  });
+}, { rootMargin: '400px 0px', threshold: 0 });
+document.querySelectorAll('.frame-scroll-track').forEach(track => marqueeVideoObserver.observe(track));
 
 /* Each strip's marquee starts paused (see .frame-scroll-track CSS) so it
    only begins scrolling once actually visible - otherwise it's already
-   cycled past the hero frame by the time someone scrolls down to it. The
-   same visibility signal also drives whether that strip's videos are
-   allowed to decode at all (see above). */
+   cycled past the hero frame by the time someone scrolls down to it. */
 const marqueeObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    const track = entry.target;
-    track.classList.toggle('in-view', entry.isIntersecting);
-    track.querySelectorAll('video:not(.cycle-slide)').forEach(v => {
-      if (entry.isIntersecting) {
-        v.play().catch(() => {});
-      } else {
-        v.pause();
-      }
-    });
+    entry.target.classList.toggle('in-view', entry.isIntersecting);
   });
 }, { threshold: 0.15 });
 document.querySelectorAll('.frame-scroll-track').forEach(track => marqueeObserver.observe(track));
