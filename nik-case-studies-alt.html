@@ -617,11 +617,12 @@
       overflow: hidden; position: relative;
       background: rgba(0,0,0,.3);
     }
-    .frame-desktop-screen img {
+    .frame-desktop-screen img, .frame-desktop-screen video {
       width: 100%; height: 100%; object-fit: cover; object-position: top;
       display: block; transition: transform .7s var(--ease-out);
     }
-    .frame-desktop:hover .frame-desktop-screen img { transform: scale(1.02); }
+    .frame-desktop:hover .frame-desktop-screen img,
+    .frame-desktop:hover .frame-desktop-screen video { transform: scale(1.02); }
 
     /* Phone frame */
     .frame-phone {
@@ -1821,7 +1822,7 @@
               <div class="fdc-url">studiobee.com</div>
             </div>
             <div class="frame-desktop-screen">
-              <img src="studiobee/1.png" alt="Studiobee homepage hero" loading="lazy">
+              <video src="studiobee/hero.mp4" autoplay muted loop playsinline aria-label="Studiobee homepage hero"></video>
             </div>
           </div>
           <div class="frame-desktop">
@@ -1830,7 +1831,7 @@
               <div class="fdc-url">studiobee.com/#work</div>
             </div>
             <div class="frame-desktop-screen">
-              <img src="studiobee/3.png" alt="Studiobee selected work section" loading="lazy">
+              <video src="studiobee/work.mp4" autoplay muted loop playsinline aria-label="Studiobee selected work section"></video>
             </div>
           </div>
           <div class="frame-desktop">
@@ -1839,7 +1840,7 @@
               <div class="fdc-url">studiobee.com/#testimonials</div>
             </div>
             <div class="frame-desktop-screen">
-              <img src="studiobee/7.png" alt="Studiobee testimonials section" loading="lazy">
+              <video src="studiobee/testimonials.mp4" autoplay muted loop playsinline aria-label="Studiobee testimonials section"></video>
             </div>
           </div>
           <div class="frame-phone">
@@ -1856,7 +1857,7 @@
                 <div class="fdc-url">studiobee.com</div>
               </div>
               <div class="frame-desktop-screen">
-                <img src="studiobee/1.png" alt="" loading="lazy">
+                <video src="studiobee/hero.mp4" autoplay muted loop playsinline></video>
               </div>
             </div>
             <div class="frame-desktop">
@@ -1865,7 +1866,7 @@
                 <div class="fdc-url">studiobee.com/#work</div>
               </div>
               <div class="frame-desktop-screen">
-                <img src="studiobee/3.png" alt="" loading="lazy">
+                <video src="studiobee/work.mp4" autoplay muted loop playsinline></video>
               </div>
             </div>
             <div class="frame-desktop">
@@ -1874,7 +1875,7 @@
                 <div class="fdc-url">studiobee.com/#testimonials</div>
               </div>
               <div class="frame-desktop-screen">
-                <img src="studiobee/7.png" alt="" loading="lazy">
+                <video src="studiobee/testimonials.mp4" autoplay muted loop playsinline></video>
               </div>
             </div>
             <div class="frame-phone">
@@ -1920,16 +1921,16 @@
               <div class="fdc-url">beenext.com</div>
             </div>
             <div class="frame-desktop-screen">
-              <img class="crop-scrollbar" src="bn ss/desktop-1440-hero.png" alt="BeeNext homepage hero" loading="lazy">
+              <video src="beenext/hero.mp4" autoplay muted loop playsinline aria-label="BeeNext homepage hero"></video>
             </div>
           </div>
           <div class="frame-desktop">
             <div class="frame-desktop-chrome">
               <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
-              <div class="fdc-url">beenext.com/about-us</div>
+              <div class="fdc-url">beenext.com/#brands</div>
             </div>
             <div class="frame-desktop-screen">
-              <img class="crop-scrollbar" src="bn ss/desktop-1440-about.png" alt="BeeNext about section" loading="lazy">
+              <video src="beenext/products.mp4" autoplay muted loop playsinline aria-label="BeeNext featured brands section"></video>
             </div>
           </div>
           <div class="frame-desktop">
@@ -1962,16 +1963,16 @@
                 <div class="fdc-url">beenext.com</div>
               </div>
               <div class="frame-desktop-screen">
-                <img class="crop-scrollbar" src="bn ss/desktop-1440-hero.png" alt="" loading="lazy">
+                <video src="beenext/hero.mp4" autoplay muted loop playsinline></video>
               </div>
             </div>
             <div class="frame-desktop">
               <div class="frame-desktop-chrome">
                 <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
-                <div class="fdc-url">beenext.com/about-us</div>
+                <div class="fdc-url">beenext.com/#brands</div>
               </div>
               <div class="frame-desktop-screen">
-                <img class="crop-scrollbar" src="bn ss/desktop-1440-about.png" alt="" loading="lazy">
+                <video src="beenext/products.mp4" autoplay muted loop playsinline></video>
               </div>
             </div>
             <div class="frame-desktop">
@@ -2033,25 +2034,25 @@
               <div class="fdc-url">app.mystudiobee.com/dashboard</div>
             </div>
             <div class="frame-desktop-screen">
-              <img src="mystudiobee/dashboard.png" alt="MyStudioBee dashboard screen" loading="lazy">
+              <video src="mystudiobee/dashboard.mp4" autoplay muted loop playsinline aria-label="MyStudioBee dashboard screen"></video>
             </div>
           </div>
           <div class="frame-desktop">
             <div class="frame-desktop-chrome">
               <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
-              <div class="fdc-url">app.mystudiobee.com/equipment</div>
+              <div class="fdc-url">app.mystudiobee.com/admin/equipment-vendors</div>
             </div>
             <div class="frame-desktop-screen">
-              <img src="mystudiobee/equipment.png" alt="MyStudioBee equipment inventory screen" loading="lazy">
+              <video src="mystudiobee/vendors.mp4" autoplay muted loop playsinline aria-label="MyStudioBee equipment vendor ratings screen"></video>
             </div>
           </div>
           <div class="frame-desktop">
             <div class="frame-desktop-chrome">
               <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
-              <div class="fdc-url">app.mystudiobee.com/quotes/SB-Q-026</div>
+              <div class="fdc-url">app.mystudiobee.com/billing/quotes</div>
             </div>
             <div class="frame-desktop-screen">
-              <img src="mystudiobee/quote-summary.png" alt="MyStudioBee quote summary screen" loading="lazy">
+              <video src="mystudiobee/quotes.mp4" autoplay muted loop playsinline aria-label="MyStudioBee quotes screen"></video>
             </div>
           </div>
           <div aria-hidden="true" style="display:contents">
@@ -2061,25 +2062,25 @@
                 <div class="fdc-url">app.mystudiobee.com/dashboard</div>
               </div>
               <div class="frame-desktop-screen">
-                <img src="mystudiobee/dashboard.png" alt="" loading="lazy">
+                <video src="mystudiobee/dashboard.mp4" autoplay muted loop playsinline></video>
               </div>
             </div>
             <div class="frame-desktop">
               <div class="frame-desktop-chrome">
                 <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
-                <div class="fdc-url">app.mystudiobee.com/equipment</div>
+                <div class="fdc-url">app.mystudiobee.com/admin/equipment-vendors</div>
               </div>
               <div class="frame-desktop-screen">
-                <img src="mystudiobee/equipment.png" alt="" loading="lazy">
+                <video src="mystudiobee/vendors.mp4" autoplay muted loop playsinline></video>
               </div>
             </div>
             <div class="frame-desktop">
               <div class="frame-desktop-chrome">
                 <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
-                <div class="fdc-url">app.mystudiobee.com/quotes/SB-Q-026</div>
+                <div class="fdc-url">app.mystudiobee.com/billing/quotes</div>
               </div>
               <div class="frame-desktop-screen">
-                <img src="mystudiobee/quote-summary.png" alt="" loading="lazy">
+                <video src="mystudiobee/quotes.mp4" autoplay muted loop playsinline></video>
               </div>
             </div>
           </div>
@@ -2568,6 +2569,15 @@ document.querySelectorAll('.reel-cycle[data-cycle-interval]').forEach(screen => 
 document.querySelectorAll('.cs-link, .frame-desktop, .frame-phone, .frame-post').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+});
+
+/* Marquee screen-strip videos (studiobee/beenext/mystudiobee frame-desktop
+   loops) - same muted/autoplay contract as the reels above, but some
+   browsers won't honor the autoplay attribute for elements that start out
+   translated off the initial viewport by the CSS marquee, so kick them
+   off explicitly instead of relying on the attribute alone. */
+document.querySelectorAll('.frame-desktop-screen video:not(.cycle-slide), .frame-phone-screen video:not(.cycle-slide)').forEach(v => {
+  v.play().catch(() => {});
 });
 </script>
 
