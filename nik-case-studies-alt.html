@@ -531,7 +531,13 @@
       width: max-content;
       animation: cs-marquee linear infinite;
       animation-duration: var(--marquee-dur, 36s);
+      animation-play-state: paused;
     }
+    /* Only start scrolling once the strip is actually on screen (JS below
+       toggles this via IntersectionObserver) - otherwise the marquee runs
+       from page load and the hero frame has already scrolled past by the
+       time someone reaches this section. */
+    .frame-scroll-track.in-view { animation-play-state: running; }
     .frame-scroll:hover .frame-scroll-track,
     .frame-scroll:focus-within .frame-scroll-track {
       animation-play-state: paused;
@@ -2579,6 +2585,16 @@ document.querySelectorAll('.cs-link, .frame-desktop, .frame-phone, .frame-post')
 document.querySelectorAll('.frame-desktop-screen video:not(.cycle-slide), .frame-phone-screen video:not(.cycle-slide)').forEach(v => {
   v.play().catch(() => {});
 });
+
+/* Each strip's marquee starts paused (see .frame-scroll-track CSS) so it
+   only begins scrolling once actually visible - otherwise it's already
+   cycled past the hero frame by the time someone scrolls down to it. */
+const marqueeObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    entry.target.classList.toggle('in-view', entry.isIntersecting);
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.frame-scroll-track').forEach(track => marqueeObserver.observe(track));
 </script>
 
 <!-- ── PAINTERLY HERO BACKDROP ───────────────── -->
