@@ -575,6 +575,7 @@
       background: #1b1d1a;
       box-shadow: 0 1.25rem 3rem rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.05);
       transition: transform .5s var(--ease-out), box-shadow .5s;
+      cursor: pointer;
     }
     .frame-post:hover { transform: translateY(-6px); }
     .frame-post-head { display: flex; align-items: center; gap: .55rem; padding: .65rem .9rem; }
@@ -603,6 +604,7 @@
       background: #1b1d1a;
       box-shadow: 0 1.5rem 4rem rgba(0,0,0,.4), 0 .25rem .75rem rgba(0,0,0,.3), inset 0 0 0 1px rgba(255,255,255,.04);
       transition: transform .5s var(--ease-out), box-shadow .5s;
+      cursor: pointer;
     }
     .frame-desktop:hover { transform: translateY(-6px); box-shadow: 0 2rem 5rem rgba(0,0,0,.45), 0 .25rem .75rem rgba(0,0,0,.35); }
     .frame-desktop-chrome { display: flex; align-items: center; gap: .4rem; padding: .65rem .9rem; }
@@ -639,6 +641,7 @@
       position: relative;
       box-shadow: 0 1.25rem 3rem rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.05);
       transition: transform .5s var(--ease-out), box-shadow .5s;
+      cursor: pointer;
     }
     .frame-phone:hover { transform: translateY(-6px); }
     .frame-phone-notch {
@@ -2575,6 +2578,19 @@ document.querySelectorAll('.reel-cycle[data-cycle-interval]').forEach(screen => 
 document.querySelectorAll('.cs-link, .frame-desktop, .frame-phone, .frame-post').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+});
+
+/* Clicking any screen preview (not just the "View full case study" link)
+   opens that block's case study, same as the link itself - the previews
+   already show hover feedback via the custom cursor above, so they need
+   to actually be clickable to not feel broken. */
+document.querySelectorAll('.cs-block').forEach(block => {
+  const link = block.querySelector('.cs-link');
+  if (!link) return;
+  const href = link.getAttribute('href');
+  block.querySelectorAll('.frame-desktop, .frame-phone, .frame-post').forEach(frame => {
+    frame.addEventListener('click', () => window.open(href, '_blank', 'noopener'));
+  });
 });
 
 /* Marquee screen-strip videos (studiobee/beenext/mystudiobee frame-desktop

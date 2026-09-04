@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style>
     :root {
@@ -20,7 +18,8 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: auto; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--white);
@@ -57,9 +56,64 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      will-change: transform, opacity;
       position: relative;
+      scroll-margin-top: 64px;
+    }
+
+    /* â”€â”€ CHAPTER RAIL (fixed left tab nav) â”€â”€ */
+    #chapter-rail {
+      position: fixed;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+    }
+    #chapter-rail::before {
+      content: '';
+      position: absolute; left: 2px; top: 0.6rem; bottom: 0.6rem; width: 1px;
+      background: rgba(0,0,0,0.1);
+      transition: background 0.4s;
+    }
+    #chapter-rail.dark::before { background: rgba(255,255,255,0.12); }
+    @media (max-width: 1360px) { #chapter-rail { display: none; } }
+
+    .chapter-tab {
+      position: relative;
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 0 0.55rem 1rem;
+      text-decoration: none;
+    }
+    .chapter-tab::before {
+      content: '';
+      position: absolute; left: -1px; top: 50%; transform: translate(-50%,-50%) scale(1);
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(0,0,0,0.22);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .chapter-label {
+      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.02em;
+      color: rgba(0,0,0,0.4);
+      white-space: nowrap;
+      opacity: 0.8;
+      transition: color 0.3s, opacity 0.3s, transform 0.3s;
+    }
+    .chapter-tab:hover .chapter-label { color: rgba(0,0,0,0.75); opacity: 1; }
+    .chapter-tab.active::before { background: var(--blue); transform: translate(-50%,-50%) scale(1.7); }
+    .chapter-tab.active .chapter-label { color: var(--blue); font-weight: 700; opacity: 1; transform: translateX(3px); }
+
+    #chapter-rail.dark .chapter-label { color: rgba(255,255,255,0.42); }
+    #chapter-rail.dark .chapter-tab::before { background: rgba(255,255,255,0.28); }
+    #chapter-rail.dark .chapter-tab:hover .chapter-label { color: rgba(255,255,255,0.82); }
+    #chapter-rail.dark .chapter-tab.active .chapter-label { color: var(--blue); }
+
+    /* The cover section is the one panel that doesn't sit inside the
+       centered .inner column (every other panel already clears the rail
+       via that column's own inset) - so it needs its own explicit inset
+       once the rail is showing, or the rail overlaps the headline. */
+    @media (min-width: 1361px) {
+      #cover > div { padding-left: 8.5rem !important; }
     }
 
     /* â”€â”€ CHAPTER BAR (top of each panel) â”€â”€ */
@@ -231,11 +285,22 @@
   <span class="nav-tag">Case Study</span>
 </nav>
 
+<!-- CHAPTER RAIL -->
+<nav id="chapter-rail" class="light" aria-label="Case study chapters">
+  <a href="#cover" class="chapter-tab" data-chapter="cover"><span class="chapter-label">Cover</span></a>
+  <a href="#overview" class="chapter-tab" data-chapter="overview"><span class="chapter-label">Overview</span></a>
+  <a href="#research" class="chapter-tab" data-chapter="research"><span class="chapter-label">Research</span></a>
+  <a href="#ia" class="chapter-tab" data-chapter="ia"><span class="chapter-label">Architecture</span></a>
+  <a href="#constraints" class="chapter-tab" data-chapter="constraints"><span class="chapter-label">Constraints</span></a>
+  <a href="#final-ui" class="chapter-tab" data-chapter="final-ui"><span class="chapter-label">Final UI</span></a>
+  <a href="#outcomes" class="chapter-tab" data-chapter="outcomes"><span class="chapter-label">Outcomes</span></a>
+</nav>
+
 
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      1. COVER
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light"
+<section id="cover" class="stack-panel" data-theme="light"
   style="background: radial-gradient(ellipse 75% 85% at 105% 0%, #B8C4F2 0%, #D8DFFA 35%, #EEF1FD 58%, #fff 72%);
          justify-content: space-between; padding-top: 5rem;">
 
@@ -277,7 +342,7 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      2. PROJECT OVERVIEW
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="overview" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Project Overview</span>
   </div>
@@ -319,41 +384,6 @@
         <div class="p-step off"><p class="p-step-name">Prototype</p><p class="p-step-sub">Build + Test</p></div>
         <div class="p-step on" style="opacity:0.55;"><p class="p-step-name">Iterate</p><p class="p-step-sub">Refine + Ship</p></div>
       </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     3. DISCOVERY & BRAND SYSTEM
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Discovery &amp; Brand System</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
-      <p class="sec-label sl-blue">Discovery</p>
-      <h2 class="h2">Brand principles that drove<br>every decision.</h2>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:0.9rem;" class="three-col">
-        <div class="card card-blue">
-          <p class="c-label">Principle 01</p>
-          <p class="c-title">Premium Restraint</p>
-          <p class="c-body">Every element earns its place. Remove what doesn't communicate. The result should feel curated - not busy.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Principle 02</p>
-          <p class="c-title">Motion with Purpose</p>
-          <p class="c-body">Animation is not decoration. Every transition must convey state, guide attention, or reinforce brand energy. Nothing moves for movement's sake.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Principle 03</p>
-          <p class="c-title">Mobile-First Craft</p>
-          <p class="c-body">The first visit happens on a phone. Design decisions begin at 390px and scale up - never the reverse.</p>
-        </div>
-      </div>
 
       <div class="div-line div-dark"></div>
 
@@ -385,11 +415,10 @@
   </div>
 </section>
 
-
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      4. USER RESEARCH
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="research" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">User Research</span>
   </div>
@@ -399,19 +428,67 @@
       <p class="sec-label sl-blue">User Research</p>
       <h2 class="h2">Understanding who decides <br>and how fast</h2>
 
-      <!-- competitor cards -->
+      <!-- competitor cards - each gets a small abstracted mockup of its
+           actual visual language so the comparison can be seen, not just
+           read -->
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1rem;" class="three-col">
-        <div class="card card-blue">
+        <div class="card card-blue" style="padding:0.6rem;">
+          <div style="border-radius:0.5rem 0.5rem 0.35rem 0.35rem;border:1px solid rgba(0,0,0,0.1);overflow:hidden;margin-bottom:0.65rem;">
+            <div class="browser-chrome">
+              <span class="b-dot" style="background:#ff5f57;"></span>
+              <span class="b-dot" style="background:#febc2e;"></span>
+              <span class="b-dot" style="background:#28c840;"></span>
+              <div class="b-bar"></div>
+            </div>
+            <div style="aspect-ratio:16/10;background:#0A0A0A;padding:0.65rem;display:flex;flex-direction:column;justify-content:center;gap:0.32rem;">
+              <div style="width:68%;height:9px;background:rgba(255,255,255,0.85);border-radius:2px;"></div>
+              <div style="width:44%;height:9px;background:rgba(255,255,255,0.85);border-radius:2px;"></div>
+              <div style="width:26%;height:4px;background:rgba(255,255,255,0.3);border-radius:2px;margin-top:0.4rem;"></div>
+            </div>
+          </div>
           <p class="c-label">London Agency</p>
           <p class="c-title">Ragged Edge</p>
           <p class="c-body">Black bg, white display type, motion forward, minimal nav. Signals: serious craft, no compromise.</p>
         </div>
-        <div class="card card-blue">
+        <div class="card card-blue" style="padding:0.6rem;">
+          <div style="border-radius:0.5rem 0.5rem 0.35rem 0.35rem;border:1px solid rgba(0,0,0,0.1);overflow:hidden;margin-bottom:0.65rem;">
+            <div class="browser-chrome">
+              <span class="b-dot" style="background:#ff5f57;"></span>
+              <span class="b-dot" style="background:#febc2e;"></span>
+              <span class="b-dot" style="background:#28c840;"></span>
+              <div class="b-bar"></div>
+            </div>
+            <div style="aspect-ratio:16/10;background:#fff;padding:0.55rem;display:flex;flex-direction:column;gap:0.35rem;">
+              <div style="flex:1;background:linear-gradient(135deg,#e9e9e9,#d2d2d2);border-radius:0.3rem;"></div>
+              <div style="display:flex;gap:0.3rem;align-items:center;">
+                <div style="width:34%;height:8px;background:var(--blue);border-radius:100px;"></div>
+                <div style="width:20%;height:6px;background:rgba(0,0,0,0.14);border-radius:100px;"></div>
+              </div>
+            </div>
+          </div>
           <p class="c-label">Global Scale-Up</p>
           <p class="c-title">Superside</p>
           <p class="c-body">White bg, large photography, simple CTAs, case study heavy. Signals: scalable, trustworthy, process driven.</p>
         </div>
-        <div class="card card-blue">
+        <div class="card card-blue" style="padding:0.6rem;">
+          <div style="border-radius:0.5rem 0.5rem 0.35rem 0.35rem;border:1px solid rgba(0,0,0,0.1);overflow:hidden;margin-bottom:0.65rem;">
+            <div class="browser-chrome">
+              <span class="b-dot" style="background:#ff5f57;"></span>
+              <span class="b-dot" style="background:#febc2e;"></span>
+              <span class="b-dot" style="background:#28c840;"></span>
+              <div class="b-bar"></div>
+            </div>
+            <div style="aspect-ratio:16/10;background:#F7F4EC;padding:0.6rem;display:flex;flex-direction:column;gap:0.3rem;">
+              <div style="width:52%;height:8px;background:rgba(0,0,0,0.72);border-radius:2px;"></div>
+              <div style="width:78%;height:4px;background:rgba(0,0,0,0.22);border-radius:2px;"></div>
+              <div style="width:58%;height:4px;background:rgba(0,0,0,0.22);border-radius:2px;"></div>
+              <div style="display:flex;gap:0.28rem;margin-top:auto;">
+                <div style="flex:1;aspect-ratio:1;background:rgba(0,0,0,0.08);border-radius:0.2rem;"></div>
+                <div style="flex:1;aspect-ratio:1;background:rgba(0,0,0,0.08);border-radius:0.2rem;"></div>
+                <div style="flex:1;aspect-ratio:1;background:rgba(0,0,0,0.08);border-radius:0.2rem;"></div>
+              </div>
+            </div>
+          </div>
           <p class="c-label">Brand Studio</p>
           <p class="c-title">Koto</p>
           <p class="c-body">White/cream bg, editorial hierarchy, motion-minimal, work gallery. Signals: considered, expensive, taste.</p>
@@ -422,9 +499,14 @@
         <!-- persona -->
         <div style="display:flex;flex-direction:column;gap:0.7rem;">
           <div style="background:var(--blue);border-radius:0.85rem;padding:1rem;flex:1;">
-            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.4rem;">Primary Persona</p>
-            <p style="font-size:0.85rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.1rem;">Rahul M.</p>
-            <p style="font-size:0.72rem;color:rgba(255,255,255,0.65);margin-bottom:0.4rem;">Co-founder &amp; Marketing Lead</p>
+            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.55rem;">Primary Persona</p>
+            <div style="display:flex;align-items:center;gap:0.65rem;margin-bottom:0.5rem;">
+              <div style="width:2.5rem;height:2.5rem;border-radius:50%;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.72rem;font-weight:700;color:white;">RM</div>
+              <div>
+                <p style="font-size:0.85rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.1rem;">Rahul M.</p>
+                <p style="font-size:0.72rem;color:rgba(255,255,255,0.65);">Co-founder &amp; Marketing Lead</p>
+              </div>
+            </div>
             <p style="font-size:0.72rem;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:0.5rem;">Scenario: Comparing 3 agencies on an iPhone 13 during his evening commute. Decides within 8 seconds of landing.</p>
             <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:0.45rem;">
               <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.25rem;">Values</p>
@@ -490,7 +572,7 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      5. INFORMATION ARCHITECTURE
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light"
+<section id="ia" class="stack-panel" data-theme="light"
   style="background: radial-gradient(ellipse 90% 100% at 110% 50%, #D4DAF7 0%, #EEF0FB 40%, var(--white) 65%);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Information Architecture</span>
@@ -550,9 +632,9 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      6a. DESIGNING FOR CONSTRAINTS - ANIMATION AUDIT
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="constraints" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 01</span>
+    <span class="ch-label ch-label-light">Designing for Constraints</span>
   </div>
 
   <div class="panel-body panel-body-top">
@@ -581,21 +663,9 @@
         <p class="annot-label">Animation Audit</p>
         <p class="annot-body">The early hero crowded the wave reveal with too many moving parts in the first three seconds. We treated animation like typography: only what communicates energy earns its place. What's left is a single, confident gesture instead of a dozen small distractions.</p>
       </div>
-    </div>
-  </div>
-</section>
 
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     6b. DESIGNING FOR CONSTRAINTS - LAYOUT ITERATION
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 02</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
       <p class="sec-label sl-blue">Testimonials</p>
       <h2 class="h2">Light, cream, dark <br>the third version shipped.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
@@ -620,20 +690,9 @@
         <p class="annot-label">Testimonials Iterations</p>
         <p class="annot-body">Light split, cream stack, dark glass. The first two were dropped on feel, not function - one read too corporate, the other too flat. The frosted-glass version was worth carrying through to the final design.</p>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ═══════════════════════════════════════════
-     6c. DESIGNING FOR CONSTRAINTS - CASE STUDIES
-═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 03</span>
-  </div>
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
 
-  <div class="panel-body panel-body-top">
-    <div class="inner">
       <p class="sec-label sl-blue">Case Studies Layout</p>
       <h2 class="h2">A masonry grid that got<br>out of the photography&rsquo;s way.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
@@ -679,7 +738,7 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      7. FINAL UI - MOBILE SHOWCASE
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="dark" style="background:var(--black);">
+<section id="final-ui" class="stack-panel" data-theme="dark" style="background:var(--black);">
   <div class="ch-bar ch-bar-dark">
     <span class="ch-label ch-label-dark">Final UI</span>
   </div>
@@ -827,7 +886,7 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      8. OUTCOMES & REFLECTION
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="outcomes" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Outcomes &amp; Reflection</span>
   </div>
@@ -997,56 +1056,26 @@
     if (e.key === 'Escape') ocLightboxClose();
   });
 
-  // Nav theme toggle based on section in view
+  // Nav + chapter-rail theme toggle, and active-chapter highlight, all
+  // based on which section is centered in the viewport.
   const nav = document.getElementById('cs-nav');
+  const rail = document.getElementById('chapter-rail');
+  const railTabs = document.querySelectorAll('.chapter-tab');
   const secs = document.querySelectorAll('section[data-theme]');
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        nav.className = e.target.dataset.theme === 'dark' ? 'dark' : 'light';
+        const theme = e.target.dataset.theme === 'dark' ? 'dark' : 'light';
+        nav.className = theme;
+        rail.className = theme;
+        const chapterId = e.target.id;
+        if (chapterId) {
+          railTabs.forEach(t => t.classList.toggle('active', t.dataset.chapter === chapterId));
+        }
       }
     });
   }, { rootMargin: '-50% 0px -50% 0px' });
   secs.forEach(s => io.observe(s));
-
-  // Card-stack scroll: each panel pins in place while the next one rises
-  // to cover it. All panels get an explicit z-index up front so paint order
-  // stays correct throughout the pin cycle.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduceMotion && window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    const panels = gsap.utils.toArray('.stack-panel');
-
-    panels.forEach((panel, i) => {
-      panel.style.position = 'relative';
-      panel.style.zIndex = i + 1;
-    });
-
-    panels.forEach((panel, i) => {
-      if (i === panels.length - 1) return;
-
-      ScrollTrigger.create({
-        trigger: panel,
-        start: 'top top',
-        end: 'bottom top',
-        pin: true,
-        pinSpacing: false,
-      });
-
-      gsap.to(panel, {
-        scale: 0.92,
-        opacity: 0.5,
-        ease: 'none',
-        transformOrigin: 'top center',
-        scrollTrigger: {
-          trigger: panels[i + 1],
-          start: 'top bottom',
-          end: 'top top',
-          scrub: true,
-        },
-      });
-    });
-  }
 </script>
 </body>
 </html>
