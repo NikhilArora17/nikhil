@@ -291,8 +291,8 @@
   <a href="#overview" class="chapter-tab" data-chapter="overview"><span class="chapter-label">Overview</span></a>
   <a href="#research" class="chapter-tab" data-chapter="research"><span class="chapter-label">Research</span></a>
   <a href="#ia" class="chapter-tab" data-chapter="ia"><span class="chapter-label">Architecture</span></a>
-  <a href="#constraints" class="chapter-tab" data-chapter="constraints"><span class="chapter-label">Constraints</span></a>
   <a href="#final-ui" class="chapter-tab" data-chapter="final-ui"><span class="chapter-label">Final UI</span></a>
+  <a href="#constraints" class="chapter-tab" data-chapter="constraints"><span class="chapter-label">Constraints</span></a>
   <a href="#outcomes" class="chapter-tab" data-chapter="outcomes"><span class="chapter-label">Outcomes</span></a>
 </nav>
 
@@ -428,138 +428,105 @@
       <p class="sec-label sl-blue">User Research</p>
       <h2 class="h2">Understanding who decides <br>and how fast</h2>
 
-      <!-- competitor cards - each gets a small abstracted mockup of its
-           actual visual language so the comparison can be seen, not just
-           read -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1rem;" class="three-col">
-        <div class="card card-blue" style="padding:0.6rem;">
-          <div style="border-radius:0.5rem 0.5rem 0.35rem 0.35rem;border:1px solid rgba(0,0,0,0.1);overflow:hidden;margin-bottom:0.65rem;">
-            <div class="browser-chrome">
-              <span class="b-dot" style="background:#ff5f57;"></span>
-              <span class="b-dot" style="background:#febc2e;"></span>
-              <span class="b-dot" style="background:#28c840;"></span>
-              <div class="b-bar"></div>
-            </div>
-            <div style="aspect-ratio:16/10;background:#0A0A0A;padding:0.65rem;display:flex;flex-direction:column;justify-content:center;gap:0.32rem;">
-              <div style="width:68%;height:9px;background:rgba(255,255,255,0.85);border-radius:2px;"></div>
-              <div style="width:44%;height:9px;background:rgba(255,255,255,0.85);border-radius:2px;"></div>
-              <div style="width:26%;height:4px;background:rgba(255,255,255,0.3);border-radius:2px;margin-top:0.4rem;"></div>
-            </div>
-          </div>
-          <p class="c-label">London Agency</p>
-          <p class="c-title">Ragged Edge</p>
-          <p class="c-body">Black bg, white display type, motion forward, minimal nav. Signals: serious craft, no compromise.</p>
+      <!-- competitive landscape - grouped into one compact card, text-only
+           rows (no reference-site mockups needed) -->
+      <div class="card card-blue" style="margin-bottom:0.9rem;">
+        <p class="c-label" style="margin-bottom:0.35rem;">Competitive Landscape</p>
+        <div style="display:flex;gap:0.9rem;align-items:baseline;padding:0.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);">
+          <p style="font-size:0.78rem;font-weight:700;min-width:6.5rem;flex-shrink:0;">Ragged Edge</p>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);min-width:8rem;flex-shrink:0;">London Agency</p>
+          <p class="c-body" style="margin:0;">Black bg, white display type, motion forward. Signals: serious craft, no compromise.</p>
         </div>
-        <div class="card card-blue" style="padding:0.6rem;">
-          <div style="border-radius:0.5rem 0.5rem 0.35rem 0.35rem;border:1px solid rgba(0,0,0,0.1);overflow:hidden;margin-bottom:0.65rem;">
-            <div class="browser-chrome">
-              <span class="b-dot" style="background:#ff5f57;"></span>
-              <span class="b-dot" style="background:#febc2e;"></span>
-              <span class="b-dot" style="background:#28c840;"></span>
-              <div class="b-bar"></div>
-            </div>
-            <div style="aspect-ratio:16/10;background:#fff;padding:0.55rem;display:flex;flex-direction:column;gap:0.35rem;">
-              <div style="flex:1;background:linear-gradient(135deg,#e9e9e9,#d2d2d2);border-radius:0.3rem;"></div>
-              <div style="display:flex;gap:0.3rem;align-items:center;">
-                <div style="width:34%;height:8px;background:var(--blue);border-radius:100px;"></div>
-                <div style="width:20%;height:6px;background:rgba(0,0,0,0.14);border-radius:100px;"></div>
-              </div>
-            </div>
-          </div>
-          <p class="c-label">Global Scale-Up</p>
-          <p class="c-title">Superside</p>
-          <p class="c-body">White bg, large photography, simple CTAs, case study heavy. Signals: scalable, trustworthy, process driven.</p>
+        <div style="display:flex;gap:0.9rem;align-items:baseline;padding:0.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);">
+          <p style="font-size:0.78rem;font-weight:700;min-width:6.5rem;flex-shrink:0;">Superside</p>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);min-width:8rem;flex-shrink:0;">Global Scale-Up</p>
+          <p class="c-body" style="margin:0;">White bg, large photography, case study heavy. Signals: scalable, trustworthy, process driven.</p>
         </div>
-        <div class="card card-blue" style="padding:0.6rem;">
-          <div style="border-radius:0.5rem 0.5rem 0.35rem 0.35rem;border:1px solid rgba(0,0,0,0.1);overflow:hidden;margin-bottom:0.65rem;">
-            <div class="browser-chrome">
-              <span class="b-dot" style="background:#ff5f57;"></span>
-              <span class="b-dot" style="background:#febc2e;"></span>
-              <span class="b-dot" style="background:#28c840;"></span>
-              <div class="b-bar"></div>
-            </div>
-            <div style="aspect-ratio:16/10;background:#F7F4EC;padding:0.6rem;display:flex;flex-direction:column;gap:0.3rem;">
-              <div style="width:52%;height:8px;background:rgba(0,0,0,0.72);border-radius:2px;"></div>
-              <div style="width:78%;height:4px;background:rgba(0,0,0,0.22);border-radius:2px;"></div>
-              <div style="width:58%;height:4px;background:rgba(0,0,0,0.22);border-radius:2px;"></div>
-              <div style="display:flex;gap:0.28rem;margin-top:auto;">
-                <div style="flex:1;aspect-ratio:1;background:rgba(0,0,0,0.08);border-radius:0.2rem;"></div>
-                <div style="flex:1;aspect-ratio:1;background:rgba(0,0,0,0.08);border-radius:0.2rem;"></div>
-                <div style="flex:1;aspect-ratio:1;background:rgba(0,0,0,0.08);border-radius:0.2rem;"></div>
-              </div>
-            </div>
-          </div>
-          <p class="c-label">Brand Studio</p>
-          <p class="c-title">Koto</p>
-          <p class="c-body">White/cream bg, editorial hierarchy, motion-minimal, work gallery. Signals: considered, expensive, taste.</p>
+        <div style="display:flex;gap:0.9rem;align-items:baseline;padding:0.5rem 0;">
+          <p style="font-size:0.78rem;font-weight:700;min-width:6.5rem;flex-shrink:0;">Koto</p>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);min-width:8rem;flex-shrink:0;">Brand Studio</p>
+          <p class="c-body" style="margin:0;">White/cream bg, editorial hierarchy, work gallery. Signals: considered, expensive, taste.</p>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:1rem;margin-bottom:0.9rem;" class="two-col">
-        <!-- persona -->
-        <div style="display:flex;flex-direction:column;gap:0.7rem;">
-          <div style="background:var(--blue);border-radius:0.85rem;padding:1rem;flex:1;">
-            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.55rem;">Primary Persona</p>
-            <div style="display:flex;align-items:center;gap:0.65rem;margin-bottom:0.5rem;">
-              <div style="width:2.5rem;height:2.5rem;border-radius:50%;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.72rem;font-weight:700;color:white;">RM</div>
-              <div>
-                <p style="font-size:0.85rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.1rem;">Rahul M.</p>
-                <p style="font-size:0.72rem;color:rgba(255,255,255,0.65);">Co-founder &amp; Marketing Lead</p>
-              </div>
-            </div>
-            <p style="font-size:0.72rem;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:0.5rem;">Scenario: Comparing 3 agencies on an iPhone 13 during his evening commute. Decides within 8 seconds of landing.</p>
-            <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:0.45rem;">
-              <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.25rem;">Values</p>
-              <p style="font-size:0.7rem;color:rgba(255,255,255,0.65);line-height:1.45;">&middot; Proof of work &middot; Speed of response &middot; Local market understanding</p>
-            </div>
+      <!-- personas - grouped into one row, each with a small flat-illustration
+           avatar (no stock photography) so they read as people, not text -->
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.6rem;">Primary Personas</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin-bottom:0.9rem;" class="three-col">
+        <div style="background:var(--blue);border-radius:0.85rem;padding:0.9rem;">
+          <div style="width:2.7rem;height:2.7rem;border-radius:50%;overflow:hidden;position:relative;background:rgba(255,255,255,0.16);margin-bottom:0.6rem;">
+            <div style="position:absolute;width:1.1rem;height:1.1rem;border-radius:50%;background:white;top:0.42rem;left:50%;transform:translateX(-50%);"></div>
+            <div style="position:absolute;width:1.15rem;height:0.4rem;border-radius:0.5rem 0.5rem 0 0;background:white;top:0.34rem;left:50%;transform:translateX(-50%);"></div>
+            <div style="position:absolute;width:2.05rem;height:1.55rem;border-radius:50% 50% 0 0;background:white;bottom:-0.22rem;left:50%;transform:translateX(-50%);"></div>
           </div>
-          <div style="background:#0f0f0f;border-radius:0.85rem;padding:1rem;">
-            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.4rem;">Research Findings</p>
-            <p style="font-size:0.72rem;font-weight:700;color:white;margin-bottom:0.4rem;">What the data showed</p>
-            <p style="font-size:0.7rem;color:rgba(255,255,255,0.55);line-height:1.6;">
-              &middot; Most first contact happens on mobile, in short bursts of attention<br>
-              &middot; Portfolio work is the real decision factor, not the About page<br>
-              &middot; Dark, restrained visuals read as more premium than bright, busy ones
-            </p>
-          </div>
+          <p style="font-size:0.8rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.05rem;">Rahul M.</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.6);margin-bottom:0.5rem;">Co-founder &amp; Marketing Lead</p>
+          <p style="font-size:0.68rem;color:rgba(255,255,255,0.75);line-height:1.45;margin-bottom:0.5rem;">Compares 3 agencies on his phone during the evening commute. Decides in 8 seconds.</p>
+          <p style="font-size:0.6rem;color:rgba(255,255,255,0.55);line-height:1.4;border-top:1px solid rgba(255,255,255,0.15);padding-top:0.4rem;">Values: proof of work, fast replies, local market fit</p>
         </div>
+        <div style="background:#0f0f0f;border-radius:0.85rem;padding:0.9rem;">
+          <div style="width:2.7rem;height:2.7rem;border-radius:50%;overflow:hidden;position:relative;background:rgba(255,255,255,0.1);margin-bottom:0.6rem;">
+            <div style="position:absolute;width:1.1rem;height:1.1rem;border-radius:50%;background:var(--blue);top:0.42rem;left:50%;transform:translateX(-50%);"></div>
+            <div style="position:absolute;width:1.35rem;height:0.7rem;border-radius:0.7rem 0.7rem 0.2rem 0.2rem;background:var(--blue);top:0.3rem;left:50%;transform:translateX(-50%);"></div>
+            <div style="position:absolute;width:2.05rem;height:1.55rem;border-radius:50% 50% 0 0;background:var(--blue);bottom:-0.22rem;left:50%;transform:translateX(-50%);"></div>
+          </div>
+          <p style="font-size:0.8rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.05rem;">Priya D.</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem;">Startup Founder</p>
+          <p style="font-size:0.68rem;color:rgba(255,255,255,0.6);line-height:1.45;margin-bottom:0.5rem;">Reviews agency portfolios on a laptop the night before pitching investors.</p>
+          <p style="font-size:0.6rem;color:rgba(255,255,255,0.4);line-height:1.4;border-top:1px solid rgba(255,255,255,0.1);padding-top:0.4rem;">Values: case study depth, pricing clarity, credibility</p>
+        </div>
+        <div style="background:var(--cream);border-radius:0.85rem;padding:0.9rem;">
+          <div style="width:2.7rem;height:2.7rem;border-radius:50%;overflow:hidden;position:relative;background:rgba(10,10,10,0.08);margin-bottom:0.6rem;">
+            <div style="position:absolute;width:1.1rem;height:1.1rem;border-radius:50%;background:var(--black);top:0.42rem;left:50%;transform:translateX(-50%);"></div>
+            <div style="position:absolute;width:1.1rem;height:0.34rem;border-radius:0.5rem 0.5rem 0 0;background:var(--black);top:0.34rem;left:46%;transform:translateX(-50%);"></div>
+            <div style="position:absolute;width:2.05rem;height:1.55rem;border-radius:50% 50% 0 0;background:var(--black);bottom:-0.22rem;left:50%;transform:translateX(-50%);"></div>
+          </div>
+          <p style="font-size:0.8rem;font-weight:700;color:var(--black);font-style:italic;margin-bottom:0.05rem;">Vikram S.</p>
+          <p style="font-size:0.62rem;color:rgba(0,0,0,0.5);margin-bottom:0.5rem;">Freelance Growth Consultant</p>
+          <p style="font-size:0.68rem;color:rgba(0,0,0,0.62);line-height:1.45;margin-bottom:0.5rem;">Bookmarks agency sites between client calls to recommend to founders later.</p>
+          <p style="font-size:0.6rem;color:rgba(0,0,0,0.42);line-height:1.4;border-top:1px solid rgba(0,0,0,0.1);padding-top:0.4rem;">Values: fast load time, clear scope, easy contact path</p>
+        </div>
+      </div>
 
-        <!-- research &rarr; decision -->
-        <div style="background:#0f0f0f;border-radius:0.85rem;padding:1rem;">
-          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.6rem;">Research &rarr; Design Decision</p>
-          <div style="display:flex;flex-direction:column;gap:0.4rem;">
-            <div class="rd-grid">
-              <div class="rd-box rd-ins">
-                <p class="rd-lbl" style="color:var(--blue);">Insight</p>
-                <p class="rd-txt">Most first-contact visits happen on mobile, during short windows of attention</p>
-              </div>
-              <span class="rd-arrow">&rarr;</span>
-              <div class="rd-box rd-dec">
-                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
-                <p class="rd-txt">Hero wave animation paused/simplified on mobile; 390px is the design start point</p>
-              </div>
+      <!-- research &rarr; decision - the "Research Findings" box that used
+           to sit next to this was dropped: it just restated these same 3
+           insights in slightly different words, which was the main source
+           of the text-heavy feel. One 3-up grid instead of stacked rows
+           reads as a comparison, not a wall of paragraphs. -->
+      <div style="background:#0f0f0f;border-radius:0.85rem;padding:1.1rem;margin-bottom:0.9rem;">
+        <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.7rem;">Research &rarr; Design Decision</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;" class="three-col">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div class="rd-box rd-ins" style="width:100%;">
+              <p class="rd-lbl" style="color:var(--blue);">Insight</p>
+              <p class="rd-txt">Mobile-first visits, short windows of attention</p>
             </div>
-            <div class="rd-grid">
-              <div class="rd-box rd-ins">
-                <p class="rd-lbl" style="color:var(--blue);">Insight</p>
-                <p class="rd-txt">Work portfolio is the #1 decision factor - not the About page</p>
-              </div>
-              <span class="rd-arrow">&rarr;</span>
-              <div class="rd-box rd-dec">
-                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
-                <p class="rd-txt">Work surfaces at section 03 - before services pitch - in 9:16 portrait ratio</p>
-              </div>
+            <span style="color:var(--blue);font-size:0.85rem;">&darr;</span>
+            <div class="rd-box rd-dec" style="width:100%;">
+              <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+              <p class="rd-txt">Hero animation simplified below 390px</p>
             </div>
-            <div class="rd-grid">
-              <div class="rd-box rd-ins">
-                <p class="rd-lbl" style="color:var(--blue);">Insight</p>
-                <p class="rd-txt">Dark, restrained visuals read as more premium than bright, busy ones</p>
-              </div>
-              <span class="rd-arrow">&rarr;</span>
-              <div class="rd-box rd-dec">
-                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
-                <p class="rd-txt">Black services bg, blue CTA - cream reserved for Team warmth only</p>
-              </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div class="rd-box rd-ins" style="width:100%;">
+              <p class="rd-lbl" style="color:var(--blue);">Insight</p>
+              <p class="rd-txt">Work is the #1 decision factor, not the About page</p>
+            </div>
+            <span style="color:var(--blue);font-size:0.85rem;">&darr;</span>
+            <div class="rd-box rd-dec" style="width:100%;">
+              <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+              <p class="rd-txt">Work surfaces at section 03, before Services</p>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div class="rd-box rd-ins" style="width:100%;">
+              <p class="rd-lbl" style="color:var(--blue);">Insight</p>
+              <p class="rd-txt">Dark, restrained visuals read as premium</p>
+            </div>
+            <span style="color:var(--blue);font-size:0.85rem;">&darr;</span>
+            <div class="rd-box rd-dec" style="width:100%;">
+              <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+              <p class="rd-txt">Black bg + blue CTA; cream reserved for Team</p>
             </div>
           </div>
         </div>
@@ -583,13 +550,13 @@
       <p class="sec-label sl-blue">IA &amp; Conversion Architecture</p>
       <h2 class="h2">Section order is as intentional<br>as section design.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:56ch;line-height:1.6;margin-bottom:1.1rem;">
-        Every section position is a deliberate conversion decision. The visitor arrives at the Hero, sees proof of work immediately, understands process, and reaches the CTA in 3 scroll stops.
+        Every section position is a deliberate conversion decision - Hero to proof of work to CTA in 3 scroll stops.
       </p>
 
-      <div style="display:grid;grid-template-columns:220px 1fr;gap:2rem;" class="two-col">
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:1.8rem;" class="two-col">
         <!-- sitemap -->
         <div>
-          <div class="sm-item sm-fixed">Fixed Navigation - always accessible</div>
+          <div class="sm-item sm-fixed">Fixed Nav - always visible</div>
           <div class="sm-item sm-on">01 Hero</div>
           <div class="sm-item sm-off">02 Services</div>
           <div class="sm-item sm-on">03 Work</div>
@@ -600,27 +567,28 @@
           <div class="sm-item sm-off">08 Contact</div>
         </div>
 
-        <!-- annotation cards -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;" class="two-col">
-          <div class="card card-blue">
-            <p class="c-label">Why Work Is Section #3</p>
+        <!-- annotation cards - numbered badge + one short line each, not
+             full paragraphs, so the rationale reads at a glance -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;align-content:start;" class="two-col">
+          <div class="card card-blue" style="position:relative;padding-right:2.2rem;">
+            <span style="position:absolute;top:0.6rem;right:0.75rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">01</span>
             <p class="c-title">Proof before pitch</p>
-            <p class="c-body">Showing work before explaining services bypasses the credibility question. The visitor validates quality in their first 8 seconds - then is primed to read how you do it.</p>
+            <p class="c-body">Work is section 3 - visitors judge quality before reading the pitch.</p>
           </div>
-          <div class="card card-blue">
-            <p class="c-label">Fixed Navigation + Pill CTA</p>
+          <div class="card card-blue" style="position:relative;padding-right:2.2rem;">
+            <span style="position:absolute;top:0.6rem;right:0.75rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">02</span>
             <p class="c-title">Text links navigate, buttons act</p>
-            <p class="c-body">"Start a project" is the only pill button in the nav - all other items are navigation links. Always visible. Nav gains blur background on scroll.</p>
+            <p class="c-body">Only "Start a project" is a button - everything else in the nav is a plain link.</p>
           </div>
-          <div class="card card-blue">
-            <p class="c-label">Work Section - Auto-Scroll Marquee</p>
-            <p class="c-title">Show more without asking for a click</p>
-            <p class="c-body">A horizontal auto-scroll marquee surfaces the entire portfolio passively. Cards are 9:16 - Instagram-native ratio, the same one this audience already scrolls on Instagram.</p>
+          <div class="card card-blue" style="position:relative;padding-right:2.2rem;">
+            <span style="position:absolute;top:0.6rem;right:0.75rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">03</span>
+            <p class="c-title">Show more, ask for nothing</p>
+            <p class="c-body">Auto-scroll marquee, 9:16 cards - the ratio this audience already scrolls.</p>
           </div>
-          <div class="card card-blue">
-            <p class="c-label">Primary Conversion Path</p>
+          <div class="card card-blue" style="position:relative;padding-right:2.2rem;">
+            <span style="position:absolute;top:0.6rem;right:0.75rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">04</span>
             <p class="c-title">Hero &rarr; Work &rarr; Contact</p>
-            <p class="c-body">Average 3 scroll stops from landing to conversion action. Services and Process support credibility - they are not the path.</p>
+            <p class="c-body">3 scroll stops to conversion. Services and Process just support credibility.</p>
           </div>
         </div>
       </div>
@@ -629,115 +597,9 @@
 </section>
 
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     6a. DESIGNING FOR CONSTRAINTS - ANIMATION AUDIT
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section id="constraints" class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
-      <p class="sec-label sl-blue">Design for Constraints</p>
-      <h2 class="h2">When limitations made<br>the design better.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        The earliest hero leaned hard into the wave reveal and ended up overcrowded - too many moving parts competing for attention in the first three seconds. We audited every motion and asked: does this earn its place?
-      </p>
-
-      <!-- 3 hero screenshots: early &rarr; mid &rarr; final -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
-          <img src="studiobee/hero-early.png" alt="Hero - initial load" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
-          <img src="studiobee/hero-a.png" alt="Hero - wave mid-state" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
-          <img src="studiobee/1.png" alt="Hero - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-      </div>
-
-      <!-- annotation -->
-      <div class="annot-card">
-        <p class="annot-label">Animation Audit</p>
-        <p class="annot-body">The early hero crowded the wave reveal with too many moving parts in the first three seconds. We treated animation like typography: only what communicates energy earns its place. What's left is a single, confident gesture instead of a dozen small distractions.</p>
-      </div>
-
-      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
-
-      <p class="sec-label sl-blue">Testimonials</p>
-      <h2 class="h2">Light, cream, dark <br>the third version shipped.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        The testimonials section went through three layout passes. A light split-screen felt too corporate for a creative studio. A cream card stack looked warm but visually flat next to the rest of the site. The dark, frosted-glass carousel finally gave it the full-bleed, tactile impact the brand needed.
-      </p>
-
-      <!-- 3 screenshots: testimonials entry, card close-up, exit to team -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
-          <img src="studiobee/testi-a.png" alt="Testimonials - section entry" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
-          <img src="studiobee/testi-b.png" alt="Testimonials - glass card" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
-          <img src="studiobee/testi-c.png" alt="Testimonials - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-      </div>
-
-      <!-- annotation -->
-      <div class="annot-card">
-        <p class="annot-label">Testimonials Iterations</p>
-        <p class="annot-body">Light split, cream stack, dark glass. The first two were dropped on feel, not function - one read too corporate, the other too flat. The frosted-glass version was worth carrying through to the final design.</p>
-      </div>
-
-      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
-
-      <p class="sec-label sl-blue">Case Studies Layout</p>
-      <h2 class="h2">A masonry grid that got<br>out of the photography&rsquo;s way.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        An irregular masonry layout competed with the video thumbnails - every card wanted to be the focal point. A uniform 4-column grid with consistent proportions let the work lead. Eight projects, mixed formats, one structure.
-      </p>
-
-      <!-- 3 screenshots: case studies header, upper grid, lower grid -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
-          <img src="studiobee/cs-a.png" alt="Case studies - page header" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
-          <img src="studiobee/cs-b.png" alt="Case studies - upper grid" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
-          <img src="studiobee/cs-c.png" alt="Case studies - full grid" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-      </div>
-
-      <!-- annotation -->
-      <div class="annot-card">
-        <p class="annot-label">Case Studies Layout</p>
-        <p class="annot-body">Masonry gave each project breathing room but fractured the visual rhythm. A uniform 4-column grid imposed the consistency the content lacked - the constraint of eight diverse projects produced the most disciplined layout on the site.</p>
-      </div>
-
-      <!-- one button, one moving part -->
-      <div style="margin-top:0.9rem;max-width:480px;">
-        <div class="card card-blue">
-          <p class="c-label">Ghost Button</p>
-          <p class="c-body">Early versions animated the whole ghost button on hover, which felt heavy against the rest of the site's restraint. Now only the arrow moves - a nudge, not a shape flying across the screen.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     7. FINAL UI - MOBILE SHOWCASE (was panel 7, now same number)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     7. FINAL UI - MOBILE SHOWCASE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════════════════════════════════════
+     6. FINAL UI - DESKTOP + MOBILE SHOWCASE
+═══════════════════════════════════════════ -->
 <section id="final-ui" class="stack-panel" data-theme="dark" style="background:var(--black);">
   <div class="ch-bar ch-bar-dark">
     <span class="ch-label ch-label-dark">Final UI</span>
@@ -745,7 +607,123 @@
 
   <div class="panel-body" style="align-items:center;justify-content:center;padding-top:1rem;">
     <div class="inner">
-      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;text-align:center;">Final UI - Mobile Showcase</p>
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1rem;text-align:center;">Final UI - Desktop</p>
+
+      <div class="desktop-showcase" style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.7rem;margin-bottom:2.2rem;">
+
+        <!-- HERO - desktop -->
+        <div>
+          <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <span class="b-dot" style="background:#ff5f57;"></span>
+              <span class="b-dot" style="background:#febc2e;"></span>
+              <span class="b-dot" style="background:#28c840;"></span>
+              <div class="b-bar"></div>
+            </div>
+            <div style="background:#eef0fd;padding:0.5rem 0.6rem;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:0.28rem;">
+              <div class="wire-strips" style="height:22px;margin-bottom:0.15rem;">
+                <div class="wire-strip" style="background:rgba(47,72,223,0.14);"></div>
+                <div class="wire-strip" style="background:rgba(47,72,223,0.24);"></div>
+                <div class="wire-strip" style="background:rgba(47,72,223,0.34);"></div>
+                <div class="wire-strip" style="background:rgba(47,72,223,0.22);"></div>
+                <div class="wire-strip" style="background:rgba(47,72,223,0.3);"></div>
+              </div>
+              <div style="width:60%;height:6px;border-radius:2px;background:rgba(0,0,0,0.16);"></div>
+              <div style="width:38%;height:5px;border-radius:2px;background:rgba(0,0,0,0.1);"></div>
+              <div style="display:flex;gap:0.25rem;margin-top:0.15rem;">
+                <div style="width:34%;height:11px;border-radius:100px;background:var(--black);"></div>
+                <div style="width:24%;height:11px;border-radius:100px;border:1px solid rgba(0,0,0,0.22);"></div>
+              </div>
+            </div>
+          </div>
+          <p class="phone-label-name" style="margin-top:0.5rem;">Hero</p>
+        </div>
+
+        <!-- SERVICES - desktop -->
+        <div>
+          <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <span class="b-dot" style="background:#ff5f57;"></span>
+              <span class="b-dot" style="background:#febc2e;"></span>
+              <span class="b-dot" style="background:#28c840;"></span>
+              <div class="b-bar"></div>
+            </div>
+            <div style="background:#0f0f0f;padding:0.5rem;flex:1;min-height:0;display:flex;flex-direction:column;gap:0.3rem;">
+              <div style="width:40%;height:5px;border-radius:2px;background:rgba(255,255,255,0.16);margin-bottom:0.1rem;"></div>
+              <div style="display:flex;gap:0.25rem;flex:1;">
+                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;"></div>
+                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;"></div>
+                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;"></div>
+                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;"></div>
+              </div>
+            </div>
+          </div>
+          <p class="phone-label-name" style="margin-top:0.5rem;">Services</p>
+        </div>
+
+        <!-- WORK - desktop -->
+        <div>
+          <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <span class="b-dot" style="background:#ff5f57;"></span>
+              <span class="b-dot" style="background:#febc2e;"></span>
+              <span class="b-dot" style="background:#28c840;"></span>
+              <div class="b-bar"></div>
+            </div>
+            <div style="background:var(--blue);padding:0.5rem;flex:1;min-height:0;display:flex;flex-direction:column;gap:0.3rem;">
+              <div style="width:35%;height:5px;border-radius:2px;background:rgba(255,255,255,0.3);"></div>
+              <div style="display:flex;gap:0.22rem;flex:1;">
+                <div style="flex:1;background:rgba(255,255,255,0.16);border-radius:0.25rem;"></div>
+                <div style="flex:1;background:rgba(255,255,255,0.24);border-radius:0.25rem;"></div>
+                <div style="flex:1;background:rgba(255,255,255,0.18);border-radius:0.25rem;"></div>
+              </div>
+            </div>
+          </div>
+          <p class="phone-label-name" style="margin-top:0.5rem;">Work</p>
+        </div>
+
+        <!-- TESTIMONIALS - desktop -->
+        <div>
+          <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <span class="b-dot" style="background:#ff5f57;"></span>
+              <span class="b-dot" style="background:#febc2e;"></span>
+              <span class="b-dot" style="background:#28c840;"></span>
+              <div class="b-bar"></div>
+            </div>
+            <div style="background:#111;padding:0.5rem;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative;">
+              <div style="position:absolute;width:60%;height:60%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:0.3rem;transform:translateX(-6%);"></div>
+              <div style="position:absolute;width:60%;height:60%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:0.3rem;transform:translateX(6%);"></div>
+            </div>
+          </div>
+          <p class="phone-label-name" style="margin-top:0.5rem;">Testimonials</p>
+        </div>
+
+        <!-- CTA / CONTACT - desktop -->
+        <div>
+          <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
+            <div class="browser-chrome">
+              <span class="b-dot" style="background:#ff5f57;"></span>
+              <span class="b-dot" style="background:#febc2e;"></span>
+              <span class="b-dot" style="background:#28c840;"></span>
+              <div class="b-bar"></div>
+            </div>
+            <div style="background:var(--blue);padding:0.5rem;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:0.22rem;">
+              <div style="width:45%;height:5px;border-radius:2px;background:rgba(255,255,255,0.3);margin-bottom:0.1rem;"></div>
+              <div style="display:flex;gap:0.22rem;">
+                <div style="flex:1;height:9px;border-radius:2px;background:rgba(255,255,255,0.14);"></div>
+                <div style="flex:1;height:9px;border-radius:2px;background:rgba(255,255,255,0.14);"></div>
+              </div>
+              <div style="width:26%;height:11px;border-radius:100px;background:white;margin-top:0.15rem;align-self:flex-end;"></div>
+            </div>
+          </div>
+          <p class="phone-label-name" style="margin-top:0.5rem;">CTA / Contact</p>
+        </div>
+      </div>
+
+      <div class="div-line div-light" style="max-width:20rem;margin:0 auto 2rem;"></div>
+
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;text-align:center;">Final UI - Mobile</p>
 
       <div class="phone-showcase" style="display:flex;gap:1.5rem;justify-content:center;align-items:flex-start;flex-wrap:nowrap;">
 
@@ -877,6 +855,107 @@
           <p class="phone-label-desc" style="color:rgba(255,255,255,0.38);">Blue full-section &middot; success animation</p>
         </div>
 
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     7. DESIGNING FOR CONSTRAINTS
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section id="constraints" class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Design for Constraints</p>
+      <h2 class="h2">When limitations made<br>the design better.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        The earliest hero leaned hard into the wave reveal and ended up overcrowded - too many moving parts competing for attention in the first three seconds. We audited every motion and asked: does this earn its place?
+      </p>
+
+      <!-- 3 hero screenshots: early &rarr; mid &rarr; final -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
+          <img src="studiobee/hero-early.png" alt="Hero - initial load" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
+          <img src="studiobee/hero-a.png" alt="Hero - wave mid-state" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
+          <img src="studiobee/1.png" alt="Hero - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">Animation Audit</p>
+        <p class="annot-body">The early hero crowded the wave reveal with too many moving parts in the first three seconds. We treated animation like typography: only what communicates energy earns its place. What's left is a single, confident gesture instead of a dozen small distractions.</p>
+      </div>
+
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
+
+      <p class="sec-label sl-blue">Testimonials</p>
+      <h2 class="h2">Light, cream, dark <br>the third version shipped.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        The testimonials section went through three layout passes. A light split-screen felt too corporate for a creative studio. A cream card stack looked warm but visually flat next to the rest of the site. The dark, frosted-glass carousel finally gave it the full-bleed, tactile impact the brand needed.
+      </p>
+
+      <!-- 3 screenshots: testimonials entry, card close-up, exit to team -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
+          <img src="studiobee/testi-a.png" alt="Testimonials - section entry" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
+          <img src="studiobee/testi-b.png" alt="Testimonials - glass card" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
+          <img src="studiobee/testi-c.png" alt="Testimonials - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">Testimonials Iterations</p>
+        <p class="annot-body">Light split, cream stack, dark glass. The first two were dropped on feel, not function - one read too corporate, the other too flat. The frosted-glass version was worth carrying through to the final design.</p>
+      </div>
+
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
+
+      <p class="sec-label sl-blue">Case Studies Layout</p>
+      <h2 class="h2">A masonry grid that got<br>out of the photography&rsquo;s way.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        An irregular masonry layout competed with the video thumbnails - every card wanted to be the focal point. A uniform 4-column grid with consistent proportions let the work lead. Eight projects, mixed formats, one structure.
+      </p>
+
+      <!-- 3 screenshots: case studies header, upper grid, lower grid -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
+          <img src="studiobee/cs-a.png" alt="Case studies - page header" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/9;">
+          <img src="studiobee/cs-b.png" alt="Case studies - upper grid" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/9;">
+          <img src="studiobee/cs-c.png" alt="Case studies - full grid" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">Grid Decision</p>
+        <p class="annot-body">Masonry gave each project breathing room but fractured the visual rhythm. A uniform 4-column grid imposed the consistency the content lacked - the constraint of eight diverse projects produced the most disciplined layout on the site.</p>
+      </div>
+
+      <!-- one button, one moving part -->
+      <div style="margin-top:0.9rem;max-width:480px;">
+        <div class="card card-blue">
+          <p class="c-label">Ghost Button</p>
+          <p class="c-body">Early versions animated the whole ghost button on hover, which felt heavy against the rest of the site's restraint. Now only the arrow moves - a nudge, not a shape flying across the screen.</p>
+        </div>
       </div>
     </div>
   </div>
