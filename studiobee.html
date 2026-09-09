@@ -224,18 +224,18 @@
     .annot-body  { font-size: 0.74rem; line-height: 1.45; color: rgba(0,0,0,0.62); }
 
     /* â”€â”€ PHONE FRAME (Panel 7) â”€â”€ */
-    .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+    .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
     .phone-outer {
-      width: 148px; border-radius: 1.75rem;
-      border: 2.5px solid #2a2a2a;
+      width: 112px; border-radius: 1.4rem;
+      border: 2px solid #2a2a2a;
       overflow: hidden; position: relative;
       display: flex; flex-direction: column;
     }
     .phone-notch {
-      position: absolute; top: 0.55rem; left: 50%; transform: translateX(-50%);
-      width: 36px; height: 5px; background: #1a1a1a; border-radius: 3px; z-index: 2;
+      position: absolute; top: 0.42rem; left: 50%; transform: translateX(-50%);
+      width: 28px; height: 4px; background: #1a1a1a; border-radius: 3px; z-index: 2;
     }
-    .phone-screen { flex: 1; padding: 1.4rem 0.45rem 0.45rem; min-height: 290px; }
+    .phone-screen { flex: 1; padding: 1.1rem 0.35rem 0.35rem; min-height: 220px; }
     .phone-label-name { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); text-align: center; }
     .phone-label-desc { font-size: 0.56rem; color: rgba(255,255,255,0.4); text-align: center; line-height: 1.4; max-width: 140px; }
 
@@ -553,43 +553,49 @@
         Every section position is a deliberate conversion decision - Hero to proof of work to CTA in 3 scroll stops.
       </p>
 
-      <div style="display:grid;grid-template-columns:200px 1fr;gap:1.8rem;" class="two-col">
-        <!-- sitemap -->
-        <div>
-          <div class="sm-item sm-fixed">Fixed Nav - always visible</div>
-          <div class="sm-item sm-on">01 Hero</div>
-          <div class="sm-item sm-off">02 Services</div>
-          <div class="sm-item sm-on">03 Work</div>
-          <div class="sm-item sm-off">04 Stats</div>
-          <div class="sm-item sm-on">05 Process</div>
-          <div class="sm-item sm-off">06 Testimonials</div>
-          <div class="sm-item sm-on">07 Team</div>
-          <div class="sm-item sm-off">08 Contact</div>
-        </div>
+      <!-- sitemap - horizontal sequence (the order visitors actually scroll
+           through), not a vertical list -->
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.6rem;">Fixed Nav - always visible - then, in scroll order:</p>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.3rem;margin-bottom:1.6rem;">
+        <div class="sm-item sm-on">01 Hero</div>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-off">02 Services</div>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-on">03 Work</div>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-off">04 Stats</div>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-on">05 Process</div>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-off">06 Testimonials</div>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-on">07 Team</div>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-off">08 Contact</div>
+      </div>
 
-        <!-- annotation cards - numbered badge + one short line each, not
-             full paragraphs, so the rationale reads at a glance -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;align-content:start;" class="two-col">
-          <div class="card card-blue" style="position:relative;padding-right:2.2rem;">
-            <span style="position:absolute;top:0.6rem;right:0.75rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">01</span>
-            <p class="c-title">Proof before pitch</p>
-            <p class="c-body">Work is section 3 - visitors judge quality before reading the pitch.</p>
-          </div>
-          <div class="card card-blue" style="position:relative;padding-right:2.2rem;">
-            <span style="position:absolute;top:0.6rem;right:0.75rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">02</span>
-            <p class="c-title">Text links navigate, buttons act</p>
-            <p class="c-body">Only "Start a project" is a button - everything else in the nav is a plain link.</p>
-          </div>
-          <div class="card card-blue" style="position:relative;padding-right:2.2rem;">
-            <span style="position:absolute;top:0.6rem;right:0.75rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">03</span>
-            <p class="c-title">Show more, ask for nothing</p>
-            <p class="c-body">Auto-scroll marquee, 9:16 cards - the ratio this audience already scrolls.</p>
-          </div>
-          <div class="card card-blue" style="position:relative;padding-right:2.2rem;">
-            <span style="position:absolute;top:0.6rem;right:0.75rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">04</span>
-            <p class="c-title">Hero &rarr; Work &rarr; Contact</p>
-            <p class="c-body">3 scroll stops to conversion. Services and Process just support credibility.</p>
-          </div>
+      <!-- annotation cards - numbered badge + one short line each, not
+           full paragraphs, so the rationale reads at a glance -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;" class="four-col">
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">01</span>
+          <p class="c-title">Proof before pitch</p>
+          <p class="c-body">Work is section 3 - visitors judge quality before reading the pitch.</p>
+        </div>
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">02</span>
+          <p class="c-title">Text links navigate, buttons act</p>
+          <p class="c-body">Only "Start a project" is a button - everything else is a plain link.</p>
+        </div>
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">03</span>
+          <p class="c-title">Show more, ask for nothing</p>
+          <p class="c-body">Auto-scroll marquee, 9:16 cards - the ratio this audience already scrolls.</p>
+        </div>
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">04</span>
+          <p class="c-title">Hero &rarr; Work &rarr; Contact</p>
+          <p class="c-body">3 scroll stops to conversion. Services and Process just support credibility.</p>
         </div>
       </div>
     </div>
@@ -609,7 +615,7 @@
     <div class="inner">
       <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1rem;text-align:center;">Final UI - Desktop</p>
 
-      <div class="desktop-showcase" style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.7rem;margin-bottom:2.2rem;">
+      <div class="desktop-showcase" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.2rem;">
 
         <!-- HERO - desktop -->
         <div>
