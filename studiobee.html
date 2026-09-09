@@ -108,13 +108,9 @@
     #chapter-rail.dark .chapter-tab:hover .chapter-label { color: rgba(255,255,255,0.82); }
     #chapter-rail.dark .chapter-tab.active .chapter-label { color: var(--blue); }
 
-    /* The cover section is the one panel that doesn't sit inside the
-       centered .inner column (every other panel already clears the rail
-       via that column's own inset) - so it needs its own explicit inset
-       once the rail is showing, or the rail overlaps the headline. */
-    @media (min-width: 1361px) {
-      #cover > div { padding-left: 8.5rem !important; }
-    }
+    /* Cover's 3 blocks each center within max-width:1100px (same width as
+       every other panel's .inner column), so they clear the rail the same
+       way the rest of the case study does - no special-cased inset needed. */
 
     /* â”€â”€ CHAPTER BAR (top of each panel) â”€â”€ */
     .ch-bar {
@@ -194,7 +190,7 @@
     .rd-arrow { color: var(--blue); font-size: 1rem; }
 
     /* â”€â”€ SITEMAP â”€â”€ */
-    .sm-item { border-radius: 0.4rem; padding: 0.5rem 1rem; font-size: 0.7rem; font-weight: 600; text-align: center; margin-bottom: 0.28rem; }
+    .sm-item { border-radius: 0.5rem; padding: 0.6rem 1.15rem; font-size: 0.82rem; font-weight: 600; text-align: center; margin-bottom: 0.28rem; white-space: nowrap; }
     .sm-on   { background: var(--blue); color: white; }
     .sm-off  { background: var(--blue-pale); color: var(--black); }
     .sm-fixed { background: rgba(0,0,0,0.05); color: rgba(0,0,0,0.38); font-size: 0.63rem; }
@@ -305,24 +301,24 @@
          justify-content: space-between; padding-top: 5rem;">
 
   <!-- top label -->
-  <div style="padding: 1.5rem 5vw 0;">
+  <div style="padding: 1.5rem 5vw 0;max-width:1100px;margin:0 auto;text-align:center;">
     <p style="font-size:0.55rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,0,0,0.35);">UX/UI | STUDIOBEE.CO.IN</p>
   </div>
 
   <!-- main title block -->
-  <div style="padding: 0 5vw;">
+  <div style="padding: 0 5vw;max-width:1100px;margin:0 auto;text-align:center;">
     <h1 style="font-size:clamp(4rem,9vw,10rem);font-weight:700;letter-spacing:-0.04em;line-height:0.9;margin-bottom:0.3rem;" class="fu d1">
       <span style="color:var(--blue);font-weight:300;">studio</span><span style="color:var(--blue);font-weight:700;">bee</span>
     </h1>
     <p style="font-size:clamp(1.8rem,4vw,4rem);font-weight:600;letter-spacing:-0.03em;color:var(--black);margin-bottom:1.25rem;" class="fu d2">case study</p>
-    <div style="width:clamp(6rem,20vw,16rem);height:1.5px;background:rgba(0,0,0,0.14);margin-bottom:1.25rem;"></div>
-    <p style="font-size:clamp(0.9rem,1.3vw,1.1rem);color:rgba(0,0,0,0.5);line-height:1.65;max-width:52ch;" class="fu d3">
+    <div style="width:clamp(6rem,20vw,16rem);height:1.5px;background:rgba(0,0,0,0.14);margin:0 auto 1.25rem;"></div>
+    <p style="font-size:clamp(0.9rem,1.3vw,1.1rem);color:rgba(0,0,0,0.5);line-height:1.65;max-width:52ch;margin:0 auto;" class="fu d3">
       Designing a brand-forward agency website that gives a feel of luxury, is trustworthy - and looks like the best agency in the room.
     </p>
   </div>
 
   <!-- metadata footer bar -->
-  <div style="border-top:1px solid rgba(0,0,0,0.09);padding:1.25rem 5vw;display:flex;gap:3rem;flex-wrap:wrap;" class="fu d4">
+  <div style="border-top:1px solid rgba(0,0,0,0.09);padding:1.25rem 5vw;max-width:1100px;margin:0 auto;display:flex;gap:3rem;flex-wrap:wrap;justify-content:center;" class="fu d4">
     <div>
       <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:0.3rem;">Role</p>
       <p style="font-size:0.82rem;font-weight:600;">Lead UX/UI Designer</p>
@@ -454,10 +450,8 @@
       <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.6rem;">Primary Personas</p>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin-bottom:0.9rem;" class="three-col">
         <div style="background:var(--blue);border-radius:0.85rem;padding:0.9rem;">
-          <div style="width:2.7rem;height:2.7rem;border-radius:50%;overflow:hidden;position:relative;background:rgba(255,255,255,0.16);margin-bottom:0.6rem;">
-            <div style="position:absolute;width:1.1rem;height:1.1rem;border-radius:50%;background:white;top:0.42rem;left:50%;transform:translateX(-50%);"></div>
-            <div style="position:absolute;width:1.15rem;height:0.4rem;border-radius:0.5rem 0.5rem 0 0;background:white;top:0.34rem;left:50%;transform:translateX(-50%);"></div>
-            <div style="position:absolute;width:2.05rem;height:1.55rem;border-radius:50% 50% 0 0;background:white;bottom:-0.22rem;left:50%;transform:translateX(-50%);"></div>
+          <div style="width:3.8rem;height:3.8rem;border-radius:50%;overflow:hidden;position:relative;background:#fff;margin-bottom:0.6rem;">
+            <img src="png/persona-rahul.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:center;display:block;">
           </div>
           <p style="font-size:0.8rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.05rem;">Rahul M.</p>
           <p style="font-size:0.62rem;color:rgba(255,255,255,0.6);margin-bottom:0.5rem;">Co-founder &amp; Marketing Lead</p>
@@ -465,10 +459,8 @@
           <p style="font-size:0.6rem;color:rgba(255,255,255,0.55);line-height:1.4;border-top:1px solid rgba(255,255,255,0.15);padding-top:0.4rem;">Values: proof of work, fast replies, local market fit</p>
         </div>
         <div style="background:#0f0f0f;border-radius:0.85rem;padding:0.9rem;">
-          <div style="width:2.7rem;height:2.7rem;border-radius:50%;overflow:hidden;position:relative;background:rgba(255,255,255,0.1);margin-bottom:0.6rem;">
-            <div style="position:absolute;width:1.1rem;height:1.1rem;border-radius:50%;background:var(--blue);top:0.42rem;left:50%;transform:translateX(-50%);"></div>
-            <div style="position:absolute;width:1.35rem;height:0.7rem;border-radius:0.7rem 0.7rem 0.2rem 0.2rem;background:var(--blue);top:0.3rem;left:50%;transform:translateX(-50%);"></div>
-            <div style="position:absolute;width:2.05rem;height:1.55rem;border-radius:50% 50% 0 0;background:var(--blue);bottom:-0.22rem;left:50%;transform:translateX(-50%);"></div>
+          <div style="width:3.8rem;height:3.8rem;border-radius:50%;overflow:hidden;position:relative;background:#fff;margin-bottom:0.6rem;">
+            <img src="png/persona-priya.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:center;display:block;">
           </div>
           <p style="font-size:0.8rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.05rem;">Priya D.</p>
           <p style="font-size:0.62rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem;">Startup Founder</p>
@@ -476,10 +468,8 @@
           <p style="font-size:0.6rem;color:rgba(255,255,255,0.4);line-height:1.4;border-top:1px solid rgba(255,255,255,0.1);padding-top:0.4rem;">Values: case study depth, pricing clarity, credibility</p>
         </div>
         <div style="background:var(--cream);border-radius:0.85rem;padding:0.9rem;">
-          <div style="width:2.7rem;height:2.7rem;border-radius:50%;overflow:hidden;position:relative;background:rgba(10,10,10,0.08);margin-bottom:0.6rem;">
-            <div style="position:absolute;width:1.1rem;height:1.1rem;border-radius:50%;background:var(--black);top:0.42rem;left:50%;transform:translateX(-50%);"></div>
-            <div style="position:absolute;width:1.1rem;height:0.34rem;border-radius:0.5rem 0.5rem 0 0;background:var(--black);top:0.34rem;left:46%;transform:translateX(-50%);"></div>
-            <div style="position:absolute;width:2.05rem;height:1.55rem;border-radius:50% 50% 0 0;background:var(--black);bottom:-0.22rem;left:50%;transform:translateX(-50%);"></div>
+          <div style="width:3.8rem;height:3.8rem;border-radius:50%;overflow:hidden;position:relative;background:#fff;margin-bottom:0.6rem;">
+            <img src="png/persona-vikram.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:center;display:block;">
           </div>
           <p style="font-size:0.8rem;font-weight:700;color:var(--black);font-style:italic;margin-bottom:0.05rem;">Vikram S.</p>
           <p style="font-size:0.62rem;color:rgba(0,0,0,0.5);margin-bottom:0.5rem;">Freelance Growth Consultant</p>
@@ -556,21 +546,21 @@
       <!-- sitemap - horizontal sequence (the order visitors actually scroll
            through), not a vertical list -->
       <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.6rem;">Fixed Nav - always visible - then, in scroll order:</p>
-      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.3rem;margin-bottom:1.6rem;">
+      <div style="display:flex;align-items:center;flex-wrap:nowrap;gap:0.32rem;margin-bottom:1.8rem;">
         <div class="sm-item sm-on">01 Hero</div>
-        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
         <div class="sm-item sm-off">02 Services</div>
-        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
         <div class="sm-item sm-on">03 Work</div>
-        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
         <div class="sm-item sm-off">04 Stats</div>
-        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
         <div class="sm-item sm-on">05 Process</div>
-        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
         <div class="sm-item sm-off">06 Testimonials</div>
-        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
         <div class="sm-item sm-on">07 Team</div>
-        <span style="color:rgba(0,0,0,0.22);font-size:0.7rem;flex-shrink:0;">&rarr;</span>
+        <span style="color:rgba(0,0,0,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
         <div class="sm-item sm-off">08 Contact</div>
       </div>
 
@@ -615,10 +605,10 @@
     <div class="inner">
       <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1rem;text-align:center;">Final UI - Desktop</p>
 
-      <div class="desktop-showcase" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.2rem;">
+      <div class="desktop-showcase" style="display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-bottom:2.2rem;">
 
         <!-- HERO - desktop -->
-        <div>
+        <div style="flex:0 0 calc((100% - 2rem)/3);">
           <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
             <div class="browser-chrome">
               <span class="b-dot" style="background:#ff5f57;"></span>
@@ -635,7 +625,8 @@
                 <div class="wire-strip" style="background:rgba(47,72,223,0.3);"></div>
               </div>
               <div style="width:60%;height:6px;border-radius:2px;background:rgba(0,0,0,0.16);"></div>
-              <div style="width:38%;height:5px;border-radius:2px;background:rgba(0,0,0,0.1);"></div>
+              <div style="width:72%;height:6px;border-radius:2px;background:rgba(0,0,0,0.16);"></div>
+              <div style="width:40%;height:5px;border-radius:2px;background:rgba(0,0,0,0.1);"></div>
               <div style="display:flex;gap:0.25rem;margin-top:0.15rem;">
                 <div style="width:34%;height:11px;border-radius:100px;background:var(--black);"></div>
                 <div style="width:24%;height:11px;border-radius:100px;border:1px solid rgba(0,0,0,0.22);"></div>
@@ -646,7 +637,7 @@
         </div>
 
         <!-- SERVICES - desktop -->
-        <div>
+        <div style="flex:0 0 calc((100% - 2rem)/3);">
           <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
             <div class="browser-chrome">
               <span class="b-dot" style="background:#ff5f57;"></span>
@@ -657,10 +648,23 @@
             <div style="background:#0f0f0f;padding:0.5rem;flex:1;min-height:0;display:flex;flex-direction:column;gap:0.3rem;">
               <div style="width:40%;height:5px;border-radius:2px;background:rgba(255,255,255,0.16);margin-bottom:0.1rem;"></div>
               <div style="display:flex;gap:0.25rem;flex:1;">
-                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;"></div>
-                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;"></div>
-                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;"></div>
-                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;"></div>
+                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;padding:0.35rem;display:flex;flex-direction:column;gap:0.18rem;">
+                  <div style="width:60%;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);margin-bottom:0.1rem;"></div>
+                  <div style="width:85%;height:3px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+                  <div style="width:70%;height:3px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+                </div>
+                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;padding:0.35rem;display:flex;flex-direction:column;gap:0.18rem;">
+                  <div style="width:55%;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);margin-bottom:0.1rem;"></div>
+                  <div style="width:75%;height:3px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+                </div>
+                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;padding:0.35rem;display:flex;flex-direction:column;gap:0.18rem;">
+                  <div style="width:50%;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);margin-bottom:0.1rem;"></div>
+                  <div style="width:80%;height:3px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+                </div>
+                <div style="flex:1;background:#1a1a1a;border-top:2px solid var(--blue);border-radius:0.25rem;padding:0.35rem;display:flex;flex-direction:column;gap:0.18rem;">
+                  <div style="width:58%;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);margin-bottom:0.1rem;"></div>
+                  <div style="width:65%;height:3px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -668,7 +672,7 @@
         </div>
 
         <!-- WORK - desktop -->
-        <div>
+        <div style="flex:0 0 calc((100% - 2rem)/3);">
           <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
             <div class="browser-chrome">
               <span class="b-dot" style="background:#ff5f57;"></span>
@@ -689,7 +693,7 @@
         </div>
 
         <!-- TESTIMONIALS - desktop -->
-        <div>
+        <div style="flex:0 0 calc((100% - 2rem)/3);">
           <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
             <div class="browser-chrome">
               <span class="b-dot" style="background:#ff5f57;"></span>
@@ -697,16 +701,25 @@
               <span class="b-dot" style="background:#28c840;"></span>
               <div class="b-bar"></div>
             </div>
-            <div style="background:#111;padding:0.5rem;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative;">
-              <div style="position:absolute;width:60%;height:60%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:0.3rem;transform:translateX(-6%);"></div>
-              <div style="position:absolute;width:60%;height:60%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:0.3rem;transform:translateX(6%);"></div>
+            <div style="background:#111;padding:0.5rem;flex:1;min-height:0;position:relative;">
+              <div style="position:absolute;top:50%;left:50%;width:56%;height:64%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:0.35rem;transform:translate(calc(-50% + 12%),calc(-50% - 9%));"></div>
+              <div style="position:absolute;top:50%;left:50%;width:56%;height:64%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:0.35rem;transform:translate(calc(-50% + 6%),calc(-50% - 4.5%));"></div>
+              <div style="position:absolute;top:50%;left:50%;width:56%;height:64%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.14);border-radius:0.35rem;transform:translate(-50%,-50%);padding:0.45rem;display:flex;flex-direction:column;justify-content:center;gap:0.16rem;">
+                <div style="width:26%;height:3px;border-radius:2px;background:rgba(255,255,255,0.18);margin-bottom:0.1rem;"></div>
+                <div style="width:88%;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);"></div>
+                <div style="width:70%;height:3px;border-radius:2px;background:rgba(255,255,255,0.3);"></div>
+                <div style="display:flex;align-items:center;gap:0.22rem;margin-top:0.22rem;">
+                  <div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.16);flex-shrink:0;"></div>
+                  <div style="width:32%;height:3px;border-radius:2px;background:rgba(255,255,255,0.2);"></div>
+                </div>
+              </div>
             </div>
           </div>
           <p class="phone-label-name" style="margin-top:0.5rem;">Testimonials</p>
         </div>
 
         <!-- CTA / CONTACT - desktop -->
-        <div>
+        <div style="flex:0 0 calc((100% - 2rem)/3);">
           <div class="browser-frame" style="aspect-ratio:8/5;display:flex;flex-direction:column;">
             <div class="browser-chrome">
               <span class="b-dot" style="background:#ff5f57;"></span>
@@ -714,13 +727,18 @@
               <span class="b-dot" style="background:#28c840;"></span>
               <div class="b-bar"></div>
             </div>
-            <div style="background:var(--blue);padding:0.5rem;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:0.22rem;">
-              <div style="width:45%;height:5px;border-radius:2px;background:rgba(255,255,255,0.3);margin-bottom:0.1rem;"></div>
+            <div style="background:var(--blue);padding:0.5rem;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:0.2rem;">
+              <div style="width:45%;height:5px;border-radius:2px;background:rgba(255,255,255,0.3);margin-bottom:0.15rem;"></div>
               <div style="display:flex;gap:0.22rem;">
                 <div style="flex:1;height:9px;border-radius:2px;background:rgba(255,255,255,0.14);"></div>
                 <div style="flex:1;height:9px;border-radius:2px;background:rgba(255,255,255,0.14);"></div>
               </div>
-              <div style="width:26%;height:11px;border-radius:100px;background:white;margin-top:0.15rem;align-self:flex-end;"></div>
+              <div style="display:flex;gap:0.22rem;">
+                <div style="flex:1;height:9px;border-radius:2px;background:rgba(255,255,255,0.14);"></div>
+                <div style="flex:1;height:9px;border-radius:2px;background:rgba(255,255,255,0.14);"></div>
+              </div>
+              <div style="height:9px;border-radius:2px;background:rgba(255,255,255,0.14);"></div>
+              <div style="width:26%;height:11px;border-radius:100px;background:white;margin-top:0.2rem;align-self:flex-end;"></div>
             </div>
           </div>
           <p class="phone-label-name" style="margin-top:0.5rem;">CTA / Contact</p>
@@ -816,9 +834,13 @@
             <div class="phone-screen" style="background:#111;padding-bottom:0.75rem;">
               <div class="ph-line" style="width:65%;margin-top:0.25rem;"></div>
               <div class="ph-line" style="width:45%;margin-bottom:0.6rem;"></div>
-              <!-- stacked glass cards -->
+              <!-- stacked glass cards - back-most (narrowest, highest) painted
+                   first so it peeks out above the front content card, which
+                   must be both widest and last in DOM to render on top -->
               <div style="position:relative;height:160px;margin-bottom:0.5rem;">
-                <div style="position:absolute;bottom:0;left:5%;right:5%;height:120px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:0.6rem;padding:0.5rem;">
+                <div style="position:absolute;bottom:18px;left:8%;right:8%;height:120px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:0.6rem;"></div>
+                <div style="position:absolute;bottom:10px;left:4%;right:4%;height:120px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:0.6rem;"></div>
+                <div style="position:absolute;bottom:0;left:0;right:0;height:120px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:0.6rem;padding:0.5rem;">
                   <div class="ph-line" style="width:30%;background:rgba(255,255,255,0.15);"></div>
                   <div class="ph-line" style="width:80%;"></div>
                   <div class="ph-line" style="width:70%;"></div>
@@ -827,8 +849,6 @@
                     <div class="ph-line" style="width:40%;margin:0;"></div>
                   </div>
                 </div>
-                <div style="position:absolute;bottom:10px;left:0;right:0;height:120px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:0.6rem;"></div>
-                <div style="position:absolute;bottom:18px;left:-4%;right:-4%;height:120px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:0.6rem;"></div>
               </div>
               <p style="font-size:0.5rem;color:rgba(255,255,255,0.35);text-align:center;">drag to reveal &rarr;</p>
             </div>
