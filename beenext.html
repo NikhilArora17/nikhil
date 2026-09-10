@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style>
     :root {
@@ -58,10 +56,51 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      will-change: transform, opacity;
       position: relative;
+      scroll-margin-top: 64px;
     }
+
+    /* â”€â”€ CHAPTER RAIL (fixed left tab nav) â”€â”€ */
+    #chapter-rail {
+      position: fixed;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+    }
+    #chapter-rail::before {
+      content: '';
+      position: absolute; left: 2px; top: 0.6rem; bottom: 0.6rem; width: 1px;
+      background: rgba(255,255,255,0.14);
+    }
+    @media (max-width: 1360px) { #chapter-rail { display: none; } }
+
+    .chapter-tab {
+      position: relative;
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 0 0.55rem 1rem;
+      text-decoration: none;
+    }
+    .chapter-tab::before {
+      content: '';
+      position: absolute; left: -1px; top: 50%; transform: translate(-50%,-50%) scale(1);
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,0.28);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .chapter-label {
+      font-family: var(--display);
+      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.42);
+      white-space: nowrap;
+      opacity: 0.8;
+      transition: color 0.3s, opacity 0.3s, transform 0.3s;
+    }
+    .chapter-tab:hover .chapter-label { color: rgba(255,255,255,0.82); opacity: 1; }
+    .chapter-tab.active::before { background: var(--blue); transform: translate(-50%,-50%) scale(1.7); }
+    .chapter-tab.active .chapter-label { color: var(--blue); font-weight: 700; opacity: 1; transform: translateX(3px); }
 
     /* â”€â”€ CHAPTER BAR (top of each panel) â”€â”€ */
     .ch-bar {
@@ -232,21 +271,33 @@
   <span class="nav-tag">Case Study</span>
 </nav>
 
+<!-- CHAPTER RAIL -->
+<nav id="chapter-rail" aria-label="Case study chapters">
+  <a href="#cover" class="chapter-tab" data-chapter="cover"><span class="chapter-label">Cover</span></a>
+  <a href="#overview" class="chapter-tab" data-chapter="overview"><span class="chapter-label">Overview</span></a>
+  <a href="#visuals" class="chapter-tab" data-chapter="visuals"><span class="chapter-label">Visuals</span></a>
+  <a href="#research" class="chapter-tab" data-chapter="research"><span class="chapter-label">Research</span></a>
+  <a href="#ia" class="chapter-tab" data-chapter="ia"><span class="chapter-label">Architecture</span></a>
+  <a href="#constraints" class="chapter-tab" data-chapter="constraints"><span class="chapter-label">Constraints</span></a>
+  <a href="#wireframes" class="chapter-tab" data-chapter="wireframes"><span class="chapter-label">Wireframes</span></a>
+  <a href="#outcomes" class="chapter-tab" data-chapter="outcomes"><span class="chapter-label">Outcomes</span></a>
+</nav>
+
 
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      1. COVER
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light"
+<section id="cover" class="stack-panel" data-theme="light"
   style="background: radial-gradient(ellipse 75% 85% at 105% 0%, #3a2c12 0%, #201a10 35%, #16130d 58%, #131313 72%);
          justify-content: space-between; padding-top: 5rem;">
 
   <!-- top label -->
-  <div style="padding: 1.5rem 5vw 0;">
+  <div style="padding: 1.5rem 5vw 0;max-width:1100px;margin:0 auto;">
     <p style="font-size:0.55rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.45);">UX/UI | BEENEXT.CO.IN</p>
   </div>
 
   <!-- main title block -->
-  <div style="padding: 0 5vw;">
+  <div style="padding: 0 5vw;max-width:1100px;margin:0 auto;">
     <img src="beenext logo 1.png" alt="BEENEXT" style="height:clamp(4rem,9vw,10rem);width:auto;margin-bottom:0.3rem;" class="fu d1" />
     <p style="font-family:var(--display);font-size:clamp(1.8rem,4vw,4rem);font-weight:800;letter-spacing:-0.03em;color:#FFFFFF;margin-bottom:1.25rem;" class="fu d2">case study</p>
     <div style="width:clamp(6rem,20vw,16rem);height:1.5px;background:rgba(255,255,255,0.16);margin-bottom:1.25rem;"></div>
@@ -256,7 +307,7 @@
   </div>
 
   <!-- metadata footer bar -->
-  <div style="border-top:1px solid rgba(255,255,255,0.1);padding:1.25rem 5vw;display:flex;gap:3rem;flex-wrap:wrap;" class="fu d4">
+  <div style="border-top:1px solid rgba(255,255,255,0.1);padding:1.25rem 5vw;max-width:1100px;margin:0 auto;display:flex;gap:3rem;flex-wrap:wrap;" class="fu d4">
     <div>
       <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem;">Role</p>
       <p style="font-size:0.82rem;font-weight:600;">Lead UX/UI Designer</p>
@@ -276,7 +327,7 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      2. PROJECT OVERVIEW
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="overview" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Project Overview</span>
   </div>
@@ -326,7 +377,7 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      3. DISCOVERY & BRAND SYSTEM
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="visuals" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Visual Design System</span>
   </div>
@@ -395,7 +446,7 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      4. USER RESEARCH
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="research" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">User Research</span>
   </div>
@@ -493,7 +544,7 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      5. INFORMATION ARCHITECTURE
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light"
+<section id="ia" class="stack-panel" data-theme="light"
   style="background: radial-gradient(ellipse 90% 100% at 110% 50%, #2a2110 0%, #181510 40%, var(--white) 65%);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Information Architecture</span>
@@ -547,11 +598,11 @@
 
 
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     6a. DESIGNING FOR CONSTRAINTSANIMATION AUDIT
+     6. DESIGNING FOR CONSTRAINTS
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="constraints" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 01</span>
+    <span class="ch-label ch-label-light">Designing for Constraints</span>
   </div>
 
   <div class="panel-body panel-body-top">
@@ -589,24 +640,13 @@
         <p class="annot-label">Animation Audit</p>
         <p class="annot-body">Early motion competed with the words instead of supporting them. We kept only what reinforced the brand's energy, and added a quieter, reduced-motion version of the same background for visitors who prefer calmer motion.</p>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ═══════════════════════════════════════════
-     6c. DESIGNING FOR CONSTRAINTSCASE STUDIES
-═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 02</span>
-  </div>
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
 
-  <div class="panel-body panel-body-top">
-    <div class="inner">
       <p class="sec-label sl-blue">Restraint, Elsewhere Too</p>
       <h2 class="h2">The number is the design.<br>Nothing else competes.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        Icons, charts and ornamentation would have been easy to add and easy to justify. But the research was clear: what actually convinces a Custom Integrator is the number itself - large, confident, in gold, with nothing competing for attention. Restraint was the harder decision to commit to. The same instinct - move slowly, cut what doesn't earn its place - shaped how the marquee's pacing and hover behaviour were tuned, and carried into the tools BEENEXT uses to run the site day to day.
+        Icons, charts and ornamentation would have been easy to add - but research was clear that what actually convinces a Custom Integrator is the number itself: large, confident, in gold, with nothing competing for attention. The same restraint carried into the marquee's pacing and the tools BEENEXT uses to run the site day to day.
       </p>
 
       <!-- content panel: a fourth constraint, usability for a non-technical editor -->
@@ -630,14 +670,14 @@
 
 
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     7. FINAL UIMOBILE SHOWCASE (was panel 7, now same number)
+     7. LOW-FIDELITY WIREFRAMES
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 
 
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     7. FINAL UIMOBILE SHOWCASE
+     7. LOW-FIDELITY WIREFRAMES (cont.)
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="dark" style="background:var(--black);">
+<section id="wireframes" class="stack-panel" data-theme="dark" style="background:var(--black);">
   <div class="ch-bar ch-bar-dark">
     <span class="ch-label ch-label-dark">Low-Fidelity Wireframes</span>
   </div>
@@ -747,7 +787,7 @@
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      8. OUTCOMES & REFLECTION
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="outcomes" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Outcomes &amp; Reflection</span>
   </div>
@@ -922,56 +962,23 @@
     if (e.key === 'Escape') ocLightboxClose();
   });
 
-  // Nav theme toggle based on section in view
+  // Nav + chapter-rail theme toggle, and active-chapter highlight, all
+  // based on which section is centered in the viewport.
   const nav = document.getElementById('cs-nav');
+  const railTabs = document.querySelectorAll('.chapter-tab');
   const secs = document.querySelectorAll('section[data-theme]');
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         nav.className = e.target.dataset.theme === 'dark' ? 'dark' : 'light';
+        const chapterId = e.target.id;
+        if (chapterId) {
+          railTabs.forEach(t => t.classList.toggle('active', t.dataset.chapter === chapterId));
+        }
       }
     });
   }, { rootMargin: '-50% 0px -50% 0px' });
   secs.forEach(s => io.observe(s));
-
-  // Card-stack scroll: each panel pins in place while the next one rises
-  // to cover it. All panels get an explicit z-index up front so paint order
-  // stays correct throughout the pin cycle.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduceMotion && window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    const panels = gsap.utils.toArray('.stack-panel');
-
-    panels.forEach((panel, i) => {
-      panel.style.position = 'relative';
-      panel.style.zIndex = i + 1;
-    });
-
-    panels.forEach((panel, i) => {
-      if (i === panels.length - 1) return;
-
-      ScrollTrigger.create({
-        trigger: panel,
-        start: 'top top',
-        end: 'bottom top',
-        pin: true,
-        pinSpacing: false,
-      });
-
-      gsap.to(panel, {
-        scale: 0.92,
-        opacity: 0.5,
-        ease: 'none',
-        transformOrigin: 'top center',
-        scrollTrigger: {
-          trigger: panels[i + 1],
-          start: 'top bottom',
-          end: 'top top',
-          scrub: true,
-        },
-      });
-    });
-  }
 </script>
 </body>
 </html>

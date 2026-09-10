@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style>
     :root {
@@ -57,10 +55,57 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      will-change: transform, opacity;
       position: relative;
+      scroll-margin-top: 64px;
     }
+
+    /* ── CHAPTER RAIL (fixed left tab nav) ── */
+    #chapter-rail {
+      position: fixed;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+    }
+    #chapter-rail::before {
+      content: '';
+      position: absolute; left: 2px; top: 0.6rem; bottom: 0.6rem; width: 1px;
+      background: rgba(0,0,0,0.1);
+      transition: background 0.4s;
+    }
+    #chapter-rail.dark::before { background: rgba(255,255,255,0.12); }
+    @media (max-width: 1360px) { #chapter-rail { display: none; } }
+
+    .chapter-tab {
+      position: relative;
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 0 0.55rem 1rem;
+      text-decoration: none;
+    }
+    .chapter-tab::before {
+      content: '';
+      position: absolute; left: -1px; top: 50%; transform: translate(-50%,-50%) scale(1);
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(0,0,0,0.22);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .chapter-label {
+      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.02em;
+      color: rgba(0,0,0,0.4);
+      white-space: nowrap;
+      opacity: 0.8;
+      transition: color 0.3s, opacity 0.3s, transform 0.3s;
+    }
+    .chapter-tab:hover .chapter-label { color: rgba(0,0,0,0.75); opacity: 1; }
+    .chapter-tab.active::before { background: var(--blue); transform: translate(-50%,-50%) scale(1.7); }
+    .chapter-tab.active .chapter-label { color: var(--blue); font-weight: 700; opacity: 1; transform: translateX(3px); }
+
+    #chapter-rail.dark .chapter-label { color: rgba(255,255,255,0.42); }
+    #chapter-rail.dark .chapter-tab::before { background: rgba(255,255,255,0.28); }
+    #chapter-rail.dark .chapter-tab:hover .chapter-label { color: rgba(255,255,255,0.82); }
+    #chapter-rail.dark .chapter-tab.active .chapter-label { color: var(--blue); }
 
     /* ── CHAPTER BAR (top of each panel) ── */
     .ch-bar {
@@ -206,11 +251,23 @@
   <span class="nav-tag">Case Study</span>
 </nav>
 
+<!-- CHAPTER RAIL -->
+<nav id="chapter-rail" class="light" aria-label="Case study chapters">
+  <a href="#cover" class="chapter-tab" data-chapter="cover"><span class="chapter-label">Cover</span></a>
+  <a href="#overview" class="chapter-tab" data-chapter="overview"><span class="chapter-label">Overview</span></a>
+  <a href="#discovery" class="chapter-tab" data-chapter="discovery"><span class="chapter-label">Discovery</span></a>
+  <a href="#research" class="chapter-tab" data-chapter="research"><span class="chapter-label">Research</span></a>
+  <a href="#ia" class="chapter-tab" data-chapter="ia"><span class="chapter-label">Architecture</span></a>
+  <a href="#constraints" class="chapter-tab" data-chapter="constraints"><span class="chapter-label">Constraints</span></a>
+  <a href="#final-ui" class="chapter-tab" data-chapter="final-ui"><span class="chapter-label">Final UI</span></a>
+  <a href="#outcomes" class="chapter-tab" data-chapter="outcomes"><span class="chapter-label">Outcomes</span></a>
+</nav>
+
 
 <!-- ═══════════════════════════════════════════
      1. COVER
 ═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="dark"
+<section id="cover" class="stack-panel" data-theme="dark"
   style="background:
            radial-gradient(ellipse 70% 60% at 100% 0%, rgba(47,72,223,0.35) 0%, transparent 60%),
            radial-gradient(ellipse 55% 50% at 0% 100%, rgba(47,72,223,0.16) 0%, transparent 65%),
@@ -218,12 +275,12 @@
          justify-content: space-between; padding-top: 5rem;">
 
   <!-- top label -->
-  <div style="padding: 1.5rem 5vw 0;">
+  <div style="padding: 1.5rem 5vw 0;max-width:1100px;margin:0 auto;">
     <p style="font-size:0.55rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.4);">PRODUCT / OPS TOOL | INTERNAL</p>
   </div>
 
   <!-- main title block -->
-  <div style="padding: 0 5vw;">
+  <div style="padding: 0 5vw;max-width:1100px;margin:0 auto;">
     <h1 style="font-size:clamp(3.2rem,8vw,8.5rem);font-weight:700;letter-spacing:-0.04em;line-height:0.9;margin-bottom:0.3rem;" class="fu d1">
       <span style="color:var(--blue);font-weight:300;">my</span><span style="color:var(--white);font-weight:700;">studiobee</span>
     </h1>
@@ -235,7 +292,7 @@
   </div>
 
   <!-- metadata footer bar -->
-  <div style="border-top:1px solid rgba(255,255,255,0.1);padding:1.25rem 5vw;display:flex;gap:3rem;flex-wrap:wrap;color:var(--white);" class="fu d4">
+  <div style="border-top:1px solid rgba(255,255,255,0.1);padding:1.25rem 5vw;max-width:1100px;margin:0 auto;display:flex;gap:3rem;flex-wrap:wrap;color:var(--white);" class="fu d4">
     <div>
       <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem;">Role</p>
       <p style="font-size:0.82rem;font-weight:600;">Product Designer &amp; Full-Stack Builder</p>
@@ -255,7 +312,7 @@
 <!-- ═══════════════════════════════════════════
      2. PROJECT OVERVIEW
 ═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="overview" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Project Overview</span>
   </div>
@@ -305,7 +362,7 @@
 <!-- ═══════════════════════════════════════════
      3. DISCOVERY & SYSTEM
 ═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="discovery" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Discovery &amp; System</span>
   </div>
@@ -369,7 +426,7 @@
 <!-- ═══════════════════════════════════════════
      4. USER RESEARCH
 ═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="research" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">User Research</span>
   </div>
@@ -471,7 +528,7 @@
 <!-- ═══════════════════════════════════════════
      5. INFORMATION ARCHITECTURE
 ═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light"
+<section id="ia" class="stack-panel" data-theme="light"
   style="background: radial-gradient(ellipse 90% 100% at 110% 50%, #D4DAF7 0%, #EEF0FB 40%, var(--white) 65%);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Information Architecture</span>
@@ -526,11 +583,11 @@
 
 
 <!-- ═══════════════════════════════════════════
-     6a. DESIGNING FOR CONSTRAINTS · LINE-ITEM VIEWS
+     6. DESIGNING FOR CONSTRAINTS
 ═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="constraints" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 01</span>
+    <span class="ch-label ch-label-light">Designing for Constraints</span>
   </div>
 
   <div class="panel-body panel-body-top">
@@ -557,21 +614,9 @@
         <p class="annot-label">Grouped View Iteration</p>
         <p class="annot-body">Grouped view first shipped with its own editable "Total shown on PDF" override row &mdash; a second source of truth for the total. It was removed once the real Subtotal/GST/Discount/Total box below already covered it; one number, one place it lives. Summary and Grouped overrides also default to the pre-GST amount, not the GST-inclusive total, since that read as confusing tax-inclusive pricing at a glance.</p>
       </div>
-    </div>
-  </div>
-</section>
 
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
 
-<!-- ═══════════════════════════════════════════
-     6b. DESIGNING FOR CONSTRAINTS · INTERNAL COSTING
-═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 02</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
       <p class="sec-label sl-blue">Internal Costing</p>
       <h2 class="h2">Purchase price isn't cost &mdash;<br>a subscription bills every year.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
@@ -609,20 +654,9 @@
           <p class="c-body">Active internal costing items sum straight into the P&amp;L report's overhead line, so margin reflects real running cost, not just per-project labor and direct spend.</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ═══════════════════════════════════════════
-     6c. DESIGNING FOR CONSTRAINTS · CLIENT BIN
-═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 03</span>
-  </div>
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
 
-  <div class="panel-body panel-body-top">
-    <div class="inner">
       <p class="sec-label sl-blue">Client Bin</p>
       <h2 class="h2">Delete had to stop meaning<br>&ldquo;gone forever, instantly.&rdquo;</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
@@ -657,21 +691,9 @@
           <p class="c-body">The Bin itself is restricted and kept out of the everyday sidebar groups, so recovering a mistake is deliberate, not a click away by accident.</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
 
-<!-- ═══════════════════════════════════════════
-     6d. DESIGNING FOR CONSTRAINTS · SECURITY HARDENING
-═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 04</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
       <p class="sec-label sl-blue">Security Hardening</p>
       <h2 class="h2">One RPC call, no login required,<br>could delete a client forever.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
@@ -731,41 +753,8 @@ grant execute on function purge_client
         </div>
       </div>
 
-      <div class="div-line div-dark"></div>
-      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.7rem;">Further Hardening &middot; Same Week</p>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.55rem;" class="four-col">
-        <div class="card card-blue">
-          <p class="c-label">Fail-Open Cron Secret</p>
-          <p class="c-body">An unset <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">CRON_SECRET</code> made the check compare against the literal string <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">"Bearer undefined"</code> &mdash; anyone sending that exact header passed. Now the secret's presence is checked first.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Cost Breakdown Leak</p>
-          <p class="c-body">Pricing a line item returned the raw hourly-rate/overhead breakdown to every billing-role caller, including managers who should only see description, rate, and amount. Now gated by the same role check as the read path.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Filename-Derived Extension</p>
-          <p class="c-body">Avatar uploads picked their storage extension from <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">file.name</code> &mdash; attacker-controlled, easy to spoof. Now derived from the validated MIME type instead.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Cron Hit the Login Gate</p>
-          <p class="c-body">Session middleware ran on <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">/api/cron/*</code> too, redirecting Vercel Cron's bearer-only requests to <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">/login</code> before the route's own secret check ever ran.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
 
-
-<!-- ═══════════════════════════════════════════
-     6e. DESIGNING FOR CONSTRAINTS · NAV, ROUND TWO
-═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 05</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
       <p class="sec-label sl-blue">Navigation, Revisited</p>
       <h2 class="h2">Ten sidebar groups covering eighteen<br>pages became six links covering five.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
@@ -818,21 +807,9 @@ grant execute on function purge_client
           <p class="c-body">The nav component was the easy part. The real surface area was every <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">revalidatePath()</code> target, the middleware route allowlist, and every dashboard/back-button link still pointing at an old route.</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
 
-<!-- ═══════════════════════════════════════════
-     6f. DESIGNING FOR CONSTRAINTS · ROLE TIERS & PERFORMANCE
-═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints &middot; 06</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
       <p class="sec-label sl-blue">Roles, Once More</p>
       <h2 class="h2">A fourth tier meant admin<br>could no longer out-rank admin.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
@@ -873,27 +850,6 @@ await supabase.from("profiles")
         <p class="annot-label">The Tier Below Wasn't Actually Protected</p>
         <p class="annot-body"><code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">requireAdminTier()</code> checked the caller's role but never the target's &mdash; so any plain admin could promote a colleague to <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">super_admin</code>, demote or delete an existing one, or invite a new user directly into the top tier. Fixed at both layers: an app-side guard that compares caller against target, and a matching RLS restriction so the rule holds even against direct API calls, not just the app's own UI.</p>
       </div>
-
-      <div class="div-line div-dark"></div>
-      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.7rem;">Further Changes &middot; Same Sprint</p>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.55rem;" class="four-col">
-        <div class="card card-blue">
-          <p class="c-label">A Build-Only Bug</p>
-          <p class="c-body">Importing the value <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">isAdminTier</code> from <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">profile.ts</code> into a client component dragged <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">next/headers</code> into the browser bundle. <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">tsc</code> stayed clean &mdash; only <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">next build</code> caught it. Pure helpers split into a zero-dependency <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.68rem;">lib/role.ts</code>.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Clock-Out Raced the Prompt</p>
-          <p class="c-body">Geolocation's timeout started counting the moment it was called &mdash; including the time spent on a first-time permission prompt. An 8s timer plus a slow &ldquo;Allow&rdquo; click read as denial and blocked clock-out. Bumped to 30s.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Clock-In Now Needs a Selfie</p>
-          <p class="c-body">Clock-in requires a live selfie and blocks entirely on camera/location denial, since this is the PWA's attendance record, not a bare toggle. Time entries moved to the app's existing 30-day soft-delete pattern; selfies auto-purge on the same cron used for the delete RPCs above.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Employees Get a Real Dashboard</p>
-          <p class="c-body">Employees were redirected straight to Work with nothing tailored to them. Now they land on the Dashboard with a clock widget and their own task counts &mdash; every billing-sensitive section (finance snapshot, quotes, margin) hidden by role.</p>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -902,7 +858,7 @@ await supabase.from("profiles")
 <!-- ═══════════════════════════════════════════
      7. FINAL UI · DESKTOP SHOWCASE
 ═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="dark" style="background:var(--black);">
+<section id="final-ui" class="stack-panel" data-theme="dark" style="background:var(--black);">
   <div class="ch-bar ch-bar-dark">
     <span class="ch-label ch-label-dark">Final UI</span>
   </div>
@@ -1018,7 +974,7 @@ await supabase.from("profiles")
 <!-- ═══════════════════════════════════════════
      8. OUTCOMES & REFLECTION
 ═══════════════════════════════════════════ -->
-<section class="stack-panel" data-theme="light" style="background:var(--white);">
+<section id="outcomes" class="stack-panel" data-theme="light" style="background:var(--white);">
   <div class="ch-bar ch-bar-light">
     <span class="ch-label ch-label-light">Outcomes &amp; Reflection</span>
   </div>
@@ -1196,56 +1152,26 @@ await supabase.from("profiles")
     if (e.key === 'Escape') ocLightboxClose();
   });
 
-  // Nav theme toggle based on section in view
+  // Nav + chapter-rail theme toggle, and active-chapter highlight, all
+  // based on which section is centered in the viewport.
   const nav = document.getElementById('cs-nav');
+  const rail = document.getElementById('chapter-rail');
+  const railTabs = document.querySelectorAll('.chapter-tab');
   const secs = document.querySelectorAll('section[data-theme]');
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        nav.className = e.target.dataset.theme === 'dark' ? 'dark' : 'light';
+        const theme = e.target.dataset.theme === 'dark' ? 'dark' : 'light';
+        nav.className = theme;
+        rail.className = theme;
+        const chapterId = e.target.id;
+        if (chapterId) {
+          railTabs.forEach(t => t.classList.toggle('active', t.dataset.chapter === chapterId));
+        }
       }
     });
   }, { rootMargin: '-50% 0px -50% 0px' });
   secs.forEach(s => io.observe(s));
-
-  // Card-stack scroll: each panel pins in place while the next one rises
-  // to cover it. All panels get an explicit z-index up front so paint order
-  // stays correct throughout the pin cycle.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduceMotion && window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    const panels = gsap.utils.toArray('.stack-panel');
-
-    panels.forEach((panel, i) => {
-      panel.style.position = 'relative';
-      panel.style.zIndex = i + 1;
-    });
-
-    panels.forEach((panel, i) => {
-      if (i === panels.length - 1) return;
-
-      ScrollTrigger.create({
-        trigger: panel,
-        start: 'top top',
-        end: 'bottom top',
-        pin: true,
-        pinSpacing: false,
-      });
-
-      gsap.to(panel, {
-        scale: 0.92,
-        opacity: 0.5,
-        ease: 'none',
-        transformOrigin: 'top center',
-        scrollTrigger: {
-          trigger: panels[i + 1],
-          start: 'top bottom',
-          end: 'top top',
-          scrub: true,
-        },
-      });
-    });
-  }
 </script>
 </body>
 </html>
