@@ -18,7 +18,8 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: auto; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--white);
@@ -255,11 +256,10 @@
 <nav id="chapter-rail" class="light" aria-label="Case study chapters">
   <a href="#cover" class="chapter-tab" data-chapter="cover"><span class="chapter-label">Cover</span></a>
   <a href="#overview" class="chapter-tab" data-chapter="overview"><span class="chapter-label">Overview</span></a>
-  <a href="#discovery" class="chapter-tab" data-chapter="discovery"><span class="chapter-label">Discovery</span></a>
   <a href="#research" class="chapter-tab" data-chapter="research"><span class="chapter-label">Research</span></a>
   <a href="#ia" class="chapter-tab" data-chapter="ia"><span class="chapter-label">Architecture</span></a>
-  <a href="#constraints" class="chapter-tab" data-chapter="constraints"><span class="chapter-label">Constraints</span></a>
   <a href="#final-ui" class="chapter-tab" data-chapter="final-ui"><span class="chapter-label">Final UI</span></a>
+  <a href="#constraints" class="chapter-tab" data-chapter="constraints"><span class="chapter-label">Constraints</span></a>
   <a href="#outcomes" class="chapter-tab" data-chapter="outcomes"><span class="chapter-label">Outcomes</span></a>
 </nav>
 
@@ -354,41 +354,6 @@
         <div class="p-step off"><p class="p-step-name">Ship</p><p class="p-step-sub">Build + migrate</p></div>
         <div class="p-step on" style="opacity:0.55;"><p class="p-step-name">Iterate</p><p class="p-step-sub">Weekly, on real use</p></div>
       </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════
-     3. DISCOVERY & SYSTEM
-═══════════════════════════════════════════ -->
-<section id="discovery" class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Discovery &amp; System</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
-      <p class="sec-label sl-blue">Discovery</p>
-      <h2 class="h2">One brand, extended into<br>a tool nobody outside the team sees.</h2>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:0.9rem;" class="three-col">
-        <div class="card card-blue">
-          <p class="c-label">Principle 01</p>
-          <p class="c-title">Numbers You Can Trust</p>
-          <p class="c-body">Every total on screen has to be traceable to a line item. No rounding surprises, no totals that don't match the PDF the client receives.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Principle 02</p>
-          <p class="c-title">Speed for a Team of Two</p>
-          <p class="c-body">The person designing this is also the person using it at 11pm after a shoot. Every extra click is a tax on the exact same person twice over.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Principle 03</p>
-          <p class="c-title">Desktop-First, on Purpose</p>
-          <p class="c-body">Unlike the public site, this tool is opened at a desk between shoots, not on a commute. Density and keyboard speed beat mobile polish here.</p>
-        </div>
-      </div>
 
       <div class="div-line div-dark"></div>
 
@@ -423,6 +388,9 @@
 </section>
 
 
+
+
+
 <!-- ═══════════════════════════════════════════
      4. USER RESEARCH
 ═══════════════════════════════════════════ -->
@@ -436,86 +404,96 @@
       <p class="sec-label sl-blue">User Research</p>
       <h2 class="h2">The research was watching<br>one person do the job badly.</h2>
 
-      <!-- prior-tool cards -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1rem;" class="three-col">
-        <div class="card card-blue">
-          <p class="c-label">Before &middot; Quotes</p>
-          <p class="c-title">A Word template</p>
-          <p class="c-body">Copy-pasted per client, GST maths done by hand, no record of what was actually sent or when it expired.</p>
+      <!-- prior-tool audit - one consolidated card, stacked rows, matching
+           the studiobee.html "Competitive Landscape" card pattern -->
+      <div class="card card-blue" style="margin-bottom:0.9rem;">
+        <p class="c-label" style="margin-bottom:0.35rem;">Before This Tool</p>
+        <div style="display:flex;gap:0.9rem;align-items:baseline;padding:0.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);">
+          <p style="font-size:0.78rem;font-weight:700;min-width:6.5rem;flex-shrink:0;">Quotes</p>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);min-width:8rem;flex-shrink:0;">A Word Template</p>
+          <p class="c-body" style="margin:0;">Copy-pasted per client, GST maths done by hand, no record of what was actually sent or when it expired.</p>
         </div>
-        <div class="card card-blue">
-          <p class="c-label">Before &middot; Costs</p>
-          <p class="c-title">Purchase price only</p>
-          <p class="c-body">Equipment and subscriptions were tracked as one-off costs. Nothing captured what gear was actually costing per month.</p>
+        <div style="display:flex;gap:0.9rem;align-items:baseline;padding:0.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);">
+          <p style="font-size:0.78rem;font-weight:700;min-width:6.5rem;flex-shrink:0;">Costs</p>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);min-width:8rem;flex-shrink:0;">Purchase Price Only</p>
+          <p class="c-body" style="margin:0;">Equipment and subscriptions were tracked as one-off costs - nothing captured what gear actually cost per month.</p>
         </div>
-        <div class="card card-blue">
-          <p class="c-label">Before &middot; Clients</p>
-          <p class="c-title">One delete button</p>
-          <p class="c-body">Removing a client wiped their record outright &mdash; including any invoices already tied to real, filed income.</p>
+        <div style="display:flex;gap:0.9rem;align-items:baseline;padding:0.5rem 0;">
+          <p style="font-size:0.78rem;font-weight:700;min-width:6.5rem;flex-shrink:0;">Clients</p>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);min-width:8rem;flex-shrink:0;">One Delete Button</p>
+          <p class="c-body" style="margin:0;">Removing a client wiped their record outright &mdash; including any invoices already tied to real, filed income.</p>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:1rem;margin-bottom:0.9rem;" class="two-col">
-        <!-- persona -->
-        <div style="display:flex;flex-direction:column;gap:0.7rem;">
-          <div style="background:var(--blue);border-radius:0.85rem;padding:1rem;flex:1;">
-            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.4rem;">Primary Persona</p>
-            <p style="font-size:0.85rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.1rem;">Nikhil, Owner</p>
-            <p style="font-size:0.72rem;color:rgba(255,255,255,0.65);margin-bottom:0.4rem;">Runs production and the books</p>
-            <p style="font-size:0.72rem;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:0.5rem;">Scenario: closing out a shoot at 11pm, needs a GST-correct quote out before the client's morning, and a clean single total &mdash; not forty line items &mdash; on the PDF.</p>
-            <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:0.45rem;">
-              <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.25rem;">Values</p>
-              <p style="font-size:0.7rem;color:rgba(255,255,255,0.65);line-height:1.45;">&middot; Speed over ceremony &middot; Numbers that don't need rechecking &middot; Nothing deleted by accident</p>
-            </div>
+      <!-- personas - 3-column, circular avatar + italic name, matching the
+           studiobee.html Research chapter persona-card pattern -->
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.6rem;">Primary Personas</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin-bottom:0.9rem;" class="three-col">
+        <div style="background:var(--blue);border-radius:0.85rem;padding:0.9rem;">
+          <div style="width:3.8rem;height:3.8rem;border-radius:50%;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;margin-bottom:0.6rem;">
+            <span style="font-size:1.3rem;font-weight:700;color:white;">N</span>
           </div>
-          <div style="background:#0f0f0f;border-radius:0.85rem;padding:1rem;">
-            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.4rem;">What the ops audit showed</p>
-            <p style="font-size:0.72rem;font-weight:700;color:white;margin-bottom:0.4rem;">What the old process actually cost</p>
-            <p style="font-size:0.7rem;color:rgba(255,255,255,0.55);line-height:1.6;">
-              &middot; Different clients need different levels of billing detail on the same kind of document<br>
-              &middot; Deleting the wrong client once would be catastrophic to real financial records<br>
-              &middot; Recurring costs (subscriptions, amortised gear) never made it into true project cost<br>
-              &middot; Margin was only known once the accountant closed the year
-            </p>
-          </div>
+          <p style="font-size:0.8rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.05rem;">Nikhil, Owner</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.6);margin-bottom:0.5rem;">Runs production and the books</p>
+          <p style="font-size:0.68rem;color:rgba(255,255,255,0.75);line-height:1.45;margin-bottom:0.5rem;">Closing out a shoot at 11pm, needs a GST-correct quote out before the client's morning - one clean total on the PDF.</p>
+          <p style="font-size:0.6rem;color:rgba(255,255,255,0.55);line-height:1.4;border-top:1px solid rgba(255,255,255,0.15);padding-top:0.4rem;">Values: speed over ceremony, numbers that don't need rechecking</p>
         </div>
+        <div style="background:#0f0f0f;border-radius:0.85rem;padding:0.9rem;">
+          <div style="width:3.8rem;height:3.8rem;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:0.6rem;">
+            <span style="font-size:1.3rem;font-weight:700;color:white;">P</span>
+          </div>
+          <p style="font-size:0.8rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.05rem;">Priyanka, Production Manager</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem;">Runs the day-to-day shoots</p>
+          <p style="font-size:0.68rem;color:rgba(255,255,255,0.6);line-height:1.45;margin-bottom:0.5rem;">Books equipment and crew against the calendar, and needs vendor ratings before locking in gear for a shoot.</p>
+          <p style="font-size:0.6rem;color:rgba(255,255,255,0.4);line-height:1.4;border-top:1px solid rgba(255,255,255,0.1);padding-top:0.4rem;">Values: fast lookups, no billing clutter in her way</p>
+        </div>
+        <div style="background:#EEF1FC;border-radius:0.85rem;padding:0.9rem;">
+          <div style="width:3.8rem;height:3.8rem;border-radius:50%;background:rgba(47,72,223,0.14);display:flex;align-items:center;justify-content:center;margin-bottom:0.6rem;">
+            <span style="font-size:1.3rem;font-weight:700;color:var(--blue);">S</span>
+          </div>
+          <p style="font-size:0.8rem;font-weight:700;color:var(--black);font-style:italic;margin-bottom:0.05rem;">A Studio Employee</p>
+          <p style="font-size:0.62rem;color:rgba(0,0,0,0.5);margin-bottom:0.5rem;">On-shoot crew, billing-role off</p>
+          <p style="font-size:0.68rem;color:rgba(0,0,0,0.62);line-height:1.45;margin-bottom:0.5rem;">Clocks in and out on the day, checks their task list - never sees quotes, margins, or client financials.</p>
+          <p style="font-size:0.6rem;color:rgba(0,0,0,0.42);line-height:1.4;border-top:1px solid rgba(0,0,0,0.1);padding-top:0.4rem;">Values: a fast clock-in, a dashboard with no noise</p>
+        </div>
+      </div>
 
-        <!-- research → decision -->
-        <div style="background:#0f0f0f;border-radius:0.85rem;padding:1rem;">
-          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.6rem;">Research &rarr; Design Decision</p>
-          <div style="display:flex;flex-direction:column;gap:0.4rem;">
-            <div class="rd-grid">
-              <div class="rd-box rd-ins">
-                <p class="rd-lbl" style="color:var(--blue);">Insight</p>
-                <p class="rd-txt">A corporate client wants a full breakdown; a retainer client just wants one clean number, on the same type of document</p>
-              </div>
-              <span class="rd-arrow">&rarr;</span>
-              <div class="rd-box rd-dec">
-                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
-                <p class="rd-txt">Itemised, Grouped, and Summary line-item views, switchable per document &mdash; not a global setting</p>
-              </div>
+      <!-- research → decision - vertical insight/decision columns, matching
+           the studiobee.html Research chapter pattern -->
+      <div style="background:#0f0f0f;border-radius:0.85rem;padding:1.1rem;">
+        <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.7rem;">Research &rarr; Design Decision</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;" class="three-col">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div class="rd-box rd-ins" style="width:100%;">
+              <p class="rd-lbl" style="color:var(--blue);">Insight</p>
+              <p class="rd-txt">A corporate client wants a full breakdown; a retainer client wants one clean number</p>
             </div>
-            <div class="rd-grid">
-              <div class="rd-box rd-ins">
-                <p class="rd-lbl" style="color:var(--blue);">Insight</p>
-                <p class="rd-txt">Deleting a client is rare, but invoices and receipts are financial records that can't just vanish</p>
-              </div>
-              <span class="rd-arrow">&rarr;</span>
-              <div class="rd-box rd-dec">
-                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
-                <p class="rd-txt">Delete is a soft-delete into a Bin &mdash; 30-day recovery, auto-purged by a scheduled job</p>
-              </div>
+            <span style="color:var(--blue);font-size:0.85rem;">&darr;</span>
+            <div class="rd-box rd-dec" style="width:100%;">
+              <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+              <p class="rd-txt">Itemised, Grouped, and Summary views, switchable per document</p>
             </div>
-            <div class="rd-grid">
-              <div class="rd-box rd-ins">
-                <p class="rd-lbl" style="color:var(--blue);">Insight</p>
-                <p class="rd-txt">Subscriptions renew annually, gear amortises over years &mdash; neither showed up as a monthly cost anywhere</p>
-              </div>
-              <span class="rd-arrow">&rarr;</span>
-              <div class="rd-box rd-dec">
-                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
-                <p class="rd-txt">Internal Costing tab: billing-period-aware, auto-converts to an effective monthly cost that feeds the P&amp;L</p>
-              </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div class="rd-box rd-ins" style="width:100%;">
+              <p class="rd-lbl" style="color:var(--blue);">Insight</p>
+              <p class="rd-txt">Invoices and receipts are financial records that can't just vanish</p>
+            </div>
+            <span style="color:var(--blue);font-size:0.85rem;">&darr;</span>
+            <div class="rd-box rd-dec" style="width:100%;">
+              <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+              <p class="rd-txt">Soft-delete into a Bin &mdash; 30-day recovery, auto-purged</p>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div class="rd-box rd-ins" style="width:100%;">
+              <p class="rd-lbl" style="color:var(--blue);">Insight</p>
+              <p class="rd-txt">Subscriptions and amortised gear never showed up as a monthly cost</p>
+            </div>
+            <span style="color:var(--blue);font-size:0.85rem;">&darr;</span>
+            <div class="rd-box rd-dec" style="width:100%;">
+              <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+              <p class="rd-txt">Internal Costing tab auto-converts to an effective monthly cost</p>
             </div>
           </div>
         </div>
@@ -542,313 +520,42 @@
         There's no landing page to design for here &mdash; just a dashboard and a permanent sidebar. So the real IA work was grouping: daily workflow at the top, document lifecycle in the middle, configuration and safety nets pushed to the edges.
       </p>
 
-      <div style="display:grid;grid-template-columns:220px 1fr;gap:2rem;" class="two-col">
-        <!-- sitemap -->
-        <div>
-          <div class="sm-item sm-on">Dashboard</div>
-          <div class="sm-item sm-off">Work &middot; Clients, Projects, Tasks</div>
-          <div class="sm-item sm-on">Time &amp; Performance &middot; Clock In, Performance</div>
-          <div class="sm-item sm-off">Billing &middot; Quotes → Proformas → Invoices → Receipts</div>
-          <div class="sm-item sm-on">Admin &middot; Team, Services, Cost Model, Equipment, Vendors, Hires, Bin</div>
-          <div class="sm-item sm-off">Insights &middot; Reports, Time Log</div>
-        </div>
-
-        <!-- annotation cards -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;" class="two-col">
-          <div class="card card-blue">
-            <p class="c-label">Why Billing Is One Group</p>
-            <p class="c-title">One editor, four documents</p>
-            <p class="c-body">Quote → proforma → invoice → receipt is a linear lifecycle. All four share one editor component, so grouping them under a single nav label matches how the code &mdash; and the money &mdash; actually flows.</p>
-          </div>
-          <div class="card card-blue">
-            <p class="c-label">Why Admin Is Pushed Down</p>
-            <p class="c-title">Configuration, not daily use</p>
-            <p class="c-body">Team, cost model, equipment, vendor and hire ratings are set-and-forget. Keeping them out of the primary flow means the daily-use items never compete for attention.</p>
-          </div>
-          <div class="card card-blue">
-            <p class="c-label">Why Bin Lives Inside Admin Now</p>
-            <p class="c-title">A safety net, folded in &mdash; not removed</p>
-            <p class="c-body">Bin started as its own standalone sidebar link. Once the nav consolidated from ten groups to six, it became the last tab inside Admin instead &mdash; still admin-tier only, just no longer a full top-level link for a page you should rarely open. See Designing for Constraints &middot; 05.</p>
-          </div>
-          <div class="card card-blue">
-            <p class="c-label">Primary Path</p>
-            <p class="c-title">Dashboard &rarr; Quote &rarr; Invoice</p>
-            <p class="c-body">The dashboard's "+ Quote" shortcut and Recent Quotes list exist because that's the single most common path into the app &mdash; money starting to move.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════
-     6. DESIGNING FOR CONSTRAINTS
-═══════════════════════════════════════════ -->
-<section id="constraints" class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
-      <p class="sec-label sl-blue">Line-Item Views</p>
-      <h2 class="h2">One document, three levels<br>of how much detail to show.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        Full itemised breakdowns were right for some clients and unnecessarily granular for others &mdash; but rebuilding the same quote twice wasn't an option. The fix was a per-document toggle, not a global setting: Itemised, Grouped, and Summary, switchable on the same line items.
-      </p>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
-          <img src="mystudiobee/quote-itemised.png" alt="Quote editor - itemised view" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
-          <img src="mystudiobee/quote-grouped.png" alt="Quote editor - grouped view" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/10;">
-          <img src="mystudiobee/quote-summary.png" alt="Quote editor - summary view" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
+      <!-- sitemap - the six sidebar groups laid out as a flat row, matching
+           the compact horizontal treatment of the studiobee.html IA chapter
+           (grouped, not a scroll sequence, so no arrows between them) -->
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:0.6rem;">Six sidebar groups, top to bottom:</p>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.8rem;">
+        <div class="sm-item sm-on">Dashboard</div>
+        <div class="sm-item sm-off">Work</div>
+        <div class="sm-item sm-on">Time &amp; Performance</div>
+        <div class="sm-item sm-off">Billing</div>
+        <div class="sm-item sm-on">Admin</div>
+        <div class="sm-item sm-off">Insights</div>
       </div>
 
-      <div class="annot-card">
-        <p class="annot-label">Grouped View Iteration</p>
-        <p class="annot-body">Grouped view first shipped with its own editable "Total shown on PDF" override row &mdash; a second source of truth for the total. It was removed once the real Subtotal/GST/Discount/Total box below already covered it; one number, one place it lives. Summary and Grouped overrides also default to the pre-GST amount, not the GST-inclusive total, since that read as confusing tax-inclusive pricing at a glance.</p>
-      </div>
-
-      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
-
-      <p class="sec-label sl-blue">Internal Costing</p>
-      <h2 class="h2">Purchase price isn't cost &mdash;<br>a subscription bills every year.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        Equipment inventory only ever tracked one-time purchase cost and rental rates &mdash; useful for quoting gear to a client, useless for knowing what running the studio actually costs per month. A dedicated Internal Costing tab followed, and even that needed one more refinement: a billing-period field, so an annual Adobe subscription converts to the right monthly figure instead of a manually-guessed one.
-      </p>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
-          <img src="mystudiobee/equipment.png" alt="Equipment inventory - purchase cost and rental rates only" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      <!-- annotation cards - numbered badge + short copy, matching the
+           studiobee.html IA chapter pattern -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;" class="four-col">
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">01</span>
+          <p class="c-title">One editor, four documents</p>
+          <p class="c-body">Quote &rarr; proforma &rarr; invoice &rarr; receipt share one editor, so Billing is a single nav label.</p>
         </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
-          <img src="mystudiobee/internal-costing.png" alt="Internal Costing tab - effective monthly cost" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">02</span>
+          <p class="c-title">Configuration, not daily use</p>
+          <p class="c-body">Team, cost model, equipment and ratings are set-and-forget - pushed out of the daily-use flow.</p>
         </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/10;">
-          <img src="mystudiobee/internal-costing-edit.png" alt="Internal Costing - billing period detail" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">03</span>
+          <p class="c-title">A safety net, folded in</p>
+          <p class="c-body">Bin moved from a standalone link to the last tab inside Admin once the nav consolidated to six groups.</p>
         </div>
-      </div>
-
-      <div class="annot-card">
-        <p class="annot-label">Billing Period Refinement</p>
-        <p class="annot-body">Shipped first as a flat "amount → monthly cost" split. That silently assumed everything recurring was billed monthly, which wasn't true &mdash; Adobe bills annually. Adding a Billed field (Monthly / Annual) with an auto-calculated, still-editable monthly figure meant the P&amp;L report's overhead number finally matched what the studio was actually paying.</p>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
-        <div class="card card-blue">
-          <p class="c-label">Recurring vs. One-Time</p>
-          <p class="c-body">Two costing types, one table: recurring subscriptions and one-time purchases amortised over their useful life, both collapsing to a single "effective monthly cost" column.</p>
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(47,72,223,0.15);line-height:1;">04</span>
+          <p class="c-title">Dashboard &rarr; Quote &rarr; Invoice</p>
+          <p class="c-body">The dashboard's "+ Quote" shortcut exists because that's the single most common path into the app.</p>
         </div>
-        <div class="card card-blue">
-          <p class="c-label">Auto-Calculated, Editable</p>
-          <p class="c-body">The monthly figure is computed from amount and billing period by default, but stays a plain editable field &mdash; the system's best guess, not a locked value.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Feeds the P&amp;L Directly</p>
-          <p class="c-body">Active internal costing items sum straight into the P&amp;L report's overhead line, so margin reflects real running cost, not just per-project labor and direct spend.</p>
-        </div>
-      </div>
-
-      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
-
-      <p class="sec-label sl-blue">Client Bin</p>
-      <h2 class="h2">Delete had to stop meaning<br>&ldquo;gone forever, instantly.&rdquo;</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        A single Delete button on a client record looked simple &mdash; until you notice it cascades to every project, invoice, and receipt tied to that client. Those are financial records, not disposable rows. Delete became a soft-delete with a 30-day recovery window instead, and building it surfaced a real bug along the way.
-      </p>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-bottom:1.1rem;" class="two-col">
-        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/11;">
-          <img src="mystudiobee/client-detail.png" alt="Client detail page with Delete action" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/11;">
-          <img src="mystudiobee/bin.png" alt="Bin page - 30-day recovery with restore" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-        </div>
-      </div>
-
-      <div class="annot-card">
-        <p class="annot-label">A Bug Found Along the Way</p>
-        <p class="annot-body">Building the soft-delete migration surfaced a pre-existing bug: a database trigger on the clients table referenced an updated_at column that never existed, meaning every prior "Edit client" save had been silently failing. Fixed in the same migration pass &mdash; worth remembering that a feature build is also a chance to find bugs nobody had noticed yet.</p>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
-        <div class="card card-blue">
-          <p class="c-label">30-Day Window</p>
-          <p class="c-body">Soft-deleted clients, and everything under them, restore in one click for 30 days, then auto-purge on a nightly scheduled job.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Filtered Everywhere</p>
-          <p class="c-body">Every list, dashboard, and report query across the app excludes binned records &mdash; swept across roughly twenty queries when this shipped.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Owner/Admin Only</p>
-          <p class="c-body">The Bin itself is restricted and kept out of the everyday sidebar groups, so recovering a mistake is deliberate, not a click away by accident.</p>
-        </div>
-      </div>
-
-      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
-
-      <p class="sec-label sl-blue">Security Hardening</p>
-      <h2 class="h2">One RPC call, no login required,<br>could delete a client forever.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        The ask was to make the database &ldquo;squeaky clean, OCD level.&rdquo; It wasn't a formality &mdash; a full Supabase audit turned up a genuinely exploitable, unauthenticated data-deletion path already live in production, plus a handful of quieter leaks found the same way in the days after.
-      </p>
-
-      <!-- before / after code diff -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.1rem;" class="two-col">
-        <div style="background:#0f0f0f;border-radius:0.6rem;padding:0.85rem 1rem;border-left:3px solid #E05050;">
-          <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#e78888;margin-bottom:0.55rem;">Before &middot; live in production</p>
-          <pre style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.64rem;line-height:1.6;color:rgba(255,255,255,0.7);white-space:pre-wrap;margin:0;overflow-x:auto;">create function purge_client(client_id uuid)
-returns void security definer as $$
-begin
-  if not is_owner_or_admin() then
-    raise exception 'forbidden';
-  end if;
-  delete from clients where id = client_id;
-  -- + every project, invoice, receipt under it
-end; $$;
-
--- anon inherits EXECUTE by default</pre>
-        </div>
-        <div style="background:#0f0f0f;border-radius:0.6rem;padding:0.85rem 1rem;border-left:3px solid var(--blue);">
-          <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#8fa0f5;margin-bottom:0.55rem;">After &middot; 0027_security_hardening.sql</p>
-          <pre style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.64rem;line-height:1.6;color:rgba(255,255,255,0.7);white-space:pre-wrap;margin:0;overflow-x:auto;">if not coalesce(is_owner_or_admin(), false) then
-  raise exception 'insufficient privilege';
-end if;
-perform _purge_client_data(client_id);
--- delete logic moved to a private fn,
--- zero grants to anyone
-
-revoke all on function purge_client
-  from public, anon;
-grant execute on function purge_client
-  to authenticated, service_role;</pre>
-        </div>
-      </div>
-
-      <!-- annotation -->
-      <div class="annot-card">
-        <p class="annot-label">The Null Trap</p>
-        <p class="annot-body"><code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">auth.uid()</code> is NULL for an anonymous request, so <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">is_owner_or_admin()</code> also returns NULL &mdash; and in Postgres, <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">NOT NULL</code> evaluates to NULL, not TRUE. A bare <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">if not is_owner_or_admin()</code> guard silently never raised for an anon caller. Wrapping every <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">security definer</code> check in <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">coalesce(&hellip;, false)</code> was the one-line difference between &ldquo;requires login&rdquo; and &ldquo;accidentally requires nothing.&rdquo;</p>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
-        <div class="card card-blue">
-          <p class="c-label">Unauthenticated Delete RPC</p>
-          <p class="c-body"><code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">purge_client(uuid)</code> ran as <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">security definer</code> with a check that never fired, and <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">anon</code> held EXECUTE &mdash; anyone with the project's public API key could wipe any client.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Permissive RLS Override</p>
-          <p class="c-body">Three tables carried a leftover <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">USING(true)</code> policy stacked on the correct role-gated one. Permissive policies OR together, so <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">true</code> silently won &mdash; unauthenticated read/write/delete on real project data.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Anon Table Grants</p>
-          <p class="c-body"><code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">anon</code> held raw INSERT/SELECT/UPDATE/DELETE on 18 internal CRM tables. Mostly caught by RLS, but that made RLS the only line of defense &mdash; revoked outright, since this app has no anon-facing flows.</p>
-        </div>
-      </div>
-
-      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
-
-      <p class="sec-label sl-blue">Navigation, Revisited</p>
-      <h2 class="h2">Ten sidebar groups covering eighteen<br>pages became six links covering five.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        The IA in the section above shipped clean, but real use grew it sideways: six single-item groups (Dashboard aside, then Clients, Projects, Tasks, Clock, Performance) each rendered their own section header for exactly one link. The fix was two changes at once &mdash; merge same-workflow groups in the sidebar, then merge the pages they pointed to into tabs on one route each, reusing the shadcn Tabs pattern already proven on Equipment.
-      </p>
-
-      <!-- before / after sitemap comparison -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-bottom:1.1rem;" class="two-col">
-        <div>
-          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,0,0,0.32);margin-bottom:0.5rem;">Before &middot; 10 groups</p>
-          <div class="sm-item sm-off">Dashboard</div>
-          <div class="sm-item sm-fixed">Clients</div>
-          <div class="sm-item sm-fixed">Projects</div>
-          <div class="sm-item sm-fixed">Tasks</div>
-          <div class="sm-item sm-fixed">Clock In</div>
-          <div class="sm-item sm-fixed">Performance</div>
-          <div class="sm-item sm-off">Billing</div>
-          <div class="sm-item sm-off">Admin</div>
-          <div class="sm-item sm-off">Insights</div>
-          <div class="sm-item sm-fixed">Bin</div>
-        </div>
-        <div>
-          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem;">After &middot; 6 links, 5 tabbed hubs</p>
-          <div class="sm-item sm-on">Dashboard</div>
-          <div class="sm-item sm-on">Work &middot; 3 tabs</div>
-          <div class="sm-item sm-on">Time &amp; Performance &middot; 2 tabs</div>
-          <div class="sm-item sm-on">Billing &middot; 4 tabs</div>
-          <div class="sm-item sm-on">Admin &middot; 7 tabs</div>
-          <div class="sm-item sm-on">Insights &middot; 2 tabs</div>
-        </div>
-      </div>
-
-      <!-- annotation -->
-      <div class="annot-card">
-        <p class="annot-label">A Gating Bug Found Along the Way</p>
-        <p class="annot-body">Managers could open Time Log directly by URL but had no nav path to it &mdash; it lived under an admin-tier-only Insights link they couldn't see. Folding Time Log into <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">/reports</code> and relaxing that page's gate from admin-tier to billing-role fixed access and visibility in the same change.</p>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
-        <div class="card card-blue">
-          <p class="c-label">One Real Page Per Hub</p>
-          <p class="c-body">Detail and create routes (<code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">/clients/[id]</code>, <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">/quotes/new</code>) stayed untouched &mdash; only the index/list pages merged into tabs on a shared route.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">The Toggle Button, Twice Wrong</p>
-          <p class="c-body">Shipped as <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">text-white/40</code> on a dark sidebar &mdash; nearly invisible at rest. Fixed with a permanent pill background, then found duplicated: a second control inside the sidebar itself, unreachable once collapsed.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">~12 Files, Quietly</p>
-          <p class="c-body">The nav component was the easy part. The real surface area was every <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.7rem;">revalidatePath()</code> target, the middleware route allowlist, and every dashboard/back-button link still pointing at an old route.</p>
-        </div>
-      </div>
-
-      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
-
-      <p class="sec-label sl-blue">Roles, Once More</p>
-      <h2 class="h2">A fourth tier meant admin<br>could no longer out-rank admin.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        The role model had to shrink before it could grow. Owner and admin turned out to have identical permissions everywhere &mdash; any admin could already demote or delete an owner &mdash; so they collapsed into one admin role first. Then a genuinely new capability arrived (scoring performance, controlling profit-split), which needed a tier above admin: <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">super_admin</code>. That's when a security review found the new tier wasn't actually protected from the level below it.
-      </p>
-
-      <!-- before / after code diff -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.1rem;" class="two-col">
-        <div style="background:#0f0f0f;border-radius:0.6rem;padding:0.85rem 1rem;border-left:3px solid #E05050;">
-          <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#e78888;margin-bottom:0.55rem;">Before &middot; team.ts</p>
-          <pre style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.64rem;line-height:1.6;color:rgba(255,255,255,0.7);white-space:pre-wrap;margin:0;overflow-x:auto;">export async function updateEmployeeRole(
-  id: string, role: Role
-) {
-  await requireAdminTier();
-  // any admin can set role to/from
-  // super_admin &mdash; including their own
-  // colleagues, or an existing super_admin
-  await supabase.from("profiles")
-    .update({ role }).eq("id", id);
-}</pre>
-        </div>
-        <div style="background:#0f0f0f;border-radius:0.6rem;padding:0.85rem 1rem;border-left:3px solid var(--blue);">
-          <p style="font-size:0.5rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#8fa0f5;margin-bottom:0.55rem;">After &middot; team.ts + migration 0034</p>
-          <pre style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:0.64rem;line-height:1.6;color:rgba(255,255,255,0.7);white-space:pre-wrap;margin:0;overflow-x:auto;">const profile = await requireAdminTier();
-await requireSuperAdminIfTargetIs
-  OrBecomesSuperAdmin(profile.role, id, role);
-await supabase.from("profiles")
-  .update({ role }).eq("id", id);
-
--- + matching USING/WITH CHECK on the
--- profiles RLS policy, so direct API
--- access is bound by the same rule</pre>
-        </div>
-      </div>
-
-      <!-- annotation -->
-      <div class="annot-card">
-        <p class="annot-label">The Tier Below Wasn't Actually Protected</p>
-        <p class="annot-body"><code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">requireAdminTier()</code> checked the caller's role but never the target's &mdash; so any plain admin could promote a colleague to <code style="font-family:'SFMono-Regular',Menlo,Consolas,monospace;">super_admin</code>, demote or delete an existing one, or invite a new user directly into the top tier. Fixed at both layers: an app-side guard that compares caller against target, and a matching RLS restriction so the rule holds even against direct API calls, not just the app's own UI.</p>
       </div>
     </div>
   </div>
@@ -965,6 +672,83 @@ await supabase.from("profiles")
           <p style="font-size:0.56rem;color:rgba(255,255,255,0.38);text-align:center;line-height:1.4;">Same brand blue, dark canvas, zero decoration</p>
         </div>
 
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     6. DESIGNING FOR CONSTRAINTS
+═══════════════════════════════════════════ -->
+<section id="constraints" class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Line-Item Views</p>
+      <h2 class="h2">One document, three levels<br>of how much detail to show.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        Full itemised breakdowns were right for some clients and unnecessarily granular for others &mdash; but rebuilding the same quote twice wasn't an option. The fix was a per-document toggle, not a global setting: Itemised, Grouped, and Summary, switchable on the same line items.
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
+          <img src="mystudiobee/quote-itemised.png" alt="Quote editor - itemised view" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
+          <img src="mystudiobee/quote-grouped.png" alt="Quote editor - grouped view" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/10;">
+          <img src="mystudiobee/quote-summary.png" alt="Quote editor - summary view" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <div class="annot-card">
+        <p class="annot-label">Grouped View Iteration</p>
+        <p class="annot-body">Grouped view first shipped with its own editable "Total shown on PDF" override row &mdash; a second source of truth for the total. It was removed once the real Subtotal/GST/Discount/Total box below already covered it; one number, one place it lives. Summary and Grouped overrides also default to the pre-GST amount, not the GST-inclusive total, since that read as confusing tax-inclusive pricing at a glance.</p>
+      </div>
+
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
+
+      <p class="sec-label sl-blue">Internal Costing</p>
+      <h2 class="h2">Purchase price isn't cost &mdash;<br>a subscription bills every year.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(0,0,0,0.48);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        Equipment inventory only ever tracked one-time purchase cost and rental rates &mdash; useful for quoting gear to a client, useless for knowing what running the studio actually costs per month. A dedicated Internal Costing tab followed, and even that needed one more refinement: a billing-period field, so an annual Adobe subscription converts to the right monthly figure instead of a manually-guessed one.
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.1rem;">
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
+          <img src="mystudiobee/equipment.png" alt="Equipment inventory - purchase cost and rental rates only" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:1px solid rgba(0,0,0,0.07);aspect-ratio:16/10;">
+          <img src="mystudiobee/internal-costing.png" alt="Internal Costing tab - effective monthly cost" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+        <div style="border-radius:0.5rem;overflow:hidden;border:2px solid var(--blue);aspect-ratio:16/10;">
+          <img src="mystudiobee/internal-costing-edit.png" alt="Internal Costing - billing period detail" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+        </div>
+      </div>
+
+      <div class="annot-card">
+        <p class="annot-label">Billing Period Refinement</p>
+        <p class="annot-body">Shipped first as a flat "amount → monthly cost" split. That silently assumed everything recurring was billed monthly, which wasn't true &mdash; Adobe bills annually. Adding a Billed field (Monthly / Annual) with an auto-calculated, still-editable monthly figure meant the P&amp;L report's overhead number finally matched what the studio was actually paying.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">Recurring vs. One-Time</p>
+          <p class="c-body">Two costing types, one table: recurring subscriptions and one-time purchases amortised over their useful life, both collapsing to a single "effective monthly cost" column.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Auto-Calculated, Editable</p>
+          <p class="c-body">The monthly figure is computed from amount and billing period by default, but stays a plain editable field &mdash; the system's best guess, not a locked value.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Feeds the P&amp;L Directly</p>
+          <p class="c-body">Active internal costing items sum straight into the P&amp;L report's overhead line, so margin reflects real running cost, not just per-project labor and direct spend.</p>
+        </div>
       </div>
     </div>
   </div>

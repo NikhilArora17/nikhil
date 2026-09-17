@@ -19,7 +19,8 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: auto; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     body {
       font-family: 'Barlow', sans-serif;
       background: var(--white);
@@ -275,11 +276,10 @@
 <nav id="chapter-rail" aria-label="Case study chapters">
   <a href="#cover" class="chapter-tab" data-chapter="cover"><span class="chapter-label">Cover</span></a>
   <a href="#overview" class="chapter-tab" data-chapter="overview"><span class="chapter-label">Overview</span></a>
-  <a href="#visuals" class="chapter-tab" data-chapter="visuals"><span class="chapter-label">Visuals</span></a>
   <a href="#research" class="chapter-tab" data-chapter="research"><span class="chapter-label">Research</span></a>
   <a href="#ia" class="chapter-tab" data-chapter="ia"><span class="chapter-label">Architecture</span></a>
-  <a href="#constraints" class="chapter-tab" data-chapter="constraints"><span class="chapter-label">Constraints</span></a>
   <a href="#wireframes" class="chapter-tab" data-chapter="wireframes"><span class="chapter-label">Wireframes</span></a>
+  <a href="#constraints" class="chapter-tab" data-chapter="constraints"><span class="chapter-label">Constraints</span></a>
   <a href="#outcomes" class="chapter-tab" data-chapter="outcomes"><span class="chapter-label">Outcomes</span></a>
 </nav>
 
@@ -369,46 +369,6 @@
         <div class="p-step off"><p class="p-step-name">Validate</p><p class="p-step-sub">Prototype</p></div>
         <div class="p-step on" style="opacity:0.55;"><p class="p-step-name">Launch</p><p class="p-step-sub">Deliver</p></div>
       </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     3. DISCOVERY & BRAND SYSTEM
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section id="visuals" class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Visual Design System</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
-      <p class="sec-label sl-blue">Visual Design System</p>
-      <h2 class="h2">Dark. Gold. Architectural.</h2>
-
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem;margin-bottom:0.9rem;" class="four-col">
-        <div class="card card-blue">
-          <p class="c-label">Core Principle</p>
-          <p class="c-title">No Rounded Corners</p>
-          <p class="c-body">Sharp, architectural geometry reads as precision and confidence - the small detail that consistently separates premium from generic.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Core Principle</p>
-          <p class="c-title">Gold as Sole Accent</p>
-          <p class="c-body">Every interactive element, highlight and CTA uses the same gold, #FFBB50 fading to #E79D29. No secondary accent competes for attention.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Core Principle</p>
-          <p class="c-title">Weight Contrast</p>
-          <p class="c-body">Extra bold headlines against light body text create an editorial, high-end feel - closer to luxury print than a typical SaaS site.</p>
-        </div>
-        <div class="card card-blue">
-          <p class="c-label">Core Principle</p>
-          <p class="c-title">Dark Surfaces Only</p>
-          <p class="c-body">No white sections anywhere. The palette stays in black, raisin (#212121) and near-black surfaces from the first pixel to the last.</p>
-        </div>
-      </div>
 
       <div class="div-line div-dark"></div>
 
@@ -443,6 +403,9 @@
 </section>
 
 
+
+
+
 <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      4. USER RESEARCH
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
@@ -457,81 +420,96 @@
       <h2 class="h2">Understanding the<br>Custom Integrator.</h2>
       <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.1rem;">Before any visuals, the work started with research. A Custom Integrator does not read a distributor's website the way a typical visitor reads a marketing site - they scan it, looking for proof, and decide fast.</p>
 
-      <!-- research methods -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1rem;" class="three-col">
-        <div class="card card-blue">
-          <p style="font-family:var(--display);font-size:2.1rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:0.3rem;">6</p>
-          <p class="c-title">Stakeholder Interviews</p>
-          <p class="c-body">Deep dives with the BEENEXT founders &amp; sales team to map CI pain points and buying signals.</p>
+      <!-- research methods - one consolidated card, stacked rows, matching
+           the studiobee.html "Competitive Landscape" card pattern -->
+      <div class="card card-blue" style="margin-bottom:0.9rem;">
+        <p class="c-label" style="margin-bottom:0.35rem;">Research Methods</p>
+        <div style="display:flex;gap:0.9rem;align-items:baseline;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">
+          <p style="font-size:0.78rem;font-weight:700;min-width:6.5rem;flex-shrink:0;">6 Interviews</p>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);min-width:8rem;flex-shrink:0;">Stakeholders</p>
+          <p class="c-body" style="margin:0;">Deep dives with the BEENEXT founders &amp; sales team to map CI pain points and buying signals.</p>
         </div>
-        <div class="card card-blue">
-          <p style="font-family:var(--display);font-size:2.1rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:0.3rem;">12</p>
-          <p class="c-title">Competitor Audit</p>
-          <p class="c-body">Distributor websites audited across India, Singapore &amp; the UAE - surfaced a clear luxury gap in the category.</p>
+        <div style="display:flex;gap:0.9rem;align-items:baseline;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">
+          <p style="font-size:0.78rem;font-weight:700;min-width:6.5rem;flex-shrink:0;">12 Audited</p>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);min-width:8rem;flex-shrink:0;">Competitors</p>
+          <p class="c-body" style="margin:0;">Distributor websites audited across India, Singapore &amp; the UAE - surfaced a clear luxury gap in the category.</p>
         </div>
-        <div class="card card-blue">
-          <p style="font-family:var(--display);font-size:2.1rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:0.3rem;">3</p>
-          <p class="c-title">Persona Workshops</p>
-          <p class="c-body">Mapped out who was actually going to use the site. Arjun, an AV Systems Integrator, became the primary lens for every decision.</p>
+        <div style="display:flex;gap:0.9rem;align-items:baseline;padding:0.5rem 0;">
+          <p style="font-size:0.78rem;font-weight:700;min-width:6.5rem;flex-shrink:0;">3 Workshops</p>
+          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);min-width:8rem;flex-shrink:0;">Personas</p>
+          <p class="c-body" style="margin:0;">Mapped out who was actually going to use the site. Arjun became the primary lens for every decision.</p>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:1rem;margin-bottom:0.9rem;" class="two-col">
-        <!-- persona -->
-        <div style="display:flex;flex-direction:column;gap:0.7rem;">
-          <div style="background:var(--black);border:1px solid rgba(255,187,80,0.3);border-top:2.5px solid var(--blue);border-radius:0;padding:1rem;flex:1;">
-            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.4rem;">Primary Persona</p>
-            <p style="font-family:var(--display);font-size:0.85rem;font-weight:700;color:white;margin-bottom:0.1rem;">Arjun</p>
-            <p style="font-size:0.72rem;color:rgba(255,255,255,0.65);margin-bottom:0.4rem;">AV Systems Integrator</p>
-            <p style="font-size:0.72rem;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:0.5rem;">Goal: confirm BEENEXT carries the brands he needs, like Peplink &amp; AVPro Edge, before he calls. Frustration: sites that bury the brand list behind a "Contact Us" wall.</p>
-            <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:0.45rem;">
-              <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.25rem;">Behavior</p>
-              <p style="font-size:0.7rem;color:rgba(255,255,255,0.65);line-height:1.45;">Scans the hero for brand names, checks the logo strip. If the brands match, he calls. If not, he leaves.</p>
-            </div>
+      <!-- personas - 3-column, circular avatar + italic name, matching the
+           studiobee.html Research chapter persona-card pattern -->
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.6rem;">Primary Personas</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin-bottom:0.9rem;" class="three-col">
+        <div style="background:var(--black);border:1px solid rgba(255,187,80,0.3);border-top:2.5px solid var(--blue);border-radius:0;padding:0.9rem;">
+          <div style="width:3.8rem;height:3.8rem;border-radius:50%;background:rgba(255,187,80,0.14);display:flex;align-items:center;justify-content:center;margin-bottom:0.6rem;">
+            <span style="font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--blue);">A</span>
           </div>
-          <div style="background:#0f0f0f;border-radius:0;padding:1rem;">
-            <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.4rem;">Key Research Insight</p>
-            <p style="font-size:0.78rem;font-style:italic;color:white;line-height:1.5;margin-bottom:0.4rem;">"Custom Integrators recognize brands before they read copy. Brand identity is their shortcut to trust. Show the logos first, explain everything else second."</p>
-            <p style="font-size:0.56rem;color:rgba(255,255,255,0.4);">BEENEXT Discovery Phase</p>
-          </div>
+          <p style="font-family:var(--display);font-size:0.8rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.05rem;">Arjun</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem;">AV Systems Integrator</p>
+          <p style="font-size:0.68rem;color:rgba(255,255,255,0.72);line-height:1.45;margin-bottom:0.5rem;">Scans the hero for brand names on his phone between site visits. If BEENEXT carries the brands he needs, he calls.</p>
+          <p style="font-size:0.6rem;color:rgba(255,255,255,0.55);line-height:1.4;border-top:1px solid rgba(255,255,255,0.15);padding-top:0.4rem;">Values: brand list up front, fast replies, no "Contact Us" wall</p>
         </div>
+        <div style="background:#0f0f0f;border-radius:0;padding:0.9rem;">
+          <div style="width:3.8rem;height:3.8rem;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:0.6rem;">
+            <span style="font-family:var(--display);font-size:1.3rem;font-weight:800;color:white;">M</span>
+          </div>
+          <p style="font-family:var(--display);font-size:0.8rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.05rem;">Meera</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem;">Systems Integrator</p>
+          <p style="font-size:0.68rem;color:rgba(255,255,255,0.6);line-height:1.45;margin-bottom:0.5rem;">Reviews distributor case studies and pricing terms on a laptop before proposing one to her own clients.</p>
+          <p style="font-size:0.6rem;color:rgba(255,255,255,0.4);line-height:1.4;border-top:1px solid rgba(255,255,255,0.1);padding-top:0.4rem;">Values: credibility signals, clear terms, proven track record</p>
+        </div>
+        <div style="background:#212121;border-radius:0;padding:0.9rem;">
+          <div style="width:3.8rem;height:3.8rem;border-radius:50%;background:rgba(255,187,80,0.16);display:flex;align-items:center;justify-content:center;margin-bottom:0.6rem;">
+            <span style="font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--blue);">R</span>
+          </div>
+          <p style="font-family:var(--display);font-size:0.8rem;font-weight:700;color:white;font-style:italic;margin-bottom:0.05rem;">Rohan</p>
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem;">Procurement Lead</p>
+          <p style="font-size:0.68rem;color:rgba(255,255,255,0.65);line-height:1.45;margin-bottom:0.5rem;">Vets new distribution partners formally before onboarding - years in business, partner count, region coverage.</p>
+          <p style="font-size:0.6rem;color:rgba(255,255,255,0.45);line-height:1.4;border-top:1px solid rgba(255,255,255,0.15);padding-top:0.4rem;">Values: stats up front, a clear "Become a Partner" path</p>
+        </div>
+      </div>
 
-        <!-- 3 questions CIs ask -->
-        <div style="background:#0f0f0f;border-radius:0;padding:1rem;">
-          <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.6rem;">3 Questions CIs Ask in 15 Seconds</p>
-          <div style="display:flex;flex-direction:column;gap:0.4rem;">
-            <div class="rd-grid">
-              <div class="rd-box rd-ins">
-                <p class="rd-lbl" style="color:var(--blue);">Question</p>
-                <p class="rd-txt">"Do they carry the brands I need?"</p>
-              </div>
-              <span class="rd-arrow">&rarr;</span>
-              <div class="rd-box rd-dec">
-                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
-                <p class="rd-txt">Brand marquee above fold, all 9 brands visible within 1 scroll</p>
-              </div>
+      <!-- research → decision - vertical insight/decision columns, matching
+           the studiobee.html Research chapter pattern -->
+      <div style="background:#0f0f0f;border-radius:0;padding:1.1rem;">
+        <p style="font-size:0.52rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.7rem;">Research &rarr; Design Decision</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;" class="three-col">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div class="rd-box rd-ins" style="width:100%;">
+              <p class="rd-lbl" style="color:var(--blue);">Question</p>
+              <p class="rd-txt">"Do they carry the brands I need?"</p>
             </div>
-            <div class="rd-grid">
-              <div class="rd-box rd-ins">
-                <p class="rd-lbl" style="color:var(--blue);">Question</p>
-                <p class="rd-txt">"Are they a credible, established partner?"</p>
-              </div>
-              <span class="rd-arrow">&rarr;</span>
-              <div class="rd-box rd-dec">
-                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
-                <p class="rd-txt">Stats section: 9yr &middot; 8 brands &middot; 500+ partners &middot; Pan-India</p>
-              </div>
+            <span style="color:var(--blue);font-size:0.85rem;">&darr;</span>
+            <div class="rd-box rd-dec" style="width:100%;">
+              <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+              <p class="rd-txt">Brand marquee above fold, all 9 brands within 1 scroll</p>
             </div>
-            <div class="rd-grid">
-              <div class="rd-box rd-ins">
-                <p class="rd-lbl" style="color:var(--blue);">Question</p>
-                <p class="rd-txt">"How do I get started?"</p>
-              </div>
-              <span class="rd-arrow">&rarr;</span>
-              <div class="rd-box rd-dec">
-                <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
-                <p class="rd-txt">Persistent nav CTA + full-width Partner section pre-footer</p>
-              </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div class="rd-box rd-ins" style="width:100%;">
+              <p class="rd-lbl" style="color:var(--blue);">Question</p>
+              <p class="rd-txt">"Are they a credible, established partner?"</p>
+            </div>
+            <span style="color:var(--blue);font-size:0.85rem;">&darr;</span>
+            <div class="rd-box rd-dec" style="width:100%;">
+              <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+              <p class="rd-txt">Stats section: 9yr &middot; 8 brands &middot; 500+ partners</p>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div class="rd-box rd-ins" style="width:100%;">
+              <p class="rd-lbl" style="color:var(--blue);">Question</p>
+              <p class="rd-txt">"How do I get started?"</p>
+            </div>
+            <span style="color:var(--blue);font-size:0.85rem;">&darr;</span>
+            <div class="rd-box rd-dec" style="width:100%;">
+              <p class="rd-lbl" style="color:rgba(255,255,255,0.28);">Decision</p>
+              <p class="rd-txt">Persistent nav CTA + full-width Partner section</p>
             </div>
           </div>
         </div>
@@ -558,110 +536,44 @@
         The homepage follows a deliberate persuasion sequence: introduce &rarr; validate &rarr; demonstrate &rarr; convert. Each section answers the question the CI asks at that scroll depth.
       </p>
 
-      <div style="display:grid;grid-template-columns:220px 1fr;gap:2rem;" class="two-col">
-        <!-- sitemap -->
-        <div>
-          <div class="sm-item sm-fixed">Fixed Navigation - always accessible</div>
-          <div class="sm-item sm-on">01 Hero</div>
-          <div class="sm-item sm-off">02 Brand Marquee</div>
-          <div class="sm-item sm-off">03 What We Do</div>
-          <div class="sm-item sm-off">04 Featured Brands</div>
-          <div class="sm-item sm-off">05 Stats + Why Us</div>
-          <div class="sm-item sm-off">06 Solutions</div>
-          <div class="sm-item sm-off">07 Blog Preview</div>
-          <div class="sm-item sm-on">08 Partner CTA</div>
-          <div class="sm-item sm-fixed">09 Footer</div>
-        </div>
-
-        <!-- annotation cards -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;" class="three-col">
-          <div class="card card-blue">
-            <p class="c-label">Brand Marquee Placement</p>
-            <p class="c-title">Recognition before reading</p>
-            <p class="c-body">CIs recognise brands before reading body copy - brand identity is their shortcut to trust. Marquee sits in Section 2, immediately below hero, all 9 brands surface within 1 scroll.</p>
-          </div>
-          <div class="card card-blue">
-            <p class="c-label">Stats Section Weight</p>
-            <p class="c-title">Credibility signals, dedicated</p>
-            <p class="c-body">"9 years" and "500+ partners" are the most cited B2B credibility signals - a full section (05) is dedicated to large-format gold stats. Data-first credibility.</p>
-          </div>
-          <div class="card card-blue">
-            <p class="c-label">Partner CTA Before Footer</p>
-            <p class="c-title">Re-anchor before the exit</p>
-            <p class="c-body">Conversion drop-off is highest at the footer when visitors have lost context on why they should act. A full-width Partner CTA (08) re-anchors the value prop before the footer (09).</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     6. DESIGNING FOR CONSTRAINTS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<section id="constraints" class="stack-panel" data-theme="light" style="background:var(--white);">
-  <div class="ch-bar ch-bar-light">
-    <span class="ch-label ch-label-light">Designing for Constraints</span>
-  </div>
-
-  <div class="panel-body panel-body-top">
-    <div class="inner">
-      <p class="sec-label sl-blue">Design for Constraints</p>
-      <h2 class="h2">When limitations made<br>the design better.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        The hero's animated gold particle grid and hexagonal mesh brought the dark canvas to life - but early versions piled on more motion than the headline could carry. The fix wasn't cutting the motion, it was treating animation like typography: does this earn its place?
-      </p>
-
-      <!-- 3 hero screenshots: early &rarr; mid &rarr; final -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-bottom:1.4rem;">
-        <div>
-          <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:4/3;">
-            <img src="beenext/hero-early.png" alt="Hero - initial load, motion competing with headline" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-          </div>
-          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.4);margin-top:0.55rem;">01 &mdash; Initial Load</p>
-        </div>
-        <div>
-          <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:4/3;">
-            <img src="beenext/hero-a.png" alt="Hero - mid iteration, calmer motion" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-          </div>
-          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.4);margin-top:0.55rem;">02 &mdash; Mid Iteration</p>
-        </div>
-        <div>
-          <div style="border-radius:0;overflow:hidden;border:2px solid var(--blue);aspect-ratio:4/3;">
-            <img src="beenext/1.png" alt="Hero - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
-          </div>
-          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:var(--blue);margin-top:0.55rem;">03 &mdash; Final Shipped</p>
-        </div>
+      <!-- sitemap - horizontal sequence (the order visitors actually scroll
+           through), matching the studiobee.html IA chapter pattern -->
+      <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.6rem;">Fixed Nav - always visible - then, in scroll order:</p>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.32rem;margin-bottom:1.8rem;">
+        <div class="sm-item sm-on">01 Hero</div>
+        <span style="color:rgba(255,255,255,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-on">02 Brand Marquee</div>
+        <span style="color:rgba(255,255,255,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-off">03 What We Do</div>
+        <span style="color:rgba(255,255,255,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-off">04 Featured Brands</div>
+        <span style="color:rgba(255,255,255,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-on">05 Stats + Why Us</div>
+        <span style="color:rgba(255,255,255,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-off">06 Solutions</div>
+        <span style="color:rgba(255,255,255,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-off">07 Blog Preview</div>
+        <span style="color:rgba(255,255,255,0.22);font-size:0.85rem;flex-shrink:0;">&rarr;</span>
+        <div class="sm-item sm-on">08 Partner CTA</div>
       </div>
 
-      <!-- annotation -->
-      <div class="annot-card">
-        <p class="annot-label">Animation Audit</p>
-        <p class="annot-body">Early motion competed with the words instead of supporting them. We kept only what reinforced the brand's energy, and added a quieter, reduced-motion version of the same background for visitors who prefer calmer motion.</p>
-      </div>
-
-      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
-
-      <p class="sec-label sl-blue">Restraint, Elsewhere Too</p>
-      <h2 class="h2">The number is the design.<br>Nothing else competes.</h2>
-      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
-        Icons, charts and ornamentation would have been easy to add - but research was clear that what actually convinces a Custom Integrator is the number itself: large, confident, in gold, with nothing competing for attention. The same restraint carried into the marquee's pacing and the tools BEENEXT uses to run the site day to day.
-      </p>
-
-      <!-- content panel: a fourth constraint, usability for a non-technical editor -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
-        <div class="card card-blue">
-          <p class="c-label">Content Panel &middot; Login</p>
-          <p class="c-body">One calm login screen - no dashboard clutter before you're inside.</p>
+      <!-- annotation cards - numbered badge + short copy, matching the
+           studiobee.html IA chapter pattern -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;" class="three-col">
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(255,187,80,0.15);line-height:1;">01</span>
+          <p class="c-title">Recognition before reading</p>
+          <p class="c-body">Brand marquee sits in section 2, immediately below hero - all 9 brands surface within 1 scroll.</p>
         </div>
-        <div class="card card-blue">
-          <p class="c-label">Content Panel &middot; Structure</p>
-          <p class="c-body">Hero content, brand marquee, stats, featured brands, blog posts and contact details, each clearly labelled and collapsed by default.</p>
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(255,187,80,0.15);line-height:1;">02</span>
+          <p class="c-title">Credibility signals, dedicated</p>
+          <p class="c-body">"9 years" and "500+ partners" are the most cited B2B trust signals - a full section (05) is built around them alone.</p>
         </div>
-        <div class="card card-blue">
-          <p class="c-label">Content Panel &middot; Built for a Hurry</p>
-          <p class="c-body">Whoever updates a phone number on a Friday afternoon can find the field and be done in under a minute.</p>
+        <div class="card card-blue" style="position:relative;padding-right:2.4rem;">
+          <span style="position:absolute;top:0.6rem;right:0.65rem;font-size:1.4rem;font-weight:700;color:rgba(255,187,80,0.15);line-height:1;">03</span>
+          <p class="c-title">Re-anchor before the exit</p>
+          <p class="c-body">Drop-off is highest at the footer - a full-width Partner CTA (08) re-anchors the value prop right before it.</p>
         </div>
       </div>
     </div>
@@ -778,6 +690,78 @@
           <p style="font-size:0.62rem;color:rgba(255,255,255,0.4);">Three large stat numbers &middot; three supporting USPs beneath</p>
         </div>
 
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     6. DESIGNING FOR CONSTRAINTS
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<section id="constraints" class="stack-panel" data-theme="light" style="background:var(--white);">
+  <div class="ch-bar ch-bar-light">
+    <span class="ch-label ch-label-light">Designing for Constraints</span>
+  </div>
+
+  <div class="panel-body panel-body-top">
+    <div class="inner">
+      <p class="sec-label sl-blue">Design for Constraints</p>
+      <h2 class="h2">When limitations made<br>the design better.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        The hero's animated gold particle grid and hexagonal mesh brought the dark canvas to life - but early versions piled on more motion than the headline could carry. The fix wasn't cutting the motion, it was treating animation like typography: does this earn its place?
+      </p>
+
+      <!-- 3 hero screenshots: early &rarr; mid &rarr; final -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-bottom:1.4rem;">
+        <div>
+          <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:4/3;">
+            <img src="beenext/hero-early.png" alt="Hero - initial load, motion competing with headline" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.4);margin-top:0.55rem;">01 &mdash; Initial Load</p>
+        </div>
+        <div>
+          <div style="border-radius:0;overflow:hidden;border:1px solid rgba(255,255,255,0.12);aspect-ratio:4/3;">
+            <img src="beenext/hero-a.png" alt="Hero - mid iteration, calmer motion" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:rgba(255,255,255,0.4);margin-top:0.55rem;">02 &mdash; Mid Iteration</p>
+        </div>
+        <div>
+          <div style="border-radius:0;overflow:hidden;border:2px solid var(--blue);aspect-ratio:4/3;">
+            <img src="beenext/1.png" alt="Hero - final shipped" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+          </div>
+          <p style="font-family:var(--display);font-size:0.68rem;font-weight:700;color:var(--blue);margin-top:0.55rem;">03 &mdash; Final Shipped</p>
+        </div>
+      </div>
+
+      <!-- annotation -->
+      <div class="annot-card">
+        <p class="annot-label">Animation Audit</p>
+        <p class="annot-body">Early motion competed with the words instead of supporting them. We kept only what reinforced the brand's energy, and added a quieter, reduced-motion version of the same background for visitors who prefer calmer motion.</p>
+      </div>
+
+      <div class="div-line div-dark" style="margin:2.5rem 0;"></div>
+
+      <p class="sec-label sl-blue">Restraint, Elsewhere Too</p>
+      <h2 class="h2">The number is the design.<br>Nothing else competes.</h2>
+      <p style="font-size:clamp(0.84rem,1.1vw,1rem);color:rgba(255,255,255,0.58);max-width:80ch;line-height:1.6;margin-bottom:1.4rem;">
+        Icons, charts and ornamentation would have been easy to add - but research was clear that what actually convinces a Custom Integrator is the number itself: large, confident, in gold, with nothing competing for attention. The same restraint carried into the marquee's pacing and the tools BEENEXT uses to run the site day to day.
+      </p>
+
+      <!-- content panel: a fourth constraint, usability for a non-technical editor -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.9rem;" class="three-col">
+        <div class="card card-blue">
+          <p class="c-label">Content Panel &middot; Login</p>
+          <p class="c-body">One calm login screen - no dashboard clutter before you're inside.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Content Panel &middot; Structure</p>
+          <p class="c-body">Hero content, brand marquee, stats, featured brands, blog posts and contact details, each clearly labelled and collapsed by default.</p>
+        </div>
+        <div class="card card-blue">
+          <p class="c-label">Content Panel &middot; Built for a Hurry</p>
+          <p class="c-body">Whoever updates a phone number on a Friday afternoon can find the field and be done in under a minute.</p>
+        </div>
       </div>
     </div>
   </div>
