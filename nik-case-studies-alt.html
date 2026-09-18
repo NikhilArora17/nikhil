@@ -567,9 +567,15 @@
     .frame-phone-screen img.crop-scrollbar { width: 103%; }
 
     /* Instagram-post-shaped card (square, not a phone bezel) for the
-       auto-cycling social posts slideshow. */
+       auto-cycling social posts slideshow. Width is derived from the
+       lookbook desktop frame's own screen-height formula (its 16:10
+       screen height = its width / 1.6) rather than its own vw clamp, so
+       the square post card always lands at exactly the same total
+       height as the lookbook frame next to it - matching head-bar
+       heights above (both frame-desktop-chrome and frame-post-head are
+       explicitly 2.65rem) is what makes that hold all the way down. */
     .frame-post {
-      width: clamp(18rem, 34vw, 24rem); flex-shrink: 0;
+      width: calc(clamp(24rem, 50vw, 40rem) / 1.6); flex-shrink: 0;
       border-radius: .9rem;
       overflow: hidden;
       background: #1b1d1a;
@@ -578,7 +584,7 @@
       cursor: pointer;
     }
     .frame-post:hover { transform: translateY(-6px); }
-    .frame-post-head { display: flex; align-items: center; gap: .55rem; padding: .65rem .9rem; }
+    .frame-post-head { display: flex; align-items: center; gap: .55rem; height: 2.65rem; padding: 0 .9rem; }
     .fp-avatar {
       width: 1.3rem; height: 1.3rem; border-radius: 50%; flex-shrink: 0;
       background: linear-gradient(135deg, var(--olive), var(--lime));
@@ -607,7 +613,7 @@
       cursor: pointer;
     }
     .frame-desktop:hover { transform: translateY(-6px); box-shadow: 0 2rem 5rem rgba(0,0,0,.45), 0 .25rem .75rem rgba(0,0,0,.35); }
-    .frame-desktop-chrome { display: flex; align-items: center; gap: .4rem; padding: .65rem .9rem; }
+    .frame-desktop-chrome { display: flex; align-items: center; gap: .4rem; height: 2.65rem; padding: 0 .9rem; }
     .fdc-dot { width: .5rem; height: .5rem; border-radius: 50%; background: rgba(255,255,255,.14); }
     .fdc-dot:nth-child(1) { background: #ff5f57; opacity: .55; }
     .fdc-dot:nth-child(2) { background: #febc2e; opacity: .55; }
@@ -704,7 +710,7 @@
       .cs-head { grid-template-columns: 1fr; }
       .cs-link { justify-self: start; margin-top: 1.25rem; }
       .frame-phone { width: 11.5rem; }
-      .frame-post { width: min(18rem, 78vw); }
+      .frame-post { width: calc(min(24rem, 88vw) / 1.6); }
       .frame-row .frame-desktop--lookbook { width: min(24rem, 88vw); }
     }
 
@@ -2595,13 +2601,42 @@ function startVideoCycle(screen, intervalMs) {
   }, intervalMs);
 }
 
-document.querySelectorAll('.cycle-screen[data-cycle-interval]:not([data-pdf]):not(.reel-cycle)').forEach(screen => {
-  startCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 2800);
-});
-
-document.querySelectorAll('.reel-cycle[data-cycle-interval]').forEach(screen => {
-  startVideoCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 4000);
-});
+/* Branding block (lookbook PDF pages + social-post slideshow + reel
+   video) - same "don't pay for what's off screen" reasoning as the
+   marquee videos below, just applied here too: rendering 5 PDF pages to
+   canvas and running two setInterval-driven cycles is real main-thread
+   work, and the reel's `autoplay` attribute would otherwise start
+   decoding a ~10MB video immediately regardless of scroll position. Lazy
+   -init everything on first approach (rootMargin pre-warms it a bit
+   before it's actually visible so there's no pop-in), and pause/resume
+   just the reel video on every subsequent visibility change since the
+   two `setInterval` cycles themselves are cheap class-toggling either way. */
+const frameRow = document.querySelector('.frame-row');
+if (frameRow) {
+  frameRow.querySelectorAll('.reel-cycle video.cycle-slide').forEach(v => v.pause());
+  let brandingCyclesStarted = false;
+  const brandingObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const activeReel = frameRow.querySelector('.reel-cycle video.cycle-slide.is-active');
+      if (entry.isIntersecting) {
+        if (!brandingCyclesStarted) {
+          brandingCyclesStarted = true;
+          document.querySelectorAll('.cycle-screen[data-cycle-interval]:not([data-pdf]):not(.reel-cycle)').forEach(screen => {
+            startCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 2800);
+          });
+          document.querySelectorAll('.reel-cycle[data-cycle-interval]').forEach(screen => {
+            startVideoCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 4000);
+          });
+          if (typeof initLookbookPdf === 'function') initLookbookPdf();
+        }
+        if (activeReel) activeReel.play().catch(() => {});
+      } else if (activeReel) {
+        activeReel.pause();
+      }
+    });
+  }, { rootMargin: '400px 0px', threshold: 0 });
+  brandingObserver.observe(frameRow);
+}
 
 document.querySelectorAll('.cs-link, .frame-desktop, .frame-phone, .frame-post').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
@@ -3647,35 +3682,45 @@ async function getDoc(pdfPath) {
 /* Render the lookbook desktop frame's pages, then let startCycle()
    (defined in the case-study-blocks script above) auto-advance through
    them - same "keeps changing pages" treatment as the reels/social
-   posts, no click needed. */
-document.querySelectorAll('.cycle-screen[data-pdf]').forEach(async screen => {
-  const loader  = screen.querySelector('.frame-loading');
-  const pdfPath = screen.dataset.pdf;
-  try {
-    const pdf   = await getDoc(pdfPath);
-    const pages = Math.min(pdf.numPages, 5);
-    for (let i = 1; i <= pages; i++) {
-      const page   = await pdf.getPage(i);
-      const vp     = page.getViewport({ scale: 1 });
-      const scale  = (Math.min(screen.offsetWidth || 600, 800) * 2) / vp.width;
-      const scaled = page.getViewport({ scale });
-      const cvs    = document.createElement('canvas');
-      cvs.width    = scaled.width;
-      cvs.height   = scaled.height;
-      await page.render({ canvasContext: cvs.getContext('2d'), viewport: scaled }).promise;
-      const img = document.createElement('img');
-      img.className = 'cycle-slide' + (i === 1 ? ' is-active' : '');
-      img.alt = 'McBee lookbook page ' + i;
-      img.src = cvs.toDataURL('image/jpeg', 0.85);
-      screen.appendChild(img);
+   posts, no click needed. Wrapped as a function (instead of running
+   immediately) so the branding-block IntersectionObserver above can
+   defer this until the frame is actually about to scroll into view -
+   rendering up to 5 pages to canvas on every page load regardless of
+   scroll position was doing real main-thread work nobody was looking at
+   yet. */
+let lookbookPdfStarted = false;
+function initLookbookPdf() {
+  if (lookbookPdfStarted) return;
+  lookbookPdfStarted = true;
+  document.querySelectorAll('.cycle-screen[data-pdf]').forEach(async screen => {
+    const loader  = screen.querySelector('.frame-loading');
+    const pdfPath = screen.dataset.pdf;
+    try {
+      const pdf   = await getDoc(pdfPath);
+      const pages = Math.min(pdf.numPages, 5);
+      for (let i = 1; i <= pages; i++) {
+        const page   = await pdf.getPage(i);
+        const vp     = page.getViewport({ scale: 1 });
+        const scale  = (Math.min(screen.offsetWidth || 600, 800) * 2) / vp.width;
+        const scaled = page.getViewport({ scale });
+        const cvs    = document.createElement('canvas');
+        cvs.width    = scaled.width;
+        cvs.height   = scaled.height;
+        await page.render({ canvasContext: cvs.getContext('2d'), viewport: scaled }).promise;
+        const img = document.createElement('img');
+        img.className = 'cycle-slide' + (i === 1 ? ' is-active' : '');
+        img.alt = 'McBee lookbook page ' + i;
+        img.src = cvs.toDataURL('image/jpeg', 0.85);
+        screen.appendChild(img);
+      }
+      if (loader) loader.remove();
+      startCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 3400);
+    } catch(e) {
+      if (loader) loader.remove();
+      screen.style.background = 'rgba(10,51,35,0.6)';
     }
-    if (loader) loader.remove();
-    startCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 3400);
-  } catch(e) {
-    if (loader) loader.remove();
-    screen.style.background = 'rgba(10,51,35,0.6)';
-  }
-});
+  });
+}
 
 /* ── PDF VIEWER ── */
 const modal     = document.getElementById('pdf-modal');
