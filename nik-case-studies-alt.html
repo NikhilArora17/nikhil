@@ -512,8 +512,13 @@
     }
 
     /* Plain static row - for galleries short enough they don't need the
-       auto-scroll marquee (e.g. the branding block's 3 frames). */
-    .frame-row { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 1.75rem; }
+       auto-scroll marquee (e.g. the branding block's 3 frames). Sized
+       (frame widths + gap below) to read as a clear big→small hierarchy
+       - lookbook, then post, then phone - while staying on one line
+       down to ~1280px wide and using most of the row's width instead of
+       leaving a lot of it empty on the right. */
+    .frame-row { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
+    .frame-row .frame-phone { width: 13rem; }
 
     /* Device frame gallery - auto-scrolling marquee of real screens.
        Track's content is duplicated in the markup (second copy is
@@ -556,8 +561,10 @@
     .frame-scroll .frame-phone { flex-shrink: 0; }
 
     /* Branding block's static row: lookbook reads as a real big desktop
-       screen, everything else stays phone/post sized next to it. */
-    .frame-row .frame-desktop--lookbook { width: clamp(24rem, 50vw, 40rem); }
+       screen, everything else stays phone/post sized next to it. 40vw
+       (not 50vw) so it doesn't hit its 37.5rem cap until a wider
+       viewport than the row would otherwise start wrapping at. */
+    .frame-row .frame-desktop--lookbook { width: clamp(24rem, 40vw, 37.5rem); }
 
     /* Some of the captured screenshots (BeeNext) have a real browser
        scrollbar baked into the right edge of the image itself - nudge the
@@ -575,7 +582,7 @@
        heights above (both frame-desktop-chrome and frame-post-head are
        explicitly 2.65rem) is what makes that hold all the way down. */
     .frame-post {
-      width: calc(clamp(24rem, 50vw, 40rem) / 1.6); flex-shrink: 0;
+      width: calc(clamp(24rem, 40vw, 37.5rem) / 1.6); flex-shrink: 0;
       border-radius: .9rem;
       overflow: hidden;
       background: #1b1d1a;
@@ -710,6 +717,7 @@
       .cs-head { grid-template-columns: 1fr; }
       .cs-link { justify-self: start; margin-top: 1.25rem; }
       .frame-phone { width: 11.5rem; }
+      .frame-row .frame-phone { width: 11.5rem; }
       .frame-post { width: calc(min(24rem, 88vw) / 1.6); }
       .frame-row .frame-desktop--lookbook { width: min(24rem, 88vw); }
     }
