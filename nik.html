@@ -520,6 +520,23 @@
     .frame-row { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
     .frame-row .frame-phone { width: 13rem; }
 
+    /* Mobile-only marquee variant of the row above: on desktop the 3
+       branding-block frames stay exactly as the static row was designed
+       (they fit fine at that width), but on a phone they'd just wrap
+       into a tall stack instead. Reusing .frame-scroll/.frame-scroll-track's
+       existing marquee CSS and JS (rootMargin pre-warm, focus-gated video
+       playback, the .in-view scroll-triggered start) turns this row into
+       the same kind of auto-scrolling strip as the other 3 case studies,
+       but only below 660px - these overrides null that back out above it
+       so nothing here changes at desktop widths. */
+    @media (min-width: 661px) {
+      .frame-scroll.social-scroll { overflow: visible; mask-image: none; -webkit-mask-image: none; padding: 0; }
+      .social-scroll .frame-scroll-track {
+        flex-wrap: wrap; width: auto; gap: 1.5rem; animation: none;
+      }
+      .social-scroll .frame-scroll-track > [aria-hidden="true"] { display: none; }
+    }
+
     /* Device frame gallery - auto-scrolling marquee of real screens.
        Track's content is duplicated in the markup (second copy is
        aria-hidden) so translateX(-50%) loops seamlessly back to start. */
@@ -720,6 +737,25 @@
       .frame-row .frame-phone { width: 11.5rem; }
       .frame-post { width: calc(min(24rem, 88vw) / 1.6); }
       .frame-row .frame-desktop--lookbook { width: min(24rem, 88vw); }
+
+      /* Activates the branding-block row's marquee mode - see the
+         .social-scroll comment above for why this only exists below 660px. */
+      .frame-scroll.social-scroll {
+        overflow: hidden;
+        padding: .25rem 0 1.25rem;
+        mask-image: linear-gradient(to right, transparent 0, black 3rem, black calc(100% - 3rem), transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0, black 3rem, black calc(100% - 3rem), transparent 100%);
+      }
+      .social-scroll .frame-scroll-track {
+        flex-wrap: nowrap;
+        width: max-content;
+        gap: 1.75rem;
+        animation: cs-marquee linear infinite;
+        animation-duration: var(--marquee-dur, 26s);
+        animation-play-state: paused;
+      }
+      .social-scroll .frame-scroll-track.in-view { animation-play-state: running; }
+      .social-scroll .frame-scroll-track > [aria-hidden="true"] { display: contents; }
     }
 
     /* ─── PDF MODAL ─────────────────────────────── */
@@ -2162,7 +2198,8 @@
         </a>
       </div>
 
-      <div class="frame-row">
+      <div class="frame-scroll social-scroll">
+      <div class="frame-row frame-scroll-track" style="--marquee-dur: 26s">
         <div class="frame-desktop frame-desktop--lookbook">
           <div class="frame-desktop-chrome">
             <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
@@ -2201,6 +2238,47 @@
           </div>
           <div class="frame-phone-home"></div>
         </div>
+
+        <!-- Loop-seam duplicate (mobile marquee only - see .social-scroll CSS).
+             Deliberately NOT a live copy of the lookbook/reel cycling above:
+             those are driven by data-pdf/data-cycle-interval attribute
+             selectors, so a full duplicate would double the PDF-page-render
+             and video-cycle-setup work (and, worse, would do that doubled
+             work even on desktop, where display:none hides this block but
+             doesn't stop its resources from loading). This copy is static/
+             single-source on purpose - it only has to look right for the
+             moment it's scrolled past during the loop wrap-around, and its
+             one video is a plain, non-cycling clip that the existing
+             marquee focus-observer (further down the page) already knows
+             how to play/pause like any other .frame-scroll-track frame. -->
+        <div aria-hidden="true">
+          <div class="frame-desktop frame-desktop--lookbook">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">mcbee-lookbook.pdf</div>
+            </div>
+            <div class="frame-desktop-screen"></div>
+          </div>
+          <div class="frame-post">
+            <div class="frame-post-head">
+              <span class="fp-avatar"></span>
+              <span class="fp-handle">beenext.official</span>
+            </div>
+            <div class="frame-post-screen">
+              <img src="Social media/web/beenext-av-over-ip.jpg" alt="" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-phone">
+            <div class="frame-phone-notch"></div>
+            <div class="frame-phone-screen">
+              <video muted loop playsinline preload="metadata" poster="Social media/web/beenext-avpro-edge.jpg">
+                <source src="branding and videos/Reel 2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="frame-phone-home"></div>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
 
