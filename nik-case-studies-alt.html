@@ -2665,35 +2665,66 @@ document.querySelectorAll('.cs-block').forEach(block => {
 });
 
 /* Marquee screen-strip videos (studiobee/beenext/mystudiobee frame-desktop
-   loops) - 16 of them across the three strips (8 clips x 2 copies each,
+   loops) - 26 of them across the three strips (13 clips x 2 copies each,
    the second copy being the aria-hidden clone the CSS marquee scrolls
-   through for a seamless loop). Playing all of them at once regardless of
-   visibility stacks that many concurrent video-decode sessions on top of
-   the page's other canvas/rAF/PDF.js work - exactly what `startVideoCycle`
-   above exists to avoid for the reel stack - so gate on the section
-   actually being on screen (`root: scrollEl` looks tempting for finer
-   per-frame gating, but IntersectionObserver measures against that
-   element's own bounds regardless of whether the element itself is on
-   screen, so it does not work as a "is this visible on the page" check).
-   `rootMargin` starts the whole strip's videos decoding a bit before it
-   scrolls into view so playback is already warm by the time it's visible,
-   and staggering the individual .play() calls spreads the decoder
-   start-up cost across a few frames instead of one, to smooth out the
-   stutter right at the crossing point. */
+   through for a seamless loop). The marquee only ever shows one frame as
+   "current" at a time - everything else is sliding in from the mask edge
+   or already exiting it - so playing every video in a strip at once
+   decoded as many concurrent streams as frames in the strip for something
+   the user only perceives one of.
+
+   Two IntersectionObservers per strip fix this, one nested inside the
+   other. The inner one is rooted at the strip's own .frame-scroll
+   viewport (not the page) and tracks, per frame, how much of it sits
+   inside that masked window - among whichever frames are currently
+   intersecting at all, only the single most-visible one gets to play;
+   every other frame in the strip stays paused even though the strip
+   itself is fully on screen. A per-frame root only tells you visibility
+   *within that root's own box*, not whether the root itself is on screen
+   on the page (a strip scrolled miles off-screen would still happily
+   report its frames as "intersecting" it) - so the outer observer keeps
+   doing exactly what it did before: gate the whole strip on/off based on
+   the page-level IntersectionObserver, rootMargin pre-warming a bit
+   early so the newly-focused frame is already decoding by the time the
+   strip is visible. applyFocus() re-derives the one video that should be
+   playing from both pieces of state every time either one changes. */
 document.querySelectorAll('.frame-scroll-track').forEach(track => {
   track.querySelectorAll('video:not(.cycle-slide)').forEach(v => { v.pause(); });
 });
-const marqueeVideoObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    const videos = entry.target.querySelectorAll('video:not(.cycle-slide)');
-    if (entry.isIntersecting) {
-      videos.forEach((v, i) => setTimeout(() => v.play().catch(() => {}), i * 70));
-    } else {
-      videos.forEach(v => v.pause());
+document.querySelectorAll('.frame-scroll').forEach(scrollEl => {
+  const track = scrollEl.querySelector('.frame-scroll-track');
+  if (!track) return;
+  const frames = [...track.querySelectorAll('.frame-desktop, .frame-phone')];
+  if (!frames.length) return;
+
+  const ratios = new Map(frames.map(f => [f, 0]));
+  let sectionVisible = false;
+
+  function applyFocus() {
+    let best = null, bestRatio = 0;
+    if (sectionVisible) {
+      ratios.forEach((r, f) => { if (r > bestRatio) { bestRatio = r; best = f; } });
     }
-  });
-}, { rootMargin: '400px 0px', threshold: 0 });
-document.querySelectorAll('.frame-scroll-track').forEach(track => marqueeVideoObserver.observe(track));
+    frames.forEach(f => {
+      f.querySelectorAll('video:not(.cycle-slide)').forEach(v => {
+        if (f === best) { if (v.paused) v.play().catch(() => {}); }
+        else if (!v.paused) v.pause();
+      });
+    });
+  }
+
+  const focusObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => ratios.set(e.target, e.intersectionRatio));
+    applyFocus();
+  }, { root: scrollEl, threshold: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1] });
+  frames.forEach(f => focusObserver.observe(f));
+
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { sectionVisible = e.isIntersecting; });
+    applyFocus();
+  }, { rootMargin: '400px 0px', threshold: 0 });
+  sectionObserver.observe(track);
+});
 
 /* Each strip's marquee starts paused (see .frame-scroll-track CSS) so it
    only begins scrolling once actually visible - otherwise it's already
