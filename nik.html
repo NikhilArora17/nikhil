@@ -467,75 +467,259 @@
     .work-all svg { transition: transform .3s var(--ease-out); }
     .work-all:hover svg { transform:translate(4px,-4px); }
 
-    /* Project card grid */
-    .proj-grid {
+    /* Case-study blocks - stacked, real device-framed screens */
+    .cs-block + .cs-block {
+      margin-top: 3.5rem;
+      padding-top: 3.5rem;
+      border-top: 1px solid rgba(132,154,89,.14);
+    }
+
+    .cs-head {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.25rem;
+      grid-template-columns: 3ch 1fr auto;
+      gap: 1.25rem 2rem;
+      align-items: start;
+      margin-bottom: 2.75rem;
+    }
+    .cs-name {
+      font-family:'Sora','Sora Fallback',sans-serif;
+      font-size: clamp(1.7rem, 2.8vw, 2.5rem);
+      font-weight: 600; letter-spacing: -.02em;
+      color: var(--mint); line-height: 1.1;
+    }
+    .cs-desc {
+      max-width: 38rem; margin-top: 1rem;
+      font-size: .92rem; line-height: 1.7;
+      color: rgba(230,241,226,.68);
+    }
+    .cs-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.1rem; }
+
+    .cs-link {
+      display: flex; align-items: center; gap: .75rem;
+      justify-self: end; align-self: center;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size: .7rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--sage); white-space: nowrap;
+      transition: color .3s;
+    }
+    .cs-link:hover { color: var(--lime); }
+    .cs-link:hover .pr-arr {
+      background: var(--lime); border-color: var(--lime);
+      color: var(--forest); transform: rotate(45deg);
+    }
+    .cs-link:focus-visible {
+      outline: 2px solid var(--lime); outline-offset: 4px; border-radius: 4px;
     }
 
-    .proj-card {
-      border-radius: 0.75rem;
+    /* Plain static row - for galleries short enough they don't need the
+       auto-scroll marquee (e.g. the branding block's 3 frames). Sized
+       (frame widths + gap below) to read as a clear big→small hierarchy
+       - lookbook, then post, then phone - while staying on one line
+       down to ~1280px wide and using most of the row's width instead of
+       leaving a lot of it empty on the right. */
+    .frame-row { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
+    .frame-row .frame-phone { width: 13rem; }
+
+    /* Device frame gallery - auto-scrolling marquee of real screens.
+       Track's content is duplicated in the markup (second copy is
+       aria-hidden) so translateX(-50%) loops seamlessly back to start. */
+    .frame-scroll {
       overflow: hidden;
-      border: 1px solid rgba(132,154,89,.14);
-      background: rgba(255,255,255,.02);
+      padding: .25rem 0 1.25rem;
+      mask-image: linear-gradient(to right, transparent 0, black 3rem, black calc(100% - 3rem), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, black 3rem, black calc(100% - 3rem), transparent 100%);
+    }
+    .frame-scroll-track {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.75rem;
+      width: max-content;
+      animation: cs-marquee linear infinite;
+      animation-duration: var(--marquee-dur, 36s);
+      animation-play-state: paused;
+    }
+    /* Only start scrolling once the strip is actually on screen (JS below
+       toggles this via IntersectionObserver) - otherwise the marquee runs
+       from page load and the hero frame has already scrolled past by the
+       time someone reaches this section. */
+    .frame-scroll-track.in-view { animation-play-state: running; }
+    .frame-scroll:hover .frame-scroll-track,
+    .frame-scroll:focus-within .frame-scroll-track {
+      animation-play-state: paused;
+    }
+    @keyframes cs-marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .frame-scroll-track { animation: none; }
+    }
+    .frame-scroll .frame-desktop {
+      flex-shrink: 0;
+      width: clamp(22rem, 46vw, 36rem);
+    }
+    .frame-scroll .frame-phone { flex-shrink: 0; }
+
+    /* Branding block's static row: lookbook reads as a real big desktop
+       screen, everything else stays phone/post sized next to it. 40vw
+       (not 50vw) so it doesn't hit its 37.5rem cap until a wider
+       viewport than the row would otherwise start wrapping at. */
+    .frame-row .frame-desktop--lookbook { width: clamp(24rem, 40vw, 37.5rem); }
+
+    /* Some of the captured screenshots (BeeNext) have a real browser
+       scrollbar baked into the right edge of the image itself - nudge the
+       img wider than its frame so overflow:hidden on the frame clips that
+       strip instead of showing it. */
+    .frame-desktop-screen img.crop-scrollbar { width: 101.5%; }
+    .frame-phone-screen img.crop-scrollbar { width: 103%; }
+
+    /* Instagram-post-shaped card (square, not a phone bezel) for the
+       auto-cycling social posts slideshow. Width is derived from the
+       lookbook desktop frame's own screen-height formula (its 16:10
+       screen height = its width / 1.6) rather than its own vw clamp, so
+       the square post card always lands at exactly the same total
+       height as the lookbook frame next to it - matching head-bar
+       heights above (both frame-desktop-chrome and frame-post-head are
+       explicitly 2.65rem) is what makes that hold all the way down. */
+    .frame-post {
+      width: calc(clamp(24rem, 40vw, 37.5rem) / 1.6); flex-shrink: 0;
+      border-radius: .9rem;
+      overflow: hidden;
+      background: #1b1d1a;
+      box-shadow: 0 1.25rem 3rem rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.05);
+      transition: transform .5s var(--ease-out), box-shadow .5s;
       cursor: pointer;
-      transition: border-color .35s, transform .35s var(--ease-out), box-shadow .35s;
     }
-    .proj-card:hover {
-      border-color: rgba(218,217,119,.28);
-      transform: translateY(-5px);
-      box-shadow: 0 1.25rem 3rem rgba(0,0,0,.3);
+    .frame-post:hover { transform: translateY(-6px); }
+    .frame-post-head { display: flex; align-items: center; gap: .55rem; height: 2.65rem; padding: 0 .9rem; }
+    .fp-avatar {
+      width: 1.3rem; height: 1.3rem; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--olive), var(--lime));
+    }
+    .fp-handle {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size: .68rem; font-weight: 600;
+      color: rgba(255,255,255,.7);
+    }
+    .frame-post-screen {
+      aspect-ratio: 1 / 1;
+      position: relative;
+      overflow: hidden;
+      background: rgba(0,0,0,.35);
+    }
+    .frame-post-screen img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;
     }
 
-    .proj-thumb {
-      width: 100%;
-      aspect-ratio: 16 / 10;
+    /* Desktop browser-chrome frame */
+    .frame-desktop {
+      border-radius: .9rem;
       overflow: hidden;
+      background: #1b1d1a;
+      box-shadow: 0 1.5rem 4rem rgba(0,0,0,.4), 0 .25rem .75rem rgba(0,0,0,.3), inset 0 0 0 1px rgba(255,255,255,.04);
+      transition: transform .5s var(--ease-out), box-shadow .5s;
+      cursor: pointer;
+    }
+    .frame-desktop:hover { transform: translateY(-6px); box-shadow: 0 2rem 5rem rgba(0,0,0,.45), 0 .25rem .75rem rgba(0,0,0,.35); }
+    .frame-desktop-chrome { display: flex; align-items: center; gap: .4rem; height: 2.65rem; padding: 0 .9rem; }
+    .fdc-dot { width: .5rem; height: .5rem; border-radius: 50%; background: rgba(255,255,255,.14); }
+    .fdc-dot:nth-child(1) { background: #ff5f57; opacity: .55; }
+    .fdc-dot:nth-child(2) { background: #febc2e; opacity: .55; }
+    .fdc-dot:nth-child(3) { background: #28c840; opacity: .55; }
+    .fdc-url {
+      flex: 1; margin-left: .5rem;
+      font-family:'Sora','Sora Fallback',sans-serif; font-size: .62rem; letter-spacing: .03em;
+      color: rgba(255,255,255,.35);
+      background: rgba(255,255,255,.05);
+      border-radius: 100px; padding: .3rem .9rem;
+      text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .frame-desktop-screen {
+      aspect-ratio: 16 / 10;
+      overflow: hidden; position: relative;
+      background: rgba(0,0,0,.3);
+    }
+    .frame-desktop-screen img, .frame-desktop-screen video {
+      width: 100%; height: 100%; object-fit: cover; object-position: top;
+      display: block; transition: transform .7s var(--ease-out);
+    }
+    .frame-desktop:hover .frame-desktop-screen img,
+    .frame-desktop:hover .frame-desktop-screen video { transform: scale(1.02); }
+
+    /* Phone frame */
+    .frame-phone {
+      width: 14.5rem; flex-shrink: 0;
+      border-radius: 2.1rem;
+      background: #1b1d1a;
+      padding: .6rem;
       position: relative;
-      background: rgba(0,0,0,.25);
-      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1.25rem 3rem rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.05);
+      transition: transform .5s var(--ease-out), box-shadow .5s;
+      cursor: pointer;
     }
-    .proj-thumb img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: top;
-      display: block;
-      transition: transform .6s var(--ease-out);
+    .frame-phone:hover { transform: translateY(-6px); }
+    .frame-phone-notch {
+      position: absolute; top: .95rem; left: 50%; transform: translateX(-50%);
+      width: 2.1rem; height: .38rem; border-radius: .3rem; background: #000; z-index: 2;
     }
-    .proj-card:hover .proj-thumb img { transform: scale(1.03); }
-    .proj-thumb-placeholder {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
+    .frame-phone-screen {
+      aspect-ratio: 9 / 19.5;
+      border-radius: 1.6rem;
+      overflow: hidden; position: relative;
+      background: rgba(0,0,0,.35);
     }
-    .proj-thumb-placeholder span {
-      font-family:'Sora','Sora Fallback',sans-serif; font-size:5rem; font-weight:700;
-      letter-spacing:-.04em; color:rgba(255,255,255,.08);
+    .frame-phone-screen img, .frame-phone-screen video {
+      width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;
     }
-    .proj-thumb-loading {
+    .frame-phone-home {
+      position: absolute; bottom: .55rem; left: 50%; transform: translateX(-50%);
+      width: 2.5rem; height: .2rem; border-radius: 100px; background: rgba(255,255,255,.3);
+    }
+    .frame-phone-screen--empty {
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      border: 1px dashed rgba(230,241,226,.22);
+    }
+    .frame-phone-screen--empty span {
+      font-family:'Sora','Sora Fallback',sans-serif; font-size: .64rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase; color: rgba(230,241,226,.38);
+      padding: 0 1rem;
+    }
+
+    .frame-loading {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
       background: rgba(10,51,35,.5);
     }
-    .proj-thumb-loading::after {
+    .frame-loading::after {
       content: ''; width: 1.5rem; height: 1.5rem; border-radius: 50%;
       border: 2px solid rgba(132,154,89,.3); border-top-color: var(--olive);
       animation: spin .7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .proj-info {
-      display: grid;
-      grid-template-columns: 3ch 1fr auto auto;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.1rem 1.4rem;
-      border-top: 1px solid rgba(132,154,89,.1);
+    /* Auto-cycling slideshow, shared by the lookbook desktop frame (pages
+       rendered at runtime) and the social-posts phone frame (static imgs) */
+    .cycle-slide {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover; object-position: top;
+      opacity: 0;
     }
-    .proj-card:hover .pr-name { color: var(--lime); }
-    .proj-card:hover .pr-tag  { border-color: rgba(218,217,119,.3); color: var(--lime); }
-    .proj-card:hover .pr-arr  {
-      background: var(--lime); border-color: var(--lime);
-      color: var(--forest); transform: rotate(45deg);
+    .cycle-slide.is-active { opacity: 1; }
+    /* Beats .frame-desktop-screen img / .frame-phone-screen img's own
+       transform-transition on specificity, so the crossfade isn't dropped. */
+    .frame-desktop-screen img.cycle-slide,
+    .frame-phone-screen img.cycle-slide,
+    .frame-post-screen img.cycle-slide,
+    .frame-phone-screen video.cycle-slide {
+      transition: opacity .6s var(--ease-out);
+    }
+
+    @media (max-width: 660px) {
+      .cs-head { grid-template-columns: 1fr; }
+      .cs-link { justify-self: start; margin-top: 1.25rem; }
+      .frame-phone { width: 11.5rem; }
+      .frame-row .frame-phone { width: 11.5rem; }
+      .frame-post { width: calc(min(24rem, 88vw) / 1.6); }
+      .frame-row .frame-desktop--lookbook { width: min(24rem, 88vw); }
     }
 
     /* ─── PDF MODAL ─────────────────────────────── */
@@ -1359,7 +1543,6 @@
       .nav-left, .nav-right { display: none; }
       .nav-burger { display: flex; }
       .hero-strip span:not(.avail):not(.avail-pulse) { display:none; }
-      .proj-grid { grid-template-columns: 1fr; }
       .project-row { grid-template-columns:3ch 1fr 2.2rem; }
       .pr-tag { display:none; }
       .ft-visual { min-height:400px; }
@@ -1629,7 +1812,399 @@
     </a>
   </div>
 
-  <div class="proj-grid rv" id="proj-grid"></div>
+  <div class="cs-stack rv">
+
+    <!-- 01 · Studiobee -->
+    <div class="cs-block">
+      <div class="cs-head">
+        <span class="pr-num">01</span>
+        <div>
+          <h3 class="cs-name">Studiobee</h3>
+          <div class="pr-meta">Agency Website · 2026</div>
+          <p class="cs-desc">A full agency website built end-to-end — information architecture, motion, and front-end, shipped to production for a real client rather than a redesign concept.</p>
+          <div class="cs-tags">
+            <span class="pr-tag">UI / UX</span>
+            <span class="pr-tag">Front-end</span>
+          </div>
+        </div>
+        <a href="studiobee.html" target="_blank" rel="noopener" class="cs-link">
+          <span>View full case study</span>
+          <span class="pr-arr">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <div class="frame-scroll">
+        <div class="frame-scroll-track" style="--marquee-dur: 30s">
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">studiobee.com</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <video src="studiobee/hero.mp4" muted loop playsinline preload="metadata" aria-label="Studiobee homepage hero"></video>
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">studiobee.com/#work</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <video src="studiobee/work.mp4" muted loop playsinline preload="metadata" aria-label="Studiobee selected work section"></video>
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">studiobee.com/#testimonials</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <video src="studiobee/testimonials.mp4" muted loop playsinline preload="metadata" aria-label="Studiobee testimonials section"></video>
+            </div>
+          </div>
+          <div class="frame-phone">
+            <div class="frame-phone-notch"></div>
+            <div class="frame-phone-screen">
+              <video src="studiobee/hero-mobile.mp4" muted loop playsinline preload="metadata" aria-label="Studiobee mobile homepage hero"></video>
+            </div>
+            <div class="frame-phone-home"></div>
+          </div>
+          <div class="frame-phone">
+            <div class="frame-phone-notch"></div>
+            <div class="frame-phone-screen">
+              <video src="studiobee/work-mobile.mp4" muted loop playsinline preload="metadata" aria-label="Studiobee mobile selected work section"></video>
+            </div>
+            <div class="frame-phone-home"></div>
+          </div>
+          <div aria-hidden="true" style="display:contents">
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">studiobee.com</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <video src="studiobee/hero.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">studiobee.com/#work</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <video src="studiobee/work.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">studiobee.com/#testimonials</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <video src="studiobee/testimonials.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+            <div class="frame-phone">
+              <div class="frame-phone-notch"></div>
+              <div class="frame-phone-screen">
+                <video src="studiobee/hero-mobile.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="frame-phone-home"></div>
+            </div>
+            <div class="frame-phone">
+              <div class="frame-phone-notch"></div>
+              <div class="frame-phone-screen">
+                <video src="studiobee/work-mobile.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="frame-phone-home"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 · BeeNext -->
+    <div class="cs-block">
+      <div class="cs-head">
+        <span class="pr-num">02</span>
+        <div>
+          <h3 class="cs-name">BeeNext</h3>
+          <div class="pr-meta">Brand Identity · 2025</div>
+          <p class="cs-desc">Brand identity and marketing site for an AV/IT distribution company — logo system, visual language, and a responsive site built to carry it across every screen.</p>
+          <div class="cs-tags">
+            <span class="pr-tag">Brand Identity</span>
+            <span class="pr-tag">Web Design</span>
+          </div>
+        </div>
+        <a href="beenext.html" target="_blank" rel="noopener" class="cs-link">
+          <span>View full case study</span>
+          <span class="pr-arr">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <div class="frame-scroll">
+        <div class="frame-scroll-track" style="--marquee-dur: 34s">
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">beenext.com</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <video src="beenext/hero.mp4" muted loop playsinline preload="metadata" aria-label="BeeNext homepage hero"></video>
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">beenext.com/#brands</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <video src="beenext/products.mp4" muted loop playsinline preload="metadata" aria-label="BeeNext featured brands section"></video>
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">beenext.com/#industries</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <img class="crop-scrollbar" src="bn ss/desktop-1440-industries.png" alt="BeeNext industries section" loading="lazy">
+            </div>
+          </div>
+          <div class="frame-phone">
+            <div class="frame-phone-notch"></div>
+            <div class="frame-phone-screen">
+              <video src="beenext/hero-mobile.mp4" muted loop playsinline preload="metadata" aria-label="BeeNext mobile homepage hero"></video>
+            </div>
+            <div class="frame-phone-home"></div>
+          </div>
+          <div class="frame-phone">
+            <div class="frame-phone-notch"></div>
+            <div class="frame-phone-screen">
+              <video src="beenext/brands-mobile.mp4" muted loop playsinline preload="metadata" aria-label="BeeNext mobile featured brands section"></video>
+            </div>
+            <div class="frame-phone-home"></div>
+          </div>
+          <div aria-hidden="true" style="display:contents">
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">beenext.com</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <video src="beenext/hero.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">beenext.com/#brands</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <video src="beenext/products.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">beenext.com/#industries</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <img class="crop-scrollbar" src="bn ss/desktop-1440-industries.png" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="frame-phone">
+              <div class="frame-phone-notch"></div>
+              <div class="frame-phone-screen">
+                <video src="beenext/hero-mobile.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="frame-phone-home"></div>
+            </div>
+            <div class="frame-phone">
+              <div class="frame-phone-notch"></div>
+              <div class="frame-phone-screen">
+                <video src="beenext/brands-mobile.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="frame-phone-home"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 · MyStudioBee -->
+    <div class="cs-block">
+      <div class="cs-head">
+        <span class="pr-num">03</span>
+        <div>
+          <h3 class="cs-name">MyStudioBee</h3>
+          <div class="pr-meta">Internal Ops Tool · 2026</div>
+          <p class="cs-desc">An internal ops dashboard for quoting, costing, and vendor management — designed to replace a spreadsheet-driven workflow with something the team actually wants to open.</p>
+          <div class="cs-tags">
+            <span class="pr-tag">Product Design</span>
+            <span class="pr-tag">Full-Stack</span>
+          </div>
+        </div>
+        <a href="mystudiobee.html" target="_blank" rel="noopener" class="cs-link">
+          <span>View full case study</span>
+          <span class="pr-arr">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <div class="frame-scroll">
+        <div class="frame-scroll-track" style="--marquee-dur: 26s">
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">app.mystudiobee.com/dashboard</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <video src="mystudiobee/dashboard.mp4" muted loop playsinline preload="metadata" aria-label="MyStudioBee dashboard screen"></video>
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">app.mystudiobee.com/admin/equipment-vendors</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <video src="mystudiobee/vendors.mp4" muted loop playsinline preload="metadata" aria-label="MyStudioBee equipment vendor ratings screen"></video>
+            </div>
+          </div>
+          <div class="frame-desktop">
+            <div class="frame-desktop-chrome">
+              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+              <div class="fdc-url">app.mystudiobee.com/billing/quotes</div>
+            </div>
+            <div class="frame-desktop-screen">
+              <video src="mystudiobee/quotes.mp4" muted loop playsinline preload="metadata" aria-label="MyStudioBee quotes screen"></video>
+            </div>
+          </div>
+          <div class="frame-phone">
+            <div class="frame-phone-notch"></div>
+            <div class="frame-phone-screen">
+              <video src="mystudiobee/dashboard-mobile.mp4" muted loop playsinline preload="metadata" aria-label="MyStudioBee mobile dashboard screen"></video>
+            </div>
+            <div class="frame-phone-home"></div>
+          </div>
+          <div aria-hidden="true" style="display:contents">
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">app.mystudiobee.com/dashboard</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <video src="mystudiobee/dashboard.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">app.mystudiobee.com/admin/equipment-vendors</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <video src="mystudiobee/vendors.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+            <div class="frame-desktop">
+              <div class="frame-desktop-chrome">
+                <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+                <div class="fdc-url">app.mystudiobee.com/billing/quotes</div>
+              </div>
+              <div class="frame-desktop-screen">
+                <video src="mystudiobee/quotes.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+            <div class="frame-phone">
+              <div class="frame-phone-notch"></div>
+              <div class="frame-phone-screen">
+                <video src="mystudiobee/dashboard-mobile.mp4" muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="frame-phone-home"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 · Social Media & Branding -->
+    <div class="cs-block">
+      <div class="cs-head">
+        <span class="pr-num">04</span>
+        <div>
+          <h3 class="cs-name">Social Media &amp; Branding</h3>
+          <div class="pr-meta">Motion &amp; Branding · 2025</div>
+          <p class="cs-desc">Motion graphics, logo animation, and social campaign design across multiple client accounts — reels, lookbooks, and recurring content built for platforms, not just a portfolio.</p>
+          <div class="cs-tags">
+            <span class="pr-tag">Motion Graphics</span>
+            <span class="pr-tag">Branding</span>
+          </div>
+        </div>
+        <a href="social-branding.html" target="_blank" rel="noopener" class="cs-link">
+          <span>View full case study</span>
+          <span class="pr-arr">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <div class="frame-row">
+        <div class="frame-desktop frame-desktop--lookbook">
+          <div class="frame-desktop-chrome">
+            <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
+            <div class="fdc-url">mcbee-lookbook.pdf</div>
+          </div>
+          <div class="frame-desktop-screen cycle-screen" data-pdf="branding and videos/mcbee-lookbook-1.pdf" data-cycle-interval="3400">
+            <div class="frame-loading"></div>
+          </div>
+        </div>
+        <div class="frame-post">
+          <div class="frame-post-head">
+            <span class="fp-avatar"></span>
+            <span class="fp-handle">beenext.official</span>
+          </div>
+          <div class="frame-post-screen cycle-screen" data-cycle-interval="2600">
+            <img class="cycle-slide is-active" src="Social media/web/beenext-av-over-ip.jpg" alt="BeeNext AV over IP campaign post">
+            <img class="cycle-slide" src="Social media/web/beenext-avpro-edge.jpg" alt="BeeNext AVPro Edge campaign post">
+            <img class="cycle-slide" src="Social media/web/karray-dragon-kxt18p.jpg" alt="Karray Dragon campaign post">
+            <img class="cycle-slide" src="Social media/web/karray-firenze-kh7p.jpg" alt="Karray Firenze campaign post">
+            <img class="cycle-slide" src="Social media/web/mcbee-hiring-visual-designer.jpg" alt="McBee hiring campaign post">
+            <img class="cycle-slide" src="Social media/web/mcbee-care-behind-scene.jpg" alt="McBee behind-the-scenes campaign post">
+          </div>
+        </div>
+        <div class="frame-phone">
+          <div class="frame-phone-notch"></div>
+          <div class="frame-phone-screen cycle-screen reel-cycle" data-cycle-interval="4000">
+            <video class="cycle-slide is-active" autoplay playsinline muted loop preload="auto" poster="Social media/web/beenext-avpro-edge.jpg">
+              <source src="branding and videos/Reel 2.mp4" type="video/mp4">
+            </video>
+            <video class="cycle-slide" playsinline muted loop preload="metadata" poster="Social media/web/mcbee-planning-phase.jpg">
+              <source src="branding and videos/15 year logo animation final.mp4" type="video/mp4">
+            </video>
+            <video class="cycle-slide" playsinline muted loop preload="metadata" poster="Social media/web/karray-kgear-gt8.jpg">
+              <source src="branding and videos/logo animation.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="frame-phone-home"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
 </div>
 </section>
@@ -1994,111 +2569,172 @@ Something with a little bounce.</p>
 </script>
 
 <script>
-/* ── PROJECT CARDS (pure DOM, no pdfjsLib/gsap dependency) ───────────────
-   Kept ahead of the pdf.js/gsap/ScrollTrigger <script> tags (now further
-   down, after every other gsap/pdfjsLib-independent script too - see the
-   comment near those tags) on purpose: #proj-grid is empty in the static
-   HTML, and when this code was gated behind those libraries loading first,
-   the grid rendered empty then popped in once they finished. The
-   pdfjsLib-dependent thumbnail render + PDF viewer live in a later script,
-   after pdf.js has loaded. */
-const PROJECTS = [
-  { num:'01', name:'Studiobee', meta:'Agency Website · 2026',  tag:'UI / UX · Front-end', img:'studiobee/1.png', url:'studiobee.html' },
-  { num:'02', name:'BeeNext',   meta:'Brand Identity · 2025',  tag:'Brand Identity',      img:'case studies/beenext-thumb.jpg', url:'beenext.html'   },
-  { num:'03', name:'MyStudioBee', meta:'Internal Ops Tool · 2026', tag:'Product Design · Full-Stack', img:'mystudiobee/dashboard.png', url:'mystudiobee.html' },
-  { num:'04', name:'Social Media & Branding', meta:'Motion & Branding · 2025', tag:'Motion Graphics · Branding', img:'Social media/web/beenext-8k-gaming.jpg', url:'social-branding.html' },
-];
+/* ── CASE-STUDY BLOCKS (static markup - just interactivity) ─────────────
+   Markup for all four blocks is static HTML in #work now (not DOM-built
+   from a data array like the old compact grid). Everything here is
+   passive/automatic by design - reels autoplay (muted, so the browser
+   allows it without a user gesture), screen strips auto-scroll via the
+   CSS marquee on .frame-scroll-track, and .cycle-screen slideshows
+   auto-advance via startCycle() below. Nothing requires a click.
+   startCycle is a plain function (not IIFE-scoped) so the later
+   pdf.js-dependent script can also call it once it renders the
+   lookbook's pages. */
 
-function makeArrowSVG() {
-  const svg  = document.createElementNS('http://www.w3.org/2000/svg','svg');
-  svg.setAttribute('width','12'); svg.setAttribute('height','12');
-  svg.setAttribute('viewBox','0 0 12 12'); svg.setAttribute('fill','none');
-  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-  path.setAttribute('d','M1 11L11 1M11 1H4M11 1v7');
-  path.setAttribute('stroke','currentColor');
-  path.setAttribute('stroke-width','1.5');
-  path.setAttribute('stroke-linecap','round');
-  path.setAttribute('stroke-linejoin','round');
-  svg.appendChild(path);
-  return svg;
+function startCycle(screen, intervalMs) {
+  const slides = screen.querySelectorAll('.cycle-slide');
+  if (slides.length < 2) return;
+  let idx = Math.max(0, [...slides].findIndex(s => s.classList.contains('is-active')));
+  setInterval(() => {
+    slides[idx].classList.remove('is-active');
+    idx = (idx + 1) % slides.length;
+    slides[idx].classList.add('is-active');
+  }, intervalMs);
 }
 
-const grid = document.getElementById('proj-grid');
+/* Same idea as startCycle, but for a stack of <video> elements: only the
+   active one is ever playing - the rest sit paused so they're not all
+   competing for bandwidth/CPU at once. */
+function startVideoCycle(screen, intervalMs) {
+  const videos = screen.querySelectorAll('video.cycle-slide');
+  if (videos.length < 2) return;
+  let idx = Math.max(0, [...videos].findIndex(v => v.classList.contains('is-active')));
+  setInterval(() => {
+    videos[idx].classList.remove('is-active');
+    videos[idx].pause();
+    idx = (idx + 1) % videos.length;
+    const next = videos[idx];
+    next.classList.add('is-active');
+    next.currentTime = 0;
+    next.play().catch(() => {});
+  }, intervalMs);
+}
 
-PROJECTS.forEach((p, i) => {
-  const card = document.createElement('div');
-  card.className = 'proj-card rv' + (i > 0 ? ' d' + Math.min(i,3) : '');
+/* Branding block (lookbook PDF pages + social-post slideshow + reel
+   video) - same "don't pay for what's off screen" reasoning as the
+   marquee videos below, just applied here too: rendering 5 PDF pages to
+   canvas and running two setInterval-driven cycles is real main-thread
+   work, and the reel's `autoplay` attribute would otherwise start
+   decoding a ~10MB video immediately regardless of scroll position. Lazy
+   -init everything on first approach (rootMargin pre-warms it a bit
+   before it's actually visible so there's no pop-in), and pause/resume
+   just the reel video on every subsequent visibility change since the
+   two `setInterval` cycles themselves are cheap class-toggling either way. */
+const frameRow = document.querySelector('.frame-row');
+if (frameRow) {
+  frameRow.querySelectorAll('.reel-cycle video.cycle-slide').forEach(v => v.pause());
+  let brandingCyclesStarted = false;
+  const brandingObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const activeReel = frameRow.querySelector('.reel-cycle video.cycle-slide.is-active');
+      if (entry.isIntersecting) {
+        if (!brandingCyclesStarted) {
+          brandingCyclesStarted = true;
+          document.querySelectorAll('.cycle-screen[data-cycle-interval]:not([data-pdf]):not(.reel-cycle)').forEach(screen => {
+            startCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 2800);
+          });
+          document.querySelectorAll('.reel-cycle[data-cycle-interval]').forEach(screen => {
+            startVideoCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 4000);
+          });
+          if (typeof initLookbookPdf === 'function') initLookbookPdf();
+        }
+        if (activeReel) activeReel.play().catch(() => {});
+      } else if (activeReel) {
+        activeReel.pause();
+      }
+    });
+  }, { rootMargin: '400px 0px', threshold: 0 });
+  brandingObserver.observe(frameRow);
+}
 
-  /* Thumb */
-  const thumb = document.createElement('div');
-  thumb.className = 'proj-thumb';
-  if (p.img) {
-    const img = document.createElement('img');
-    img.src = p.img;
-    img.alt = p.name;
-    thumb.appendChild(img);
-  } else if (p.pdf) {
-    const img = document.createElement('img');
-    img.className = 'pdf-thumb-img';
-    img.dataset.pdf = p.pdf;
-    img.alt = p.name;
-    const loader = document.createElement('div');
-    loader.className = 'proj-thumb-loading';
-    thumb.appendChild(img);
-    thumb.appendChild(loader);
-  } else {
-    const ph = document.createElement('div');
-    ph.className = 'proj-thumb-placeholder';
-    ph.style.background = p.bg;
-    const n = document.createElement('span');
-    n.textContent = p.num;
-    ph.appendChild(n);
-    thumb.appendChild(ph);
-  }
-
-  /* Info row */
-  const info = document.createElement('div');
-  info.className = 'proj-info';
-
-  const numEl = document.createElement('span');
-  numEl.className = 'pr-num';
-  numEl.textContent = p.num;
-
-  const main = document.createElement('div');
-  main.className = 'pr-main';
-  const nameEl = document.createElement('div');
-  nameEl.className = 'pr-name';
-  nameEl.textContent = p.name;
-  const metaEl = document.createElement('div');
-  metaEl.className = 'pr-meta';
-  metaEl.textContent = p.meta;
-  main.appendChild(nameEl);
-  main.appendChild(metaEl);
-
-  const tagEl = document.createElement('span');
-  tagEl.className = 'pr-tag';
-  tagEl.textContent = p.tag;
-
-  const arr = document.createElement('div');
-  arr.className = 'pr-arr';
-  arr.appendChild(makeArrowSVG());
-
-  info.appendChild(numEl);
-  info.appendChild(main);
-  info.appendChild(tagEl);
-  info.appendChild(arr);
-  card.appendChild(thumb);
-  card.appendChild(info);
-
-  if (p.url) card.addEventListener('click', () => window.open(p.url, '_blank'));
-  else if (p.pdf) card.addEventListener('click', () => openViewer(p.pdf, p.name));
-  card.addEventListener('mouseenter', () => document.body.classList.add('hov'));
-  card.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
-  grid.appendChild(card);
+document.querySelectorAll('.cs-link, .frame-desktop, .frame-phone, .frame-post').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
 });
 
-/* Scroll-reveal new cards */
-document.querySelectorAll('#proj-grid .rv').forEach(el => obs.observe(el));
+/* Clicking any screen preview (not just the "View full case study" link)
+   opens that block's case study, same as the link itself - the previews
+   already show hover feedback via the custom cursor above, so they need
+   to actually be clickable to not feel broken. */
+document.querySelectorAll('.cs-block').forEach(block => {
+  const link = block.querySelector('.cs-link');
+  if (!link) return;
+  const href = link.getAttribute('href');
+  block.querySelectorAll('.frame-desktop, .frame-phone, .frame-post').forEach(frame => {
+    frame.addEventListener('click', () => window.open(href, '_blank', 'noopener'));
+  });
+});
+
+/* Marquee screen-strip videos (studiobee/beenext/mystudiobee frame-desktop
+   loops) - 26 of them across the three strips (13 clips x 2 copies each,
+   the second copy being the aria-hidden clone the CSS marquee scrolls
+   through for a seamless loop). The marquee only ever shows one frame as
+   "current" at a time - everything else is sliding in from the mask edge
+   or already exiting it - so playing every video in a strip at once
+   decoded as many concurrent streams as frames in the strip for something
+   the user only perceives one of.
+
+   Two IntersectionObservers per strip fix this, one nested inside the
+   other. The inner one is rooted at the strip's own .frame-scroll
+   viewport (not the page) and tracks, per frame, how much of it sits
+   inside that masked window - among whichever frames are currently
+   intersecting at all, only the single most-visible one gets to play;
+   every other frame in the strip stays paused even though the strip
+   itself is fully on screen. A per-frame root only tells you visibility
+   *within that root's own box*, not whether the root itself is on screen
+   on the page (a strip scrolled miles off-screen would still happily
+   report its frames as "intersecting" it) - so the outer observer keeps
+   doing exactly what it did before: gate the whole strip on/off based on
+   the page-level IntersectionObserver, rootMargin pre-warming a bit
+   early so the newly-focused frame is already decoding by the time the
+   strip is visible. applyFocus() re-derives the one video that should be
+   playing from both pieces of state every time either one changes. */
+document.querySelectorAll('.frame-scroll-track').forEach(track => {
+  track.querySelectorAll('video:not(.cycle-slide)').forEach(v => { v.pause(); });
+});
+document.querySelectorAll('.frame-scroll').forEach(scrollEl => {
+  const track = scrollEl.querySelector('.frame-scroll-track');
+  if (!track) return;
+  const frames = [...track.querySelectorAll('.frame-desktop, .frame-phone')];
+  if (!frames.length) return;
+
+  const ratios = new Map(frames.map(f => [f, 0]));
+  let sectionVisible = false;
+
+  function applyFocus() {
+    let best = null, bestRatio = 0;
+    if (sectionVisible) {
+      ratios.forEach((r, f) => { if (r > bestRatio) { bestRatio = r; best = f; } });
+    }
+    frames.forEach(f => {
+      f.querySelectorAll('video:not(.cycle-slide)').forEach(v => {
+        if (f === best) { if (v.paused) v.play().catch(() => {}); }
+        else if (!v.paused) v.pause();
+      });
+    });
+  }
+
+  const focusObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => ratios.set(e.target, e.intersectionRatio));
+    applyFocus();
+  }, { root: scrollEl, threshold: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1] });
+  frames.forEach(f => focusObserver.observe(f));
+
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { sectionVisible = e.isIntersecting; });
+    applyFocus();
+  }, { rootMargin: '400px 0px', threshold: 0 });
+  sectionObserver.observe(track);
+});
+
+/* Each strip's marquee starts paused (see .frame-scroll-track CSS) so it
+   only begins scrolling once actually visible - otherwise it's already
+   cycled past the hero frame by the time someone scrolls down to it. */
+const marqueeObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    entry.target.classList.toggle('in-view', entry.isIntersecting);
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.frame-scroll-track').forEach(track => marqueeObserver.observe(track));
 </script>
 
 <!-- ── PAINTERLY HERO BACKDROP ───────────────── -->
@@ -3082,28 +3718,48 @@ async function getDoc(pdfPath) {
   return pdfCache[pdfPath];
 }
 
-/* Render PDF thumbnails */
-document.querySelectorAll('.pdf-thumb-img').forEach(async img => {
-  const loader  = img.nextElementSibling;
-  const pdfPath = img.dataset.pdf;
-  try {
-    /* Cache the document now so the viewer opens instantly */
-    const pdf    = await getDoc(pdfPath);
-    const page   = await pdf.getPage(1);
-    const vp     = page.getViewport({ scale: 1 });
-    const scale  = (Math.min(img.parentElement.offsetWidth || 600, 800) * 2) / vp.width;
-    const scaled = page.getViewport({ scale });
-    const cvs    = document.createElement('canvas');
-    cvs.width    = scaled.width;
-    cvs.height   = scaled.height;
-    await page.render({ canvasContext: cvs.getContext('2d'), viewport: scaled }).promise;
-    img.src = cvs.toDataURL('image/jpeg', 0.88);
-    img.onload = () => { if (loader) loader.remove(); };
-  } catch(e) {
-    if (loader) loader.remove();
-    img.parentElement.style.background = 'rgba(10,51,35,0.6)';
-  }
-});
+/* Render the lookbook desktop frame's pages, then let startCycle()
+   (defined in the case-study-blocks script above) auto-advance through
+   them - same "keeps changing pages" treatment as the reels/social
+   posts, no click needed. Wrapped as a function (instead of running
+   immediately) so the branding-block IntersectionObserver above can
+   defer this until the frame is actually about to scroll into view -
+   rendering up to 5 pages to canvas on every page load regardless of
+   scroll position was doing real main-thread work nobody was looking at
+   yet. */
+let lookbookPdfStarted = false;
+function initLookbookPdf() {
+  if (lookbookPdfStarted) return;
+  lookbookPdfStarted = true;
+  document.querySelectorAll('.cycle-screen[data-pdf]').forEach(async screen => {
+    const loader  = screen.querySelector('.frame-loading');
+    const pdfPath = screen.dataset.pdf;
+    try {
+      const pdf   = await getDoc(pdfPath);
+      const pages = Math.min(pdf.numPages, 5);
+      for (let i = 1; i <= pages; i++) {
+        const page   = await pdf.getPage(i);
+        const vp     = page.getViewport({ scale: 1 });
+        const scale  = (Math.min(screen.offsetWidth || 600, 800) * 2) / vp.width;
+        const scaled = page.getViewport({ scale });
+        const cvs    = document.createElement('canvas');
+        cvs.width    = scaled.width;
+        cvs.height   = scaled.height;
+        await page.render({ canvasContext: cvs.getContext('2d'), viewport: scaled }).promise;
+        const img = document.createElement('img');
+        img.className = 'cycle-slide' + (i === 1 ? ' is-active' : '');
+        img.alt = 'McBee lookbook page ' + i;
+        img.src = cvs.toDataURL('image/jpeg', 0.85);
+        screen.appendChild(img);
+      }
+      if (loader) loader.remove();
+      startCycle(screen, parseInt(screen.dataset.cycleInterval, 10) || 3400);
+    } catch(e) {
+      if (loader) loader.remove();
+      screen.style.background = 'rgba(10,51,35,0.6)';
+    }
+  });
+}
 
 /* ── PDF VIEWER ── */
 const modal     = document.getElementById('pdf-modal');
