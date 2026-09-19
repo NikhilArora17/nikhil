@@ -2728,13 +2728,23 @@ document.querySelectorAll('.frame-scroll').forEach(scrollEl => {
 
 /* Each strip's marquee starts paused (see .frame-scroll-track CSS) so it
    only begins scrolling once actually visible - otherwise it's already
-   cycled past the hero frame by the time someone scrolls down to it. */
+   cycled past the hero frame by the time someone scrolls down to it.
+   Observes .frame-scroll (the masked viewport, sized to its normal layout
+   box) rather than .frame-scroll-track itself: the track is width:
+   max-content, i.e. as wide as its full unduplicated content (well over
+   3000px), so a ratio threshold measured against the track's own area
+   only clears 0.15 by coincidence of desktop viewports being wide enough
+   - on a ~390px mobile viewport the geometric overlap never reaches 15%
+   of that much wider track, so .in-view never gets added and the
+   animation stays paused forever (confirmed live: worked at 1440px,
+   silently stuck at mobile widths). */
 const marqueeObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    entry.target.classList.toggle('in-view', entry.isIntersecting);
+    const track = entry.target.querySelector('.frame-scroll-track');
+    if (track) track.classList.toggle('in-view', entry.isIntersecting);
   });
 }, { threshold: 0.15 });
-document.querySelectorAll('.frame-scroll-track').forEach(track => marqueeObserver.observe(track));
+document.querySelectorAll('.frame-scroll').forEach(scrollEl => marqueeObserver.observe(scrollEl));
 </script>
 
 <!-- ── PAINTERLY HERO BACKDROP ───────────────── -->
