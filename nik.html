@@ -56,6 +56,10 @@
 
       --ease-out: cubic-bezier(.22,1,.36,1);
       --ease-in-out: cubic-bezier(.65,0,.35,1);
+
+      /* How far the ribbon's opaque box reaches down into #play. The ribbon's margin-bottom and
+         #play's padding-top both derive from this, so the Play heading can't end up under it. */
+      --mz-overlap: 11.25rem;
     }
 
     /* ─── RESET ───────────────────────────────── */
@@ -984,7 +988,7 @@
          full-bleed ribbon keeps the exact 1440 aspect (no flattening) instead of
          freezing at 360px tall while the viewport keeps widening. */
       max-height: 22.5rem;
-      margin: -4.375rem 0 -11.25rem;
+      margin: -4.375rem 0 calc(-1 * var(--mz-overlap));
       pointer-events: none;
       overflow: hidden;
       /* color split now lives in the SVG fills (.mz-fill-top / .mz-fill-bottom), traced along the same curve as the band itself */
@@ -1359,7 +1363,11 @@
     #play {
       background: var(--forest);
       color: var(--mint);
-      padding-top: 10rem;   /* clears the ribbon's lowest curve point with a clean gap - text sits fully below it instead of straddling the seam */
+      /* Clears the ribbon's opaque box with a clean gap - text sits fully below it instead of straddling the seam.
+         Desktop's ribbon reaches 11.25rem into this section (10rem of padding alone left the top of the
+         heading 1.25rem under it, clipping the glyph tops); max() keeps mobile at 10rem, where the ribbon's
+         own overlap is a much smaller fixed px value. */
+      padding-top: max(10rem, calc(var(--mz-overlap) + 1.25rem));
     }
     #play .sec-label { color: var(--olive); }
     #play .sec-heading { color: var(--mint); }
@@ -1638,11 +1646,12 @@
          naturally spaces the evenly-distributed icons further apart too. Margins scaled
          proportionally with the height increase to keep the same relative overlap into
          About/Play. */
+      :root { --mz-overlap: 67px; }
       .marquee-zone {
         height: 30vw;
         min-height: 0;
         max-height: none;
-        margin: -34px 0 -67px;
+        margin: -34px 0 calc(-1 * var(--mz-overlap));
       }
       /* Mobile-only: icons sit centered on the path's centerline, but since they're
          upright (not rotated to the local tangent), the band's diagonal cross-section
