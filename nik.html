@@ -553,7 +553,6 @@
     /* Static preview: each tile shows one real screen - the first frame of the strip,
        or (Social Media & Branding) just the phone. The rest of the old marquee is hidden. */
     .frame-scroll-track > :not(:first-child) { display: none; }
-    .social-scroll .frame-scroll-track > :first-child { display: none; }
     .social-scroll .frame-scroll-track > .frame-phone { display: block; }
     /* Only start scrolling once the strip is actually on screen (JS below
        toggles this via IntersectionObserver) - otherwise the marquee runs
@@ -1867,7 +1866,7 @@
               <div class="fdc-url">app.mystudiobee.com/dashboard</div>
             </div>
             <div class="frame-desktop-screen">
-              <video src="videos/mystudiobee-video-1792219616850.webm" muted loop playsinline preload="metadata" aria-label="MyStudioBee dashboard screen"></video>
+              <video src="videos/mystudiobee-video-1792219616850.webm" muted loop playsinline preload="auto" aria-label="MyStudioBee dashboard screen"></video>
             </div>
           </div>
           <div class="frame-desktop">
@@ -1876,7 +1875,7 @@
               <div class="fdc-url">app.mystudiobee.com/admin/equipment-vendors</div>
             </div>
             <div class="frame-desktop-screen">
-              <video src="mystudiobee/vendors.mp4" muted loop playsinline preload="metadata" aria-label="MyStudioBee equipment vendor ratings screen"></video>
+              <video src="mystudiobee/vendors.mp4" muted loop playsinline preload="none" aria-label="MyStudioBee equipment vendor ratings screen"></video>
             </div>
           </div>
           <div class="frame-desktop">
@@ -1885,13 +1884,13 @@
               <div class="fdc-url">app.mystudiobee.com/billing/quotes</div>
             </div>
             <div class="frame-desktop-screen">
-              <video src="mystudiobee/quotes.mp4" muted loop playsinline preload="metadata" aria-label="MyStudioBee quotes screen"></video>
+              <video src="mystudiobee/quotes.mp4" muted loop playsinline preload="none" aria-label="MyStudioBee quotes screen"></video>
             </div>
           </div>
           <div class="frame-phone">
             <div class="frame-phone-notch"></div>
             <div class="frame-phone-screen">
-              <video src="mystudiobee/dashboard-mobile.mp4" muted loop playsinline preload="metadata" aria-label="MyStudioBee mobile dashboard screen"></video>
+              <video src="mystudiobee/dashboard-mobile.mp4" muted loop playsinline preload="none" aria-label="MyStudioBee mobile dashboard screen"></video>
             </div>
             <div class="frame-phone-home"></div>
           </div>
@@ -1902,7 +1901,7 @@
                 <div class="fdc-url">app.mystudiobee.com/dashboard</div>
               </div>
               <div class="frame-desktop-screen">
-                <video src="mystudiobee/dashboard.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="mystudiobee/dashboard.mp4" muted loop playsinline preload="none"></video>
               </div>
             </div>
             <div class="frame-desktop">
@@ -1911,7 +1910,7 @@
                 <div class="fdc-url">app.mystudiobee.com/admin/equipment-vendors</div>
               </div>
               <div class="frame-desktop-screen">
-                <video src="mystudiobee/vendors.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="mystudiobee/vendors.mp4" muted loop playsinline preload="none"></video>
               </div>
             </div>
             <div class="frame-desktop">
@@ -1920,13 +1919,13 @@
                 <div class="fdc-url">app.mystudiobee.com/billing/quotes</div>
               </div>
               <div class="frame-desktop-screen">
-                <video src="mystudiobee/quotes.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="mystudiobee/quotes.mp4" muted loop playsinline preload="none"></video>
               </div>
             </div>
             <div class="frame-phone">
               <div class="frame-phone-notch"></div>
               <div class="frame-phone-screen">
-                <video src="mystudiobee/dashboard-mobile.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="mystudiobee/dashboard-mobile.mp4" muted loop playsinline preload="none"></video>
               </div>
               <div class="frame-phone-home"></div>
             </div>
@@ -1961,7 +1960,7 @@
               <div class="fdc-url">beenext.com</div>
             </div>
             <div class="frame-desktop-screen">
-              <video src="videos/beenext-video-1792219602845.webm" muted loop playsinline preload="metadata" aria-label="BeeNext homepage hero"></video>
+              <video src="videos/beenext-video-1792219602845.webm" muted loop playsinline preload="auto" aria-label="BeeNext homepage hero"></video>
             </div>
           </div>
           <div class="frame-desktop">
@@ -1970,7 +1969,7 @@
               <div class="fdc-url">beenext.com/#brands</div>
             </div>
             <div class="frame-desktop-screen">
-              <video src="beenext/products.mp4" muted loop playsinline preload="metadata" aria-label="BeeNext featured brands section"></video>
+              <video src="beenext/products.mp4" muted loop playsinline preload="none" aria-label="BeeNext featured brands section"></video>
             </div>
           </div>
           <div class="frame-desktop">
@@ -1985,14 +1984,14 @@
           <div class="frame-phone">
             <div class="frame-phone-notch"></div>
             <div class="frame-phone-screen">
-              <video src="beenext/hero-mobile.mp4" muted loop playsinline preload="metadata" aria-label="BeeNext mobile homepage hero"></video>
+              <video src="beenext/hero-mobile.mp4" muted loop playsinline preload="none" aria-label="BeeNext mobile homepage hero"></video>
             </div>
             <div class="frame-phone-home"></div>
           </div>
           <div class="frame-phone">
             <div class="frame-phone-notch"></div>
             <div class="frame-phone-screen">
-              <video src="beenext/brands-mobile.mp4" muted loop playsinline preload="metadata" aria-label="BeeNext mobile featured brands section"></video>
+              <video src="beenext/brands-mobile.mp4" muted loop playsinline preload="none" aria-label="BeeNext mobile featured brands section"></video>
             </div>
             <div class="frame-phone-home"></div>
           </div>
@@ -2003,7 +2002,7 @@
                 <div class="fdc-url">beenext.com</div>
               </div>
               <div class="frame-desktop-screen">
-                <video src="beenext/hero.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="beenext/hero.mp4" muted loop playsinline preload="none"></video>
               </div>
             </div>
             <div class="frame-desktop">
@@ -2012,7 +2011,7 @@
                 <div class="fdc-url">beenext.com/#brands</div>
               </div>
               <div class="frame-desktop-screen">
-                <video src="beenext/products.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="beenext/products.mp4" muted loop playsinline preload="none"></video>
               </div>
             </div>
             <div class="frame-desktop">
@@ -2027,14 +2026,14 @@
             <div class="frame-phone">
               <div class="frame-phone-notch"></div>
               <div class="frame-phone-screen">
-                <video src="beenext/hero-mobile.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="beenext/hero-mobile.mp4" muted loop playsinline preload="none"></video>
               </div>
               <div class="frame-phone-home"></div>
             </div>
             <div class="frame-phone">
               <div class="frame-phone-notch"></div>
               <div class="frame-phone-screen">
-                <video src="beenext/brands-mobile.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="beenext/brands-mobile.mp4" muted loop playsinline preload="none"></video>
               </div>
               <div class="frame-phone-home"></div>
             </div>
@@ -2069,7 +2068,7 @@
               <div class="fdc-url">studiobee.com</div>
             </div>
             <div class="frame-desktop-screen">
-              <video src="videos/studiobee-video-1792226568950.webm" muted loop playsinline preload="metadata" aria-label="Studiobee homepage hero"></video>
+              <video src="videos/studiobee-video-1792226568950.webm" muted loop playsinline preload="auto" aria-label="Studiobee homepage hero"></video>
             </div>
           </div>
           <div class="frame-desktop">
@@ -2078,7 +2077,7 @@
               <div class="fdc-url">studiobee.com/#work</div>
             </div>
             <div class="frame-desktop-screen">
-              <video src="studiobee/work.mp4" muted loop playsinline preload="metadata" aria-label="Studiobee selected work section"></video>
+              <video src="studiobee/work.mp4" muted loop playsinline preload="none" aria-label="Studiobee selected work section"></video>
             </div>
           </div>
           <div class="frame-desktop">
@@ -2087,20 +2086,20 @@
               <div class="fdc-url">studiobee.com/#testimonials</div>
             </div>
             <div class="frame-desktop-screen">
-              <video src="studiobee/testimonials.mp4" muted loop playsinline preload="metadata" aria-label="Studiobee testimonials section"></video>
+              <video src="studiobee/testimonials.mp4" muted loop playsinline preload="none" aria-label="Studiobee testimonials section"></video>
             </div>
           </div>
           <div class="frame-phone">
             <div class="frame-phone-notch"></div>
             <div class="frame-phone-screen">
-              <video src="studiobee/hero-mobile.mp4" muted loop playsinline preload="metadata" aria-label="Studiobee mobile homepage hero"></video>
+              <video src="studiobee/hero-mobile.mp4" muted loop playsinline preload="none" aria-label="Studiobee mobile homepage hero"></video>
             </div>
             <div class="frame-phone-home"></div>
           </div>
           <div class="frame-phone">
             <div class="frame-phone-notch"></div>
             <div class="frame-phone-screen">
-              <video src="studiobee/work-mobile.mp4" muted loop playsinline preload="metadata" aria-label="Studiobee mobile selected work section"></video>
+              <video src="studiobee/work-mobile.mp4" muted loop playsinline preload="none" aria-label="Studiobee mobile selected work section"></video>
             </div>
             <div class="frame-phone-home"></div>
           </div>
@@ -2111,7 +2110,7 @@
                 <div class="fdc-url">studiobee.com</div>
               </div>
               <div class="frame-desktop-screen">
-                <video src="studiobee/hero.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="studiobee/hero.mp4" muted loop playsinline preload="none"></video>
               </div>
             </div>
             <div class="frame-desktop">
@@ -2120,7 +2119,7 @@
                 <div class="fdc-url">studiobee.com/#work</div>
               </div>
               <div class="frame-desktop-screen">
-                <video src="studiobee/work.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="studiobee/work.mp4" muted loop playsinline preload="none"></video>
               </div>
             </div>
             <div class="frame-desktop">
@@ -2129,20 +2128,20 @@
                 <div class="fdc-url">studiobee.com/#testimonials</div>
               </div>
               <div class="frame-desktop-screen">
-                <video src="studiobee/testimonials.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="studiobee/testimonials.mp4" muted loop playsinline preload="none"></video>
               </div>
             </div>
             <div class="frame-phone">
               <div class="frame-phone-notch"></div>
               <div class="frame-phone-screen">
-                <video src="studiobee/hero-mobile.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="studiobee/hero-mobile.mp4" muted loop playsinline preload="none"></video>
               </div>
               <div class="frame-phone-home"></div>
             </div>
             <div class="frame-phone">
               <div class="frame-phone-notch"></div>
               <div class="frame-phone-screen">
-                <video src="studiobee/work-mobile.mp4" muted loop playsinline preload="metadata"></video>
+                <video src="studiobee/work-mobile.mp4" muted loop playsinline preload="none"></video>
               </div>
               <div class="frame-phone-home"></div>
             </div>
@@ -2170,84 +2169,27 @@
       </div>
 
       <div class="frame-scroll social-scroll">
-      <div class="frame-row frame-scroll-track" style="--marquee-dur: 26s">
-        <div class="frame-desktop frame-desktop--lookbook">
-          <div class="frame-desktop-chrome">
-            <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
-            <div class="fdc-url">mcbee-lookbook.pdf</div>
-          </div>
-          <div class="frame-desktop-screen cycle-screen" data-pdf="branding and videos/mcbee-lookbook-1.pdf" data-cycle-interval="3400">
-            <div class="frame-loading"></div>
-          </div>
-        </div>
-        <div class="frame-post">
-          <div class="frame-post-head">
-            <span class="fp-avatar"></span>
-            <span class="fp-handle">beenext.official</span>
-          </div>
-          <div class="frame-post-screen cycle-screen" data-cycle-interval="2600">
-            <img class="cycle-slide is-active" src="Social media/web/beenext-av-over-ip.jpg" alt="BeeNext AV over IP campaign post">
-            <img class="cycle-slide" src="Social media/web/beenext-avpro-edge.jpg" alt="BeeNext AVPro Edge campaign post">
-            <img class="cycle-slide" src="Social media/web/karray-dragon-kxt18p.jpg" alt="Karray Dragon campaign post">
-            <img class="cycle-slide" src="Social media/web/karray-firenze-kh7p.jpg" alt="Karray Firenze campaign post">
-            <img class="cycle-slide" src="Social media/web/mcbee-hiring-visual-designer.jpg" alt="McBee hiring campaign post">
-            <img class="cycle-slide" src="Social media/web/mcbee-care-behind-scene.jpg" alt="McBee behind-the-scenes campaign post">
-          </div>
-        </div>
+      <div class="frame-row frame-scroll-track">
         <div class="frame-phone">
           <div class="frame-phone-notch"></div>
           <div class="frame-phone-screen cycle-screen reel-cycle" data-cycle-interval="4000">
-            <video class="cycle-slide is-active" autoplay playsinline muted loop preload="auto" poster="Social media/web/beenext-avpro-edge.jpg">
-              <source src="branding and videos/Reel 2.mp4" type="video/mp4">
-            </video>
-            <video class="cycle-slide" playsinline muted loop preload="metadata" poster="Social media/web/mcbee-planning-phase.jpg">
+            <video class="cycle-slide is-active" playsinline muted loop preload="auto" aria-label="15-year anniversary logo animation">
               <source src="branding and videos/15 year logo animation final.mp4" type="video/mp4">
             </video>
-            <video class="cycle-slide" playsinline muted loop preload="metadata" poster="Social media/web/karray-kgear-gt8.jpg">
+            <video class="cycle-slide" playsinline muted loop preload="none" aria-label="Logo animation">
               <source src="branding and videos/logo animation.mp4" type="video/mp4">
+            </video>
+            <video class="cycle-slide" playsinline muted loop preload="none" aria-label="Karray India brand film">
+              <source src="branding and videos/karray india final part 3.mp4" type="video/mp4">
+            </video>
+            <video class="cycle-slide" playsinline muted loop preload="none" aria-label="McBee Christmas social post">
+              <source src="branding and videos/mcbee christmas post_2.mp4" type="video/mp4">
+            </video>
+            <video class="cycle-slide" playsinline muted loop preload="none" aria-label="McBee New Year social post">
+              <source src="branding and videos/mcbee new year final.mp4" type="video/mp4">
             </video>
           </div>
           <div class="frame-phone-home"></div>
-        </div>
-
-        <!-- Loop-seam duplicate (mobile marquee only - see .social-scroll CSS).
-             Deliberately NOT a live copy of the lookbook/reel cycling above:
-             those are driven by data-pdf/data-cycle-interval attribute
-             selectors, so a full duplicate would double the PDF-page-render
-             and video-cycle-setup work (and, worse, would do that doubled
-             work even on desktop, where display:none hides this block but
-             doesn't stop its resources from loading). This copy is static/
-             single-source on purpose - it only has to look right for the
-             moment it's scrolled past during the loop wrap-around, and its
-             one video is a plain, non-cycling clip that the existing
-             marquee focus-observer (further down the page) already knows
-             how to play/pause like any other .frame-scroll-track frame. -->
-        <div aria-hidden="true">
-          <div class="frame-desktop frame-desktop--lookbook">
-            <div class="frame-desktop-chrome">
-              <span class="fdc-dot"></span><span class="fdc-dot"></span><span class="fdc-dot"></span>
-              <div class="fdc-url">mcbee-lookbook.pdf</div>
-            </div>
-            <div class="frame-desktop-screen"></div>
-          </div>
-          <div class="frame-post">
-            <div class="frame-post-head">
-              <span class="fp-avatar"></span>
-              <span class="fp-handle">beenext.official</span>
-            </div>
-            <div class="frame-post-screen">
-              <img src="Social media/web/beenext-av-over-ip.jpg" alt="" loading="lazy">
-            </div>
-          </div>
-          <div class="frame-phone">
-            <div class="frame-phone-notch"></div>
-            <div class="frame-phone-screen">
-              <video muted loop playsinline preload="metadata" poster="Social media/web/beenext-avpro-edge.jpg">
-                <source src="branding and videos/Reel 2.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="frame-phone-home"></div>
-          </div>
         </div>
       </div>
       </div>
@@ -2644,7 +2586,12 @@ function startVideoCycle(screen, intervalMs) {
   const videos = screen.querySelectorAll('video.cycle-slide');
   if (videos.length < 2) return;
   let idx = Math.max(0, [...videos].findIndex(v => v.classList.contains('is-active')));
+  /* Clips after the first start as preload="none" so they don't all download
+     on page load - each one starts buffering one slot before it's shown. */
+  const warm = i => { const v = videos[i % videos.length]; if (v.preload !== 'auto') { v.preload = 'auto'; v.load(); } };
+  warm(idx + 1);
   setInterval(() => {
+    warm(idx + 2);
     videos[idx].classList.remove('is-active');
     videos[idx].pause();
     idx = (idx + 1) % videos.length;
