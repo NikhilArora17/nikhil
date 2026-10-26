@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary SEO -->
+  <title>BEENEXT | India's Premier AV & IT Technology Distributor</title>
+  <meta name="description" content="BEENEXT is India's leading Value Added Distributor for AV, IT & automation brands including Peplink, AVPro Edge, Webro, Murideo, Gude and more. Serving Custom Integrators nationwide.">
+  <meta name="keywords" content="AV distributor India, IT distributor, Custom Integrator, Peplink India, AVPro Edge India, Webro India, value added distributor, system integration India, BEENEXT">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.beenext.co.in/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="BEENEXT | India's Premier Technology Distributor">
+  <meta property="og:description" content="Exclusive distributor for Peplink, AVPro Edge, Webro, Murideo, Gude and more. Strategy-first technology solutions for Custom Integrators across India.">
+  <meta property="og:image" content="https://www.beenext.co.in/assets/og-image.jpg">
+  <meta property="og:url" content="https://www.beenext.co.in/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BEENEXT | India's Premier Technology Distributor">
+  <meta name="twitter:description" content="Exclusive distributor for Peplink, AVPro Edge, Webro, Murideo, Gude and more.">
+  <meta name="twitter:image" content="https://www.beenext.co.in/assets/og-image.jpg">
+
+  <!-- Geo -->
+  <meta name="geo.region" content="IN">
+  <meta name="geo.placename" content="India">
+  <meta name="geo.position" content="20.5937;78.9629">
+  <meta name="ICBM" content="20.5937, 78.9629">
+  <link rel="alternate" hreflang="en-in" href="https://www.beenext.co.in/">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,600;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: '#FFBB50',
+            marigold: '#E79D29',
+            raisin: '#212121',
+            surface: '#131313',
+            silver: '#707070',
+          },
+          fontFamily: {
+            sans: ['"SF Pro Display"', '-apple-system', 'BlinkMacSystemFont', '"Helvetica Neue"', 'Barlow', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.beenext.co.in/#organization",
+        "name": "BEENEXT",
+        "url": "https://www.beenext.co.in",
+        "logo": "https://www.beenext.co.in/assets/logo.png",
+        "description": "India's premier Value Added Distributor for AV, IT, and automation technologies.",
+        "telephone": "+91-9311789572",
+        "email": "info@beennext.co.in",
+        "address": { "@type": "PostalAddress", "addressCountry": "IN" },
+        "areaServed": "IN",
+        "sameAs": ["https://www.linkedin.com/company/beenext","https://www.instagram.com/beenextindia"],
+        "knowsAbout": ["AV distribution","IT distribution","Custom Integration","Peplink","AVPro Edge","Webro","Murideo","Gude","LILIN","TPI Audio"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.beenext.co.in/#website",
+        "url": "https://www.beenext.co.in",
+        "name": "BEENEXT",
+        "publisher": { "@id": "https://www.beenext.co.in/#organization" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          { "@type": "Question", "name": "What is BEENEXT?", "acceptedAnswer": { "@type": "Answer", "text": "BEENEXT is India's premier Value Added Distributor (VAD) specializing in AV, IT, and automation technologies for Custom Integrators across India." } },
+          { "@type": "Question", "name": "Which brands does BEENEXT distribute in India?", "acceptedAnswer": { "@type": "Answer", "text": "BEENEXT is the exclusive Indian distributor for Peplink, AVPro Edge, Webro, Murideo, Gude, LILIN, TPI Audio, AVA, and SoundLeisure." } },
+          { "@type": "Question", "name": "How can I become a BEENEXT partner?", "acceptedAnswer": { "@type": "Answer", "text": "Contact us at info@beennext.co.in or fill out the partner application form on our website." } }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    /* ─── Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --gold: #FFBB50;
+      --marigold: #E79D29;
+      --black: #000000;
+      --raisin: #212121;
+      --silver: #707070;
+      --white: #FFFFFF;
+      --surface: #131313;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Barlow', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--gold); color: var(--black); }
+
+    /* ─── Noise Texture ────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ─── Typography ───────────────────────────────────── */
+    .display-xl {
+      font-size: clamp(3.2rem, 7.5vw, 7.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.92;
+    }
+    .display-lg {
+      font-size: clamp(2.4rem, 5vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--silver);
+    }
+    .eyebrow-gold { color: var(--gold); }
+
+    /* ─── Navigation ───────────────────────────────────── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s ease, padding 0.4s ease, border-color 0.4s ease;
+      border-bottom: 1px solid transparent;
+    }
+    #navbar.scrolled {
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      padding: 1rem 3rem;
+      border-bottom-color: rgba(255,187,80,0.08);
+    }
+    .logo-bee { color: var(--gold); }
+    .logo-next { color: var(--white); }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.25s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-link:hover { color: var(--white); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+    .btn-partner-nav {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.5rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .btn-partner-nav:hover { background: var(--gold); color: var(--black); }
+    .btn-partner-nav:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .btn-partner-nav:active { transform: scale(0.98); }
+
+    /* Mobile Nav */
+    #mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      transform: translateX(100%);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #mobile-menu.open { transform: translateX(0); }
+    .mobile-nav-link {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .mobile-nav-link:hover { color: var(--gold); }
+
+    /* ─── Buttons ───────────────────────────────────────── */
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .btn-gold:hover { background: var(--marigold); transform: translateY(-2px); }
+    .btn-gold:active { transform: translateY(0) scale(0.98); }
+    .btn-gold:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: transparent;
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: border-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
+    }
+    .btn-outline:hover { border-color: var(--white); transform: translateY(-2px); }
+    .btn-outline:active { transform: translateY(0) scale(0.98); }
+    .btn-outline:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+
+    /* ─── Hero ──────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--black);
+      padding: 7rem 3rem 4rem;
+    }
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      display: block;
+    }
+    /* Subtle blur + glow bloom — desktop only, GPU-composited, zero JS cost */
+    @media (min-width: 769px) {
+      #hero-canvas {
+        filter: blur(0.6px) brightness(1.05);
+      }
+    }
+
+    /* Page load animations */
+    .anim-eyebrow { opacity: 0; transform: translateY(16px); animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; }
+    .anim-headline { opacity: 0; transform: translateY(24px); animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; }
+    .anim-sub { opacity: 0; transform: translateY(20px); animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards; }
+    .anim-ctas { opacity: 0; transform: translateY(16px); animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Marquee ───────────────────────────────────────── */
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 28s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      padding: 0 3.5rem;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--silver);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 3.5rem;
+    }
+    .marquee-sep { width: 1px; height: 14px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
+
+    /* ─── Cards ─────────────────────────────────────────── */
+    .card-glow-wrap {
+      --cx: -999px;
+      --cy: -999px;
+      padding: 1.5px;
+      background: radial-gradient(
+        circle 100px at var(--cx) var(--cy),
+        rgba(255,187,80,0.85),
+        rgba(255,255,255,0.05) 100%
+      );
+    }
+    .card-service {
+      --cx: -999px;
+      --cy: -999px;
+      background: #191919;
+      border: none;
+      padding: 2rem;
+      position: relative;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      height: 100%;
+    }
+    .card-service:hover { transform: translateY(-3px); }
+
+    /* Inner spotlight fill */
+    .card-service::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle 180px at var(--cx) var(--cy),
+        rgba(255,187,80,0.07), transparent 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Bento grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.04);
+    }
+    .bento-cell {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.35s ease, background 0.35s ease;
+    }
+    .bento-cell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,187,80,0.04), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .bento-cell:hover { border-color: rgba(255,187,80,0.4); background: #1a1a1a; }
+    .bento-cell:hover::before { opacity: 1; }
+    .bento-cell:hover .bento-brand-name { color: var(--gold); }
+    .bento-cell:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+    .bento-large { grid-column: span 6; min-height: 300px; }
+    .bento-small { grid-column: span 3; min-height: 220px; }
+
+    @media (max-width: 900px) {
+      .bento-large { grid-column: span 12; }
+      .bento-small { grid-column: span 6; }
+    }
+    @media (max-width: 560px) {
+      .bento-small { grid-column: span 12; }
+    }
+
+    .bento-brand-name {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      transition: color 0.3s ease;
+      display: block;
+    }
+    .bento-desc { font-size: 13px; color: var(--silver); line-height: 1.6; margin-top: 0.75rem; font-weight: 300; }
+    .bento-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,187,80,0.5); margin-bottom: 1rem; }
+
+    /* Stats */
+    .stat-number {
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--silver); margin-top: 0.5rem; }
+
+    /* Industry Cards */
+    .industry-card {
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 2rem 1.75rem;
+      background: var(--surface);
+      position: relative;
+      flex-shrink: 0;
+      transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .industry-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .industry-card:hover { border-color: rgba(255,187,80,0.25); transform: translateY(-4px); }
+    .industry-card:hover::before { transform: scaleX(1); }
+
+    /* Blog Cards */
+    .blog-card {
+      border: 1px solid rgba(255,255,255,0.06);
+      background: var(--surface);
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .blog-card:hover { border-color: rgba(255,187,80,0.3); transform: translateY(-5px); }
+    .blog-card-img {
+      width: 100%; height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-card-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Horizontal scroll */
+    .h-scroll-wrap {
+      position: relative;
+    }
+    .h-scroll-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 120px;
+      background: linear-gradient(to right, transparent, var(--surface));
+      pointer-events: none;
+      z-index: 2;
+    }
+    .h-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 1px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      cursor: grab;
+    }
+    .h-scroll::-webkit-scrollbar { display: none; }
+    .h-scroll:active { cursor: grabbing; }
+
+    /* Section label */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--gold);
+    }
+
+    /* CTA section */
+    #partner {
+      position: relative;
+      overflow: hidden;
+    }
+    #partner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,187,80,0.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,187,80,0.025) 1px,transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+    .cta-glow {
+      position: absolute;
+      bottom: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(255,187,80,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* Footer */
+    .footer-link {
+      font-size: 13px;
+      color: var(--silver);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+    .footer-link:hover { color: var(--white); }
+    .social-icon {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--silver);
+      text-decoration: none;
+      transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .social-icon:hover { border-color: var(--gold); color: var(--gold); transform: scale(1.1); }
+    .social-icon:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    /* Scroll indicator */
+    @keyframes scrollPulse {
+      0%,100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(0.6); }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      #navbar { padding: 1.25rem 1.5rem; }
+      #navbar.scrolled { padding: 0.85rem 1.5rem; }
+      #hero { padding: 6rem 1.5rem 3rem; }
+      /* canvas scales naturally on mobile */
+      .what-we-do-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
+      .blog-grid { grid-template-columns: 1fr !important; }
+      .stats-grid { grid-template-columns: 1fr !important; }
+      .stats-grid > div { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .stats-grid > div:last-child { border-bottom: none; }
+      .usp-grid { grid-template-columns: 1fr !important; }
+      .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 2.5rem !important; padding: 3rem 1.5rem 2.5rem !important; }
+    }
+    @media (max-width: 560px) {
+      .footer-grid { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 640px) {
+      .stats-grid { grid-template-columns: 1fr !important; }
+      .usp-grid { grid-template-columns: 1fr !important; }
+    }
+    .section-pad { padding: 5rem 1.5rem; }
+    @media (min-width: 769px) { .section-pad { padding: 7rem 3rem; } }
+    @media (min-width: 1200px) { .section-pad { padding: 8rem 4rem; } }
+  </style>
+</head>
+
+<body>
+
+  <!-- MOBILE MENU -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div style="position:absolute;top:1.5rem;left:1.5rem;">
+      <img src="beenext logo.png" alt="BEENEXT" style="height:28px;width:auto;mix-blend-mode:screen;object-fit:contain;">
+    </div>
+    <button id="mobile-close" aria-label="Close menu" style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--white);cursor:pointer;padding:0.5rem;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <a href="#" class="mobile-nav-link" id="mm-home">Home</a>
+    <a href="#about" class="mobile-nav-link" id="mm-about">About Us</a>
+    <a href="#brands" class="mobile-nav-link" id="mm-brands">Brands</a>
+    <a href="#solutions" class="mobile-nav-link" id="mm-solutions">Solutions</a>
+    <a href="#blog" class="mobile-nav-link" id="mm-blog">Blog</a>
+    <a href="#contact" class="mobile-nav-link" id="mm-contact">Contact</a>
+    <a href="#partner" class="mobile-nav-link" style="color:var(--gold)" id="mm-partner">Become a Partner</a>
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <a href="#" style="text-decoration:none;display:flex;align-items:center;" aria-label="BEENEXT Home">
+      <img src="beenext logo.png" alt="BEENEXT" style="height:36px;width:auto;mix-blend-mode:screen;object-fit:contain;">
+    </a>
+
+    <div id="nav-desktop" style="display:none;align-items:center;gap:2rem;">
+      <a href="#about" class="nav-link">About Us</a>
+      <a href="#brands" class="nav-link">Brands</a>
+      <a href="#solutions" class="nav-link">Solutions</a>
+      <a href="#blog" class="nav-link">Blog</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <a href="#partner" class="btn-partner-nav">Become a Partner</a>
+      <button id="hamburger" aria-label="Open menu" aria-expanded="false" style="background:none;border:none;color:var(--white);cursor:pointer;padding:0.25rem;display:none;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="hero" aria-labelledby="hero-headline">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+      <div style="position:relative;z-index:2;max-width:1400px;margin:0 auto;width:100%;">
+        <div class="anim-eyebrow section-label" style="margin-bottom:2.5rem;">
+          <span class="eyebrow eyebrow-gold">◆ Value Added Distributor — India</span>
+        </div>
+
+        <h1 id="hero-headline" class="display-xl anim-headline" style="max-width:900px;margin-bottom:2rem;">
+          <span id="hero-line1">India's Premier</span><br>
+          <span id="hero-line2">Technology</span><br>
+          <em id="hero-gold-word" style="color:var(--gold);font-style:italic;">Distributor.</em>
+        </h1>
+
+        <p id="hero-sub" class="anim-sub" style="font-size:clamp(1rem,1.6vw,1.2rem);color:var(--silver);font-weight:300;line-height:1.75;max-width:540px;margin-bottom:3rem;">
+          We bring next-generation AV, IT, and automation solutions to Custom Integrators across India. Strategy-first. Results-focused.
+        </p>
+
+        <div class="anim-ctas" style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;">
+          <a href="#brands" class="btn-gold">
+            Explore Our Brands
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#partner" class="btn-outline">Become a Partner</a>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0.4;" aria-hidden="true">
+        <span style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--silver);">Scroll</span>
+        <div style="width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease-in-out infinite;transform-origin:top center;"></div>
+      </div>
+    </section>
+
+    <!-- BRAND MARQUEE -->
+    <section aria-label="Trusted Global Brands" style="background:var(--surface);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);overflow:hidden;">
+      <div style="padding:1rem 0 0.5rem;text-align:center;">
+        <span class="eyebrow" style="display:block;margin-bottom:0.75rem;padding-top:0.5rem;">Trusted Global Brands</span>
+      </div>
+      <div style="overflow:hidden;padding:0.5rem 0 1.25rem;">
+        <div class="marquee-track" aria-hidden="true">
+          <div class="marquee-item">LILIN<span class="marquee-sep"></span>TPI Audio<span class="marquee-sep"></span>AVA<span class="marquee-sep"></span>Webro<span class="marquee-sep"></span>Murideo<span class="marquee-sep"></span>Gude<span class="marquee-sep"></span>AVPro Edge<span class="marquee-sep"></span>Peplink<span class="marquee-sep"></span>SoundLeisure</div>
+          <div class="marquee-item">LILIN<span class="marquee-sep"></span>TPI Audio<span class="marquee-sep"></span>AVA<span class="marquee-sep"></span>Webro<span class="marquee-sep"></span>Murideo<span class="marquee-sep"></span>Gude<span class="marquee-sep"></span>AVPro Edge<span class="marquee-sep"></span>Peplink<span class="marquee-sep"></span>SoundLeisure</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT WE DO -->
+    <section id="about" class="section-pad" style="background:var(--black);" aria-labelledby="about-heading">
+      <div style="max-width:1400px;margin:0 auto;">
+        <div class="what-we-do-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;">
+
+          <div class="reveal">
+            <div class="section-label">
+              <span class="eyebrow">What We Do</span>
+            </div>
+            <h2 id="about-heading" class="display-lg" style="margin-bottom:1.75rem;">
+              Powering the Future of Technology <span style="color:var(--gold);">in India</span>
+            </h2>
+            <p style="font-size:1.05rem;color:var(--silver);font-weight:300;line-height:1.8;max-width:460px;">
+              BEENEXT is India's premier Value Added Distributor for cutting-edge AV, IT, and automation technologies. We simplify complex solutions for Custom Integrators and help them deliver extraordinary experiences.
+            </p>
+            <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.07);">
+              <p style="font-size:0.85rem;color:var(--silver);font-weight:300;line-height:1.9;">
+                From pre-sales consulting to post-installation support, BEENEXT stands as your full-cycle technology partner — bringing global innovation to India's most demanding integration projects.
+              </p>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.04);">
+            <div class="card-service reveal" style="transition-delay:0.05s">
+              <div style="width:36px;height:36px;border:1px solid rgba(255,187,80,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.75"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+              </div>
+              <h3 style="font-size:0.95rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.6rem;">Exclusive Distribution</h3>
+              <p style="font-size:0.82rem;color:var(--silver);font-weight:300;line-height:1.7;">Official distributor for leading global technology brands in India.</p>
+            </div>
+            <div class="card-service reveal" style="transition-delay:0.1s">
+              <div style="width:36px;height:36px;border:1px solid rgba(255,187,80,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.75"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <h3 style="font-size:0.95rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.6rem;">Strategy-First Approach</h3>
+              <p style="font-size:0.82rem;color:var(--silver);font-weight:300;line-height:1.7;">Every engagement begins with understanding your integration goals.</p>
+            </div>
+            <div class="card-service reveal" style="transition-delay:0.15s">
+              <div style="width:36px;height:36px;border:1px solid rgba(255,187,80,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.75"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div>
+              <h3 style="font-size:0.95rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.6rem;">Full Stack Support</h3>
+              <p style="font-size:0.82rem;color:var(--silver);font-weight:300;line-height:1.7;">From pre-sales to post-installation, your complete technology partner.</p>
+            </div>
+            <div class="card-service reveal" style="transition-delay:0.2s">
+              <div style="width:36px;height:36px;border:1px solid rgba(255,187,80,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              </div>
+              <h3 style="font-size:0.95rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.6rem;">Pan-India Reach</h3>
+              <p style="font-size:0.82rem;color:var(--silver);font-weight:300;line-height:1.7;">Nationwide logistics, warehousing, and dealer network.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED BRANDS (BENTO) -->
+    <section id="brands" class="section-pad" style="background:var(--surface);" aria-labelledby="brands-heading">
+      <div style="max-width:1400px;margin:0 auto;">
+
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:2rem;">
+          <div class="reveal">
+            <div class="section-label"><span class="eyebrow">Our Portfolio</span></div>
+            <h2 id="brands-heading" class="display-lg">
+              Our Global<br><span style="color:var(--gold);">Brands.</span>
+            </h2>
+          </div>
+          <p class="reveal" style="font-size:0.92rem;color:var(--silver);font-weight:300;line-height:1.75;max-width:380px;transition-delay:0.1s;">
+            Exclusive Indian distribution partnerships with the world's most innovative AV, IT, and automation technology companies.
+          </p>
+        </div>
+
+        <div class="bento-grid reveal" role="list">
+          <div class="bento-cell bento-large" role="listitem" tabindex="0" aria-label="Peplink — Networking">
+            <div class="bento-tag">Networking</div>
+            <span class="bento-brand-name">Peplink</span>
+            <p class="bento-desc">Enterprise-grade SD-WAN, cellular bonding, and network resilience solutions for mission-critical deployments.</p>
+            <div style="position:absolute;bottom:2.5rem;right:2.5rem;opacity:0.05;font-size:6rem;font-weight:900;letter-spacing:-0.05em;pointer-events:none;user-select:none;" aria-hidden="true">PL</div>
+          </div>
+          <div class="bento-cell bento-large" role="listitem" tabindex="0" aria-label="AVPro Edge — AV Distribution">
+            <div class="bento-tag">AV Distribution</div>
+            <span class="bento-brand-name">AVPro Edge</span>
+            <p class="bento-desc">Professional AV matrix switching, video distribution, and 4K/8K signal management for demanding projects.</p>
+            <div style="position:absolute;bottom:2.5rem;right:2.5rem;opacity:0.05;font-size:6rem;font-weight:900;letter-spacing:-0.05em;pointer-events:none;user-select:none;" aria-hidden="true">AV</div>
+          </div>
+          <div class="bento-cell bento-small" role="listitem" tabindex="0" aria-label="Webro — Cabling">
+            <div class="bento-tag">Cabling</div>
+            <span class="bento-brand-name">Webro</span>
+            <p class="bento-desc">Premium structured cabling and specialist coaxial cables for broadcast and AV.</p>
+          </div>
+          <div class="bento-cell bento-small" role="listitem" tabindex="0" aria-label="LILIN — Surveillance">
+            <div class="bento-tag">Surveillance</div>
+            <span class="bento-brand-name">LILIN</span>
+            <p class="bento-desc">AI-powered IP surveillance cameras and video management systems.</p>
+          </div>
+          <div class="bento-cell bento-small" role="listitem" tabindex="0" aria-label="Murideo — AV Testing">
+            <div class="bento-tag">AV Testing</div>
+            <span class="bento-brand-name">Murideo</span>
+            <p class="bento-desc">Professional AV signal generators and analyzers for HDMI testing.</p>
+          </div>
+          <div class="bento-cell bento-small" role="listitem" tabindex="0" aria-label="Gude — Power PDU">
+            <div class="bento-tag">Power PDU</div>
+            <span class="bento-brand-name" style="font-size:clamp(1.8rem,3vw,2.8rem);">Gude</span>
+            <p class="bento-desc">Intelligent power distribution and remote power management for server rooms and AV racks.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:2.5rem;text-align:center;" class="reveal">
+          <a href="mailto:info@beennext.co.in?subject=Brand%20Enquiry" class="btn-outline" style="font-size:11px;">
+            Enquire About Brands
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY BEENEXT / STATS -->
+    <section class="section-pad" style="background:var(--black);border-top:1px solid rgba(255,255,255,0.05);" aria-labelledby="stats-heading">
+      <div style="max-width:1400px;margin:0 auto;">
+
+        <div style="text-align:center;margin-bottom:5rem;" class="reveal">
+          <div class="section-label" style="justify-content:center;">
+            <span class="eyebrow">Why BEENEXT</span>
+          </div>
+          <h2 id="stats-heading" class="display-lg" style="margin-top:1rem;">
+            Numbers That<br><span style="color:var(--gold);">Speak for Themselves.</span>
+          </h2>
+        </div>
+
+        <div class="stats-grid reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(255,255,255,0.06);">
+          <div style="padding:3.5rem 2.5rem;text-align:center;border-right:1px solid rgba(255,255,255,0.06);">
+            <span class="stat-number" id="stat-years">9+</span>
+            <p class="stat-label" id="stat-years-label">Years of Distribution Excellence</p>
+          </div>
+          <div style="padding:3.5rem 2.5rem;text-align:center;border-right:1px solid rgba(255,255,255,0.06);">
+            <span class="stat-number" id="stat-brands">8+</span>
+            <p class="stat-label" id="stat-brands-label">Exclusive Global Brands</p>
+          </div>
+          <div style="padding:3.5rem 2.5rem;text-align:center;">
+            <span class="stat-number" id="stat-partners">500+</span>
+            <p class="stat-label" id="stat-partners-label">Integration Partners Served</p>
+          </div>
+        </div>
+
+        <div class="usp-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.04);margin-top:1px;">
+          <div class="reveal" style="background:var(--surface);padding:2.5rem;transition-delay:0.05s">
+            <div style="width:32px;height:1px;background:var(--gold);margin-bottom:1.5rem;"></div>
+            <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.01em;">Technology Simplified</h3>
+            <p style="font-size:0.84rem;color:var(--silver);font-weight:300;line-height:1.75;">Complex solutions made accessible. We translate technology into business outcomes that integrators can deliver confidently.</p>
+          </div>
+          <div class="reveal" style="background:var(--surface);padding:2.5rem;transition-delay:0.1s">
+            <div style="width:32px;height:1px;background:var(--gold);margin-bottom:1.5rem;"></div>
+            <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.01em;">Customer First</h3>
+            <p style="font-size:0.84rem;color:var(--silver);font-weight:300;line-height:1.75;">Unmatched pre and post-sales support. From initial inquiry to post-installation, we're invested in your success.</p>
+          </div>
+          <div class="reveal" style="background:var(--surface);padding:2.5rem;transition-delay:0.15s">
+            <div style="width:32px;height:1px;background:var(--gold);margin-bottom:1.5rem;"></div>
+            <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.01em;">Results-Focused</h3>
+            <p style="font-size:0.84rem;color:var(--silver);font-weight:300;line-height:1.75;">Strategy, data, and insight driving every engagement. We don't just distribute — we enable success.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SOLUTIONS / INDUSTRIES -->
+    <section id="solutions" class="section-pad" style="background:var(--surface);" aria-labelledby="industries-heading">
+      <div style="max-width:1400px;margin:0 auto;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:2rem;">
+          <div class="reveal">
+            <div class="section-label"><span class="eyebrow">Verticals</span></div>
+            <h2 id="industries-heading" class="display-lg">
+              Industries We<br><span style="color:var(--gold);">Serve.</span>
+            </h2>
+          </div>
+        </div>
+        <div class="h-scroll-wrap reveal">
+        <div class="h-scroll" role="list" aria-label="Industry verticals">
+          <div class="industry-card" style="min-width:220px;" role="listitem">
+            <div style="font-size:1.6rem;margin-bottom:1.25rem;" aria-hidden="true">🏢</div>
+            <h3 style="font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.5rem;">Corporate AV &amp; IT</h3>
+            <p style="font-size:0.78rem;color:var(--silver);font-weight:300;line-height:1.65;">Conference rooms, digital signage, unified communications.</p>
+          </div>
+          <div class="industry-card" style="min-width:220px;" role="listitem">
+            <div style="font-size:1.6rem;margin-bottom:1.25rem;" aria-hidden="true">🏠</div>
+            <h3 style="font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.5rem;">Residential Automation</h3>
+            <p style="font-size:0.78rem;color:var(--silver);font-weight:300;line-height:1.65;">Smart home integration, multi-room audio, lighting control.</p>
+          </div>
+          <div class="industry-card" style="min-width:220px;" role="listitem">
+            <div style="font-size:1.6rem;margin-bottom:1.25rem;" aria-hidden="true">🏨</div>
+            <h3 style="font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.5rem;">Hospitality Technology</h3>
+            <p style="font-size:0.78rem;color:var(--silver);font-weight:300;line-height:1.65;">Guest experience systems, in-room entertainment, IPTV.</p>
+          </div>
+          <div class="industry-card" style="min-width:220px;" role="listitem">
+            <div style="font-size:1.6rem;margin-bottom:1.25rem;" aria-hidden="true">🔐</div>
+            <h3 style="font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.5rem;">Surveillance &amp; Security</h3>
+            <p style="font-size:0.78rem;color:var(--silver);font-weight:300;line-height:1.65;">IP cameras, VMS, access control, perimeter security.</p>
+          </div>
+          <div class="industry-card" style="min-width:220px;" role="listitem">
+            <div style="font-size:1.6rem;margin-bottom:1.25rem;" aria-hidden="true">🎵</div>
+            <h3 style="font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.5rem;">Pro Audio &amp; Acoustics</h3>
+            <p style="font-size:0.78rem;color:var(--silver);font-weight:300;line-height:1.65;">Commercial audio, acoustic treatment, distributed sound.</p>
+          </div>
+          <div class="industry-card" style="min-width:220px;" role="listitem">
+            <div style="font-size:1.6rem;margin-bottom:1.25rem;" aria-hidden="true">🌐</div>
+            <h3 style="font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:0.5rem;">Network Infrastructure</h3>
+            <p style="font-size:0.78rem;color:var(--silver);font-weight:300;line-height:1.65;">SD-WAN, structured cabling, wireless, failover solutions.</p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG PREVIEW -->
+    <section id="blog" class="section-pad" style="background:var(--black);" aria-labelledby="blog-heading">
+      <div style="max-width:1400px;margin:0 auto;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:2rem;">
+          <div class="reveal">
+            <div class="section-label"><span class="eyebrow">Insights</span></div>
+            <h2 id="blog-heading" class="display-lg">
+              From Our<br><span style="color:var(--gold);">Desk.</span>
+            </h2>
+          </div>
+          <a href="#" class="btn-outline reveal" style="font-size:11px;transition-delay:0.1s">
+            View All Articles
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <div class="blog-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.04);" role="list">
+
+          <article class="blog-card reveal" role="listitem" style="transition-delay:0.05s">
+            <div class="blog-card-img" style="background:linear-gradient(135deg,#3d2800,#1a1000);">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.22;font-size:4rem;" aria-hidden="true">📡</div>
+            </div>
+            <div style="padding:1.75rem;">
+              <span style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);">Networking</span>
+              <h3 style="font-size:1rem;font-weight:700;letter-spacing:-0.01em;margin:0.6rem 0;line-height:1.3;">The Future of SD-WAN in Enterprise AV Deployments</h3>
+              <time datetime="2025-03" style="font-size:11px;color:var(--silver);display:block;margin-bottom:0.75rem;">March 2025</time>
+              <p style="font-size:0.82rem;color:var(--silver);font-weight:300;line-height:1.7;">How software-defined networking is transforming large-scale AV installations and simplifying network management for integrators.</p>
+              <a href="#" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;margin-top:1.25rem;">
+                Read More
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="blog-card reveal" role="listitem" style="transition-delay:0.1s">
+            <div class="blog-card-img" style="background:linear-gradient(135deg,#003020,#001a10);">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.22;font-size:4rem;" aria-hidden="true">🏢</div>
+            </div>
+            <div style="padding:1.75rem;">
+              <span style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);">Corporate AV</span>
+              <h3 style="font-size:1rem;font-weight:700;letter-spacing:-0.01em;margin:0.6rem 0;line-height:1.3;">Building the Modern Hybrid Workplace: An Integrator's Guide</h3>
+              <time datetime="2025-02" style="font-size:11px;color:var(--silver);display:block;margin-bottom:0.75rem;">February 2025</time>
+              <p style="font-size:0.82rem;color:var(--silver);font-weight:300;line-height:1.7;">From room booking systems to video collaboration, how leading integrators are designing for hybrid work in 2025.</p>
+              <a href="#" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;margin-top:1.25rem;">
+                Read More
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="blog-card reveal" role="listitem" style="transition-delay:0.15s">
+            <div class="blog-card-img" style="background:linear-gradient(135deg,#28001e,#160010);">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.22;font-size:4rem;" aria-hidden="true">🔐</div>
+            </div>
+            <div style="padding:1.75rem;">
+              <span style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);">Surveillance</span>
+              <h3 style="font-size:1rem;font-weight:700;letter-spacing:-0.01em;margin:0.6rem 0;line-height:1.3;">AI-Powered Surveillance: LILIN's Next-Generation IP Camera Platform</h3>
+              <time datetime="2025-01" style="font-size:11px;color:var(--silver);display:block;margin-bottom:0.75rem;">January 2025</time>
+              <p style="font-size:0.82rem;color:var(--silver);font-weight:300;line-height:1.7;">Deep dive into LILIN's AI analytics capabilities and how they're changing the economics of commercial security projects.</p>
+              <a href="#" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;margin-top:1.25rem;">
+                Read More
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTNER CTA -->
+    <section id="partner" class="section-pad" style="background:var(--surface);text-align:center;" aria-labelledby="partner-heading">
+      <div class="cta-glow"></div>
+      <div style="max-width:800px;margin:0 auto;position:relative;z-index:1;" class="reveal">
+        <div class="section-label" style="justify-content:center;margin-bottom:2rem;">
+          <span class="eyebrow">Join the Network</span>
+        </div>
+        <h2 id="partner-heading" class="display-lg" style="margin-bottom:1.5rem;">
+          Ready to Elevate Your<br>Integration Business?
+        </h2>
+        <p style="font-size:1rem;color:var(--silver);font-weight:300;line-height:1.8;margin-bottom:3rem;max-width:520px;margin-left:auto;margin-right:auto;">
+          Join India's leading network of Custom Integrators and technology professionals. We grow together.
+        </p>
+        <a href="mailto:info@beennext.co.in?subject=Partner%20Application" class="btn-gold" style="font-size:13px;padding:1.2rem 3rem;">
+          Become a Partner
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact" style="background:#050505;border-top:1px solid rgba(255,255,255,0.05);">
+    <div class="footer-grid" style="max-width:1400px;margin:0 auto;padding:5rem 3rem 3rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;">
+
+      <div>
+        <div style="margin-bottom:1.25rem;">
+          <img src="beenext logo.png" alt="BEENEXT" style="height:32px;width:auto;mix-blend-mode:screen;object-fit:contain;">
+        </div>
+        <p style="font-size:0.84rem;color:var(--silver);font-weight:300;line-height:1.8;max-width:280px;margin-bottom:1.75rem;">
+          Bringing the Next in Technology Solutions to India's Custom Integration community.
+        </p>
+        <div style="display:flex;gap:0.6rem;">
+          <a href="https://www.linkedin.com/company/beenext" class="social-icon" aria-label="Follow BEENEXT on LinkedIn" target="_blank" rel="noopener noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://www.instagram.com/beenextindia" class="social-icon" aria-label="Follow BEENEXT on Instagram" target="_blank" rel="noopener noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Follow BEENEXT on X (Twitter)" target="_blank" rel="noopener noreferrer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--white);margin-bottom:1.25rem;">Explore</h3>
+        <a href="#" class="footer-link">Home</a>
+        <a href="#about" class="footer-link">About Us</a>
+        <a href="#brands" class="footer-link">Brands</a>
+        <a href="#blog" class="footer-link">Blog</a>
+      </div>
+
+      <div>
+        <h3 style="font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--white);margin-bottom:1.25rem;">Company</h3>
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">Terms of Use</a>
+        <a href="#" class="footer-link">Disclaimer</a>
+      </div>
+
+      <div>
+        <h3 style="font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--white);margin-bottom:1.25rem;">Connect</h3>
+        <a href="#contact" class="footer-link">Contact</a>
+        <a href="#partner" class="footer-link">Become a Partner</a>
+        <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.05);">
+          <a href="mailto:info@beennext.co.in" class="footer-link">info@beennext.co.in</a>
+          <a href="tel:+919311789572" class="footer-link">+91 9311789572</a>
+          <p style="font-size:0.78rem;color:rgba(112,112,112,0.6);font-weight:300;line-height:1.6;margin-top:0.5rem;">F-16, Ground Floor, Okhla Industrial Area, Phase-I, New Delhi – 110020</p>
+        </div>
+      </div>
+
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:1.5rem 3rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+      <p style="font-size:11px;color:var(--silver);letter-spacing:0.05em;">© 2025 BEENEXT. All rights reserved.</p>
+      <p style="font-size:11px;color:rgba(112,112,112,0.4);letter-spacing:0.05em;">INDIA</p>
+    </div>
+  </footer>
+
+  <script>
+    // ─── Glow card wrapper — gradient border follows cursor ──
+    document.querySelectorAll('.card-service').forEach(function(card) {
+      // Wrap each card in a glow wrapper div
+      var wrap = document.createElement('div');
+      wrap.className = 'card-glow-wrap';
+      card.parentNode.insertBefore(wrap, card);
+      wrap.appendChild(card);
+
+      function track(e) {
+        var r = wrap.getBoundingClientRect();
+        wrap.style.setProperty('--cx', (e.clientX - r.left) + 'px');
+        wrap.style.setProperty('--cy', (e.clientY - r.top) + 'px');
+        // Mirror into card for inner fill
+        var rc = card.getBoundingClientRect();
+        card.style.setProperty('--cx', (e.clientX - rc.left) + 'px');
+        card.style.setProperty('--cy', (e.clientY - rc.top) + 'px');
+      }
+      function reset() {
+        wrap.style.setProperty('--cx', '-999px');
+        wrap.style.setProperty('--cy', '-999px');
+        card.style.setProperty('--cx', '-999px');
+        card.style.setProperty('--cy', '-999px');
+      }
+      wrap.addEventListener('pointermove', track);
+      wrap.addEventListener('pointerleave', reset);
+    });
+
+    // ─── Navbar scroll ──────────────────────────────────
+    const navbar = document.getElementById('navbar');
+    const navDesktop = document.getElementById('nav-desktop');
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 60) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }, { passive: true });
+
+    // ─── Responsive nav ─────────────────────────────────
+    function updateNavLayout() {
+      if (window.innerWidth >= 768) {
+        navDesktop.style.display = 'flex';
+        hamburger.style.display = 'none';
+      } else {
+        navDesktop.style.display = 'none';
+        hamburger.style.display = 'block';
+      }
+    }
+    updateNavLayout();
+    window.addEventListener('resize', updateNavLayout);
+
+    // ─── Mobile menu ─────────────────────────────────────
+    function openMobileMenu() {
+      mobileMenu.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    hamburger.addEventListener('click', openMobileMenu);
+    document.getElementById('mobile-close').addEventListener('click', closeMobileMenu);
+
+    // Close mobile menu when any link is clicked
+    ['mm-home','mm-about','mm-brands','mm-solutions','mm-blog','mm-contact','mm-partner'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('click', closeMobileMenu);
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
+    });
+
+    // ─── Scroll reveal ───────────────────────────────────
+    var revealEls = document.querySelectorAll('.reveal');
+    var revealObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    revealEls.forEach(function(el) { revealObs.observe(el); });
+
+    // ─── Horizontal scroll drag ───────────────────────────
+    var hScrollEl = document.querySelector('.h-scroll');
+    if (hScrollEl) {
+      var isDown = false, startX = 0, scrollLeft = 0;
+      hScrollEl.addEventListener('mousedown', function(e) {
+        isDown = true;
+        hScrollEl.style.cursor = 'grabbing';
+        startX = e.pageX - hScrollEl.offsetLeft;
+        scrollLeft = hScrollEl.scrollLeft;
+      });
+      hScrollEl.addEventListener('mouseleave', function() { isDown = false; hScrollEl.style.cursor = 'grab'; });
+      hScrollEl.addEventListener('mouseup', function() { isDown = false; hScrollEl.style.cursor = 'grab'; });
+      hScrollEl.addEventListener('mousemove', function(e) {
+        if (!isDown) return;
+        e.preventDefault();
+        var x = e.pageX - hScrollEl.offsetLeft;
+        var walk = (x - startX) * 1.5;
+        hScrollEl.scrollLeft = scrollLeft - walk;
+      });
+    }
+
+    // ─── Apply config from localStorage ─────────────────
+    (function() {
+      try {
+        var raw = localStorage.getItem('beenext_config_v1');
+        if (!raw) return;
+        var cfg = JSON.parse(raw);
+
+        function setText(id, val) {
+          if (!val) return;
+          var el = document.getElementById(id);
+          if (el) el.textContent = val;
+        }
+
+        // Hero
+        setText('hero-line1',    cfg.hero_line1);
+        setText('hero-line2',    cfg.hero_line2);
+        setText('hero-gold-word',cfg.hero_gold_word);
+        setText('hero-sub',      cfg.hero_sub);
+
+        // Stats — numbers
+        setText('stat-years',    cfg.stat_years);
+        setText('stat-brands',   cfg.stat_brands);
+        setText('stat-partners', cfg.stat_partners);
+
+        // Stats — labels
+        setText('stat-years-label',    cfg.stat_years_label);
+        setText('stat-brands-label',   cfg.stat_brands_label);
+        setText('stat-partners-label', cfg.stat_partners_label);
+
+      } catch(e) { /* silent fail */ }
+    })();
+
+    // ─── Hero Hex Flip Wave ───────────────────────────
+    (function() {
+      var canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      var isMobile = window.innerWidth < 768;
+      var dpr = 1;
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var SQ3 = Math.sqrt(3);
+
+      var R, COL, ROW, cssW, cssH;
+      function setSizes() {
+        var hero = document.getElementById('hero');
+        cssW = hero.offsetWidth;
+        cssH = hero.offsetHeight;
+        R    = isMobile ? 32 : 48;
+        COL  = SQ3 * R;
+        ROW  = R * 1.5;
+      }
+
+      var hexes = [], W = 0, H = 0;
+      function buildGrid() {
+        setSizes();
+        W = Math.round(cssW * dpr);
+        H = Math.round(cssH * dpr);
+        canvas.width  = W;
+        canvas.height = H;
+        canvas.style.width  = cssW + 'px';
+        canvas.style.height = cssH + 'px';
+        hexes = [];
+        var cols = Math.ceil(W / COL) + 8;
+        var rows = Math.ceil(H / ROW) + 3;
+        for (var row = -1; row < rows; row++) {
+          for (var col = -5; col < cols; col++) {
+            var x  = col * COL + (row % 2 !== 0 ? COL / 2 : 0);
+            var y  = row * ROW;
+            var s1 = Math.abs(Math.sin(col * 127.1 + row * 311.7) * 43758.5453) % 1;
+            var depth = s1 < 0.65 ? 0 : s1 < 0.88 ? 1 : 2;
+            hexes.push({ x: x, y: y, depth: depth });
+          }
+        }
+      }
+      buildGrid();
+
+      function hexPathScaled(cx, cy, r, sx) {
+        ctx.beginPath();
+        for (var i = 0; i < 6; i++) {
+          var a  = (Math.PI / 3) * i - Math.PI / 6;
+          var px = cx + r * Math.cos(a) * sx;
+          var py = cy + r * Math.sin(a);
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+      }
+
+      var FLIP_W    = 0;
+      var FADE_TIME = 3.8;
+
+      var drift = 0, startTime = performance.now(), lastFrame = 0;
+      var frameInterval = isMobile ? 33 : 16;
+      var rafId = null;
+
+      function render(now) {
+        rafId = requestAnimationFrame(render);
+        if (now - lastFrame < frameInterval) return;
+        lastFrame = now;
+        var t = reducedMotion ? 1 : (now - startTime) * 0.001;
+
+        drift += (isMobile ? 0.09 : 0.11);
+        if (drift >= COL) drift -= COL;
+
+        ctx.clearRect(0, 0, W, H);
+
+        var WAVE_SPEED = cssW * 0.10;           // px/sec — crosses screen in ~10s
+        var FULL_W     = cssW + COL * 10;
+        var flipW      = COL * 3.0;
+        // R→L: wave starts off right edge, moves left (waveX decreases over time)
+        var waveX      = (cssW + COL * 5) - (t * WAVE_SPEED) % FULL_W;
+
+        ctx.save();
+        ctx.translate(-drift, 0);
+
+        var ir = R - 1.2;
+
+        for (var i = 0; i < hexes.length; i++) {
+          var h        = hexes[i];
+          var hScreenX = h.x - drift;
+          // R→L: delta < -flipW  = pre-wave (wave still to the right, not hit yet)
+          //       -flipW < delta < 0 = flipping (wave passing through right now)
+          //       delta > 0          = post-wave (wave has moved left past this hex)
+          var delta    = hScreenX - waveX;
+          var depthMul = h.depth === 0 ? 0.55 : h.depth === 1 ? 0.80 : 1.0;
+
+          var restA  = h.depth === 0 ? 0.20 : h.depth === 1 ? 0.28 : 0.36;
+          var restLW = h.depth === 0 ? 0.8  : h.depth === 1 ? 1.0  : 1.2;
+
+          if (delta < -flipW) {
+            // Pre-wave — always-visible resting grid
+            hexPathScaled(h.x, h.y, ir, 1);
+            ctx.strokeStyle = 'rgba(255,187,80,' + restA + ')';
+            ctx.lineWidth   = restLW;
+            ctx.stroke();
+
+          } else if (delta < 0) {
+            // Flipping — wave currently passing this hex R→L
+            var flipP = (delta + flipW) / flipW;  // 0→1 as wave sweeps through
+            var cosV  = Math.cos(flipP * Math.PI);
+            var absSX = Math.abs(cosV);
+            if (absSX < 0.03) continue;
+
+            hexPathScaled(h.x, h.y, ir, absSX);
+
+            if (flipP < 0.5) {
+              ctx.fillStyle   = 'rgba(4,3,1,0.92)';
+              ctx.fill();
+              ctx.strokeStyle = 'rgba(255,187,80,' + (absSX * 0.15 * depthMul).toFixed(3) + ')';
+              ctx.lineWidth   = 0.8;
+              ctx.stroke();
+            } else {
+              var ga = Math.min(absSX * 0.22 * depthMul, 0.22);
+              ctx.fillStyle   = 'rgba(255,187,80,' + ga.toFixed(3) + ')';
+              ctx.fill();
+              ctx.strokeStyle = 'rgba(255,187,80,' + Math.min(absSX * 0.9 * depthMul, 0.9).toFixed(3) + ')';
+              ctx.lineWidth   = 0.8 + absSX * 1.4;
+              ctx.stroke();
+            }
+
+          } else {
+            // Post-wave — gold fading back to resting (wave has moved left past this hex)
+            var age  = delta / WAVE_SPEED;
+            var gold = Math.max(0, 1 - age / FADE_TIME) * depthMul;
+
+            hexPathScaled(h.x, h.y, ir, 1);
+            if (gold < 0.01) {
+              // Fully settled — resting
+              ctx.strokeStyle = 'rgba(255,187,80,' + restA + ')';
+              ctx.lineWidth   = restLW;
+              ctx.stroke();
+            } else {
+              // Lerp stroke from resting → peak gold
+              var fa = Math.pow(gold, 0.8) * 0.18;
+              ctx.fillStyle   = 'rgba(255,187,80,' + fa.toFixed(3) + ')';
+              ctx.fill();
+              ctx.strokeStyle = 'rgba(255,187,80,' + Math.min(restA + gold * (0.86 - restA), 0.86).toFixed(3) + ')';
+              ctx.lineWidth   = restLW + gold * 1.2;
+              ctx.stroke();
+            }
+          }
+        }
+
+        ctx.restore();
+
+        var waveScreenX = waveX + drift; // convert back from grid to screen space
+        if (waveScreenX > -50 && waveScreenX < W + 50) {
+          var grd = ctx.createRadialGradient(waveScreenX, H * 0.5, 0, waveScreenX, H * 0.5, H * 0.65);
+          grd.addColorStop(0, 'rgba(255,187,80,0.05)');
+          grd.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = grd;
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // Left text-area fade — smooth multi-stop gradient, wide enough to protect headline
+        var lgrad = ctx.createLinearGradient(0, 0, W * 0.62, 0);
+        lgrad.addColorStop(0,    'rgba(0,0,0,0.97)');
+        lgrad.addColorStop(0.25, 'rgba(0,0,0,0.88)');
+        lgrad.addColorStop(0.50, 'rgba(0,0,0,0.45)');
+        lgrad.addColorStop(0.75, 'rgba(0,0,0,0.08)');
+        lgrad.addColorStop(1.0,  'rgba(0,0,0,0)');
+        ctx.fillStyle = lgrad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Vignette — subtle dark gloom at all edges (desktop feel, ignored on small canvas)
+        if (W > 600) {
+          var vx = ctx.createRadialGradient(W*0.55, H*0.5, H*0.25, W*0.55, H*0.5, H*0.95);
+          vx.addColorStop(0,   'rgba(0,0,0,0)');
+          vx.addColorStop(0.6, 'rgba(0,0,0,0.10)');
+          vx.addColorStop(1,   'rgba(0,0,0,0.55)');
+          ctx.fillStyle = vx;
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        if (reducedMotion) { cancelAnimationFrame(rafId); rafId = null; }
+      }
+
+      rafId = requestAnimationFrame(render);
+
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+          if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        } else if (!rafId) {
+          startTime = performance.now() - lastFrame;
+          rafId = requestAnimationFrame(render);
+        }
+      });
+
+      var resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          isMobile = window.innerWidth < 768;
+          drift = 0;
+          buildGrid();
+        }, 150);
+      });
+    })();
+  </script>
+
+</body>
+</html>
