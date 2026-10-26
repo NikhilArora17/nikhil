@@ -1,0 +1,361 @@
+<html lang="en" class="scroll-smooth" vid="0"><head vid="1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" vid="2">
+<style vid="3">
+/* Micro-interactions & Hover States */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(255,187,80,0.3); }
+  50% { text-shadow: 0 0 30px rgba(255,187,80,0.6); }
+}
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #FFBB50;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+.nav-link:hover {
+  color: #FFBB50;
+}
+.cta-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+.cta-button:hover::before {
+  left: 100%;
+}
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(255,187,80,0.3);
+}
+.brand-logo {
+  transition: all 0.3s ease;
+  filter: grayscale(100%);
+}
+.brand-logo:hover {
+  filter: grayscale(0%);
+  transform: scale(1.1);
+}
+.section {
+  animation: fadeInUp 0.8s ease forwards;
+}
+.highlight-text {
+  animation: glow 3s ease-in-out infinite;
+}
+.card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(255,187,80,0.15);
+}
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hero-headline { font-size: 2.5rem !important; }
+  .nav-links { display: none; }
+  .mobile-menu { display: block; }
+  .grid-cols-2 { grid-template-columns: 1fr !important; }
+  .grid-cols-3 { grid-template-columns: 1fr !important; }
+  .grid-cols-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .px-12 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+  .py-20 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+}
+@media (max-width: 480px) {
+  .hero-headline { font-size: 1.75rem !important; }
+  .brand-grid { grid-template-columns: 1fr !important; }
+}
+.mobile-menu-btn {
+  display: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.mobile-menu-btn:hover {
+  transform: rotate(90deg);
+}
+@media (max-width: 768px) {
+  .mobile-menu-btn { display: block; }
+}
+</style></head><body class="overflow-x-hidden bg-grid" vid="4">vid="1"&gt;
+    <meta charset="UTF-8" vid="5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="6">
+    <title vid="7">BEENEXT | Powering the Future of Technology</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="8"></script>
+    <script vid="9">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            yellow: '#FFBB50',
+                            darkYellow: '#E79D29',
+                            black: '#000000',
+                            gray: '#1A1A1A',
+                            border: '#333333',
+                            lightGray: '#A1A1AA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: [
+                            '-apple-system', 
+                            'BlinkMacSystemFont', 
+                            '"SF Pro Display"', 
+                            '"Segoe UI"', 
+                            'Roboto', 
+                            'Helvetica', 
+                            'Arial', 
+                            'sans-serif'
+                        ],
+                    },
+                    fontSize: {
+                        'display': ['clamp(3.5rem, 8vw, 8.5rem)', { lineHeight: '0.95', letterSpacing: '-0.04em' }],
+                        'display-sm': ['clamp(2.5rem, 6vw, 5.5rem)', { lineHeight: '1', letterSpacing: '-0.03em' }],
+                    }
+                }
+            }
+        }
+    </script>
+    <style vid="10">
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        ::selection {
+            background-color: #FFBB50;
+            color: #000000;
+        }
+        
+        
+        .bg-grid {
+            background-size: 100px 100px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        
+        .brand-card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .brand-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(255, 187, 80, 0.15);
+            border-color: #FFBB50;
+        }
+        .brand-card:hover .brand-name {
+            color: #FFBB50;
+            transform: scale(1.05);
+        }
+        .brand-name {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
+
+
+
+    
+    <nav class="fixed w-full top-0 z-50 px-6 py-8 md:px-12 flex justify-between items-center backdrop-blur-md bg-black/50 border-b border-white/5" vid="11">
+        <a href="#" class="text-2xl md:text-3xl font-black tracking-tighter text-white uppercase flex items-center gap-2" vid="12">
+            BEENEXT<span class="text-brand-yellow" vid="13">.</span>
+        </a>
+        <div class="hidden md:flex gap-10 text-sm font-bold tracking-widest uppercase text-brand-lightGray" vid="14">
+            <a href="#about" class="hover:text-white transition-colors duration-300" vid="15">About</a>
+            <a href="#brands" class="hover:text-white transition-colors duration-300" vid="16">Brands</a>
+            <a href="#contact" class="hover:text-brand-yellow transition-colors duration-300" vid="17">Contact</a>
+        </div>
+        <button class="md:hidden text-white" vid="18">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" vid="19"><path d="M4 7h16M4 12h16M4 17h16" vid="20"></path></svg>
+        </button>
+    </nav>
+
+    
+    <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-32 pb-20 relative" vid="21">
+        
+        <div class="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-brand-yellow/10 rounded-full blur-[120px] pointer-events-none -z-10" vid="22"></div>
+        
+        <div class="max-w-[1400px] mx-auto w-full" vid="23">
+            <div class="inline-block border border-white/10 rounded-full px-6 py-2 mb-10 bg-white/5 backdrop-blur-sm" vid="24">
+                <p class="text-brand-yellow text-xs md:text-sm font-bold tracking-[0.2em] uppercase" vid="25">Powering the Future of Technology</p>
+            </div>
+            
+            <h1 class="text-display font-black text-white mb-12 max-w-[1200px] lowercase leading-[0.9]" vid="26">
+                India's <span class="text-brand-yellow block sm:inline" vid="27">premier</span> value added <span class="text-brand-yellow block sm:inline" vid="28">distributor</span> for cutting-edge technologies.
+            </h1>
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 mt-16" vid="29">
+                <a href="#about" class="inline-flex items-center justify-center px-10 py-5 bg-white text-black text-lg font-bold rounded-full hover:bg-brand-yellow transition-colors duration-300 group" vid="30">
+                    Discover More
+                    <svg class="ml-3 w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" vid="31"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" vid="32"></path></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="about" class="py-32 md:py-48 px-6 md:px-12 border-t border-brand-border bg-black relative z-10" vid="33">
+        <div class="max-w-[1400px] mx-auto" vid="34">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24" vid="35">
+                <div class="lg:col-span-4 flex flex-col justify-between" vid="36">
+                    <div vid="37">
+                        <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-brand-lightGray mb-6" vid="38">About Us</h2>
+                        <h3 class="text-display-sm font-black tracking-tight leading-none" vid="39">
+                            Our<br vid="40">Core<br vid="41"><span class="text-brand-yellow" vid="42">Values.</span>
+                        </h3>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-8 flex items-center" vid="43">
+                    <p class="text-2xl md:text-4xl lg:text-5xl font-semibold leading-[1.3] text-brand-lightGray tracking-tight" vid="44">
+                        We are India's premier Value Added Distributor for cutting-edge technologies. Our core values of <span class="text-white" vid="45">customer first</span> and <span class="text-white" vid="46">technology simplified</span> drives us to deliver next gen solutions addressing challenges in the <span class="text-brand-yellow" vid="47">Audio-Visual</span>, <span class="text-brand-yellow" vid="48">Automation</span> and <span class="text-brand-yellow" vid="49">IT installations</span>. By partnering with leading global brands while utilizing our vast distribution channel we believe in delighting our customers by providing unmatched service and experience.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="brands" class="py-32 md:py-48 px-6 md:px-12 border-t border-brand-border bg-[#0a0a0a] relative" vid="50">
+        <div class="max-w-[1400px] mx-auto" vid="51">
+            
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 mb-24" vid="52">
+                <div class="max-w-3xl" vid="53">
+                    <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-brand-lightGray mb-6" vid="54">Brand Partners</h2>
+                    <h3 class="text-display-sm font-black tracking-tight leading-none mb-8" vid="55">
+                        Brands We<br vid="56"><span class="text-brand-yellow" vid="57">Represent.</span>
+                    </h3>
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-brand-lightGray" vid="58">
+                        We are proud to partner with industry-leading global brands to bring cutting-edge solutions to our clients. From advanced networking and audio-visual technologies to premium cabling and power distribution systems, these brands are synonymous with <span class="text-white" vid="59">innovation, reliability, and performance.</span>
+                    </p>
+                </div>
+            </div>
+
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" vid="60">
+                
+                
+                <div class="brand-card aspect-[4/3] flex items-center justify-center p-8 border border-brand-border rounded-2xl bg-black cursor-pointer" vid="61">
+                    <span class="brand-name text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase" vid="62">TPI</span>
+                </div>
+                
+                
+                <div class="brand-card aspect-[4/3] flex items-center justify-center p-8 border border-brand-border rounded-2xl bg-black cursor-pointer" vid="63">
+                    <span class="brand-name text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase" vid="64">AVA</span>
+                </div>
+                
+                
+                <div class="brand-card aspect-[4/3] flex items-center justify-center p-8 border border-brand-border rounded-2xl bg-black cursor-pointer" vid="65">
+                    <span class="brand-name text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase" vid="66">Gude</span>
+                </div>
+                
+                
+                <div class="brand-card aspect-[4/3] flex items-center justify-center p-8 border border-brand-border rounded-2xl bg-black cursor-pointer" vid="67">
+                    <span class="brand-name text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase" vid="68">LILIN</span>
+                </div>
+                
+                
+                <div class="brand-card aspect-[4/3] flex items-center justify-center p-8 border border-brand-border rounded-2xl bg-black cursor-pointer" vid="69">
+                    <span class="brand-name text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase" vid="70">Webro</span>
+                </div>
+                
+                
+                <div class="brand-card aspect-[4/3] flex items-center justify-center p-8 border border-brand-border rounded-2xl bg-black cursor-pointer" vid="71">
+                    <span class="brand-name text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase" vid="72">Peplink</span>
+                </div>
+                
+                
+                <div class="brand-card aspect-[4/3] flex items-center justify-center p-8 border border-brand-border rounded-2xl bg-black cursor-pointer" vid="73">
+                    <span class="brand-name text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase" vid="74">Murideo</span>
+                </div>
+                
+                
+                <div class="brand-card aspect-[4/3] flex items-center justify-center p-8 border border-brand-border rounded-2xl bg-black cursor-pointer text-center" vid="75">
+                    <span class="brand-name text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white uppercase leading-none" vid="76">AVPro<br vid="77">Edge</span>
+                </div>
+                
+                
+                <div class="brand-card aspect-[4/3] flex items-center justify-center p-8 border border-brand-border rounded-2xl bg-black cursor-pointer" vid="78">
+                    <span class="brand-name text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter text-white uppercase" vid="79">SoundLeisure</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="contact" class="py-40 px-6 md:px-12 border-t border-brand-border relative overflow-hidden bg-black" vid="80">
+        
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-yellow/5 pointer-events-none" vid="81"></div>
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[500px] bg-brand-yellow/20 rounded-t-full blur-[150px] pointer-events-none -z-10" vid="82"></div>
+
+        <div class="max-w-[1400px] mx-auto text-center relative z-10 flex flex-col items-center" vid="83">
+            <h2 class="text-display-sm font-black tracking-tight mb-16 max-w-[1000px] leading-[0.9]" vid="84">
+                Curious to know more?<br vid="85">Let's get <span class="text-brand-yellow" vid="86">connected!</span>
+            </h2>
+            <a href="mailto:contact@beenext.in" class="inline-flex items-center justify-center px-12 py-6 bg-brand-yellow text-black text-xl md:text-2xl font-black uppercase tracking-wide rounded-full hover:bg-white transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,187,80,0.4)]" vid="87">
+                Contact Us Today
+                <svg class="ml-4 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" vid="88"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" vid="89"></path></svg>
+            </a>
+        </div>
+    </section>
+
+    
+    <footer class="py-16 px-6 md:px-12 border-t border-brand-border bg-[#050505]" vid="90">
+        <div class="max-w-[1400px] mx-auto" vid="91">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start md:items-center" vid="92">
+                
+                <div class="md:col-span-4 lg:col-span-3" vid="93">
+                    <div class="text-3xl font-black tracking-tighter text-white uppercase mb-2" vid="94">
+                        BEENEXT<span class="text-brand-yellow" vid="95">.</span>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-8 lg:col-span-6 flex flex-col items-start md:items-center text-left md:text-center" vid="96">
+                    <p class="text-brand-lightGray text-sm md:text-base font-medium max-w-md" vid="97">
+                        <span class="text-white font-bold" vid="98">Head Office</span><br vid="99">
+                        F-16, Ground Floor, Okhla Industrial Area,<br vid="100">Phase-I, New Delhi – 110020.
+                    </p>
+                </div>
+                
+                <div class="md:col-span-12 lg:col-span-3 flex justify-start lg:justify-end text-brand-lightGray text-sm font-medium" vid="101">
+                    <p vid="102">© 2025 BEENEXT. All Rights Reserved.</p>
+                </div>
+                
+            </div>
+        </div>
+    </footer>
+
+
+</body></html>
