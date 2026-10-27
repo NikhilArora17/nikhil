@@ -1358,7 +1358,7 @@
       font-size: clamp(1.05rem, 1.3vw, 1.3rem);
       line-height: 1.85;
       color: var(--sage);
-      text-align: right;
+      text-align: left;
     }
 
     #gameArea {
@@ -1429,6 +1429,7 @@
     #touch-controls { display: none; }
     .play-cols {
       display: flex;
+      flex-direction: row-reverse; /* game on the right, text on the left; the ≤900px rule below stacks them as column (game first) */
       align-items: stretch; /* text column stretches to match the game's height */
       gap: 4.5rem;
       margin-top: 3.5rem;
