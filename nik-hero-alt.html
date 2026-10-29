@@ -348,6 +348,34 @@
     .hero-slot[data-slot="1"].smooth canvas { display: block; }
     .hero-slot[data-slot="1"].smooth video { position: absolute; inset: 0; opacity: 0; }
 
+    /* Slot 2: Nikhil's open-armed illustration (1038x956 transparent PNG). It sits on the
+       middle line, so unlike slot 1 it can't grow past the line box without pushing the
+       lines apart or colliding with their neighbours; the negative margins keep it level
+       with the text. The hem gets the same hairline edge as above. */
+    .hero-slot[data-slot="2"] {
+      width: 1.36em; height: 1.25em;
+      margin: -.1em 0 -.05em .1em;
+      vertical-align: -.25em;
+    }
+    .hero-br { display: none; }
+    /* Wide screens: line 1 breaks after "Product" so line 2 runs longer and its right end
+       (where the illustration sits) has open space above it. The illustration can then
+       match the slot 1 character's scale. Narrower screens keep the natural wrap and the
+       smaller size above. */
+    @media (min-width: 1000px) {
+      .hero-br { display: inline; }
+      .hero-statement { max-width: 23em; }
+      .hero-slot[data-slot="2"] {
+        width: 2.02em; height: 1.86em;
+        margin: -.8em 0 -.1em .1em;
+        vertical-align: -.12em;
+      }
+    }
+    .hero-slot img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+    .hero-slot[data-slot="2"] img {
+      filter: drop-shadow(0 1px 0 rgba(10,51,35,.7)) drop-shadow(0 0 .5px rgba(10,51,35,.5));
+    }
+
     .hero-actions { display:flex; gap:1rem; align-items:center; flex-wrap:wrap; justify-content:center; }
 
     .btn-dark {
@@ -1738,7 +1766,7 @@
   <div class="hero-inner">
     <h1 class="hero-statement rv">
       Hey, I’m <span class="hero-nb">Nikhil.<span class="hero-slot" data-slot="1" aria-hidden="true"><video src="videos/output.webm" autoplay muted loop playsinline preload="auto" tabindex="-1"></video></span></span>
-      Product design by focus. Visual design by <span class="hero-nb">instinct.<span class="hero-slot" data-slot="2" aria-hidden="true"></span></span>
+      Product<br class="hero-br"> design by focus. Visual design by <span class="hero-nb">instinct.<span class="hero-slot" data-slot="2" aria-hidden="true"><img src="site-2nd-illustration.png" alt="" width="1038" height="956" decoding="async"></span></span>
       <span class="hero-statement-soft">turning ideas into digital <span class="hero-nb">experiences<span class="hero-slot" data-slot="3" aria-hidden="true"></span></span></span>
     </h1>
   </div>
