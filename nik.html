@@ -409,6 +409,31 @@
         vertical-align: -.12em;
       }
     }
+    /* Phones: the centred, balanced wrap left ragged short lines and the slot 2 illustration
+       shrank to ~40px. Left-align the type, break before "Visual" and "Turning" so each
+       sentence starts its own line, and give both illustrations their own in-flow room (no
+       negative margins) so the lines grow to hold them instead of overlapping. Sizes are in
+       em, so they track the headline's viewport-based font size. */
+    .hero-brm { display: none; }
+    @media (max-width: 660px) {
+      .hero-inner { align-items: stretch; text-align: left; padding: 0 1.5rem; }
+      .hero-statement {
+        font-size: clamp(1.7rem, 8vw, 2.4rem);
+        text-align: left;
+        text-wrap: wrap;
+      }
+      .hero-brm { display: inline; }
+      .hero-slot[data-slot="1"] {
+        width: 2.7em; height: 2em;
+        margin: 0 0 0 .12em;
+        vertical-align: -.35em;
+      }
+      .hero-slot[data-slot="2"] {
+        width: 2.9em; height: 2.67em;
+        margin: 0 0 0 .12em;
+        vertical-align: middle;
+      }
+    }
     .hero-slot img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
     .hero-slot[data-slot="2"] img {
       filter: drop-shadow(0 1px 0 rgba(10,51,35,.7)) drop-shadow(0 0 .5px rgba(10,51,35,.5));
@@ -1794,8 +1819,8 @@
   <div class="hero-inner">
     <h1 class="hero-statement">
       Hey, I’m <span class="hero-nb">Nikhil.<span class="hero-slot" data-slot="1" aria-hidden="true"><video src="videos/output.webm" muted loop playsinline preload="auto" tabindex="-1"></video></span></span>
-      Product<br class="hero-br"> design by focus. Visual design by <span class="hero-nb">instinct.<span class="hero-slot" data-slot="2" aria-hidden="true"><img src="site-2nd-illustration.png" alt="" width="1038" height="956" decoding="async"></span></span>
-      <span class="hero-statement-soft">Turning ideas into digital <span class="hero-nb">experiences.<span class="hero-slot" data-slot="3" aria-hidden="true"></span></span></span>
+      Product<br class="hero-br"> design<br class="hero-brm"> by focus. <br class="hero-brm">Visual design<br class="hero-brm"> by <span class="hero-nb">instinct.<span class="hero-slot" data-slot="2" aria-hidden="true"><img src="site-2nd-illustration.png" alt="" width="1038" height="956" decoding="async"></span></span>
+      <span class="hero-statement-soft"><br class="hero-brm">Turning ideas into digital <span class="hero-nb">experiences.<span class="hero-slot" data-slot="3" aria-hidden="true"></span></span></span>
     </h1>
   </div>
 </div>
