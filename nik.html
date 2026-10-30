@@ -1614,7 +1614,11 @@
       #hero-content {
         top: 5rem; left: 1rem;
         width: calc(100vw - 2rem);
-        height: 68vh;
+        /* centred on the screen itself: 5rem top + 10rem off the height = 5rem each side,
+           so the box's midpoint is the viewport's. (svh so a phone's collapsing URL bar
+           doesn't push it low.) */
+        height: calc(100vh - 10rem);
+        height: calc(100svh - 10rem);
       }
       .hero-actions { gap: .9rem; }
       .btn-dark, .btn-ghost-dark {
