@@ -418,10 +418,10 @@
     @media (max-width: 660px) {
       .hero-inner { padding: 0 1.5rem; }
       /* The headline is a shrink-wrapped block centred on the screen (.hero-inner centres
-         it), with every line starting at the same left edge as "Hey". Slot 1's negative
-         right margin cancels its own width, so it hangs off the end of line 1 instead of
-         widening the block and pushing the text off-centre. */
-      .hero-statement { font-size: clamp(1.7rem, 8vw, 2.4rem); line-height: 1.12; text-align: left; }
+         it), with each line centred inside it. Slot 1's negative right margin cancels its
+         own width, so it hangs off the end of line 1 instead of widening the line and
+         pushing the text off-centre. */
+      .hero-statement { font-size: clamp(1.7rem, 8vw, 2.4rem); line-height: 1.12; }
       .hero-brm { display: inline; }
       .hero-slot[data-slot="1"] {
         width: 2.7em; height: 2em;
