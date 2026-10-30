@@ -409,9 +409,8 @@
         vertical-align: -.12em;
       }
     }
-    /* Phones: inline illustrations beside a line of text pulled that line off-centre and, at
-       ~40px, slot 2 was tiny. Each one instead becomes its own centred block row between the
-       text groups, so the type stays centred and the pictures can be a proper size. The line
+    /* Phones: slot 1 stays beside "Nikhil."; slot 2 was ~40px inline, so it becomes its own
+       centred block row between the text groups and can be a proper size. The line
        breaks give "Product design / by focus." and "Visual design / by instinct." the same
        shape. Sizes are in em, so they track the headline's viewport-based font size. */
     .hero-brm { display: none; }
@@ -419,14 +418,16 @@
       .hero-inner { padding: 0 1.5rem; }
       .hero-statement { font-size: clamp(1.7rem, 8vw, 2.4rem); line-height: 1.12; }
       .hero-brm { display: inline; }
-      .hero-slot[data-slot="1"],
+      .hero-slot[data-slot="1"] {
+        width: 2.7em; height: 2em;
+        margin: 0 0 0 .12em;
+        vertical-align: -.35em;
+      }
       .hero-slot[data-slot="2"] {
         display: block;
-        margin-left: auto; margin-right: auto;
-        vertical-align: baseline;
+        width: 3.3em; height: 3.04em;
+        margin: .3em auto .4em;
       }
-      .hero-slot[data-slot="1"] { width: 3.4em; height: 2.5em; margin-top: .3em; margin-bottom: .35em; }
-      .hero-slot[data-slot="2"] { width: 3.3em; height: 3.04em; margin-top: .3em; margin-bottom: .4em; }
     }
     .hero-slot img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
     .hero-slot[data-slot="2"] img {
