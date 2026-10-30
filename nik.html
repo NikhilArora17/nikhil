@@ -417,11 +417,15 @@
     .hero-slot-end { display: none; }
     @media (max-width: 660px) {
       .hero-inner { padding: 0 1.5rem; }
-      .hero-statement { font-size: clamp(1.7rem, 8vw, 2.4rem); line-height: 1.12; }
+      /* The headline is a shrink-wrapped block centred on the screen (.hero-inner centres
+         it), with every line starting at the same left edge as "Hey". Slot 1's negative
+         right margin cancels its own width, so it hangs off the end of line 1 instead of
+         widening the block and pushing the text off-centre. */
+      .hero-statement { font-size: clamp(1.7rem, 8vw, 2.4rem); line-height: 1.12; text-align: left; }
       .hero-brm { display: inline; }
       .hero-slot[data-slot="1"] {
         width: 2.7em; height: 2em;
-        margin: 0 0 0 .12em;
+        margin: 0 -2.7em 0 -.4em;
         vertical-align: -.35em;
       }
       /* The inline slot 2 (inside "instinct.") is swapped for a copy after the last line */
@@ -1817,9 +1821,9 @@
   </div>
   <div class="hero-inner">
     <h1 class="hero-statement">
-      Hey, I’m <span class="hero-nb">Nikhil.<span class="hero-slot" data-slot="1" aria-hidden="true"><video src="videos/output.webm" muted loop playsinline preload="auto" tabindex="-1"></video></span></span>
+      Hey, I’m <span class="hero-nb">Nikhil.<span class="hero-slot" data-slot="1" aria-hidden="true"><video src="videos/output.webm" muted loop playsinline preload="auto" tabindex="-1"></video></span></span><br class="hero-brm">
       Product<br class="hero-br"> design<br class="hero-brm"> by focus. <br class="hero-brm">Visual design<br class="hero-brm"> by <span class="hero-nb">instinct.<span class="hero-slot" data-slot="2" aria-hidden="true"><img src="site-2nd-illustration.png" alt="" width="1038" height="956" decoding="async"></span></span>
-      <span class="hero-statement-soft"><br class="hero-brm">Turning ideas into digital <span class="hero-nb">experiences.<span class="hero-slot" data-slot="3" aria-hidden="true"></span></span></span>
+      <span class="hero-statement-soft"><br class="hero-brm">Turning ideas into<br class="hero-brm"> digital <span class="hero-nb">experiences.<span class="hero-slot" data-slot="3" aria-hidden="true"></span></span></span>
       <span class="hero-slot hero-slot-end" aria-hidden="true"><img src="site-2nd-illustration.png" alt="" width="1038" height="956" decoding="async"></span>
     </h1>
   </div>
